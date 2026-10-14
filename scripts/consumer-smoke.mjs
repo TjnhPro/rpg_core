@@ -22,6 +22,10 @@ try {
   assert(artifact, 'npm pack did not produce an archive');
   const archive = path.join(scratch, artifact.filename);
   const members = artifact.files.map(f => f.path);
+  const moduleMap = JSON.parse(readFileSync(path.join(root, 'docs/module-map.json'), 'utf8'));
+  for (const legacy of Object.keys(moduleMap)) {
+    for (const extension of ['.js', '.d.ts']) assert(members.includes(`dist/${legacy.replace(/\.ts$/, extension)}`), `Missing archived legacy path: ${legacy}${extension}`);
+  }
   assert(members.includes('dist/index.js') && members.includes('dist/index.d.ts'));
   assert(!members.some(f => /^(src|tests|examples|node_modules|\.example-dist)\//.test(f)));
   const consumer = path.join(scratch, 'consumer');
@@ -34,6 +38,11 @@ try {
   const example = readFileSync(path.join(root, 'examples/headless.ts'), 'utf8');
   assert(!/from ['"]\./.test(example));
   writeFileSync(path.join(consumer, 'headless.ts'), example);
+  // Repository-relative compatibility paths are deliberately not package exports.
+  // Check their declarations and runtime identities in the installed archive too.
+  const legacyImports = Object.keys(moduleMap).map((file, i) =>
+    `import * as legacy${i} from './node_modules/@rpg/core/dist/${file.replace(/\.ts$/, '.js')}';`);
+  writeFileSync(path.join(consumer, 'legacy.ts'), `${legacyImports.join('\n')}\nexport const legacyApis = [${legacyImports.map((_, i) => `legacy${i}`).join(',')}];\n`);
   writeFileSync(path.join(consumer, 'types.ts'), `
 import type {CombatEntity, PlayerStatsConfig, DamageContext, MapPoint} from '@rpg/core/contracts';
 import {resolveCharacterStats} from '@rpg/core/stats';
@@ -69,11 +78,17 @@ for (const domain of domains) {
   const api = await import('@rpg/core/' + domain);
   for (const [name, value] of Object.entries(api)) assert.equal(value, core[name]);
 }
+const moduleMap = ${JSON.stringify(moduleMap)};
+for (const [legacy, canonical] of Object.entries(moduleMap)) {
+  const a = await import('./node_modules/@rpg/core/dist/' + legacy.replace(/\\.ts$/, '.js'));
+  const b = await import('./node_modules/@rpg/core/' + canonical.replace(/^src\\//, 'dist/').replace(/\\.ts$/, '.js'));
+  assert.deepEqual(a, b);
+}
 for (const internal of ['@rpg/core/skills/skill-execution.js', '@rpg/core/dist/index.js', '@rpg/core/shared/game/skill-execution.js']) {
   await assert.rejects(import(internal), {code: 'ERR_PACKAGE_PATH_NOT_EXPORTED'});
 }
 for (const helper of ['freezeGameplayData', 'random', 'damageBonusReason', 'tickProjectileBodies', 'debugProjectile']) assert(!(helper in core));
-console.log(JSON.stringify({status: 'PASS', targetHp: a.entities[1].currentHp, deterministic: true, types: true, publicDomains: domains.length, deepImportsBlocked: true}));
+console.log(JSON.stringify({status: 'PASS', targetHp: a.entities[1].currentHp, deterministic: true, types: true, publicDomains: domains.length, legacyPaths: Object.keys(moduleMap).length, deepImportsBlocked: true}));
 `);
   const result = execFileSync(process.execPath, ['run.mjs'], {cwd: consumer, encoding: 'utf8'});
   console.log(result.trim());

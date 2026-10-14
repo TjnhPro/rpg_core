@@ -1,4 +1,4 @@
-import {readCoreSource} from './fixtures/source.js';
+import {readCoreSource} from '../fixtures/source.js';
 import {it,expect} from 'vitest';
 import {readFileSync} from 'node:fs';
 import {advanceSkillExecution,cancelSkillExecution,type SkillActivatedEvent} from '../../src/skills/skill-execution.js';
@@ -6,7 +6,7 @@ import {defineSkill} from '../../src/skills/skill-engine.js';
 import {dispatchSkillEffects,advanceSkillEffects,clearSkillEffects} from '../../src/skills/skill-effect-integration.js';
 import {DEFAULT_MELEE_HITBOX,DEFAULT_INSTANT_AOE} from '../../src/contracts/mechanic-contracts.js';
 import {validateSkillEffects,type SkillGameplayEffect} from '../../src/skills/skill-effects.js';
-import {fixture,damage,direct,projectile,sequence,timed,dot} from './fixtures/skill-core.js';
+import {fixture,damage,direct,projectile,sequence,timed,dot} from '../fixtures/skill-core.js';
 it('validates one/multiple ordered effects and rejects unsupported type/config/ref/visual fields before cost',()=>{
  for(const effects of [[direct()],[direct(),projectile(),timed(),sequence()],[]])expect(validateSkillEffects(effects)).toEqual([]);
  for(const effects of [[{type:'unknown'}],[{...projectile(),config:{}}],[{...direct(),icon:'fake'}],[{...sequence(),damage:{...damage(),id:'wrong'}}],[{...timed(),projectile:{config:{},damage:damage()}}],[{...direct(),onHit:[{...dot(),config:{...dot().config,canCrit:true}}]}]]){

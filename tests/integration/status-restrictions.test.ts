@@ -1,5 +1,5 @@
 import {describe,it,expect} from 'vitest';
-import {fixture,projectile,sequence,timed,direct,dot} from './fixtures/skill-core.js';
+import {fixture,projectile,sequence,timed,direct,dot} from '../fixtures/skill-core.js';
 import {defineEffect,type EffectDefinition} from '../../src/effects/effect-system.js';
 import {defineSkill} from '../../src/skills/skill-engine.js';
 import {advanceSkillExecution,reconcileSkillRestrictions,type SkillActivatedEvent} from '../../src/skills/skill-execution.js';

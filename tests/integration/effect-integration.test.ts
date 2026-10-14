@@ -1,6 +1,6 @@
 import {expect,it} from 'vitest';
-import {fixture,direct,projectile,sequence,timed,dot} from './fixtures/skill-core.js';
-import {timeline} from './fixtures/skill-timeline.js';
+import {fixture,direct,projectile,sequence,timed,dot} from '../fixtures/skill-core.js';
+import {timeline} from '../fixtures/skill-timeline.js';
 import type {EffectDefinition,EffectModifier} from '../../src/effects/effect-system.js';
 import type {SkillGameplayEffect} from '../../src/skills/skill-effects.js';
 import {executeSkill,advanceSkillExecution,type SkillExecutionSlot,type SkillExecutionEvent} from '../../src/skills/skill-execution.js';

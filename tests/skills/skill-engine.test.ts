@@ -1,4 +1,4 @@
-import {readCoreSource} from './fixtures/source.js';
+import {readCoreSource} from '../fixtures/source.js';
 import {it,expect} from 'vitest';
 import {readFileSync} from 'node:fs';
 import {defineSkill,validateSkillDefinition,validateSkillContext,type SkillExecutionContext} from '../../src/skills/skill-engine.js';

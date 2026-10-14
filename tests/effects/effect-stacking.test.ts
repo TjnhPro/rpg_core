@@ -2,7 +2,7 @@ import {expect,it} from 'vitest';
 import {EffectLifecycle,type EffectOperationResult} from '../../src/effects/effect-lifecycle.js';
 import {defineEffect,validateEffectInstance,type EffectDefinition,type EffectModifier} from '../../src/effects/effect-system.js';
 import {prepareModifierResolver} from '../../src/modifiers/modifier-core.js';
-import {fixture} from './fixtures/skill-core.js';
+import {fixture} from '../fixtures/skill-core.js';
 
 const m=(value:number,target='str'):EffectModifier=>({id:'bonus',target,value,operation:'add_flat',enabled:true,conditions:[]});
 const d=(value=2,stack=false):EffectDefinition=>({effectId:'rage',durationMs:100,modifiers:[m(value)],...(stack?{stackingPolicy:'stack',maxStacks:2}: {})});
