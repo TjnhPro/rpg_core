@@ -1,0 +1,493 @@
+{
+  "reviewedCommit": "c5878d92e198acd19289f568a2ddeda5096d83e7",
+  "modules": [
+    {
+      "originalFile": "src/shared/data/combat-modifiers.ts",
+      "currentFiles": [
+        "src/contracts/combat-modifiers.ts"
+      ],
+      "declarations": [
+        "03984808b983a8ec383f69751e062247edf97fb53baadeccf6fe8c3ff61c7f48",
+        "29981cd734b9ee1d2ce50605f97961941fa3d27b95df1613b324aefde4233267",
+        "8deda798152afffd5bfb232343634b4860467e4d111c65ed5efde70a646e921b",
+        "9654b9132e68c06ad06a231c65b5f06fe812dae39618b0ecf4599f5ae56cd460",
+        "9f52d95f6fb79728e9b73a3ceb11fb2db84513e3dcef94bbafb12177f88595e0",
+        "a90809a92d3e54ccb62588d676aae11d82f603ebea821021e2b6d95b82238b23",
+        "f30a205af806b0819304721e261c5560aa6ce97680c55ed384590a2b35daeec0",
+        "f7176f905ce38c004b59f1c0f69579c8fc77b1387a7c24f122bfe7384b9f4d60"
+      ]
+    },
+    {
+      "originalFile": "src/shared/data/damage-contracts.ts",
+      "currentFiles": [
+        "src/contracts/damage-contracts.ts"
+      ],
+      "declarations": [
+        "17f598445f6c3c9684d505344dcefbb0f0039ff12c2ad703a63d8d6c1493103d",
+        "207b7d71602e2c280bbf4a130dd76952abf708787eaa5fc70f20ccd8bf6cd618",
+        "432d025ee2bf512a4f3a52ea261c277d19920dd5fed2d1bfca5470d6f69d9f88",
+        "48b958b113011f8e0ae05a82f056af4219acc35d66f20890c8e94560c1a09549",
+        "54e6352568cfe1addd48eb09532b738ece475bec98deee05726f4e9912cb5393",
+        "a55c9bb2b15de4f82c9560c06e7de17913faae3c0c2a25e3643fe4d87c8b3a28",
+        "b06e5046451e5f84607fac98bff28a58d07f8f17af6c5da2e701622406aa8c13",
+        "e08a6f918a06418d6f27dac33ee4e52e6c03db0f82b1c067228376343bf53ebc",
+        "e1d48d91037447952d6f6fef35759ab16e98e9b1afead10e1c1439e09df5328b",
+        "fdeb692fdfb55b14515c5638092726964b2e4fa8d0a2761b6a1f77122ab8926c"
+      ]
+    },
+    {
+      "originalFile": "src/shared/data/defense-settings.ts",
+      "currentFiles": [
+        "src/contracts/defense-settings.ts"
+      ],
+      "declarations": [
+        "0b0a008412fbf421416adcc9b988e6c9106ee67c9aca372c6e74dc828739c395",
+        "1672a2848734f188009554147e4070fb654960248dc548d8f7d68d896142f966",
+        "389f94dc094f644db2aa7465a064c282ea4d00e59c36d71491f5a4aa065106ca",
+        "8b9cd86a6645960da5ce5e6d7adcc8853abb8f814a077aaa037abb5ed8306b68",
+        "99e851f4a81fcf8eb6a4b001de7aad010622a64373333a8bcbf829784bb2eb56",
+        "bf4b661f66325a8efa878591540dd2ca38acb9f60770387042a66e9efc4f565a",
+        "c603d2b40d7126dcb09f9356c8936a0f79b57483b808b6a7926b46c6d22078b4",
+        "d051c8470060bd170c2ff3480ff86b7573a8fe2d43a3dcf1d0bd023d73783137",
+        "d29e4c4824d2ad5eca80ff4f363f08be58b954c1d6c486349d547e601f17cf50",
+        "dcdcb7c9753b1c848404397c86ebb361c395788303a691dd95b5923b48fcf583",
+        "ec4aeae579bc304b3ee075f20debf0b2e2efee2bb249069973656c802955cc1b"
+      ]
+    },
+    {
+      "originalFile": "src/shared/data/dot-contracts.ts",
+      "currentFiles": [
+        "src/contracts/dot-contracts.ts"
+      ],
+      "declarations": [
+        "948812e63c74990daf95b0ea8686b2e3a10c2f7b18be9904a6de05bad470f126",
+        "b0da617cdcd85f5d63880308991f7cf32397a9905cfd42ee4b71642b3a4c018a",
+        "dc1c5f219241be0d82cc04bf691edb70388ab1c044924c1bb61022b578074c81",
+        "f0d1a5c521196689feaf67d6013ef60bbd6f3c9a355ff8bee988e293a3ae7f2a"
+      ]
+    },
+    {
+      "originalFile": "src/shared/data/mechanic-contracts.ts",
+      "currentFiles": [
+        "src/contracts/mechanic-contracts.ts"
+      ],
+      "declarations": [
+        "1a61596888b0b358b8b8f02b217e4880b9c997cd59356a8a08aec48cea80279c",
+        "1d62f933fccad4c01a150bdc150822b5266934abdeaa3bc8e0f3c3a8aef71a8e",
+        "2411067e8254c2c5f12cb4103d20437bb6d093e7f0b4898df2f9c0508afa797e",
+        "2bf0e4750efe0f6787364e454ae80ffdba11ddc2be6ac5119c1381c25fd1790b",
+        "43d5c12b110ee2ea589aec7c6d09a2d1f8cb0d75168470d4b72d29fa5b56a9bc",
+        "4c79e0bfeb7056348832c993a037393f89617464d9c6e4dbdddb03ccc0cb9ea6",
+        "6d6874ef8db51d9eb9b202d5d7da507752864f48fb45d57a5ab90bbe82254f10",
+        "75f4c6f4bd4e8d25f9e82a21357a88d15e913af8d8f94bc049555694def77992",
+        "7ef497b32df4e856cb342819b6de17bbe49a79815462fed8112e1feac7f4139f",
+        "a11b724491d67e35aba725cc6974e2c3c45869de46334fe2820770e16a3518a3",
+        "aaef033c225f8d1a84478e97096c0c5b44972c7952a4d18c9caea1cab9213fa6",
+        "b355332a4088669280a43d6a07e3eccd390c2a24c4236d660ad79f113dc9c62d",
+        "b4d5b1aeb849128573a2b4547b4955522ef43f84a5e2f82b162dc7cb8c1c55e4",
+        "c54ed87c63032736c5f6eea60a9ee8ac3dfb1f471b039f28cf2e7c29964ad8ae",
+        "cafdf8743a7f77d43139301ac3d4a98b3ec19bc5936bfa8d7ac8c204975a7f0b",
+        "d2f7cfb4e608d22eecae4337ede0f53ee3b9bbe72bf7683b5d069035e2fe562e",
+        "d788834b7701623b722b505d3ac9b36e5918556ced95e62fbad784d377d37e22",
+        "f1fb86a992c5177781aadc1b97ec085c9eb53386e362b083c91fb95128d64a57",
+        "f3dc87c59482f927bed236360724827c3ba9a25a41c5585674d17b064de3ad26"
+      ]
+    },
+    {
+      "originalFile": "src/shared/data/stat-contracts.ts",
+      "currentFiles": [
+        "src/contracts/stat-contracts.ts"
+      ],
+      "declarations": [
+        "0c0e53f3c3f36b91d279183bc09dd10fa5333760c22b6e194cc7f222453cdcff",
+        "153fb07611f4ae34d956a558bc8a28f440886d35319fed290ef404948a239ab4",
+        "2f768f8d97f2fb59fbe0fb25b9a643b91eddbed92e90c058ae7e94a918dabb0c",
+        "2f78fcb9a98424ee5a1fc8b7230175e95ac722918d13dc1bf314ac7884e3ed98",
+        "3add0a304862ca799c46a45b6d972a23f1af8afc3647abe78248691ef9046539",
+        "4476b98c1ce1d8a7b9196fe95d3c5f191e69ffc8b9bce49bb4587a376cbe3f00",
+        "48ac49108c25a5f48a6b881dd49b533456c6e071298a961647013a2862d81552",
+        "4dd9be879f25168827464800d4f8416e8f56784833a93499ec43a9058a705f4d",
+        "4e4dd5c692c99c6ebf527135be4c8336f0b1a2c9d8f8ec998fe428c326567347",
+        "5c09d122014e90bb5ed0e38438539463b87328fff9fe8bb025ce1ca98d33b4ad",
+        "5dce6b3c54e7b5e53769cc0f4541e26051e81b5a00880071adedfc6d5f1cb664",
+        "7181cd9b7d58c441379552e76ae24a0988fdb3e5e23b624088f213a26e4d46df",
+        "7993d5a3cfbdaaf495f962361e7c996f59c2e4479bbbbdb25439375e9f75ecc1",
+        "9d3694bb9d9123ef3435576113222d30db5d217ef1f5c43b118285c652b11782",
+        "a466217157fc9b2b88afa0d47cf861ab68d009f5223593f846413ecc301793d2",
+        "b22b78dd0985bf714a397048d2e6174bec1c84e97f99ed56de427f84d3066e52",
+        "b435d33e190546fcb25e732fb0e163fc5b2b4a22ce4bc333eda36e3ba4bd0da1",
+        "b531d4808a41c03aadbfceebea0fa0a74d45b9739242e4d3b6b5068206832e58",
+        "b62da766e1bc2175e74716224130865aa1c71b3f91817929ec18ec2d8dfe5bec",
+        "c7f02fa37c94a12a3d34327b22202a682c893d971c355cdd96b1f533bfbd4f56",
+        "d6782a45db4db9c96652730ecc52c46f89eed70c279f4b43a3d253016f3587c7",
+        "d85208840d6087c857f4bc2bf846233fe7602b263adec4d36eb85f0896c1666f",
+        "edb677b8247a63fad54166139bbfa63b536bfef28b2f912214c1baadad2a8213",
+        "f5c1ab1c975d5080a5ab6c4456cb68cdd740983ab625316e1884708c94187dbf"
+      ]
+    },
+    {
+      "originalFile": "src/shared/data/targeting-contracts.ts",
+      "currentFiles": [
+        "src/contracts/targeting-contracts.ts"
+      ],
+      "declarations": [
+        "29239b18cd1005ff831a982ac16e93feeb3457c627fd9bfe30b0a5dffd9481d5",
+        "5baecb192d700ce06bec1dc4c5464a0f4c1bd0c4ca8428ce03246e724c4a1c91",
+        "fa129dc6f0c38b59a335acb76c91739e02935de9e28e52ec38ca5d19a32aa0c1"
+      ]
+    },
+    {
+      "originalFile": "src/shared/data/skill-effects.ts",
+      "currentFiles": [
+        "src/skills/skill-effects.ts"
+      ],
+      "declarations": [
+        "16aafaa346f15c2a4825ea958fff9ea75841c038c8a1bbddb0609a7e96c48ce4",
+        "4e388f20cd2d26d288b1040b1a09455d039dfc89aa440faaeeb2d085dcc31ef3",
+        "60e77d443a4e3f87d8220e8b3714e735ddabec061ee7d58a3b0818a60cefa372",
+        "70b1ddf3744afb53b0c4a230561da455e937ee19bf7e3faf848c29e88befb75f",
+        "a2cf978d57fcdb62f8eea18c164c142d5114cdd11086f95c00c0ee249af3a82f",
+        "e0cb7e273308af6699a96ca5007059d2a475cb92b272ed7e60d3da9cc6555c28",
+        "f7c6d55e0602a7f03c77af1991713f8c0c152ee0d18c1cc074020e3b7966ecf6",
+        "f955e9100f21f1f4bda570ff22103009415f148ff7e1831cc2321fe61cf3c898",
+        "f9ab77658c46dd844dbfb9d2c0c94528aa2387272f9cf6c0cfe9201c99c0ab2b"
+      ]
+    },
+    {
+      "originalFile": "src/shared/game/combat-entity.ts",
+      "currentFiles": [
+        "src/combat/combat-entity.ts",
+        "src/contracts/combat-entity.ts"
+      ],
+      "declarations": [
+        "33e490dc15323cad764ba70b5c402811c2347b514edda7f34ef176db4915f3e8",
+        "3d8d303844c8d0d58e83844d7fbc7a95fc14223a03e9e2ea3dfb552bf8f5e328",
+        "445eae891dd223dcbc7d18efa4ecab82d308dd97409d5bd163c087c6c0e2d2b8",
+        "7aff977e081bf68ea749b64fc94e9f0a40161253890213603874b2bc4363ed97",
+        "88756ee1e67a256b2d643a94d184f0b0b84a4e2375f388a1eb333070174607ff",
+        "9059acdd8b260a40f6ed7e78dccc58bb2a64893f35f7c48281c3170232fc3599",
+        "fc0307af95a9302f2eaa6e3ca91b702c757b36aee0c89f3f6ae86aad337d659e"
+      ]
+    },
+    {
+      "originalFile": "src/shared/game/combat-state.ts",
+      "currentFiles": [
+        "src/combat/combat-state.ts",
+        "src/contracts/combat-state.ts"
+      ],
+      "declarations": [
+        "0310b5c5ab024943588e45891c445a84944f0eb1ee7193802a3af4e24a8a10ff",
+        "03fa3b4f7782b742cc1e35ae73e48470c6891c7ada2f4df1a34f881622941641",
+        "0c1d940042517cf13436e75387425cd4024fbbeebb448a088f4b3c3c32dca194",
+        "10ee1a0287b44cd8ec9ae0af6f450fcfc53e1a9bf3375e94adfe29a8652e39b9",
+        "1d2ba153fe784aaa3e59328b3879d461a2e5202e5ddb0af7d1fc1cad3038e262",
+        "1dd516f6c04a32ac29f5689ed6c2ad5d15b3d2325d48e65306be88051613cd93",
+        "2b286913e81268666f529469d8f8e91afc60117ce5959beb7974ec3342d4f485",
+        "4c942e9ad59becb38fe4bb863c8b7dbeda7b51f0aba8512d99770c5e729a4076",
+        "5e54c0bf53889c309e1bfe6abba2fb01c0bd4712ba831911fcc940753c6b922a",
+        "675a275c6537409fc6cd5032658e2785795adeec83a1ef49695072121ee50a9f",
+        "6d0214e1898a496c63214f86370cfb7f9ea092caa1546d4dabd65413ed6cbbf6",
+        "7394fe6c15555a7e6af12aa34eb24861bccb8c94f47d1869276c33996799851e",
+        "7f03d1b5417941101629215c223d25463d737e1ff19f972cf5058e8649f84496",
+        "83ab25263f7d610564209ac87c962bb36faf0b9e5b615931730666b091b33c05",
+        "85192434151f280208d5d4ee4d9277c5db98d6762892cf156c1dc1c2f50f186d",
+        "864482bd7b69fb9b3c0f0373a552bb0ae7146645370a228fe7b7e9601ea06497",
+        "8841c31bf59002bcfdf634e5bf5118aa0622d0eb76f16e908b4333dabd4d8b92",
+        "8fc76f7e9d25343f5e83ae822e0dcc7f150403110bbcb99ce8a6207e39189936",
+        "9003fe0daf93d3d309816cad9c96f92c8defa7610580d3cffdf56eb3e74d7def",
+        "9b7a5aa889b2c9ef91c209ad0b8b564d1775fec5e7241c4ed071472bc13a48fa",
+        "bef1f85415ca9090fb00320271edbe58f9c56382286859a557c6f8692aa5115b",
+        "c5caf17443daa7baed4d2b10d6145bcc48291d4b27a1603e3de96342d283f1cf",
+        "c8b52918cdbd88c877f52bcfb0427242df60d9a72710910d45a5cd54799594e9",
+        "cfbe8e639cdea9c5f552f0eb5a604e025ac73590e81e9106d230bf21debe91ce",
+        "e1b9219ec03d4da88dfa411c17d9ee35c3805ca92d7407d945415882e1b2e7dd",
+        "e6b6ea01cc1d20d9a1937073ac884408456944c73846e612882fae1a030e86b4",
+        "e6b95a51710cb08da2fc51a57631c31ffac851e3b40ab555bad7368e0fd71b55",
+        "ef44634f069d67a217d5dd301b30e10e92f793a546497ad4e28361f4c4d5f8e3",
+        "fc2972ad8a2265f9237024255bc0d8178a04aed6e57f2e9c702a4cfc457e5e7c"
+      ]
+    },
+    {
+      "originalFile": "src/shared/game/damage-core.ts",
+      "currentFiles": [
+        "src/damage/damage-core.ts"
+      ],
+      "declarations": [
+        "69ad5533c02e2a878b3b81e651790f90f6d9ebff598fb72ea4a02c54300d74a1",
+        "bfc6d1e55a0a2ed0c2d53ff344827f4f11b662c9958d9ea2b0a905dfc1031f7a",
+        "c01ac125fe886154dd2eb618ec0e183b7264e493ba2de9b31cbe89f97272e5bc",
+        "dcdffe845c2b01dd4a036a2ebda535df40e9dfc6a42f73cc75e7681e0fa86a4e"
+      ]
+    },
+    {
+      "originalFile": "src/shared/game/defense-engine.ts",
+      "currentFiles": [
+        "src/damage/defense-engine.ts"
+      ],
+      "declarations": [
+        "8353a6fed8bbdf415e86aaee2e34d359b07e5ef54eeb4fe9a41b575fa6d2aecf",
+        "9db2878270eeb985cddceae380fae16feead980e93f21663f131881d370409ad",
+        "b1464129ca785644d2a48114d4f3067d0b0ecd4d80101a96413cc01d8a76cab2",
+        "b2908df59094942d7875f88f15788fd8945155acca477062ff69c69425a2c37d"
+      ]
+    },
+    {
+      "originalFile": "src/shared/game/stat-calculation.ts",
+      "currentFiles": [
+        "src/stats/stat-calculation.ts"
+      ],
+      "declarations": [
+        "2e3e454e924e8416b2e104ffb47e456c29c738ced7da8b7d20299606f2a8dd12",
+        "6feb2ac6aa93ada20b357db5ae7767a33ac0bce5dec5bda177e20408ec76668e",
+        "d5f009cc1700a7bc4e2b48ba4372c7987456ec8f5dc83888098ac17e9dec22b8",
+        "e34fa86a939b92803b9b728372875266ba89988cebb2363755f929562ae51156"
+      ]
+    },
+    {
+      "originalFile": "src/shared/game/modifier-core.ts",
+      "currentFiles": [
+        "src/modifiers/modifier-core.ts"
+      ],
+      "declarations": [
+        "267a8c6d7c22680f0c6654bc7e10a6fba18d0b307df3bc165b5d1aed1ecb7c1b",
+        "9f27e68a3d5956fcf527d422fabcc98610f35e57016f6c8050773d31808ffd36",
+        "bfd0e445ea72d7a9010807be5d76c2b2a2dc612dcddc25a35e1fa72cc135a5f3",
+        "e59900ce92e858c7d6c9c66321fcadf7def04bb3d6832f16cd00c5c29b32f041",
+        "ebec3c9ec72d87ded049b9a0965bdd8cda7743a167d7392a17af60fc1f207daa",
+        "f282203bb150f7d017b06b4e9f76a76a566b57cae24d915b4ed0265a157361c7"
+      ]
+    },
+    {
+      "originalFile": "src/shared/game/skill-engine.ts",
+      "currentFiles": [
+        "src/skills/skill-engine.ts"
+      ],
+      "declarations": [
+        "124a6cfe971ff796f82cacfc1766bae6c1d13ecac237ce1e1a15cdd15c639851",
+        "18f1796c27d5aa6f6faba30b948150834002fad2b6751962499fe37b54f7050b",
+        "2a0a6c53afed5c0cc2ee0a1555237866469b154a088d71bc2a9955b7580706f3",
+        "2a3aefb396058770da5131c5d0c8d595a84d1b0490cf047bf0405b7f7a3af98a",
+        "3e213ed2af972ff47faf6c0c29e472c9f2427e50f681bf62e72224dba5c4edb6",
+        "518dc9c3ddb9f4d9a56fbde8640af1650a76b2335a8a8d8a624be7d46657f518",
+        "5c20667f1636b2fc24ddd9177341944baae1d20d71b69e7e06eb37652b465597",
+        "5c51a4cb4c7386af47a55302cc7f2f0802663161d9508f4277b2aa4861c62f20",
+        "67db5b1b1b0387b94fb552982216e45b0732a4e3f9cdeb77344819a8f31db11f",
+        "90349087432ec093ceb500b3907f5b3fe6cfd8962fa5a8513ec81444a039aafd",
+        "93d962431acb915e28339a3d3d5ac4508838681219e55ab4f87dc58c04fcdc35",
+        "9830fac26db9a59bc08d9e117af4530a592f67307844da672038ca39cbf06eca",
+        "9d687d85a7ebbc33beecbd8b1098a5ddb72b869b53488508e3b340396a344217",
+        "a66f4bc579a74aaedbc056c3aea333c993742dcfaab561f33d0203d24b0a51a5",
+        "adeee27f4b068a36b3e27aa1cae6bf225419f79bb4c9eeb1fe7750368609c7f0",
+        "d174b12e046e910f162bb52cd82a32e815f91e67e207b25d4092ff1197730b3d",
+        "d2b049fc49c65664969139149400aec004078051a60f01082da3aa8c82bfc9e9",
+        "dcde7a46c9da995e24d49f2116922feb4e4176bc06a04c98b78c41190f184479",
+        "e315908ad9c5ecd12ac16ef046e44932d4e4e487d1914824e6c253794b31fafd",
+        "f8714998306a125da1a5c42865df8541e703c97c8826d6fd5dd22058d6bf60f3"
+      ]
+    },
+    {
+      "originalFile": "src/shared/game/skill-execution.ts",
+      "currentFiles": [
+        "src/skills/skill-execution.ts"
+      ],
+      "declarations": [
+        "1316a9f087386717f5e9d5f4080dc312e8823e44b72075b4507da77ec8502a70",
+        "25fe3a7378eb5eded618e3ea4240f30c982312dcd8dfaba24285c0b6269eabff",
+        "2b3ca040833cbe062b4487a3a39e7dcc5f919b1c987654f16ce1f9fb282b8c7d",
+        "5d22692beabbfd01b684733e5162f4d11e2511bf051dd5cb34dc7caa3f372d14",
+        "64a6f2b2ead7da386e01bfa3c56c042c42701cbe3803facbea5715190bcdaee7",
+        "6624f0e3bfc7639419d65a65e20389df2ad859031d69d003dacb2b03f5d495ba",
+        "8ee20dedcc2767c8e2dc8bca02387947a14cf1722f7076832c703eda19c0fad2",
+        "8f24dc4e63f1cf24249c1e1d0d14f1d0ae19a98859fabf9d747871a1a7caac77",
+        "9bed3d12152decf7e88b8a9ff3e80385d5464ee5f0034fd0b10a6b7d06306fee",
+        "9f82e976e22143688722439e6b83a62b828b6bbf234a1726cccf163935cae679",
+        "c91ad0abdc811f37e937b9ba05970a7cfda5d1fa1da8d32f6ba46c93fa87a455",
+        "d98344fbc944c9da184c9f56c10910a144e56ad052228994c4f77f8b08b94fa4",
+        "e9095abadac5f955a3f40f5324df726716e3629889f003ca9178ea1a4d216ded",
+        "f035ce048b6ab59861d11e46ccefbdaa95794733557f87dbd1ed771d83916f71"
+      ]
+    },
+    {
+      "originalFile": "src/shared/game/skill-effect-integration.ts",
+      "currentFiles": [
+        "src/skills/skill-effect-integration.ts"
+      ],
+      "declarations": [
+        "07920f2e4d65f242aaf56d80fb615addee300236dcf23d7bc48c50d123eb91de",
+        "0c9121311616b98729f64070ec98fae2dba2c5f700f51414346c9136840bde2c",
+        "166b106d11a9ba04f116bc1669ab4672a731518a9f05112b555ff5884012f726",
+        "3f1945742cd70e5529fbb61fc965dcfff016459f325ec1bf2684c63a0fce4985",
+        "4806f6d8f75600f37c1fc17ac6041ab178436e356555458aff4b7831b9d14c54",
+        "497e66b613ccfc0ccfdef8c8a5a5453967a4a3982b3b85bfaeb594ab7680ee73",
+        "4b408fe43fe9f7c655ace34ef7acee452b09c46434703959dbc4ea9206446497",
+        "4d26efb7c5890b33ce0848a3cb7116043fa542b177dd77704c676a3ce9897b23",
+        "53f4e65be46af73aa708a7fbb14108a6cd263f08c8e79abf1531a51d85d9b78f",
+        "60186253213fbd14e294cbbb21f8375e20fd5b40f8c75a58332e7d02c5af2b83",
+        "658a9b29c476e51e541ca44b9ffd1304a6faa3c8df2d1299fb60153420bbf9bb",
+        "855882432edd9a65fabc8e1f5e524c0b641179ac8613e0c299fd2bb700f2d314",
+        "9bbc450d0e7c37d1e2b18aef7e45a42b76b60fe36ceef28f2eb76a342d53a05b",
+        "aaa3efc4a1db4a06a818fdd0ad9ae03895220b75611b7786968ab3c75b70be3f",
+        "b355daa0b3619fde1351607961aa4b581fe88f4da3f75bc6f3e5e49b9b60e509",
+        "bc3c8aba7ab328e17ac68e9b7056431a153bc5236806daeb797da4648c601d79",
+        "d622a18aa6db839ae3a811a3767ca7172276bf6da111a4a8cde4dacb7208f85f",
+        "dbd3aad8df90920d112128d018a00bf17a420fb9ab0299bf9b2247cd7bb6fa90",
+        "ee04895ce21864e263feb9427a6ed982dd78902de90931a2b83df364714dbb40",
+        "f6e670e4653cbbb0070c0a279b6ca32237b944a27e0919574ec180bedf9056df",
+        "fdd8f45dc52a3688155ace03dd0b512564f5f81d06d99f8182307c87651b115f",
+        "fefaae06178ff368b6844aee921a38ef445f172268851e5e481aa10076a7136e"
+      ]
+    },
+    {
+      "originalFile": "src/shared/game/effect-system.ts",
+      "currentFiles": [
+        "src/effects/effect-system.ts",
+        "src/contracts/effects.ts"
+      ],
+      "declarations": [
+        "100d9f74ac9de87f11873d8b08ec5d9b6ef9f5a370edba50ebf8812b251a74d5",
+        "101fad6dbb3cf0a5d4a3b9f74302afa7756f521850cbf49ef799f5188878f85c",
+        "126e4541bc6a1f0be9b3b62129d06f62181defe21bd0c0b4a518f1d43b98cfd7",
+        "15fb8b350ed0abaa5daffec11bd0ff75c5f2a8d1a752511ac2baf1d592dcf222",
+        "1dd806b673be86f868b509f5929c26be05a35e3db132de114c5cf2e1cea8e595",
+        "1f5aee2077b2b844fd68a1472fea8356cf1a16afeb0319801fefc5900a907b19",
+        "232ea7f134f5d61f7aa827fdba96d6f74c339c605c850bc3e454477963e4506c",
+        "526f5526b3775e8436bb880f63c478686b19fef598934ac3572016e44969d0e6",
+        "5a379cd4c000ab7a26f5b461110ca1ec729f22d0b7d3420e06de81d929e2c389",
+        "6160a35e648de5f5080c8ca0690a650f7d447c2a8139c9ed0db9e356a69ac67a",
+        "765f4a2355845002a5012620f1a3bdfe76fdf404ad175904a409d4c2ffe64d17",
+        "8b750e7571d86efcf2f4007f6d89219a7e8ae17922444bee3fdbf84d86c41027",
+        "aa9bdffd77d8507917cd993e729fd211f197dd733346808e1542ad2eb2fcb56b",
+        "b6916c2be374491bb23b4f1fc93bbae14ee2a538d5e7b76a1ee070921cee3440",
+        "b94f792a354ee90fea089ac5e2f369e509d19d711a8e94af0a7800caa79f7ec1",
+        "b98b7292de02ca3932e19a8a9ef3721ab3cda8fc3f8f8a7f37f4b91d4648d3f5",
+        "bd07e4cf6a869a2b60a2733d23eb4d532f59b0b68b4487429a3409d412348507",
+        "d02f8c1e9f3517e26fcf3edc80c5875d0f8bdfbbcca597d26030b3e61fa420e2",
+        "d1b4b00018b038bf70b10c1d310bd8337629d90abfd205091ccc00872ce26eb5",
+        "e3c8b683252cbac1da66b152225a686bb39b89c28ca7f173a818628339d60a4c",
+        "e9f8e73844637f782989b46ea8269a0401ac11d9abf10352b31d250c0e1a87a0",
+        "f6d7687adb32b20c21153d8d6c7dfd9b79f4675503b907cb91179be3eb61ad0c",
+        "f7c6d55e0602a7f03c77af1991713f8c0c152ee0d18c1cc074020e3b7966ecf6"
+      ]
+    },
+    {
+      "originalFile": "src/shared/game/effect-lifecycle.ts",
+      "currentFiles": [
+        "src/effects/effect-lifecycle.ts"
+      ],
+      "declarations": [
+        "11349f29a2855606853e1933e27aa1b5d5772eac1161a8615992e0dac3b451bc",
+        "148c0706b6edda3afbbae78d21c88ccfaa6a73ab10b862153d4e5baa96444caa",
+        "18d265773e9f96dd7fb285109d22ede5a5e9d84739af2a4bfff56b55a679c776",
+        "1bec87b4ff3ac6a76d1ba751f6553a3d278b868ce09cb28222c6bb926657df9b",
+        "23dab305335cf91424e29a6ffc4f63dd49a076e9b77850158cc46f473b977432",
+        "3a3e6fe5295d5159444dc8a35ab46d195cc717398848c195080de46392dd615b",
+        "667baa991342ff876d798c18a82a0b53c60027b3144400f281b910a514da0f9a",
+        "826e73190924ec41261053112a23f777578a20dc3758f1e41ef2379badd2fac5",
+        "9092a8c2dd90d544801629f9e53c643ad9d1eb4e84e25ab755a0e64245d975f7",
+        "9ce1caa30359b55aefb1cf82c719b3c3ca7d26971abb8eac7ff228701a260cb8",
+        "c88fc9a49cf2e8de6f9d72889ad578c4ec1e91598d84d09860cbac470f8f2468",
+        "dde8220c9efcead8dd6b8cd3a1d4216a0f25e3f2d815e9e0a3abd11f970ebe3a"
+      ]
+    },
+    {
+      "originalFile": "src/shared/game/dot-core.ts",
+      "currentFiles": [
+        "src/effects/dot-core.ts"
+      ],
+      "declarations": [
+        "42b9f20ce73cebd1b01d4b91cd888d7ddd72b1695c45b7db56b8829986a25348",
+        "4f8666a8e65cce72ee9c672f4e27dfd506b0fe47b150a627ea38133d3504f8d9",
+        "583f20447320e885ed67f0627ba79cd0e40048ef47051ae9df9919ed2d7103bd",
+        "8a20229a7a19de50682dd6fa996f19127ee0a7c9034e1d7529a04ca01dc0c749",
+        "9801d5da46fb39780ff4265eec1fb8f4cf42b67e90209e834a76ceeb1762600c",
+        "dea20a0365c62f14cd1fad5779cb53fdfc6cf3286dd503f619b8fcfcc0c86787"
+      ]
+    },
+    {
+      "originalFile": "src/shared/game/aoe-sequence-core.ts",
+      "currentFiles": [
+        "src/mechanics/aoe-sequence-core.ts"
+      ],
+      "declarations": [
+        "71fb3cb50939b0e48a216fbaa48ae86a7b665ad1569c501d1b5c6d77006cb2e6",
+        "ad83126f1da3c0b76960548b9501e80a0437bbcda1f86008d73829c8132f07a7",
+        "c937a1750e97239d43f211f16210782a2054747a1c3ec43183103d387ea34b24",
+        "fb7faa75a4f4a57a3e00d6903f4206e759ee8170852b41c9a764681084e50f84"
+      ]
+    },
+    {
+      "originalFile": "src/shared/game/emitter-core.ts",
+      "currentFiles": [
+        "src/mechanics/emitter-core.ts"
+      ],
+      "declarations": [
+        "4d3765ee773900e5acc1060711aafeabefaebedd0a0c18dc1cd30a703f03cb14",
+        "4eec94be41842602df8bfe8913de66894d0fd8e78f732c2bca715870c0360740"
+      ]
+    },
+    {
+      "originalFile": "src/shared/game/instant-aoe.ts",
+      "currentFiles": [
+        "src/mechanics/instant-aoe.ts"
+      ],
+      "declarations": [
+        "1480e04fb49a64b57f829407c92bf0578ba4e170c1049bd03d8e8693cf31bc9a",
+        "5bcf8ae7a99860ea8c9affc4c38f8c9b1a9e1cf5c2464309962d2457a3d027cc",
+        "ecae92e7fd84f296fc21b241e1c9590f47d1572b56d920948f5850f86fc32673"
+      ]
+    },
+    {
+      "originalFile": "src/shared/game/melee-hitbox.ts",
+      "currentFiles": [
+        "src/mechanics/melee-hitbox.ts"
+      ],
+      "declarations": [
+        "2e572cc857f35cb279b0e77707f390f10686003a511cd68c3885fdbccf96b62d",
+        "7f20954eca8983b6d61ad0435d99a07563c2fb2ad2d5e3f7f16015f55f863d09",
+        "9381265666a319a35031b1e835e6fd33d7977c448bd6d13ce64edb28c02d1a9f",
+        "97ec11d867daa56686f1f8354a7bcb3746837dced6117d4afdb96dac852a5192",
+        "aa95022f1ee2154c016da906b6fe596c05848707ea6c2cdeccee14c01fed02df",
+        "d8147504b3beefc49ce9800d8ae88478f9a8c52fb4ff1c4e198f969e101a2738"
+      ]
+    },
+    {
+      "originalFile": "src/shared/game/projectile.ts",
+      "currentFiles": [
+        "src/mechanics/projectile.ts"
+      ],
+      "declarations": [
+        "1b459352576f5a1d5988aa0b9b2c2aa52c26d9abc51440fcb3abd40dfba58174",
+        "2308851ce0b7581a0536025108f3f0035d495eca5f3eb1887b4c800576219a8f",
+        "2422ffefa4aa4d2c1383a063b5b58378c11c9062501c671cfebe9d22e2072fd6",
+        "2d21820b4d78af9ba58ad2e0523ded6e846f435c676f56bad6fcd5bf86000152",
+        "41c3feee43456d21fd9250bf9960c3250800e1b9657fa509d40f3922a01fda85",
+        "68480065d15138d7b9020a881f34e5ab34b9917141b1497472fa31ab20a31317",
+        "bdd85d50f0f193790fe4944ac89eff73274934e7640361a8bcb4dd8172d88697",
+        "f1d70cbba0ef1173e2e5c6eba8d336b1e0899df50d46dbf5f9f0302158e1ea35"
+      ]
+    },
+    {
+      "originalFile": "src/shared/game/grid-geometry.ts",
+      "currentFiles": [
+        "src/spatial/grid-geometry.ts",
+        "src/contracts/spatial.ts"
+      ],
+      "declarations": [
+        "0c7ceeb83389b0a0420556c9539a8ab970b6f6a09e8ed21f1e46790825f80921",
+        "56755272e2123a447d300e7a9572f11a425e4296e9263db27b4c2ea23d7149a2",
+        "bdc4df4047884b2cdea8a0646d1ff0f5e19e5d5083a98eb43bbad3250d21a1f1",
+        "e1a0a3a4c96ede5832ce80365b87980ba4afeb362da71a7a5e366b48740c844c"
+      ]
+    },
+    {
+      "originalFile": "src/shared/game/range.ts",
+      "currentFiles": [
+        "src/spatial/range.ts"
+      ],
+      "declarations": [
+        "2bf902971e29572c30aa4f19949ad54ab813f0a5b401984644986be01a681153",
+        "6351d5ccb0eefbfe459dec9d2f61f8f7941481325f26d8cb65c4f2f0cbe429a1"
+      ]
+    }
+  ]
+}

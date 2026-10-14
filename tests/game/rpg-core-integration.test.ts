@@ -1,14 +1,14 @@
 import {expect,it} from 'vitest';
 import {fixture,direct,projectile,sequence,timed,dot,damage} from './fixtures/skill-core.js';
 import {timeline} from './fixtures/skill-timeline.js';
-import {executeSkill,cancelSkillExecution,type SkillExecutionSlot,type SkillExecutionEvent} from '../../src/shared/game/skill-execution.js';
-import {createSkillCooldownState,type SkillEngineDefinition} from '../../src/shared/game/skill-engine.js';
-import {clearSkillEffects} from '../../src/shared/game/skill-effect-integration.js';
-import {combatState} from '../../src/shared/game/combat-state.js';
-import {validateCombatEntities} from '../../src/shared/game/combat-entity.js';
-import {updateCurrentResources} from '../../src/shared/game/stat-calculation.js';
-import type {SkillGameplayEffect} from '../../src/shared/data/skill-effects.js';
-import type {EffectDefinition} from '../../src/shared/game/effect-system.js';
+import {executeSkill,cancelSkillExecution,type SkillExecutionSlot,type SkillExecutionEvent} from '../../src/skills/skill-execution.js';
+import {createSkillCooldownState,type SkillEngineDefinition} from '../../src/skills/skill-engine.js';
+import {clearSkillEffects} from '../../src/skills/skill-effect-integration.js';
+import {combatState} from '../../src/combat/combat-state.js';
+import {validateCombatEntities} from '../../src/combat/combat-entity.js';
+import {updateCurrentResources} from '../../src/stats/stat-calculation.js';
+import type {SkillGameplayEffect} from '../../src/skills/skill-effects.js';
+import type {EffectDefinition} from '../../src/effects/effect-system.js';
 
 const effect=(definition:EffectDefinition,target:'self'|'selected'='self'):SkillGameplayEffect=>({type:'modifier_effect',definition,target,allowedTargetRelations:target==='self'?['self']:['enemy']});
 const modifier=(target:string,value:number,operation:'add_flat'|'add_percent'|'add_percentage_points'='add_flat')=>({id:target,target,value,operation,enabled:true,conditions:[]});

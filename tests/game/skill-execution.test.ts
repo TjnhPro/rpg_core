@@ -1,12 +1,13 @@
+import {readCoreSource} from './fixtures/source.js';
 import {it,expect} from 'vitest';
-import {executeSkill,skillExecutionAvailability,advanceSkillExecution,cancelSkillExecution,type SkillExecutionSlot,type SkillExecutionEvent} from '../../src/shared/game/skill-execution.js';
-import {createSkillCooldownState,inheritSkillCooldowns,type SkillEngineDefinition,type SkillExecutionContext,validateSkillDefinition} from '../../src/shared/game/skill-engine.js';
-import {cancelCombatAction} from '../../src/shared/game/combat-state.js';
-import type {CombatEntity} from '../../src/shared/game/combat-entity.js';
+import {executeSkill,skillExecutionAvailability,advanceSkillExecution,cancelSkillExecution,type SkillExecutionSlot,type SkillExecutionEvent} from '../../src/skills/skill-execution.js';
+import {createSkillCooldownState,inheritSkillCooldowns,type SkillEngineDefinition,type SkillExecutionContext,validateSkillDefinition} from '../../src/skills/skill-engine.js';
+import {cancelCombatAction} from '../../src/combat/combat-state.js';
+import type {CombatEntity} from '../../src/combat/combat-entity.js';
 import {readFileSync} from 'node:fs';
-import {resolveCharacterStats} from '../../src/shared/game/stat-calculation.js';
-import {prepareModifierResolver} from '../../src/shared/game/modifier-core.js';
-import {DEFAULT_CORE_STATS} from '../../src/shared/data/stat-contracts.js';
+import {resolveCharacterStats} from '../../src/stats/stat-calculation.js';
+import {prepareModifierResolver} from '../../src/modifiers/modifier-core.js';
+import {DEFAULT_CORE_STATS} from '../../src/contracts/stat-contracts.js';
 type Mutable<T>={-readonly [K in keyof T]:T[K]};
 
 function fixture(){
@@ -110,7 +111,7 @@ it('invalid config/positions/timing return reasons, never enter Acting',()=>{
  const g=fixture();g.rates.cooldownReduction=NaN;expect(g.start()).toEqual({success:false,reason:'invalid_context'});expect(g.slot).toEqual({});
 });
 it('execution has no reverse Core dependency, damage dispatch or game/client/server/asset policy',()=>{
- const source=readFileSync('src/shared/game/skill-execution.ts','utf8');
+ const source=readFileSync('src/skills/skill-execution.ts','utf8');
  expect(source).not.toMatch(/Date\.now|Math\.random|fetch\(|GameState|selectAutoSkill|assetUrl|window\.|document\.|applyEntityDamage/);
- for(const name of ['combat-state','combat-entity','damage-core','defense-engine'])expect(readFileSync(`src/shared/game/${name}.ts`,'utf8')).not.toContain("from './skill-execution");
+ for(const name of ['combat-state','combat-entity','damage-core','defense-engine'])expect(readCoreSource(name)).not.toMatch(/from ['"].*skill-execution/);
 });

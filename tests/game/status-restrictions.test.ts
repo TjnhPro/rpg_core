@@ -1,10 +1,10 @@
 import {describe,it,expect} from 'vitest';
 import {fixture,projectile,sequence,timed,direct,dot} from './fixtures/skill-core.js';
-import {defineEffect,type EffectDefinition} from '../../src/shared/game/effect-system.js';
-import {defineSkill} from '../../src/shared/game/skill-engine.js';
-import {advanceSkillExecution,reconcileSkillRestrictions,type SkillActivatedEvent} from '../../src/shared/game/skill-execution.js';
-import {advanceSkillEffects,dispatchSkillEffects,clearSkillEffects} from '../../src/shared/game/skill-effect-integration.js';
-import {validateMovementIntent,startCombatAction,reconcileCombatRestrictions,completeCombatAction,type CombatActionSlot,type EntityCombatEvent} from '../../src/shared/game/combat-state.js';
+import {defineEffect,type EffectDefinition} from '../../src/effects/effect-system.js';
+import {defineSkill} from '../../src/skills/skill-engine.js';
+import {advanceSkillExecution,reconcileSkillRestrictions,type SkillActivatedEvent} from '../../src/skills/skill-execution.js';
+import {advanceSkillEffects,dispatchSkillEffects,clearSkillEffects} from '../../src/skills/skill-effect-integration.js';
+import {validateMovementIntent,startCombatAction,reconcileCombatRestrictions,completeCombatAction,type CombatActionSlot,type EntityCombatEvent} from '../../src/combat/combat-state.js';
 
 const status=(restrictions:NonNullable<EffectDefinition['restrictions']>,durationMs=100):EffectDefinition=>({effectId:'arbitrary-id',durationMs,restrictions});
 function apply(f:ReturnType<typeof fixture>,definition:EffectDefinition,source='actor1'){

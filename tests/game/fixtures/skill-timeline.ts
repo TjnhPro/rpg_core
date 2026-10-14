@@ -1,6 +1,6 @@
 import type {fixture} from './skill-core.js';
-import {advanceSkillExecution,cancelSkillExecution,type SkillExecutionEvent,type SkillExecutionSlot} from '../../../src/shared/game/skill-execution.js';
-import {advanceSkillEffects,dispatchSkillEffects,nextSkillEffectBoundary,type SkillEffectEvent} from '../../../src/shared/game/skill-effect-integration.js';
+import {advanceSkillExecution,cancelSkillExecution,type SkillExecutionEvent,type SkillExecutionSlot} from '../../../src/skills/skill-execution.js';
+import {advanceSkillEffects,dispatchSkillEffects,nextSkillEffectBoundary,type SkillEffectEvent} from '../../../src/skills/skill-effect-integration.js';
 
 // Test-only driver of real simulation boundaries, shared by Core integration gates.
 export function timeline(f:ReturnType<typeof fixture>,additional:readonly {casterId:string;slot:SkillExecutionSlot;actions:SkillExecutionEvent[]}[]=[],beforeStep?:(from:number,to:number)=>void){

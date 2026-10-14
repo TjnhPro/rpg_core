@@ -1,11 +1,12 @@
+import {readCoreSource} from './fixtures/source.js';
 import {expect,it} from 'vitest';
 import {readFileSync} from 'node:fs';
 import {defineEffect,validateEffectDefinition,validateEffectInstance,validateEffectApplyRequest,
- type EffectApplyRequest,type EffectInstance,type EffectLifecycleResult,type EffectModifierSource} from '../../src/shared/game/effect-system.js';
-import type {CombatEntity} from '../../src/shared/game/combat-entity.js';
-import type {CombatValidationContext} from '../../src/shared/game/combat-state.js';
-import {collectActiveModifiers,resolveModifiers} from '../../src/shared/game/modifier-core.js';
-import type {CombatModifier} from '../../src/shared/data/combat-modifiers.js';
+ type EffectApplyRequest,type EffectInstance,type EffectLifecycleResult,type EffectModifierSource} from '../../src/effects/effect-system.js';
+import type {CombatEntity} from '../../src/combat/combat-entity.js';
+import type {CombatValidationContext} from '../../src/combat/combat-state.js';
+import {collectActiveModifiers,resolveModifiers} from '../../src/modifiers/modifier-core.js';
+import type {CombatModifier} from '../../src/contracts/combat-modifiers.js';
 
 const definition={effectId:'battle_cry_buff',durationMs:10000};
 function fixture(){
@@ -95,10 +96,10 @@ it('represents mutually exclusive lifecycle outcomes and reuses existing buff so
  // This test supplies the source externally, NOT effect modifier application.
 });
 it('keeps dependencies one-way, has no runtime store/scheduler and does not replace damage/DoT/skill dispatch',()=>{
- const source=readFileSync('src/shared/game/effect-system.ts','utf8');
- expect([...source.matchAll(/from '([^']+)'/g)].map(m=>m[1])).toEqual(['./combat-entity.js','./combat-entity.js','./combat-state.js','../data/combat-modifiers.js','../data/stat-contracts.js']);
+ const source=readFileSync('src/effects/effect-system.ts','utf8');
+ expect([...source.matchAll(/from '([^']+)'/g)].map(m=>m[1])).toEqual(['../contracts/effects.js','../contracts/effects.js','../combat/combat-entity.js','../combat/combat-entity.js','../combat/combat-state.js','../contracts/combat-modifiers.js','../contracts/stat-contracts.js']);
  expect(source).not.toMatch(/Date\.now|Math\.random|setInterval|setTimeout|GameState|fetch\(|window\.|document\.|assetUrl|new Map|calculateDamage|resolveModifiers\(/);
  for(const file of ['combat-entity','modifier-core','stat-calculation','dot-core','skill-engine','skill-execution'])
-  expect(readFileSync(`src/shared/game/${file}.ts`,'utf8')).not.toContain("from './effect-system");
- expect(readFileSync('src/shared/data/combat-modifiers.ts','utf8')).not.toContain('effect-system');
+  expect(readCoreSource(file)).not.toMatch(/from ['"].*effect-system/);
+ expect(readFileSync('src/contracts/combat-modifiers.ts','utf8')).not.toContain('effect-system');
 });

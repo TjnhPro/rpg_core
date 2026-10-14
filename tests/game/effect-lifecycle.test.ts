@@ -1,12 +1,13 @@
+import {readCoreSource} from './fixtures/source.js';
 import {expect,it} from 'vitest';
 import {readFileSync} from 'node:fs';
-import {EffectLifecycle,type EffectOperationResult,type EffectLifecycleEvent} from '../../src/shared/game/effect-lifecycle.js';
-import type {CombatEntity} from '../../src/shared/game/combat-entity.js';
-import type {EffectApplyRequest} from '../../src/shared/game/effect-system.js';
-import {completeCombatAction,type CombatActionSlot} from '../../src/shared/game/combat-state.js';
+import {EffectLifecycle,type EffectOperationResult,type EffectLifecycleEvent} from '../../src/effects/effect-lifecycle.js';
+import type {CombatEntity} from '../../src/combat/combat-entity.js';
+import type {EffectApplyRequest} from '../../src/effects/effect-system.js';
+import {completeCombatAction,type CombatActionSlot} from '../../src/combat/combat-state.js';
 import {fixture as skillFixture} from './fixtures/skill-core.js';
-import {advanceSkillExecution,cancelSkillExecution} from '../../src/shared/game/skill-execution.js';
-import {inheritSkillCooldowns} from '../../src/shared/game/skill-engine.js';
+import {advanceSkillExecution,cancelSkillExecution} from '../../src/skills/skill-execution.js';
+import {inheritSkillCooldowns} from '../../src/skills/skill-engine.js';
 
 function fixture(){
  const entities:CombatEntity[]=['player','monster','monster'].map((type,i)=>({entityId:`actor${i}#1`,entityType:type as CombatEntity['entityType'],level:1,factionId:type,targetTags:[],baseStats:{str:0,dex:0,int:0,vit:0},currentHp:10,currentMp:0}));
@@ -153,8 +154,8 @@ it.each([0,1])('real Skill activation actor%i can request an effect that survive
  expect(f.entities[caster]!.currentMp).toBe(95);
 });
 it('keeps lifecycle independent of damage, modifier calculation, skill dispatch and external runtime',()=>{
- const source=readFileSync('src/shared/game/effect-lifecycle.ts','utf8');
+ const source=readFileSync('src/effects/effect-lifecycle.ts','utf8');
  expect(source).not.toMatch(/Date\.now|Math\.random|setTimeout|setInterval|GameState|calculateDamage|resolveModifiers|fetch\(|window\.|document\.|assetUrl/);
  for(const module of ['skill-engine','dot-core','combat-entity','modifier-core'])
-  expect(readFileSync(`src/shared/game/${module}.ts`,'utf8')).not.toContain('effect-lifecycle');
+  expect(readCoreSource(module)).not.toContain('effect-lifecycle');
 });
