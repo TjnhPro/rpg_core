@@ -1,11 +1,11 @@
 import {it,expect} from 'vitest';
 import {fixture,direct,projectile,sequence,timed,dot,damage} from './fixtures/skill-core.js';
-import {cancelSkillExecution} from '../../src/shared/game/skill-execution.js';
-import {clearSkillEffects} from '../../src/shared/game/skill-effect-integration.js';
+import {cancelSkillExecution} from '../../src/skills/skill-execution.js';
+import {clearSkillEffects} from '../../src/skills/skill-effect-integration.js';
 import {timeline} from './fixtures/skill-timeline.js';
-import {inheritSkillCooldowns,remainingSkillCooldown} from '../../src/shared/game/skill-engine.js';
-import {updateCurrentResources} from '../../src/shared/game/stat-calculation.js';
-import {DEFAULT_MELEE_HITBOX} from '../../src/shared/data/mechanic-contracts.js';
+import {inheritSkillCooldowns,remainingSkillCooldown} from '../../src/skills/skill-engine.js';
+import {updateCurrentResources} from '../../src/stats/stat-calculation.js';
+import {DEFAULT_MELEE_HITBOX} from '../../src/contracts/mechanic-contracts.js';
 
 it.each([0,1])('Basic E2E actor%i: free admission → hit → completion, duplicate updates are inert',caster=>{
  const f=fixture([direct()],caster);Object.assign(f.definition,{mpCost:0,cooldownMs:0});const t=timeline(f);

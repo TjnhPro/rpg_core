@@ -1,12 +1,12 @@
 import {expect,it} from 'vitest';
-import {DEFAULT_CORE_STATS} from '../../src/shared/data/stat-contracts.js';
-import {DEFAULT_DEFENSE_SETTINGS,validateDefenseSettings} from '../../src/shared/data/defense-settings.js';
-import {damageDefinition} from '../../src/shared/data/damage-contracts.js';
-import type {CombatModifier} from '../../src/shared/data/combat-modifiers.js';
-import {prepareModifierResolver,collectActiveModifiers} from '../../src/shared/game/modifier-core.js';
-import {resolveCharacterStats,updateCurrentResources} from '../../src/shared/game/stat-calculation.js';
-import {calculateDamage} from '../../src/shared/game/damage-core.js';
-import {applyEntityDamage,validateCombatEntity,type CombatEntity} from '../../src/shared/game/combat-entity.js';
+import {DEFAULT_CORE_STATS} from '../../src/contracts/stat-contracts.js';
+import {DEFAULT_DEFENSE_SETTINGS,validateDefenseSettings} from '../../src/contracts/defense-settings.js';
+import {damageDefinition} from '../../src/contracts/damage-contracts.js';
+import type {CombatModifier} from '../../src/contracts/combat-modifiers.js';
+import {prepareModifierResolver,collectActiveModifiers} from '../../src/modifiers/modifier-core.js';
+import {resolveCharacterStats,updateCurrentResources} from '../../src/stats/stat-calculation.js';
+import {calculateDamage} from '../../src/damage/damage-core.js';
+import {applyEntityDamage,validateCombatEntity,type CombatEntity} from '../../src/combat/combat-entity.js';
 
 it('portable stats use one Flat → Percent → Core scaling pass, source dedup and caps',()=>{
  const config=structuredClone(DEFAULT_CORE_STATS);

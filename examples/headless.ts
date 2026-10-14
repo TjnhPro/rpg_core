@@ -1,14 +1,14 @@
 // Minimal integration recipe: application supplies content, clock, RNG and entities.
-import {DEFAULT_CORE_STATS} from '../src/shared/data/stat-contracts.js';
-import {damageDefinition} from '../src/shared/data/damage-contracts.js';
-import {DEFAULT_DEFENSE_SETTINGS} from '../src/shared/data/defense-settings.js';
-import type {CombatEntity} from '../src/shared/game/combat-entity.js';
-import {prepareModifierResolver} from '../src/shared/game/modifier-core.js';
-import {resolveCharacterStats} from '../src/shared/game/stat-calculation.js';
-import {snapshotActorDamage} from '../src/shared/game/damage-core.js';
-import {createSkillCooldownState,type SkillEngineDefinition} from '../src/shared/game/skill-engine.js';
-import {executeSkill,advanceSkillExecution,cancelSkillExecution,type SkillExecutionSlot,type SkillExecutionEvent} from '../src/shared/game/skill-execution.js';
-import {createSkillEffectRuntime,dispatchSkillEffects,advanceSkillEffects,clearSkillEffects,type SkillEffectEnvironment,type SkillEffectEvent} from '../src/shared/game/skill-effect-integration.js';
+import {DEFAULT_CORE_STATS} from '@rpg/core';
+import {damageDefinition} from '@rpg/core';
+import {DEFAULT_DEFENSE_SETTINGS} from '@rpg/core';
+import type {CombatEntity} from '@rpg/core';
+import {prepareModifierResolver} from '@rpg/core';
+import {resolveCharacterStats} from '@rpg/core';
+import {snapshotActorDamage} from '@rpg/core';
+import {createSkillCooldownState,type SkillEngineDefinition} from '@rpg/core';
+import {executeSkill,advanceSkillExecution,cancelSkillExecution,type SkillExecutionSlot,type SkillExecutionEvent} from '@rpg/core';
+import {createSkillEffectRuntime,dispatchSkillEffects,advanceSkillEffects,clearSkillEffects,type SkillEffectEnvironment,type SkillEffectEvent} from '@rpg/core';
 
 export function headlessCombat(seed=73){
  const entities:CombatEntity[]=['player','monster'].map((kind,i)=>({entityId:`actor${i}`,entityType:kind as CombatEntity['entityType'],level:1,factionId:kind,targetTags:[],

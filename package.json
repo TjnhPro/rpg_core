@@ -1,16 +1,39 @@
 {
-  "name": "rpg-core-source-snapshot",
+  "name": "@rpg/core",
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "description": "Deterministic, headless TypeScript RPG stats, combat, skills and effects.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    "./contracts": { "types": "./dist/contracts/index.d.ts", "import": "./dist/contracts/index.js" },
+    "./stats": { "types": "./dist/stats/index.d.ts", "import": "./dist/stats/index.js" },
+    "./modifiers": { "types": "./dist/modifiers/index.d.ts", "import": "./dist/modifiers/index.js" },
+    "./combat": { "types": "./dist/combat/index.d.ts", "import": "./dist/combat/index.js" },
+    "./damage": { "types": "./dist/damage/index.d.ts", "import": "./dist/damage/index.js" },
+    "./skills": { "types": "./dist/skills/index.d.ts", "import": "./dist/skills/index.js" },
+    "./effects": { "types": "./dist/effects/index.d.ts", "import": "./dist/effects/index.js" },
+    "./mechanics": { "types": "./dist/mechanics/index.d.ts", "import": "./dist/mechanics/index.js" },
+    "./spatial": { "types": "./dist/spatial/index.d.ts", "import": "./dist/spatial/index.js" }
+  },
+  "files": ["dist", "README.md", "EXPORT-MANIFEST.json", "VERSION"],
   "engines": {
     "node": ">=22.13.0"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "node scripts/clean.mjs && tsc -p tsconfig.json && node scripts/legacy-build-paths.mjs",
+    "build:examples": "tsc -p tsconfig.examples.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit && npm run typecheck:tests",
     "typecheck:tests": "tsc -p tsconfig.tests.json",
     "test": "vitest run",
-    "example": "node examples/run.mjs"
+    "example": "npm run build:examples && node examples/run.mjs",
+    "check:architecture": "node scripts/check-architecture.mjs",
+    "check:preservation": "node scripts/check-preservation.mjs",
+    "test:consumer": "node scripts/consumer-smoke.mjs",
+    "verify": "npm run build && npm run typecheck && npm run check:architecture && npm run check:preservation && npm test && npm run example && npm run test:consumer",
+    "prepack": "npm run build"
   },
   "devDependencies": {
     "typescript": "6.0.3",

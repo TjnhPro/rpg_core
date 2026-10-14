@@ -1,11 +1,11 @@
 import {expect,it} from 'vitest';
 import {fixture,direct,projectile,sequence,timed,dot} from './fixtures/skill-core.js';
 import {timeline} from './fixtures/skill-timeline.js';
-import type {EffectDefinition,EffectModifier} from '../../src/shared/game/effect-system.js';
-import type {SkillGameplayEffect} from '../../src/shared/data/skill-effects.js';
-import {executeSkill,advanceSkillExecution,type SkillExecutionSlot,type SkillExecutionEvent} from '../../src/shared/game/skill-execution.js';
-import {createSkillCooldownState} from '../../src/shared/game/skill-engine.js';
-import {clearSkillEffects,dispatchSkillEffects} from '../../src/shared/game/skill-effect-integration.js';
+import type {EffectDefinition,EffectModifier} from '../../src/effects/effect-system.js';
+import type {SkillGameplayEffect} from '../../src/skills/skill-effects.js';
+import {executeSkill,advanceSkillExecution,type SkillExecutionSlot,type SkillExecutionEvent} from '../../src/skills/skill-execution.js';
+import {createSkillCooldownState} from '../../src/skills/skill-engine.js';
+import {clearSkillEffects,dispatchSkillEffects} from '../../src/skills/skill-effect-integration.js';
 
 const modifier=(target:string,value:number,operation:EffectModifier['operation']='add_flat'):EffectModifier=>({id:target,target,value,operation,enabled:true,conditions:[]});
 const effect=(definition:EffectDefinition,target:'self'|'selected'='self'):SkillGameplayEffect=>({type:'modifier_effect',definition,target,allowedTargetRelations:target==='self'?['self']:['enemy']});

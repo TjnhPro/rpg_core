@@ -1,10 +1,11 @@
+import {readCoreSource} from './fixtures/source.js';
 import {it,expect} from 'vitest';
 import {readFileSync} from 'node:fs';
-import {advanceSkillExecution,cancelSkillExecution,type SkillActivatedEvent} from '../../src/shared/game/skill-execution.js';
-import {defineSkill} from '../../src/shared/game/skill-engine.js';
-import {dispatchSkillEffects,advanceSkillEffects,clearSkillEffects} from '../../src/shared/game/skill-effect-integration.js';
-import {DEFAULT_MELEE_HITBOX,DEFAULT_INSTANT_AOE} from '../../src/shared/data/mechanic-contracts.js';
-import {validateSkillEffects,type SkillGameplayEffect} from '../../src/shared/data/skill-effects.js';
+import {advanceSkillExecution,cancelSkillExecution,type SkillActivatedEvent} from '../../src/skills/skill-execution.js';
+import {defineSkill} from '../../src/skills/skill-engine.js';
+import {dispatchSkillEffects,advanceSkillEffects,clearSkillEffects} from '../../src/skills/skill-effect-integration.js';
+import {DEFAULT_MELEE_HITBOX,DEFAULT_INSTANT_AOE} from '../../src/contracts/mechanic-contracts.js';
+import {validateSkillEffects,type SkillGameplayEffect} from '../../src/skills/skill-effects.js';
 import {fixture,damage,direct,projectile,sequence,timed,dot} from './fixtures/skill-core.js';
 it('validates one/multiple ordered effects and rejects unsupported type/config/ref/visual fields before cost',()=>{
  for(const effects of [[direct()],[direct(),projectile(),timed(),sequence()],[]])expect(validateSkillEffects(effects)).toEqual([]);
@@ -113,7 +114,7 @@ it('activation must be applied at its actual boundary, never historical present-
  const f=fixture();f.start();advanceSkillExecution(f.slot,f.context.combat,50,f.actions);expect(()=>dispatchSkillEffects(f.runtime,f.actions[1] as SkillActivatedEvent,f.env)).toThrow('boundary');expect(f.entities[1]!.currentHp).toBe(1000);
 });
 it('Core has no rendering/network/Idle state dependency and Combat Core has no reverse Skill import',()=>{
- const source=readFileSync('src/shared/game/skill-effect-integration.ts','utf8');expect(source).not.toMatch(/Date\.now|Math\.random|fetch\(|GameState|assetUrl|window\.|document\.|three/);
- for(const name of ['combat-state','combat-entity','damage-core','defense-engine'])expect(readFileSync(`src/shared/game/${name}.ts`,'utf8')).not.toMatch(/from ['"].*skill-(effect|execution|engine)/);
+ const source=readFileSync('src/skills/skill-effect-integration.ts','utf8');expect(source).not.toMatch(/Date\.now|Math\.random|fetch\(|GameState|assetUrl|window\.|document\.|three/);
+ for(const name of ['combat-state','combat-entity','damage-core','defense-engine'])expect(readCoreSource(name)).not.toMatch(/from ['"].*skill-(effect|execution|engine)/);
  expect(defineSkill(fixture().definition).success).toBe(true);
 });

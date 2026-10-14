@@ -1,7 +1,7 @@
 import {expect,it} from 'vitest';
-import {EffectLifecycle} from '../../src/shared/game/effect-lifecycle.js';
-import {defineEffect,type EffectModifier} from '../../src/shared/game/effect-system.js';
-import {prepareModifierResolver} from '../../src/shared/game/modifier-core.js';
+import {EffectLifecycle} from '../../src/effects/effect-lifecycle.js';
+import {defineEffect,type EffectModifier} from '../../src/effects/effect-system.js';
+import {prepareModifierResolver} from '../../src/modifiers/modifier-core.js';
 import {fixture} from './fixtures/skill-core.js';
 
 export const modifier=(target:string,value:number,operation:EffectModifier['operation']='add_flat',id=target):EffectModifier=>({id,target,value,operation,enabled:true,conditions:[]});

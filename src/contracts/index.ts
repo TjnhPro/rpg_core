@@ -1,0 +1,18 @@
+export type {CombatEntity,CombatEntityIdentity} from './combat-entity.js';
+export {MODIFIER_SOURCES,MODIFIER_OPERATIONS,DERIVED_MODIFIER_OPERATIONS,RATE_TARGETS,MODIFIER_DAMAGE_TAGS,DAMAGE_BONUS_EVENT_TAGS,validateCombatModifiers} from './combat-modifiers.js';
+export type {CombatModifier} from './combat-modifiers.js';
+export type {LifeState,ActionState,ActionClassification,CombatRestriction,FactionRelation,ValidationStage,TargetContext,CombatRejection,CombatValidationResult,CombatValidationContext,CombatActionContext,ActiveCombatAction,CombatActionSlot,EntityCombatEvent} from './combat-state.js';
+export {DAMAGE_SOURCES,DAMAGE_TAGS,DAMAGE_TARGETS,DAMAGE_STATUSES,damageDefinition} from './damage-contracts.js';
+export type {DamageSource,DamageDefinition,DamageContext,DamageModifier,DamageSettings} from './damage-contracts.js';
+export {DEFENSE_TYPES,DEFAULT_DEFENSE_SETTINGS,validateDefenseSettings} from './defense-settings.js';
+export type {DefenseType,DefenseRule,DefenseSettings,DamageDelivery,DefenseActor,DefenseContext,DefenseConfigSnapshot} from './defense-settings.js';
+export {DOT_EFFECTS,DEFAULT_DOT,validateDots} from './dot-contracts.js';
+export type {DotConfig} from './dot-contracts.js';
+export type {EffectId,EffectInstanceId,EffectModifier,EffectDefinition,EffectInstance,EffectApplyRequest,EffectApplyContext,EffectRejection,EffectValidationResult,EffectTerminalOutcome,EffectLifecycleResult,EffectModifierSource} from './effects.js';
+export {DEFAULT_PROJECTILE,DEFAULT_TIMED_OBJECT,DEFAULT_INSTANT_AOE,DEFAULT_TIMED_AOE_SEQUENCE,validAOECast,validMeleeCast,DEFAULT_MELEE_HITBOX,projectileCastConfig,validProjectileCast,validateSkillMechanics,validateProjectile} from './mechanic-contracts.js';
+export type {MeleeHitbox,ProjectileConfig,TimedObjectConfig,InstantAOE,TimedAOESequence,AOECast,SkillMechanics,MeleeCast} from './mechanic-contracts.js';
+export type {Walkability,MapPoint} from './spatial.js';
+export {ATTRIBUTE_IDS,STAT_IDS,DEFENSE_RATING_STATS,RESOURCE_STATS,OPTIONAL_MAX_STATS,LEGACY_PLAYER_STATS,CORE_SCALING_MAPPING,upgradePlayerStatsConfig,V2_PLAYER_STATS,ELEMENTAL_STATS,DEFAULT_CORE_STATS} from './stat-contracts.js';
+export type {CoreAttribute,PlayerStat,CharacterBaseStats,StatRule,CoreAttributeRule,PlayerStatsConfig,StatsSnapshot} from './stat-contracts.js';
+export {validTargetingRule} from './targeting-contracts.js';
+export type {TargetingRule,TargetingSettings} from './targeting-contracts.js';

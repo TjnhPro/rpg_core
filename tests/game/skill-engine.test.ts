@@ -1,8 +1,9 @@
+import {readCoreSource} from './fixtures/source.js';
 import {it,expect} from 'vitest';
 import {readFileSync} from 'node:fs';
-import {defineSkill,validateSkillDefinition,validateSkillContext,type SkillExecutionContext} from '../../src/shared/game/skill-engine.js';
-import {startCombatAction,type CombatActionSlot} from '../../src/shared/game/combat-state.js';
-import type {CombatEntity} from '../../src/shared/game/combat-entity.js';
+import {defineSkill,validateSkillDefinition,validateSkillContext,type SkillExecutionContext} from '../../src/skills/skill-engine.js';
+import {startCombatAction,type CombatActionSlot} from '../../src/combat/combat-state.js';
+import type {CombatEntity} from '../../src/combat/combat-entity.js';
 
 const definition={skillId:'dao-basic',targetMode:'entity',allowedTargetRelations:['enemy'],baseActionDurationMs:800,mpCost:0,cooldownMs:0,castRange:300,activationPercent:60};
 const actors:CombatEntity[]=['player','monster'].map((type,i)=>({entityId:`actor${i}`,entityType:type as CombatEntity['entityType'],level:1,factionId:type,targetTags:[],baseStats:{str:0,dex:0,int:0,vit:0},currentHp:10,currentMp:0}));
@@ -39,8 +40,8 @@ it('reports invalid references, mismatched identity and malformed ground targets
  expect(validateSkillContext(ground,{...context(),target:{mode:'ground',casterId:'actor0',position:{x:0,y:1}}})).toEqual({success:true});
 });
 it('keeps foundation dependencies one-way and free from game policy/rendering/runtime',()=>{
- const source=readFileSync('src/shared/game/skill-engine.ts','utf8');
- const imports=[...source.matchAll(/from '([^']+)'/g)].map(m=>m[1]);expect(imports).toEqual(['./combat-state.js','./stat-calculation.js','./combat-entity.js','./combat-state.js','../data/skill-effects.js']);
- for(const name of ['combat-state','combat-entity','damage-core','defense-engine'])expect(readFileSync(`src/shared/game/${name}.ts`,'utf8')).not.toContain("from './skill-engine");
+ const source=readFileSync('src/skills/skill-engine.ts','utf8');
+ const imports=[...source.matchAll(/from '([^']+)'/g)].map(m=>m[1]);expect(imports).toEqual(['../combat/combat-state.js','../stats/stat-calculation.js','../combat/combat-entity.js','../combat/combat-state.js','./skill-effects.js']);
+ for(const name of ['combat-state','combat-entity','damage-core','defense-engine'])expect(readCoreSource(name)).not.toMatch(/from ['"].*skill-engine/);
  expect(source).not.toMatch(/Date\.now|Math\.random|fetch\(|GameState|selectAutoSkill|assetUrl|window\.|document\./);
 });
