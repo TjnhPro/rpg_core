@@ -6,6 +6,11 @@ consumers. Application content, clocks, RNG, entities and event wiring are input
 There are no production npm dependencies, Node built-in imports, rendering,
 Game Client/Server, JX1 or asset dependencies in the Core implementation.
 
+Start with [AGENTS.md](AGENTS.md) and the current
+[architecture reference](docs/ARCHITECTURE.md). The
+[test coverage matrix](docs/test-coverage.md) locates contract evidence; the
+[Phase 2 cleanup audit](docs/cleanup-audit.md) records retention/removal decisions.
+
 Package name: `@rpg/core`. Package version: `1.0.0`, retained from the initial
 snapshot; it does **not** declare a stable or officially released package.
 `private: true` prevents accidental registry publication. No npm publication or
@@ -26,11 +31,13 @@ npm run verify
 ```
 
 `verify` builds, typechecks Core/tests/examples, checks domain dependencies and
-declaration preservation, runs the existing Core tests, runs the deterministic
+declaration preservation, runs Core and tooling tests, runs the deterministic
 headless example, then packs and installs the archive in a temporary project
 **outside this repository**. That consumer installs its own TypeScript compiler,
 typechecks with no ambient Node types and `skipLibCheck: false`, imports all public
 entrypoints, runs a real skill/combat example and verifies blocked deep imports.
+It also compiles and loads all 27 archived legacy compiled forwarders against
+their canonical namespaces.
 The temporary project is removed after verification. CI repeats these checks on
 Node 22.13.0 and 24 for push and PR; no release/deployment workflow is included.
 
@@ -128,7 +135,8 @@ the existing version >=2 contract; reserved IDs do not imply mechanics support.
 `setting | item` legacy damage sources, Normal/Elite/Boss categories, targeting
 configuration and grid representation remain unchanged. Extending these contracts
 requires a separate reviewed proposal; this task does not silently generalize
-their semantics. See [the architecture audit](docs/architecture-audit.md).
+their semantics. See [the current architecture](docs/ARCHITECTURE.md) and the
+[historical refactor audit](docs/architecture-audit.md).
 
 Original `src/shared/data/*` and `src/shared/game/*` modules are deprecated,
 re-export-only source compatibility paths. They contain no duplicate engine.
