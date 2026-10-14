@@ -1,0 +1,804 @@
+{
+  "snapshotId": "v1.0-snapshot-20261013-b",
+  "sourceRevision": "3fa1a79f56ff6b8b896497ada42eee28c50fb35d",
+  "status": "CANDIDATE_PENDING_INDEPENDENT_VALIDATION",
+  "createdAt": "2026-10-13T06:31:16.029Z",
+  "runtimeDependencies": [],
+  "buildRequirements": {
+    "node": ">=22.13.0"
+  },
+  "sourceAudit": [
+    {
+      "file": "src/shared/data/combat-modifiers.ts",
+      "classification": "RPG_CORE",
+      "imports": [],
+      "exports": [
+        "MODIFIER_SOURCES",
+        "MODIFIER_OPERATIONS",
+        "DERIVED_MODIFIER_OPERATIONS",
+        "CombatModifier",
+        "RATE_TARGETS",
+        "MODIFIER_DAMAGE_TAGS",
+        "DAMAGE_BONUS_EVENT_TAGS",
+        "validateCombatModifiers"
+      ],
+      "sha256": "be14006363965dd84de7a84195adb9afa11b78af52adcdcf4b114cbc68df5ac1"
+    },
+    {
+      "file": "src/shared/data/damage-contracts.ts",
+      "classification": "RPG_CORE",
+      "imports": [
+        "../game/combat-entity.js",
+        "./defense-settings.js",
+        "./mechanic-contracts.js"
+      ],
+      "exports": [
+        "DAMAGE_SOURCES",
+        "DAMAGE_TAGS",
+        "DAMAGE_TARGETS",
+        "DAMAGE_STATUSES",
+        "DamageSource",
+        "DamageDefinition",
+        "DamageContext",
+        "DamageModifier",
+        "DamageSettings",
+        "damageDefinition"
+      ],
+      "sha256": "b8c05f7d0e4f7547a99e53c11430ace5a9180b745ed35f22346b9a94a8a7211c"
+    },
+    {
+      "file": "src/shared/data/defense-settings.ts",
+      "classification": "RPG_CORE",
+      "imports": [],
+      "exports": [
+        "DEFENSE_TYPES",
+        "DefenseType",
+        "DefenseRule",
+        "DefenseSettings",
+        "DamageDelivery",
+        "DefenseActor",
+        "DefenseContext",
+        "DefenseConfigSnapshot",
+        "DEFAULT_DEFENSE_SETTINGS",
+        "validateDefenseSettings"
+      ],
+      "sha256": "e5b5fdee2f2b16cda2b0c61e9b071dbf48a2438e3facfd37438e2fe56d7a9cd9"
+    },
+    {
+      "file": "src/shared/data/dot-contracts.ts",
+      "classification": "RPG_CORE",
+      "imports": [
+        "./damage-contracts.js"
+      ],
+      "exports": [
+        "DOT_EFFECTS",
+        "DotConfig",
+        "DEFAULT_DOT",
+        "validateDots"
+      ],
+      "sha256": "d44f279bac2470397e0c0494fe40d6890613dc41f70d745c67689d635bbd332c"
+    },
+    {
+      "file": "src/shared/data/mechanic-contracts.ts",
+      "classification": "RPG_CORE",
+      "imports": [
+        "./dot-contracts.js"
+      ],
+      "exports": [
+        "MeleeHitbox",
+        "ProjectileConfig",
+        "DEFAULT_PROJECTILE",
+        "TimedObjectConfig",
+        "DEFAULT_TIMED_OBJECT",
+        "InstantAOE",
+        "DEFAULT_INSTANT_AOE",
+        "TimedAOESequence",
+        "DEFAULT_TIMED_AOE_SEQUENCE",
+        "AOECast",
+        "validAOECast",
+        "SkillMechanics",
+        "MeleeCast",
+        "validMeleeCast",
+        "DEFAULT_MELEE_HITBOX",
+        "projectileCastConfig",
+        "validProjectileCast",
+        "validateSkillMechanics",
+        "validateProjectile"
+      ],
+      "sha256": "bee6b43600dacf730ce84c8695b3cce72e929e47d83ab0f33f87f0fd93fd7b1d"
+    },
+    {
+      "file": "src/shared/data/skill-effects.ts",
+      "classification": "RPG_CORE",
+      "imports": [
+        "./damage-contracts.js",
+        "./mechanic-contracts.js",
+        "./dot-contracts.js",
+        "../game/combat-state.js",
+        "../game/effect-system.js"
+      ],
+      "exports": [
+        "SkillDamageComponent",
+        "SkillOnHitDot",
+        "SkillGameplayEffect",
+        "validateSkillDamageComponent",
+        "validateSkillEffects",
+        "freezeGameplayData"
+      ],
+      "sha256": "00fc2fbe0663f0f04724205f12713128f9d1a779ac032fd53d66f6c386f9feaa"
+    },
+    {
+      "file": "src/shared/data/stat-contracts.ts",
+      "classification": "RPG_CORE",
+      "imports": [
+        "./damage-contracts.js",
+        "./defense-settings.js",
+        "./combat-modifiers.js",
+        "./targeting-contracts.js"
+      ],
+      "exports": [
+        "ATTRIBUTE_IDS",
+        "CoreAttribute",
+        "STAT_IDS",
+        "PlayerStat",
+        "CharacterBaseStats",
+        "StatRule",
+        "DEFENSE_RATING_STATS",
+        "RESOURCE_STATS",
+        "OPTIONAL_MAX_STATS",
+        "CoreAttributeRule",
+        "PlayerStatsConfig",
+        "LEGACY_PLAYER_STATS",
+        "CORE_SCALING_MAPPING",
+        "upgradePlayerStatsConfig",
+        "V2_PLAYER_STATS",
+        "ELEMENTAL_STATS",
+        "StatsSnapshot",
+        "DEFAULT_CORE_STATS"
+      ],
+      "sha256": "11a87612c1717bb3bf99149ab8970bc3c5e019a5a49c7320e8535d0faabe59b5"
+    },
+    {
+      "file": "src/shared/data/targeting-contracts.ts",
+      "classification": "RPG_CORE",
+      "imports": [
+        "../game/combat-state.js"
+      ],
+      "exports": [
+        "TargetingRule",
+        "TargetingSettings",
+        "validTargetingRule"
+      ],
+      "sha256": "e7d7769e2d82af59181fd10606eb121fc0ed77232230daa64746733876b568fa"
+    },
+    {
+      "file": "src/shared/game/aoe-sequence-core.ts",
+      "classification": "RPG_CORE",
+      "imports": [
+        "../data/mechanic-contracts.js",
+        "./grid-geometry.js"
+      ],
+      "exports": [
+        "random",
+        "sequencePosition",
+        "tickAOESequenceRuntime",
+        "strikeAOE"
+      ],
+      "sha256": "795eccb6dd2173687e36740487450c471fd5d8717dd9e237353251cbb3c97173"
+    },
+    {
+      "file": "src/shared/game/combat-entity.ts",
+      "classification": "RPG_CORE",
+      "imports": [
+        "../data/stat-contracts.js"
+      ],
+      "exports": [
+        "CombatEntity",
+        "CombatEntityIdentity",
+        "applyEntityDamage",
+        "validateCombatEntity",
+        "validateCombatEntities"
+      ],
+      "sha256": "e842df8c33c2f68828846956401ea594de07be13afafa0f79a520236119010c8"
+    },
+    {
+      "file": "src/shared/game/combat-state.ts",
+      "classification": "RPG_CORE",
+      "imports": [
+        "./combat-entity.js",
+        "./grid-geometry.js"
+      ],
+      "exports": [
+        "LifeState",
+        "ActionState",
+        "ActionClassification",
+        "CombatRestriction",
+        "FactionRelation",
+        "ValidationStage",
+        "TargetContext",
+        "CombatRejection",
+        "CombatValidationResult",
+        "CombatValidationContext",
+        "CombatActionContext",
+        "combatState",
+        "validAllowedRelations",
+        "validateTargetContext",
+        "factionRelation",
+        "validateCombatAction",
+        "validateCombatHit",
+        "ActiveCombatAction",
+        "CombatActionSlot",
+        "EntityCombatEvent",
+        "startCombatAction",
+        "completeCombatAction",
+        "cancelCombatAction",
+        "reconcileCombatRestrictions",
+        "validateMovementIntent",
+        "combatActionPhase",
+        "sanitizeActionSlot"
+      ],
+      "sha256": "b8c7c1c8ce6017104a175643ede91dc3cdf4933d09cc9bcc948d97488b2605f9"
+    },
+    {
+      "file": "src/shared/game/damage-core.ts",
+      "classification": "RPG_CORE",
+      "imports": [
+        "../data/combat-modifiers.js",
+        "../data/damage-contracts.js",
+        "./combat-entity.js",
+        "./defense-engine.js",
+        "./modifier-core.js"
+      ],
+      "exports": [
+        "MAX_DAMAGE_SNAPSHOT_MODIFIERS",
+        "calculateDamage",
+        "snapshotActorDamage",
+        "DamageSnapshot"
+      ],
+      "sha256": "87e5eb22a7da50e281697bdd702b5fe20474d8d72105f927dbad7ca46d1863a2"
+    },
+    {
+      "file": "src/shared/game/defense-engine.ts",
+      "classification": "RPG_CORE",
+      "imports": [
+        "../data/defense-settings.js",
+        "../data/defense-settings.js"
+      ],
+      "exports": [
+        "validateDefenseContext",
+        "resolveDefenseHit",
+        "mitigateDefense"
+      ],
+      "sha256": "647b96d52b2e6221a9cfddce785e5160ca2318c3874da7f8d3759e0b0d3195a0"
+    },
+    {
+      "file": "src/shared/game/dot-core.ts",
+      "classification": "RPG_CORE",
+      "imports": [
+        "../data/damage-contracts.js",
+        "../data/dot-contracts.js",
+        "./damage-core.js",
+        "./modifier-core.js"
+      ],
+      "exports": [
+        "DotStack",
+        "DotGroup",
+        "DotRuntime",
+        "applyDotSnapshot",
+        "tickDotRuntime",
+        "dotDamage"
+      ],
+      "sha256": "ee14e04ed0b81374386847a9c6debf9fa74c1a7d279344c068aabbe4876cbe63"
+    },
+    {
+      "file": "src/shared/game/effect-lifecycle.ts",
+      "classification": "RPG_CORE",
+      "imports": [
+        "./effect-system.js",
+        "./combat-state.js",
+        "../data/combat-modifiers.js"
+      ],
+      "exports": [
+        "EffectRemovalReason",
+        "EffectLifecycleEvent",
+        "EffectOperationResult",
+        "EffectGroupView",
+        "EffectLifecycle"
+      ],
+      "sha256": "13f385d40d559fcaa168c81f0c2bf151992373711c9ad7b5a8e56008e30669cf"
+    },
+    {
+      "file": "src/shared/game/effect-system.ts",
+      "classification": "RPG_CORE",
+      "imports": [
+        "./combat-entity.js",
+        "./combat-entity.js",
+        "./combat-state.js",
+        "../data/combat-modifiers.js",
+        "../data/stat-contracts.js"
+      ],
+      "exports": [
+        "EffectId",
+        "EffectInstanceId",
+        "EffectModifier",
+        "EffectDefinition",
+        "EffectInstance",
+        "EffectApplyRequest",
+        "EffectApplyContext",
+        "EffectRejection",
+        "EffectValidationResult",
+        "EffectTerminalOutcome",
+        "EffectLifecycleResult",
+        "EffectModifierSource",
+        "validateEffectDefinition",
+        "defineEffect",
+        "validateEffectApplyRequest",
+        "validateEffectInstance"
+      ],
+      "sha256": "b712b3c10123c1c089107443307d3e4a84105252a296baf7db2428caadceddae"
+    },
+    {
+      "file": "src/shared/game/emitter-core.ts",
+      "classification": "RPG_CORE",
+      "imports": [
+        "../data/mechanic-contracts.js"
+      ],
+      "exports": [
+        "emitterProjectileConfig",
+        "tickEmitterRuntime"
+      ],
+      "sha256": "26b54b4a1a9ca1909a40a49fa527bcdc73dbf6c5fb11708958b06a626c19dff0"
+    },
+    {
+      "file": "src/shared/game/grid-geometry.ts",
+      "classification": "SHARED_INFRASTRUCTURE",
+      "imports": [],
+      "exports": [
+        "Walkability",
+        "MapPoint",
+        "isWalkable",
+        "canTraverse"
+      ],
+      "sha256": "f5ae99523805f8c9e47f5f03fbb9b14f33b74284fede03e74326f87f841608b9"
+    },
+    {
+      "file": "src/shared/game/instant-aoe.ts",
+      "classification": "RPG_CORE",
+      "imports": [
+        "../data/mechanic-contracts.js",
+        "./grid-geometry.js",
+        "./melee-hitbox.js"
+      ],
+      "exports": [
+        "lockAOEPosition",
+        "detectInstantAOE",
+        "debugInstantAOE"
+      ],
+      "sha256": "c392ac3c6260bca6ad7cfe6b7c35666c72381d844c2e2821e3f7c364a3116c33"
+    },
+    {
+      "file": "src/shared/game/melee-hitbox.ts",
+      "classification": "RPG_CORE",
+      "imports": [
+        "../data/mechanic-contracts.js",
+        "./grid-geometry.js",
+        "./grid-geometry.js"
+      ],
+      "exports": [
+        "HitboxTarget",
+        "hitboxFrame",
+        "insideMeleeHitbox",
+        "detectMeleeHitbox",
+        "meleeHitboxOutline",
+        "debugMeleeHitbox"
+      ],
+      "sha256": "0defccc8a45ead0d172d1eeba9ae725d74020fc60387a8c17873f943c8c719d7"
+    },
+    {
+      "file": "src/shared/game/modifier-core.ts",
+      "classification": "RPG_CORE",
+      "imports": [
+        "../data/combat-modifiers.js",
+        "../data/stat-contracts.js",
+        "../data/damage-contracts.js"
+      ],
+      "exports": [
+        "damageBonusReason",
+        "ActiveModifierSources",
+        "collectActiveModifiers",
+        "prepareModifierResolver",
+        "resolveModifiers"
+      ],
+      "sha256": "6706ef6831f7dcf989f965c475abcab50b848358e4dd7928f2863aa73b26d9ff"
+    },
+    {
+      "file": "src/shared/game/projectile.ts",
+      "classification": "RPG_CORE",
+      "imports": [
+        "../data/mechanic-contracts.js",
+        "./grid-geometry.js",
+        "./grid-geometry.js"
+      ],
+      "exports": [
+        "ProjectileTarget",
+        "ProjectileBody",
+        "nextProjectileBodyBoundary",
+        "tickProjectileBodies",
+        "projectileDirections",
+        "segmentContact",
+        "moveProjectile",
+        "debugProjectile"
+      ],
+      "sha256": "19f58d6af94c10ef1208c7efbfa956c7e21c5f3c68bf8773a28480fd1162b5eb"
+    },
+    {
+      "file": "src/shared/game/range.ts",
+      "classification": "SHARED_INFRASTRUCTURE",
+      "imports": [
+        "./grid-geometry.js"
+      ],
+      "exports": [
+        "distance",
+        "inRange"
+      ],
+      "sha256": "7cf87fb0c732e81d59f244f77bdbd4806f7a0e5e7ec05787d2ce4ab304f6657f"
+    },
+    {
+      "file": "src/shared/game/skill-effect-integration.ts",
+      "classification": "RPG_CORE",
+      "imports": [
+        "../data/damage-contracts.js",
+        "../data/mechanic-contracts.js",
+        "../data/skill-effects.js",
+        "./aoe-sequence-core.js",
+        "./grid-geometry.js",
+        "./combat-entity.js",
+        "./combat-state.js",
+        "./damage-core.js",
+        "./dot-core.js",
+        "./effect-lifecycle.js",
+        "./emitter-core.js",
+        "./instant-aoe.js",
+        "./melee-hitbox.js",
+        "./projectile.js",
+        "./range.js",
+        "./skill-execution.js"
+      ],
+      "exports": [
+        "SkillEffectEnvironment",
+        "SkillEffectEvent",
+        "SkillEffectRuntime",
+        "createSkillEffectRuntime",
+        "clearSkillEffects",
+        "dispatchSkillEffects",
+        "nextSkillEffectBoundary",
+        "advanceSkillEffects"
+      ],
+      "sha256": "db0c5db486a0c7ce7c709d40d127bb82a077585df4cfd22cae640980a9bbca07"
+    },
+    {
+      "file": "src/shared/game/skill-engine.ts",
+      "classification": "RPG_CORE",
+      "imports": [
+        "./combat-state.js",
+        "./stat-calculation.js",
+        "./combat-entity.js",
+        "./combat-state.js",
+        "../data/skill-effects.js"
+      ],
+      "exports": [
+        "SkillIdentity",
+        "SkillEngineDefinition",
+        "SkillExecutionContext",
+        "SkillRejection",
+        "SkillResult",
+        "validateSkillDefinition",
+        "SkillCooldownState",
+        "createSkillCooldownState",
+        "remainingSkillCooldown",
+        "SkillAvailability",
+        "skillActionAdmission",
+        "skillAvailability",
+        "startSkillAction",
+        "AcceptedSkillReplacement",
+        "inheritSkillCooldowns",
+        "defineSkill",
+        "validateSkillContext"
+      ],
+      "sha256": "c51d9a902915fa77b1d981f1848c0b3dad22be25dbf393c4c48793c3a1dc3c5e"
+    },
+    {
+      "file": "src/shared/game/skill-execution.ts",
+      "classification": "RPG_CORE",
+      "imports": [
+        "./skill-engine.js",
+        "./combat-state.js",
+        "./range.js",
+        "./grid-geometry.js",
+        "./combat-entity.js"
+      ],
+      "exports": [
+        "SkillExecutionEnvironment",
+        "SkillExecutionSnapshot",
+        "SkillExecutionSlot",
+        "SkillActivatedEvent",
+        "SkillExecutionEvent",
+        "SkillExecutionResult",
+        "skillRangeAvailability",
+        "skillExecutionAvailability",
+        "executeSkill",
+        "cancelSkillExecution",
+        "reconcileSkillRestrictions",
+        "advanceSkillExecution"
+      ],
+      "sha256": "e93d8d18bd7ae06cfa7887d871ae57d6e4a41862bdbf4bef7741f310b8c09409"
+    },
+    {
+      "file": "src/shared/game/stat-calculation.ts",
+      "classification": "RPG_CORE",
+      "imports": [
+        "../data/stat-contracts.js",
+        "./modifier-core.js"
+      ],
+      "exports": [
+        "cooldownDurationMs",
+        "calculateEffectiveStat",
+        "resolveCharacterStats",
+        "updateCurrentResources"
+      ],
+      "sha256": "9b129587267b5887633d4614c08f6afbfd7368ecc04e4ed75a3e4647c7f60132"
+    }
+  ],
+  "files": [
+    {
+      "path": "examples/headless.ts",
+      "bytes": 4433,
+      "sha256": "6592577a4e703f759f1707d15989cae543afaaf7f9fdca531614704037942775"
+    },
+    {
+      "path": "examples/run.mjs",
+      "bytes": 330,
+      "sha256": "6c58dc1ef3f03289bd14df45fcf0cdeddc9883d5666bae436490363455eb0672"
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 37311,
+      "sha256": "17f31c8129e2ab3756e5ae988b2ac83cacac8e37001d91520f2cee46cf4f7bb3"
+    },
+    {
+      "path": "package.json",
+      "bytes": 428,
+      "sha256": "ad7d9cfa8ce7118e5aea50e111b76e2c7e2ee392fa7fcd9379b4017d1f92d145"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3700,
+      "sha256": "671eaf05b98d31fa6db250711be762a398dfb740fc36fdd60714ae5ad5d611de"
+    },
+    {
+      "path": "src/shared/data/combat-modifiers.ts",
+      "bytes": 4787,
+      "sha256": "be14006363965dd84de7a84195adb9afa11b78af52adcdcf4b114cbc68df5ac1"
+    },
+    {
+      "path": "src/shared/data/damage-contracts.ts",
+      "bytes": 1754,
+      "sha256": "b8c05f7d0e4f7547a99e53c11430ace5a9180b745ed35f22346b9a94a8a7211c"
+    },
+    {
+      "path": "src/shared/data/defense-settings.ts",
+      "bytes": 2993,
+      "sha256": "e5b5fdee2f2b16cda2b0c61e9b071dbf48a2438e3facfd37438e2fe56d7a9cd9"
+    },
+    {
+      "path": "src/shared/data/dot-contracts.ts",
+      "bytes": 1936,
+      "sha256": "d44f279bac2470397e0c0494fe40d6890613dc41f70d745c67689d635bbd332c"
+    },
+    {
+      "path": "src/shared/data/mechanic-contracts.ts",
+      "bytes": 10231,
+      "sha256": "bee6b43600dacf730ce84c8695b3cce72e929e47d83ab0f33f87f0fd93fd7b1d"
+    },
+    {
+      "path": "src/shared/data/skill-effects.ts",
+      "bytes": 5952,
+      "sha256": "00fc2fbe0663f0f04724205f12713128f9d1a779ac032fd53d66f6c386f9feaa"
+    },
+    {
+      "path": "src/shared/data/stat-contracts.ts",
+      "bytes": 5112,
+      "sha256": "11a87612c1717bb3bf99149ab8970bc3c5e019a5a49c7320e8535d0faabe59b5"
+    },
+    {
+      "path": "src/shared/data/targeting-contracts.ts",
+      "bytes": 985,
+      "sha256": "e7d7769e2d82af59181fd10606eb121fc0ed77232230daa64746733876b568fa"
+    },
+    {
+      "path": "src/shared/game/aoe-sequence-core.ts",
+      "bytes": 1617,
+      "sha256": "795eccb6dd2173687e36740487450c471fd5d8717dd9e237353251cbb3c97173"
+    },
+    {
+      "path": "src/shared/game/combat-entity.ts",
+      "bytes": 3180,
+      "sha256": "e842df8c33c2f68828846956401ea594de07be13afafa0f79a520236119010c8"
+    },
+    {
+      "path": "src/shared/game/combat-state.ts",
+      "bytes": 10466,
+      "sha256": "b8c7c1c8ce6017104a175643ede91dc3cdf4933d09cc9bcc948d97488b2605f9"
+    },
+    {
+      "path": "src/shared/game/damage-core.ts",
+      "bytes": 7931,
+      "sha256": "87e5eb22a7da50e281697bdd702b5fe20474d8d72105f927dbad7ca46d1863a2"
+    },
+    {
+      "path": "src/shared/game/defense-engine.ts",
+      "bytes": 4214,
+      "sha256": "647b96d52b2e6221a9cfddce785e5160ca2318c3874da7f8d3759e0b0d3195a0"
+    },
+    {
+      "path": "src/shared/game/dot-core.ts",
+      "bytes": 3145,
+      "sha256": "ee14e04ed0b81374386847a9c6debf9fa74c1a7d279344c068aabbe4876cbe63"
+    },
+    {
+      "path": "src/shared/game/effect-lifecycle.ts",
+      "bytes": 12242,
+      "sha256": "13f385d40d559fcaa168c81f0c2bf151992373711c9ad7b5a8e56008e30669cf"
+    },
+    {
+      "path": "src/shared/game/effect-system.ts",
+      "bytes": 9362,
+      "sha256": "b712b3c10123c1c089107443307d3e4a84105252a296baf7db2428caadceddae"
+    },
+    {
+      "path": "src/shared/game/emitter-core.ts",
+      "bytes": 751,
+      "sha256": "26b54b4a1a9ca1909a40a49fa527bcdc73dbf6c5fb11708958b06a626c19dff0"
+    },
+    {
+      "path": "src/shared/game/grid-geometry.ts",
+      "bytes": 2369,
+      "sha256": "f5ae99523805f8c9e47f5f03fbb9b14f33b74284fede03e74326f87f841608b9"
+    },
+    {
+      "path": "src/shared/game/instant-aoe.ts",
+      "bytes": 1651,
+      "sha256": "c392ac3c6260bca6ad7cfe6b7c35666c72381d844c2e2821e3f7c364a3116c33"
+    },
+    {
+      "path": "src/shared/game/melee-hitbox.ts",
+      "bytes": 3164,
+      "sha256": "0defccc8a45ead0d172d1eeba9ae725d74020fc60387a8c17873f943c8c719d7"
+    },
+    {
+      "path": "src/shared/game/modifier-core.ts",
+      "bytes": 3742,
+      "sha256": "6706ef6831f7dcf989f965c475abcab50b848358e4dd7928f2863aa73b26d9ff"
+    },
+    {
+      "path": "src/shared/game/projectile.ts",
+      "bytes": 5511,
+      "sha256": "19f58d6af94c10ef1208c7efbfa956c7e21c5f3c68bf8773a28480fd1162b5eb"
+    },
+    {
+      "path": "src/shared/game/range.ts",
+      "bytes": 328,
+      "sha256": "7cf87fb0c732e81d59f244f77bdbd4806f7a0e5e7ec05787d2ce4ab304f6657f"
+    },
+    {
+      "path": "src/shared/game/skill-effect-integration.ts",
+      "bytes": 15833,
+      "sha256": "db0c5db486a0c7ce7c709d40d127bb82a077585df4cfd22cae640980a9bbca07"
+    },
+    {
+      "path": "src/shared/game/skill-engine.ts",
+      "bytes": 11210,
+      "sha256": "c51d9a902915fa77b1d981f1848c0b3dad22be25dbf393c4c48793c3a1dc3c5e"
+    },
+    {
+      "path": "src/shared/game/skill-execution.ts",
+      "bytes": 9579,
+      "sha256": "e93d8d18bd7ae06cfa7887d871ae57d6e4a41862bdbf4bef7741f310b8c09409"
+    },
+    {
+      "path": "src/shared/game/stat-calculation.ts",
+      "bytes": 3885,
+      "sha256": "9b129587267b5887633d4614c08f6afbfd7368ecc04e4ed75a3e4647c7f60132"
+    },
+    {
+      "path": "tests/game/core-portable.test.ts",
+      "bytes": 3669,
+      "sha256": "9dce221ae3a890e06c661239b2ea43effb35ce79325b8abb8cd82dd0b3484fe4"
+    },
+    {
+      "path": "tests/game/effect-integration.test.ts",
+      "bytes": 10337,
+      "sha256": "b9896652e7d9b4f4048c66e4e9e8c76f16dd6c3fcce234c5204069055a71c8f5"
+    },
+    {
+      "path": "tests/game/effect-lifecycle.test.ts",
+      "bytes": 14056,
+      "sha256": "bbafa0b042ae028a673419c0e40eb6c1c0e67423ad5aae5ad0311dcde0bec059"
+    },
+    {
+      "path": "tests/game/effect-modifiers.test.ts",
+      "bytes": 3577,
+      "sha256": "c1c347a3cdb82c9f51ca893373d633532506d8dfdafa39da5d5df33e461af5aa"
+    },
+    {
+      "path": "tests/game/effect-stacking.test.ts",
+      "bytes": 8463,
+      "sha256": "2258a702e37bb23137514ebf287a12612a453d82ca9f99dcde116337f921cc7c"
+    },
+    {
+      "path": "tests/game/effect-system.test.ts",
+      "bytes": 9698,
+      "sha256": "159756d1d16fb5cc2e8e8a49a359707d9a59f4e630bfe1e69140da30ae5f6d56"
+    },
+    {
+      "path": "tests/game/fixtures/skill-core.ts",
+      "bytes": 7064,
+      "sha256": "7f7df227f2b6547d48a361fe4792f89ca097f756eb9d97a73e1eaf3405d497df"
+    },
+    {
+      "path": "tests/game/fixtures/skill-timeline.ts",
+      "bytes": 2488,
+      "sha256": "776d1e624930293bc9f07b9a65b6dfd697c222f9065c5ab46c386b03ec920c65"
+    },
+    {
+      "path": "tests/game/rpg-core-integration.test.ts",
+      "bytes": 10346,
+      "sha256": "844a12a0ac047bcb7638f98eaa854f16d197c8ea86cfe4ccb9643a48920ca998"
+    },
+    {
+      "path": "tests/game/skill-effect-integration.test.ts",
+      "bytes": 13963,
+      "sha256": "d87cd490412a98c650a681c707c862a76ebad0897582725a3ecf1b12dd3203a5"
+    },
+    {
+      "path": "tests/game/skill-engine.test.ts",
+      "bytes": 4928,
+      "sha256": "5accd7a7405b9a9b9caa854c9235c4ae970905176df488eee3fdb4eb6cf3cb7c"
+    },
+    {
+      "path": "tests/game/skill-execution.test.ts",
+      "bytes": 12161,
+      "sha256": "59a48e539168ff0b5a5610b0bfefd87f2dec7d28005450bcc823385791dc38e5"
+    },
+    {
+      "path": "tests/game/skill-integration.test.ts",
+      "bytes": 9128,
+      "sha256": "8058d661f0e82ab6a706568b452fae79103c2cd12207b259d7b3ab148c8d7361"
+    },
+    {
+      "path": "tests/game/status-restrictions.test.ts",
+      "bytes": 11770,
+      "sha256": "ce9c7e4e808448febd68b14ed9f654a620e6485c8e133991619297c6d4b34d2c"
+    },
+    {
+      "path": "tsconfig.json",
+      "bytes": 402,
+      "sha256": "3e7a1fc637d4a419e212f9151fdf2b603e6196410ab45afc03430d98a1de6a00"
+    },
+    {
+      "path": "tsconfig.tests.json",
+      "bytes": 181,
+      "sha256": "343d60920445f54db4648c7ba7a8b33c07c087a2a6577d1547c4ccd1ba96c281"
+    },
+    {
+      "path": "VERSION",
+      "bytes": 25,
+      "sha256": "2b5ba96d5d70beca0b2edd95b949d609a1cb8523394c1c1c387ec89776ad17c7"
+    },
+    {
+      "path": "vitest.config.ts",
+      "bytes": 132,
+      "sha256": "a6de1a5ec89e660f6e2b381c48e5eeb6f7cd72bfd524d2cace0099f90459dff3"
+    }
+  ]
+}
