@@ -1,5 +1,8 @@
 # Architecture and compatibility audit
 
+Historical Phase 1 report; module/test counts below describe that refactor.
+The current architecture reference is [ARCHITECTURE.md](ARCHITECTURE.md).
+
 Reviewed baseline: `c5878d92e198acd19289f568a2ddeda5096d83e7`.
 Scope: the 27 Core source modules, all 12 existing test files and their fixtures,
 headless example/runner, package/lockfile, TypeScript/Vitest configs and export

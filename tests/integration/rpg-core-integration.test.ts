@@ -1,6 +1,6 @@
 import {expect,it} from 'vitest';
-import {fixture,direct,projectile,sequence,timed,dot,damage} from './fixtures/skill-core.js';
-import {timeline} from './fixtures/skill-timeline.js';
+import {fixture,direct,projectile,sequence,timed,dot,damage} from '../fixtures/skill-core.js';
+import {timeline} from '../fixtures/skill-timeline.js';
 import {executeSkill,cancelSkillExecution,type SkillExecutionSlot,type SkillExecutionEvent} from '../../src/skills/skill-execution.js';
 import {createSkillCooldownState,type SkillEngineDefinition} from '../../src/skills/skill-engine.js';
 import {clearSkillEffects} from '../../src/skills/skill-effect-integration.js';

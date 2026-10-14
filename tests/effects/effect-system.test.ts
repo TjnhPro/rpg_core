@@ -1,4 +1,4 @@
-import {readCoreSource} from './fixtures/source.js';
+import {readCoreSource} from '../fixtures/source.js';
 import {expect,it} from 'vitest';
 import {readFileSync} from 'node:fs';
 import {defineEffect,validateEffectDefinition,validateEffectInstance,validateEffectApplyRequest,

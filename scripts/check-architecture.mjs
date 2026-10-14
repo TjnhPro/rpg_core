@@ -3,12 +3,22 @@ import {readFileSync, readdirSync} from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import ts from 'typescript';
+import {behaviorFingerprint} from './behavior-fingerprint.mjs';
 
-const root = fileURLToPath(new URL('../', import.meta.url));
+// Optional root lets regression tests audit isolated malformed source trees.
+const root = process.argv[2] ? path.resolve(process.argv[2]) : fileURLToPath(new URL('../', import.meta.url));
 const walk = dir => readdirSync(path.join(root, dir), {withFileTypes: true}).flatMap(e =>
   e.isDirectory() ? walk(`${dir}/${e.name}`) : [`${dir}/${e.name}`]);
-const files = walk('src').filter(f => f.endsWith('.ts') && !f.startsWith('src/shared/'));
+const sourceFiles = walk('src').filter(f => f.endsWith('.ts'));
+const files = sourceFiles.filter(f => !f.startsWith('src/shared/'));
+const moduleMap = JSON.parse(readFileSync(path.join(root, 'docs/module-map.json'), 'utf8'));
+assert.deepEqual(sourceFiles.filter(f => f.startsWith('src/shared/')).sort(), Object.keys(moduleMap).sort(), 'Unregistered legacy source');
+for (const [legacy, canonical] of Object.entries(moduleMap)) {
+  const spec = path.posix.relative(path.posix.dirname(legacy), canonical).replace(/\.ts$/, '.js');
+  assert.equal(readFileSync(path.join(root, legacy), 'utf8').trim(), `/** @deprecated Import from @rpg/core or a public domain entrypoint. */\nexport * from '${spec}';`, `${legacy}: must remain a forwarder`);
+}
 const graph = new Map(), runtime = new Map();
+const implementations = new Map();
 const allowed = {
   contracts: ['contracts'], spatial: ['contracts', 'spatial'],
   modifiers: ['contracts', 'modifiers'], stats: ['contracts', 'stats', 'modifiers'],
@@ -19,23 +29,43 @@ const allowed = {
   skills: ['contracts', 'skills', 'combat', 'stats', 'effects', 'damage', 'mechanics', 'spatial'],
 };
 for (const file of files) {
-  const ast = ts.createSourceFile(file, readFileSync(path.join(root, file), 'utf8'), ts.ScriptTarget.Latest, true);
+  const source = readFileSync(path.join(root, file), 'utf8');
+  const fingerprint = behaviorFingerprint(source);
+  if (fingerprint.length) {
+    const key = fingerprint.join(':');
+    assert(!implementations.has(key), `${file}: duplicate canonical declarations from ${implementations.get(key)}`);
+    implementations.set(key, file);
+  }
+  const ast = ts.createSourceFile(file, source, ts.ScriptTarget.Latest, true);
+  assert(file === 'src/index.ts' || allowed[file.split('/')[1]], `${file}: unknown domain`);
   const edges = [], runtimeEdges = [];
-  for (const node of ast.statements) {
-    if (!(ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) || !node.moduleSpecifier) continue;
-    const spec = node.moduleSpecifier.text;
+  function dependency(spec, typeOnly) {
+    assert(typeof spec === 'string', `${file}: nonliteral dependency`);
     assert(spec.startsWith('.'), `${file}: external dependency ${spec}`);
     const target = path.posix.normalize(path.posix.join(path.posix.dirname(file), spec)).replace(/\.js$/, '.ts');
     assert(files.includes(target), `${file}: invalid/cross-repository import ${spec}`);
     if (file !== 'src/index.ts') assert(allowed[file.split('/')[1]].includes(target.split('/')[1]), `${file}: forbidden dependency ${target}`);
-    const clause = ts.isImportDeclaration(node) ? node.importClause : undefined;
-    const bindings = clause?.namedBindings;
-    const typeOnly = ts.isImportDeclaration(node)
-      ? clause?.isTypeOnly || (!clause?.name && bindings && ts.isNamedImports(bindings) && bindings.elements.every(e => e.isTypeOnly))
-      : node.isTypeOnly || (node.exportClause && ts.isNamedExports(node.exportClause) && node.exportClause.elements.every(e => e.isTypeOnly));
     edges.push(target);
     if (!typeOnly) runtimeEdges.push(target);
   }
+  function visit(node) {
+    if ((ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) && node.moduleSpecifier) {
+      const clause = ts.isImportDeclaration(node) ? node.importClause : undefined;
+      const bindings = clause?.namedBindings;
+      const typeOnly = ts.isImportDeclaration(node)
+        ? clause?.isTypeOnly || (!clause?.name && bindings && ts.isNamedImports(bindings) && bindings.elements.length > 0 && bindings.elements.every(e => e.isTypeOnly))
+        : node.isTypeOnly || (node.exportClause && ts.isNamedExports(node.exportClause) && node.exportClause.elements.length > 0 && node.exportClause.elements.every(e => e.isTypeOnly));
+      dependency(node.moduleSpecifier.text, typeOnly);
+    } else if (ts.isImportEqualsDeclaration(node) && ts.isExternalModuleReference(node.moduleReference)) {
+      dependency(node.moduleReference.expression?.text, node.isTypeOnly);
+    } else if (ts.isImportTypeNode(node)) {
+      dependency(ts.isLiteralTypeNode(node.argument) ? node.argument.literal.text : undefined, true);
+    } else if (ts.isCallExpression(node) && (node.expression.kind === ts.SyntaxKind.ImportKeyword || ts.isIdentifier(node.expression) && node.expression.text === 'require')) {
+      dependency(node.arguments.length === 1 && ts.isStringLiteralLike(node.arguments[0]) ? node.arguments[0].text : undefined, false);
+    }
+    ts.forEachChild(node, visit);
+  }
+  visit(ast);
   graph.set(file, [...new Set(edges)]);
   runtime.set(file, [...new Set(runtimeEdges)]);
 }

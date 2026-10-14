@@ -1,4 +1,4 @@
-import {readCoreSource} from './fixtures/source.js';
+import {readCoreSource} from '../fixtures/source.js';
 import {it,expect} from 'vitest';
 import {executeSkill,skillExecutionAvailability,advanceSkillExecution,cancelSkillExecution,type SkillExecutionSlot,type SkillExecutionEvent} from '../../src/skills/skill-execution.js';
 import {createSkillCooldownState,inheritSkillCooldowns,type SkillEngineDefinition,type SkillExecutionContext,validateSkillDefinition} from '../../src/skills/skill-engine.js';

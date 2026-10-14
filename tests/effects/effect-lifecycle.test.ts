@@ -1,11 +1,11 @@
-import {readCoreSource} from './fixtures/source.js';
+import {readCoreSource} from '../fixtures/source.js';
 import {expect,it} from 'vitest';
 import {readFileSync} from 'node:fs';
 import {EffectLifecycle,type EffectOperationResult,type EffectLifecycleEvent} from '../../src/effects/effect-lifecycle.js';
 import type {CombatEntity} from '../../src/combat/combat-entity.js';
 import type {EffectApplyRequest} from '../../src/effects/effect-system.js';
 import {completeCombatAction,type CombatActionSlot} from '../../src/combat/combat-state.js';
-import {fixture as skillFixture} from './fixtures/skill-core.js';
+import {fixture as skillFixture} from '../fixtures/skill-core.js';
 import {advanceSkillExecution,cancelSkillExecution} from '../../src/skills/skill-execution.js';
 import {inheritSkillCooldowns} from '../../src/skills/skill-engine.js';
 
