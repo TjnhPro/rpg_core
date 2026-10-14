@@ -9,6 +9,29 @@ Read [README.md](README.md), [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), the r
 `src/<domain>/index.ts` public API and its tests. A small task does not require a
 full repository read. [The coverage matrix](docs/test-coverage.md) locates evidence.
 
+## Mandatory plan and human review
+
+Every task changing source, mechanics, contracts or architecture requires a plan
+approved by the user **before implementation**. Agents may audit, research and
+propose a plan, but must never approve their own plan. Do not expand task scope
+when difficulties arise; report the obstacle and wait for the user's decision.
+Never automatically merge a PR.
+
+## Core capability gaps and no workarounds
+
+When a required mechanic is unsupported (for example, Lifesteal or Mana On-Hit):
+
+1. Inspect the existing public APIs.
+2. Report `CORE_CAPABILITY_GAP`, naming the missing mechanic, affected domains and
+   why the current APIs cannot satisfy it.
+3. Mark the dependent work `BLOCKED` and wait for the user to approve a Core upgrade
+   plan. Never implement the missing mechanic without that approval.
+
+In any repository, do not create substitute Damage Engines, Skill Engines, Effect
+Engines, Resource Logic or gameplay implementations. Do not change formulas,
+remove validation or write separate logic just to make tests pass. A workaround
+must never turn `BLOCKED` into `READY`.
+
 ## Source rules
 
 - Keep one canonical implementation per mechanic under its owning domain. Prefer
@@ -48,6 +71,12 @@ caller adapters; no assets or Game Runtime dependencies.
 
 ## Delivery
 
+Report task completion using only these statuses:
+
+- `READY`: Implemented according to the user-approved plan and verified.
+- `PARTIAL`: Completed the authorized portion; identify the remaining work.
+- `BLOCKED`: Requires a user decision or a new Core capability; identify the dependency.
+
 Report changed files and reasons, public API and compatibility impact, commands
 executed/results and remaining issues. Do not publish packages, create releases,
-change licensing or merge a PR unless explicitly requested.
+or change licensing unless explicitly requested. Never automatically merge a PR.

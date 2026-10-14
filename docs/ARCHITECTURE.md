@@ -18,6 +18,30 @@ orchestration. They supply entities, source identities, grid/positions, clock,
 RNG, config versions, event callbacks and advancement order. Core contains no
 application scheduler, wall clock or second resource ledger.
 
+## Change governance and capability gaps
+
+Every task changing source, mechanics, contracts or architecture must have a plan
+approved by the user before implementation. Agents may audit, research and propose
+plans; they cannot approve their own plans or expand scope when difficulties arise.
+Report the obstacle and wait for the user's decision. Never automatically merge PRs.
+
+If a required mechanic such as Lifesteal or Mana On-Hit is unsupported, inspect the
+existing public APIs first. Report `CORE_CAPABILITY_GAP` with the missing mechanic,
+affected domains and why those APIs are insufficient. Mark dependent work `BLOCKED`
+and wait for a user-approved Core upgrade plan; do not implement the missing mechanic
+on the agent's own initiative.
+
+Agents must not create substitute Damage Engines, Skill Engines, Effect Engines,
+Resource Logic or gameplay implementations in any repository.
+Changing formulas, removing validation or writing separate logic to make tests pass
+is prohibited. Application-owned adapters and orchestration use existing Core APIs;
+they do not authorize implementing an unsupported mechanic outside Core.
+
+Completion status is limited to `READY` (implemented according to the approved plan
+and verified), `PARTIAL` (authorized portion completed, missing work identified), or
+`BLOCKED` (needs a user decision or new Core capability). Workarounds cannot convert
+`BLOCKED` into `READY`. See [AGENTS.md](../AGENTS.md) for the repository working rules.
+
 ## Domains and dependency rules
 
 Every domain may import itself. The table lists **other allowed domains**, matching
@@ -106,7 +130,10 @@ For example, the existing timed projectile emitter already composes validated
 projectile configuration, per-emission offense snapshots and shared projectile
 contact; another skill with those capabilities should supply content to this API.
 
-If a new Core capability is actually needed:
+If a new Core capability is actually needed, follow the capability-gap procedure
+above. Audit and propose the owning domain, minimal contract, implementation scope,
+targeted tests and compatibility impact for human review. The following implementation
+steps apply **only after the user approves that Core upgrade plan**:
 
 1. Select its owner: geometry in mechanics/spatial, lifecycle in effects, dispatch
    in skills, numeric resolution in damage/stats/modifiers. Use the table's edges.
