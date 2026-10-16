@@ -1,9 +1,12 @@
 # RPG Core v1.1.0 — Foundation & Architecture
 
-**DRAFT / NON-NORMATIVE — AUDIT + ARCHITECTURE PROPOSAL ONLY.**
-Prepared 2026-10-16. Developer approval is required before implementation.
+**DOCUMENTATION CHECKPOINT — AUDIT + DEVELOPER-APPROVED ARCHITECTURE DIRECTION.**
+Prepared and decisions recorded 2026-10-16. This PR contains documentation only;
+implementation requires the separate checkpoint plan/review workflow.
 `READY` for this checkpoint means a reviewable proposal, never working nested skills.
-The current [architecture](ARCHITECTURE.md) remains authoritative.
+The current [architecture](ARCHITECTURE.md) governs implemented Core behavior.
+D1–D11 below record the Developer-approved v1.1 direction; sketches and detailed
+contracts remain proposals until reviewed for their implementation checkpoint.
 
 ## 1. Baseline, scope and approval boundary
 
@@ -12,8 +15,8 @@ The current [architecture](ARCHITECTURE.md) remains authoritative.
 | Repository | `https://github.com/TjnhPro/rpg_core` (`origin`, fetch/push) |
 | Initial checkout | `maintenance/phase2-agent-readiness@6a349de24d4a17db461512df0870cc05f959c2b7`; clean working tree |
 | Refreshed main / audit baseline | `origin/main@bc701cd42183072aa1fe6664ffa8ba5756a62167`, merge of PR #2; tree identical to initial checkout (`git diff 6a349de origin/main --stat` empty) |
-| Proposal branch | `docs/v1.1.0-composable-skill-foundation`, created directly from refreshed `origin/main` |
-| Related work | `gh pr list --state open`: `[]`; fetched branch inventory contains main and the existing maintenance/refactor branches, no existing v1.1 branch |
+| Documentation branch | `docs/v1.1.0-composable-skill-foundation`, created directly from refreshed `origin/main` |
+| Related work | Initial preflight found no open PRs; this document is now in [PR #3](https://github.com/TjnhPro/rpg_core/pull/3), OPEN on this branch. Decision-update baseline: `3f2a9eed4dc1db2b323a163e53bdcf28dd14ecc3`, clean worktree |
 | Versions | [package.json](../package.json): `1.0.0`, private; [VERSION](../VERSION): `v1.0-snapshot-20261013-b`; v1.1.x below are roadmap checkpoint labels |
 | Provenance | [EXPORT-MANIFEST.json](../EXPORT-MANIFEST.json) retains source revision `3fa1a79f56ff6b8b896497ada42eee28c50fb35d` and `CANDIDATE_PENDING_INDEPENDENT_VALIDATION`; preservation separately pins `c5878d92e198acd19289f568a2ddeda5096d83e7` |
 | Consumer | Task reports `TjnhPro/jx1-manager-editor` pinned to `bc701cd...`; consumer checkout/pin was not independently audited here and is not changed |
@@ -22,18 +25,21 @@ The current [architecture](ARCHITECTURE.md) remains authoritative.
 Read [AGENTS.md](../AGENTS.md), [README](../README.md), current architecture,
 [coverage](test-coverage.md), relevant [cleanup audit](cleanup-audit.md), public
 barrels, package exports, historical manifest/version and preservation checker.
-Only this proposal is added. No source, tests, exports, baseline, package version,
+Only this foundation document is changed. No source, tests, exports, baseline, package version,
 editor pin, license, release or mechanics change is authorized in v1.1.0.
 
 Labels used throughout:
 
-- **USER_APPROVED:** descendants inherit one immutable root offensive snapshot S0;
-  automatic children do not incur another MP/cooldown charge by default.
+- **USER_APPROVED:** D1–D11 in section 8, supplied directly by the Developer in
+  “RPG Core v1.1 — Developer Architecture Decisions (Solo Dev)”. This is decision
+  evidence, not a claim of GitHub review/merge or implementation acceptance.
 - **ALREADY_IMPLEMENTED:** source and existing tests support the named scope.
 - **PROPOSED:** a recommendation, with no authority to implement it.
-- **OPEN_DECISION:** Developer must choose before dependent implementation.
+- **OPEN_DETAIL:** a remaining contract/policy detail to settle at its owning
+  checkpoint; does not reopen approved D1–D11 or authorize extra scope.
 - **CORE_CAPABILITY_GAP:** inspected APIs cannot implement the specified mechanic;
-  dependent implementation remains **BLOCKED**. The audit itself can be complete.
+  dependent implementation requires its separate approved checkpoint plan.
+  Approved architecture does not make a missing capability implemented.
 
 ## 2. Evidence ledger: public API → implementation → assertions
 
@@ -71,7 +77,7 @@ or Skill-instance-expired event. `entity-defeated` lacks killer provenance.
 `effect-expired` only describes an `EffectLifecycle` status. Existing root
 activation dedupe is a per-caster serial frontier, not arbitrary child receipts.
 
-## 3. Proposed contracts and ownership
+## 3. Contract sketches under the approved direction
 
 All names in sketches are **PROPOSED**, not available imports. Supporting types
 are conceptual; this is not a compilable declaration file or exported schema.
@@ -88,7 +94,7 @@ interface PinnedChildDefinition {
   readonly definition: SkillEngineDefinition;
   readonly revision: string;
   readonly activationDelayMs: number;
-  readonly gameplayLifetimeMs: number;
+  readonly gameplayLifetimeMs?: number; // required for OnExpire, not instant skills
 }
 interface RootOffense {
   readonly snapshotId: string;
@@ -156,7 +162,8 @@ interface SkillCompositionEvent {
 Root cast admission remains the existing voluntary action with one cost,
 cooldown and action serial. A root composition instance associates with that
 cast; action completion is not Skill gameplay expiry. B and C each pin their own
-Skill definition/revision, components and explicit gameplay lifetime. A child
+Skill definition/revision and components. An explicit gameplay lifetime is needed
+when OnExpire is used; instant skills need no artificial duration. A child
 may emit several projectiles/statuses: those deliveries keep their own identities
 and refer to the child, rather than impersonating the child itself.
 
@@ -173,20 +180,22 @@ and budget counters within the existing delivery ownership boundary. Instance
 state holds lifecycle and provenance only. HP/MP, entity truth, clock and RNG
 remain supplied by the server. No new ledger, scheduler or application loop.
 
-### Root offense alternatives (OPEN_DECISION D1–D3)
+### Approved root offense choices (D1–D3)
 
-| Decision | Option A | Option B | Recommendation and compatibility |
-| --- | --- | --- | --- |
-| D1 capture S0 | Successful action start: prepare/validate payload before commit, publish only with successful admission; start-time buffs apply | Activation: expired/intervening buffs alter S0; cancelled casts never need S0; capture must complete before zero-percent activation dispatch | Recommend start for explicit cast commitment, but **Developer must choose**. Attack speed/CDR already pin at start in both options, so activation capture separates offense timing from action timing. 0% is after commit; 100% activation is before completion; expiry-before-read remains required. No implementation choice implied. |
-| D2 payload | Minimal reusable offense from existing DamageSnapshot excluding definition/rank; attach each B/C component at calculation time | New root source-context with raw resolved attributes + canonical modifier/config data, then a shared component assembler | Recommend A initially: reuse B0/B1 without numeric duplication. B gives cleaner ownership but risks resampling/normalizing differently and wider API design. Neither payload may include defender, RNG output, final damage or live entities. |
-| D3 revision pin | Pin the entire reachable bounded definition bundle/config at root acceptance | Resolve/pin each child at spawn against an explicit revision registry | Recommend bundle pin for deterministic replay and no hot-reload mutation; costs upfront validation/memory. Spawn pin reduces retained data but requires historical registry availability and receipts recording exact revision. Changing definitions never mutates admitted instances. |
+| Decision | USER_APPROVED selection | Tradeoff / alternative considered |
+| --- | --- | --- |
+| D1 capture S0 | Successful cast start. Prepare/validate offense before commit; bind once to the accepted root execution. Rejected admission leaves no committed snapshot, MP/cooldown or delivery mutation. Zero-percent activation observes the committed S0. | Activation-time capture would include intervening buff changes; it is not selected. Start-time attack speed/CDR and offense have one commitment boundary. |
+| D2 payload | Minimal reuse: separate component-independent offense from the existing snapshot/damage pipeline; derive each component through the existing calculator and validators. | A new offensive/damage resolver would duplicate authority and maintenance; it is excluded. Deep immutability is required, a new resolver framework is not. |
+| D3 revision pin | Immutable versioned bundle of reachable Skill definitions; share an already validated bundle where possible. | Spawn-time lookup risks hot-reload/replay drift. Detach/validate/freeze authored data once when building a bundle, then retain immutable references; do not deep-clone that bundle per cast, child or strike without need. |
 
 S0 must contain resolved attributes/physical/magic attack, canonical flat and
 bonus modifiers, damage settings/options, Crit chance/bonus, attacker offensive
-identity/level and config data. Deep clone/freeze all nested trees; `readonly`
-alone is insufficient. The D2 sketch includes `defenseConfig` because the current
+identity/level and config data. Detach mutable input and freeze retained nested data at capture/bundle creation;
+`readonly` alone is insufficient. Reuse validated immutable bundle references. The D2 sketch includes `defenseConfig` because the current
 calculation snapshot carries it: propose pinning immutable defense **rules/config**
-while reading defender **ratings/state** live; D7 must approve this separation.
+while reading defender **ratings/state** live, preserving the existing separation.
+Exact payload fields/public names need checkpoint contract review; D2 does not
+authorize broad config freezing or a new configuration ownership system.
 Do not freeze target-tag/status eligibility results: retain modifier predicates,
 evaluate them against B/C tags/type and current target at contact/tick.
 
@@ -194,9 +203,9 @@ Each child component supplies its own definition/base/scaling/perRank, rank,
 damage type/tags and trigger parameters. Assemble a component snapshot from S0
 without resolving caster Stats again. Multiple B0/B1 components share S0 but do
 not share a computed final amount or A's coefficients. DoT still applies its
-existing scope filtering and no-Crit/no-Dodge rules. Memoization, if any, keys by
-S0 identity + pinned component revision/rank/type/tags; never cache target damage
-or RNG outcomes. Retain S0 until all descendant instances, deliveries and pending
+existing scope filtering and no-Crit/no-Dodge rules. Do not add a cache for future
+use: shared immutable S0/bundle references are sufficient unless measurement
+justifies more work. Never cache target damage or RNG outcomes. Retain S0 until all descendant instances, deliveries and pending
 receipts end; release on root family quiescence or session disposal.
 
 | Input | Proposed root mode boundary |
@@ -206,8 +215,8 @@ receipts end; release on root family quiescence or session disposal.
 | Target HP, armor, MR, dodge, level, tags/statuses, faction, target generation | Live contact/tick validation and shared defense/HP APIs; no target state in S0 |
 | RNG | Caller seeded functions at existing eligibility/dodge/crit/position boundaries; no capture-time Crit roll; Dodge suppresses Crit/on-hit; DoT consumes neither |
 | Root action speed/CDR/cost | Existing start-time admission/commit; S0 does not overwrite action timing |
-| Child timing/positions | Pinned explicit child gameplay duration/delay and event origin; no implicit second AS scaling or movement tracking; D7 approves rules |
-| Restrictions/LOS/ownership | Root uses full action admission; emitted child uses authenticated receipt, live relation/target validation and mechanic-specific geometry/LOS; D7 decides child restriction policy |
+| Child timing/positions | Explicit lifetime only where OnExpire needs it; event-origin/delay details belong to child lifecycle/composition checkpoints. Do not add AS scaling or movement tracking in v1.1.1 |
+| Restrictions/LOS/ownership | Root uses full action admission; emitted child uses authenticated receipt, live relation/target validation and mechanic-specific geometry/LOS; remaining restriction/origin details need child-checkpoint review under D7 |
 
 ## 4. Composition, lifecycle and caller advancement
 
@@ -222,14 +231,14 @@ receipts end; release on root family quiescence or session disposal.
 | OnKill (P1) | `entity-defeated` after positive→zero HP | New attribution linking one defeating delivery to its Skill/root; do not infer killer from an unqualified entity event. |
 | Stack threshold / conditions (P1) | `EffectLifecycle.groups()` views and modifier filters | Atomic consume/admit and approved condition vocabulary needed; queries plus repeated remove are not an atomic trigger. Nonempty modifier conditions are rejected today. |
 
-### Lifecycle alternatives (OPEN_DECISION D4–D7)
+### Approved lifecycle direction and tradeoffs (D4–D7)
 
-| Topic | Option A | Option B | PROPOSED recommendation |
-| --- | --- | --- | --- |
-| D4 parent cancellation | Cancel untriggered links; spawned children/deliveries detached | Cascade cancellation to active descendants and pending deliveries | A matches emitted projectile/status survival; requires bounded reference retention. B offers explicit channel-like behavior but needs new selective teardown semantics. Never silently apply B to legacy deliveries. |
-| D5 lifetime ownership | Explicit definition gameplay lifetime, independent of action completion/delivery lifetime | Derive expiry from last owned delivery ending | A makes B→C deterministic even for no targets and different projectile lifetimes; adds definition validation. B is convenient but empty/piercing/DoT cases change expiry. Developer must decide whether deliveries may outlive instance expiry; recommend yes, retaining provenance/S0 until they end. |
-| D6 composition shape | Typed, bounded links with validated finite acyclic reachable bundle | Generic recursive graph/conditions and dynamic Skill references | A is the minimal A→B→C proof and simpler cost model. Reject A→B→A statically plus runtime depth/count guards. B is deferred until concrete use cases justify cycles/conditions. |
-| D7 emitted admission/source | Separate emitted-child admission using shared eligibility/geometry, allowing dead-but-registered source | Require voluntary-like liveness/restrictions for every child | A honors surviving offense without a second cast/slot/cost, but must specify stun/silence, origin/LOS and target policy. B suppresses chains after death and is a gameplay decision. Recommend A with fail-closed missing source/target and explicit event-origin geometry; no invented entity proxy. |
+| Decision | USER_APPROVED selection | Tradeoff / alternative considered |
+| --- | --- | --- |
+| D4 parent cancellation | Detached children: a spawned child has its own lifecycle and is not automatically cancelled when its parent ends. | Cascade cancellation needs extra ownership/teardown semantics and is not the default. Pre-spawn cancellation/receipt details are reviewed at lifecycle/trigger checkpoints. |
+| D5 lifetime ownership | Explicit gameplay lifetime when OnExpire is needed; no mandatory duration for instant skills. Deliveries may outlive a Skill instance. | Deriving Skill expiry from the last projectile/DoT would couple trigger timing to delivery fanout. Retain provenance/S0 while surviving deliveries need it. |
+| D6 composition shape | Simple bounded DAG; cycles prohibited; prioritize OnImpact and OnExpire. | A generic recursive graph/condition framework is excluded. Add only the link validation and guards needed by approved scenarios. |
+| D7 emitted admission/source | Triggered Child Execution, not another voluntary cast; no second MP/cooldown. Inherit S0, reuse live Core target/contact validation. Dead-but-registered source follows existing delivery policy; missing source rejects. | Repeating voluntary admission would introduce an action slot/cost or suppress already emitted delivery after death. No entity proxy, live offense fallback or duplicated validation. |
 
 Source defeat is not source removal: E7 `validateCombatHit` permits a dead source
 but requires its registered entity for faction policy. Root offense survival
@@ -237,20 +246,13 @@ therefore does not promise damage after registry removal. Recommend server keeps
 defeated source generations until deliveries finish; if missing, reject affected
 contact/child explicitly. Supporting removed sources would require a separately
 reviewed Combat identity/relationship contract, not synthetic CombatEntities.
-The voluntary-like liveness alternative in D7 would suppress descendants after
-source death and conflicts with the USER_APPROVED surviving-root use case; it
-cannot be selected without the Developer explicitly revising that requirement.
-D7 should settle the remaining emitted-safety checks, not silently reopen S0
-inheritance or substitute a new live offensive snapshot.
+D7 is approved and must not be reopened by implementation convenience.
 
-Under recommended D4/D5/D7 (still OPEN): before activation, root cancellation
-produces no trigger; after emission it does not delete detached children. Expired
-parent may create children only from its already accepted terminal event receipt,
-never arbitrary late external requests. Missing entity target rejects without
-retargeting; pinned ground origin can still produce spatial deliveries with live
-candidate validation. Session disposal cancels all pending instances/links, clears
-deliveries/receipts/S0 and suppresses subsequent spawn even during callbacks.
-Cancellation and disposal must not be interpreted as natural OnExpire.
+PROPOSED lifecycle details for later checkpoint review: before activation,
+root cancellation produces no trigger; a terminal expiry receipt can create its
+linked child exactly once, but arbitrary late requests cannot. Session disposal
+suppresses further spawn and clears retained references. Cancellation/disposal
+must not masquerade as natural OnExpire. These details are not v1.1.1 work.
 
 ### Reuse and public API delta
 
@@ -261,25 +263,25 @@ its serial frontier. Adapt existing `snapshot`/launch/strike/apply boundaries to
 select legacy mechanic capture or S0-backed component assembly. Use the same
 `hit`, `calculateDamage`, Combat validation, geometry and EffectLifecycle.
 
-Alternative: a separate composition session facade delegates all delivery to the
-same canonical internals. This isolates public shapes but creates two lifecycle
-owners if poorly designed. Recommend a thin facade associated with exactly one
-existing `SkillEffectRuntime`, not another runtime loop/store of bullets.
-D8 must settle association/private state versus a versioned runtime shape.
+D8 selects a minimal opt-in composition contract integrated into existing Core
+execution. A separate session facade/framework is not required or approved.
+Choose the smallest typed boundary needed for the current checkpoint, keeping
+legacy calls and `SkillEffectRuntime` consumers compatible. If this requires a
+large refactor or a new owner/framework, stop and present the tradeoff to the
+Developer before implementation.
 
-Potential public additions, **names not final**: `defineSkillComposition`,
-`startSkillComposition` (root admission through existing `executeSkill` semantics),
-read-only `SkillInstanceView`, `SkillCompositionEvent`, typed policies/budgets,
-instance cancellation/query. Trigger receipts are minted/consumed inside Core;
-network callers cannot submit an arbitrary `SkillActivatedEvent` to spawn a child.
-Creation binds the composition to the existing runtime; `advanceSkillEffects`,
-`nextSkillEffectBoundary`, `clearSkillEffects` must include its due work/cleanup.
-No second scheduler or polling clock. APIs are exported only through root/skills
-(and owning domain contracts as reviewed); internal kernels remain private.
+The sketches above are semantic examples, not approved exported symbol names.
+v1.1.1 exposes only reviewed capture/bind/derive types and functions needed for
+snapshot inheritance. Child definitions/instances/events, links, queues and
+cancellation/query APIs belong to later checkpoints, not a future-proof public
+surface in v1.1.1. Use root/domain exports only; keep internal kernels private.
+At composition implementation, extend the existing `advanceSkillEffects`,
+`nextSkillEffectBoundary` and `clearSkillEffects` ownership path as needed;
+trigger receipts stay Core-owned and cannot be arbitrary client activations.
 
 Skills owns child identity, triggers, provenance, root linkage and execution.
 Damage owns reusable offense capture/assembly and numeric calculation. Effects
-owns generic stack consumption if approved; Combat owns shared eligibility and
+owns generic stack consumption at its dedicated D10 checkpoint; Combat owns shared eligibility and
 HP transitions; Mechanics owns delivery geometry only. Existing architecture
 edges suffice if Effects emits neutral results and Skills consumes them; Effects
 must not import Skills. Contract-only records can live in Contracts after review.
@@ -290,7 +292,7 @@ Server owns authoritative entities, target lists, map, clock, seeded RNG, sessio
 orchestration and forwarding. Core emits gameplay timing/identity events usable
 by renderers; no assets, game-specific factions/names or editor runtime in Core.
 
-## 5. Determinism, budgets and atomicity (OPEN_DECISION D9)
+## 5. Approved execution model (D9) and proposed safety details
 
 Current order inside `advanceSkillEffects`: status advance/expiry → DoT →
 projectiles → emitters → AoE sequences; target IDs are sorted. Fixture caller
@@ -299,13 +301,17 @@ evidence of a particular integration order, not a nested-event total order.
 
 Compare inline recursive trigger dispatch (simple but reentrant, unbounded stack,
 mutation-sensitive order) with an internal bounded queue drained at the same
-caller boundary (explicit order/cost, additional records). Recommend queue.
+caller boundary (explicit order/cost, additional records). **D9 approves the
+bounded deterministic queue inside existing Core execution**; no scheduler,
+event engine or game loop is added. Remaining ordering/budget details below are
+proposals for v1.1.3, not a reason to build that queue during v1.1.1.
 Proposed stable key: timestamp, boundary phase, root admission sequence,
 parent event sequence, definition link order, occurrence, target ID. IDs alone
 must not make serial 10 sort before serial 2. Each trigger is drained after its
 own causal event completes, with generation ordering preventing child processing
-before parent. Preserve legacy phase order in legacy mode; D9 must approve exact
-placement of natural Skill expiry and zero-delay child activations in root mode.
+before parent. Preserve legacy phase order in legacy mode. **OPEN_DETAIL:** exact
+placement of natural Skill expiry and zero-delay child activations is reviewed
+with the safety/composition implementation under approved D9.
 
 Proposed sequence at one boundary: due status expiry before reads; ordered
 delivery HP write/defeat/restriction handling; contact outcome; bounded trigger
@@ -328,8 +334,9 @@ buffer notifications and honor disposal before each further spawn/delivery.
 No production magic limits are selected here. Existing max32 effects, modifier
 limits and DoT stack/group limits remain, but do not bound a Skill graph.
 Expose structured reason, root/instance/link/receipt IDs, boundary and budget
-dimension; server forwards diagnostics/telemetry. D9 approves reject versus
-abort semantics and count accounting, including duplicate/rejected attempts.
+dimension; server forwards diagnostics/telemetry. **OPEN_DETAIL:** reject versus
+abort semantics, limit values and count accounting (including duplicates/rejected
+attempts) require the dedicated checkpoint plan; D9 fixes the execution model.
 
 PROPOSED atomicity: validate pinned definitions, context and capacity before
 reserving receipt and child IDs; commit the complete child batch plus receipt
@@ -350,32 +357,34 @@ reconstruct historical live target state.
 
 ## 6. Capability matrix
 
-Status describes current Core, not the proposal. All GAP implementations remain
-BLOCKED on the named decisions; reuse rows require no new parallel mechanic.
+Status describes current Core, not approved future behavior. D1–D11 are approved;
+GAP implementations still require their own checkpoint plan and acceptance. The
+last column records approved direction plus remaining contract review, not missing
+approval of those decisions. Reuse rows require no new parallel mechanic.
 
-| Capability | Existing API & file/test evidence | Status (SUPPORTED / PARTIAL / GAP / UNVERIFIED) | Required semantic delta | Owning domain | Compatibility risk | Proposed checkpoint | Blocking decision |
+| Capability | Existing API & file/test evidence | Status (SUPPORTED / PARTIAL / GAP / UNVERIFIED) | Required semantic delta | Owning domain | Compatibility risk | Proposed checkpoint | Blocking decision / implementation review |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| P0 root snapshot capture/inheritance | E1 snapshot has no offense; E4/E5 mechanic captures | GAP | S0 capture + component assembly + inheritance | Damage / Skills | High: timing/numeric outcomes | 1.1.1–2 | D1–3, D7–8 |
-| P0 independent child identity/lifecycle | E1 one actor slot; E2 delivery stores only | GAP | Child instance and explicit lifetime, no actor slot | Skills | High: terminal semantics | 1.1.3 | D4–6, D8 |
-| P0 provenance | E2 action/effect IDs; E7 defeat lacks killer | PARTIAL | Root/parent/child/receipt/event attribution | Skills / Combat contracts | Event union consumers | 1.1.3–4 | D6, D8–9 |
-| P0 trigger dispatch | E2 closed effects, activation frontier; E3 timer delivery only | GAP | Authenticated OnImpact/OnExpire→child | Skills | High: safety and order | 1.1.4 | D4–9 |
-| P0 deterministic ordering | E7 seeded/coarse-fine tests, E9 timeline | PARTIAL | Total nested boundary order and causal queue | Skills | High: RNG/event changes | 1.1.5 | D9 |
-| P0 spawn/replay/budget safety | E1 serial, E2 activation dedupe, E6 status frontier | PARTIAL | Child receipts, depth/fanout/work limits | Skills | Memory/atomicity | 1.1.5 | D6, D9 |
-| P0 parent cancel/source death/session cleanup | E1 cancel, E2/E7 survive defeat/clear, E6 disposal | PARTIAL | Detached/cascade child policy, instance/S0 cleanup | Skills / Combat | High: death/removal distinction | 1.1.3–5 | D4–5, D7 |
-| P0 timed_object→radial projectiles reuse | E3 TimedObjectConfig/emitter; single-bullet emission test | SUPPORTED | None for existing delivery; multi-direction integration coverage future | Skills / Mechanics | Preserve emission snapshots | reuse in 1.1.4/7 | No delivery gap; D1 for root mode |
-| P0 projectile reuse | E2/E4/E7 launch/contact tests | SUPPORTED | Carry child provenance/S0 in opt-in mode | Skills / Mechanics / Damage | Preserve flight, Dodge, lifetime | 1.1.2/4/7 | D8 |
-| P0 instant AoE reuse | E2 ground lock and eligible cap assertions | SUPPORTED | Child origin contract only | Skills / Mechanics | Preserve target filtering | 1.1.4/7 | D7 |
-| P0 AoE sequence reuse | E4 exact per-strike values; E7 seeded comparison | SUPPORTED | Root-mode S0 source only | Skills / Mechanics | Legacy remains per-strike | 1.1.2/7 | D1, D8 |
-| P0 on-hit DoT reuse | E5 independent snapshots/FIFO/Magic defense | SUPPORTED | Root-mode assembly uses S0 | Effects / Skills / Damage | Preserve FIFO, no Crit/Dodge | 1.1.2/7 | D8 |
-| P0 modifiers/status lifecycle reuse | E6/E8 immutability/stack/expiry/source tests | SUPPORTED | None; distinguish status expiry from Skill expiry | Effects / Modifiers | Preserve stacking/expiry | reuse throughout | None |
-| P1 atomic group stack consume | E6 groups/remove; E5 consume_on_tick only | GAP | Consume N + child admission transaction | Effects / Skills | Group identity/refresh semantics | 1.1.6 candidate | D10 |
-| P1 conditional OnHit/Kill/threshold | E2/E5 hit gate; E7 defeat; E8 conditions rejected | PARTIAL | Typed conditions, kill attribution, receipt frequency | Skills / Effects / Combat | Event/RNG/cost fanout | 1.1.6 candidate | D6, D9–10 |
-| P1 upgrades/modifiers | E1 immutable new definitions/cooldown inheritance; E6/E8 modifier pipeline | PARTIAL | Generic upgrade policy not defined; authoring can produce valid replacement definitions today | Skills / Modifiers; content consumer | Rank/revision/live-action migration | deferred after 1.1.8 unless specified | D3, D10 scope |
-| P2 explicit Heal | E8 regen/clamp; E2/E6 closed payloads | GAP | Explicit validated heal transition/effect semantics | Combat / Effects / Skills | Resource/dead-target policy | deferred | D11 separate upgrade |
-| P2 lifesteal | E4 damage result/E7 HP transition; E2 no sustain payload | GAP | Authoritative damage-linked heal policy | Damage / Combat / Skills | Applied vs requested damage, defeat | deferred | D11 separate upgrade |
-| P2 Mana on Hit | E1 MP spend/E8 regen; E2 only on-hit DoT | GAP | Hit-gated MP gain transition | Stats / Combat / Skills | Dodge/overcap/dead source | deferred | D11 separate upgrade |
-| P2 visualization/debug | E2/E6 events have limited provenance | PARTIAL | Gameplay provenance usable by external overlays | Skills events; UI consumer | Additive event review | 1.1.8 handoff, UI deferred | D8–9 |
-| P2 Class/Tree authoring | E9 package ownership excludes content/editor | UNVERIFIED | External consumer feature inventory not audited; no Core engine proposed | Consumer/editor | Out of repository | deferred | Consumer scope |
+| P0 root snapshot capture/inheritance | E1 no offense in execution snapshot; E4/E5 mechanic captures | GAP | S0 capture/bind/component derive + opt-in delivery integration | Damage / Skills | High: timing/numeric outcomes | 1.1.1 | D1–3/D7–8 approved; concrete contract/plan review |
+| P0 independent child identity/lifecycle | E1 actor slot; E2 delivery stores only | GAP | Child instance, optional explicit lifetime, no actor slot | Skills | Terminal semantics | 1.1.2 | D4–5 approved; lifecycle plan |
+| P0 provenance | E2 action/effect IDs; E7 unqualified defeat | PARTIAL | Root snapshot provenance first; child/trigger attribution later | Skills / Combat contracts | Event union consumers | 1.1.1 root; 1.1.2–4 child | D3/D7 approved; no child machinery in 1.1.1 |
+| P0 trigger dispatch | E2 closed effects/frontier; E3 timed delivery | GAP | OnImpact/OnExpire→child | Skills | Safety/order | 1.1.4 | D6–9 approved; 1.1.2–3 required |
+| P0 deterministic ordering | E7 seeded/coarse-fine tests; E9 timeline | PARTIAL | Bounded nested queue/order in existing execution | Skills | RNG/event changes | 1.1.3 | D9 approved; exact phase order OPEN_DETAIL |
+| P0 spawn/replay/budget safety | E1 serial; E2 activation dedupe; E6 status frontier | PARTIAL | Child receipts, DAG/depth/fanout/work limits | Skills | Memory/atomicity | 1.1.3 | D6/D9 approved; limits/outcomes OPEN_DETAIL |
+| P0 parent cancel/source death/session cleanup | E1 cancel; E2/E7 survive defeat/clear; E6 dispose | PARTIAL | Child/S0 ownership and terminal cleanup | Skills / Combat | Death vs removal | 1.1.1 snapshot; 1.1.2–3 child | D4–5/D7 approved; no child policy implementation in 1.1.1 |
+| P0 timed_object→radial projectiles reuse | E3 emitter formula and one-bullet emission test | SUPPORTED | No new mechanic; root mode changes offense source only | Skills / Mechanics | Preserve legacy emission snapshot | 1.1.1 root mode; 1.1.4 composition | D1/D2/D8 approved; radial integration evidence needed |
+| P0 projectile reuse | E2/E4/E7 launch/contact tests | SUPPORTED | Root offense now, child provenance later | Skills / Mechanics / Damage | Preserve flight/Dodge/lifetime | 1.1.1; 1.1.4 | D2/D8 approved |
+| P0 instant AoE reuse | E2 ground lock and eligible cap | SUPPORTED | Root offense; later child origin contract | Skills / Mechanics | Preserve target filtering | 1.1.1; 1.1.4 | D7 approved |
+| P0 AoE sequence reuse | E4 20/40/60 strikes; E7 seeded comparison | SUPPORTED | Root-mode S0, legacy per-strike capture unchanged | Skills / Mechanics | Snapshot timing | 1.1.1 | D1/D2/D8 approved |
+| P0 on-hit DoT reuse | E5 snapshots/FIFO/live Magic defense | SUPPORTED | S0-derived component at apply in root mode | Effects / Skills / Damage | FIFO, no Crit/Dodge | 1.1.1 | D2/D8 approved |
+| P0 modifiers/status lifecycle reuse | E6/E8 immutable stack/expiry tests | SUPPORTED | None; status expiry is not Skill expiry | Effects / Modifiers | Preserve stacking/expiry | reuse throughout | No new mechanic |
+| P1 atomic group stack consume | E6 groups/remove; E5 tick-only FIFO | GAP | Atomic N-stack consumption/admission | Effects / Skills | Group/refresh identity | 1.1.5 | D10 approved; consume semantics OPEN_DETAIL |
+| P1 conditional OnHit/Kill/threshold | E2/E5 hit gate; E7 defeat; E8 rejects conditions | PARTIAL | Typed conditions/attribution/occurrence rules | Skills / Effects / Combat | RNG/fanout | 1.1.6 | D10 approved; condition contract review |
+| P1 Skill Upgrade/modifiers | E1 definition replacement/cooldown inheritance; E6/E8 modifiers | PARTIAL | Approved upgrade policy using existing pipelines | Skills / Modifiers; content consumer | Rank/revision migration | 1.1.7 | D3/D10 approved; upgrade semantics OPEN_DETAIL |
+| P2 explicit Heal | E8 regen/clamp; E2/E6 closed payloads | GAP | Validated explicit heal semantics | Combat / Effects / Skills | Resource/dead-target policy | separate Core phase | D11 approved deferral |
+| P2 lifesteal | E4 damage result; E7 HP transition; E2 no sustain | GAP | Applied-damage-linked heal policy | Damage / Combat / Skills | Overkill/defeat/caps | separate Core phase | D11 approved deferral |
+| P2 Mana on Hit | E1 MP spend; E8 regen; E2 on-hit DoT only | GAP | Hit-gated MP gain transition | Stats / Combat / Skills | Dodge/overcap/dead source | separate Core phase | D11 approved deferral |
+| P2 visualization/debug | E2/E6 limited event provenance | PARTIAL | Gameplay provenance for external overlays | Skills events; UI consumer | Additive event review | 1.1.8 handoff; UI external | No renderer/debug framework in Core |
+| P2 Class/Tree authoring | E9 content/editor outside package | UNVERIFIED | External feature inventory not audited | Consumer/editor | Outside repository | deferred | No Core runtime implementation |
 
 ### CORE_CAPABILITY_GAP register
 
@@ -386,54 +395,59 @@ approval dependency. No gap authorizes implementation in this checkpoint.
   through current E1/E4/E5: execution snapshot has no offense, E2 calls
   `snapshotDamage` at each mechanic boundary, and DamageSnapshot binds component
   definition/rank. Damage/Skills must introduce component-independent detached
-  offense and opt-in assembly. Approve D1–3/D7–8 before 1.1.1–2.
+  offense and opt-in assembly. D1–3/D7–8 are approved; v1.1.1 must still
+  receive its concrete implementation plan/contract review outside this docs PR.
 - **G2 — Independent triggered Skill lifecycle/dispatch (P0, BLOCKED).** E1
   execution owns an actor action slot; E2 closed `SkillGameplayEffect`/runtime
   has no child Skill, parent identity or natural Skill expiry; E3 only emits
   projectiles. Skills must add bounded instance/receipt/link semantics around
-  existing delivery internals, with D4–9 approval. Existing events/frontiers
+  existing delivery internals under approved D4–9 at v1.1.2–4. Existing events/frontiers
   cannot supply arbitrary replay or nested work budgets.
 - **G3 — Atomic N-stack consumption (P1, BLOCKED).** E6 exposes `groups` and
   per-instance `remove`, not all-or-nothing consume/admit; E5 FIFO shifts one
   stack after scheduled DoT tick. Effects owns a minimal transactional consume
-  result integrated by Skills; D10 must define group/source partition, selection
+  result integrated by Skills in v1.1.5 under approved D10. Its plan must define group/source partition, selection
   order, insufficient-stack behavior and rollback-before-spawn semantics.
 - **G4 — Explicit Heal (P2, BLOCKED/deferred).** E2 gameplay discriminants and
   E6 EffectDefinition accept damage/status/modifiers only; E7 damage requires
   nonnegative damage; E8 `updateCurrentResources` provides elapsed regen/clamp,
   not a heal event, target policy or revive semantics. Combat/Effects/Skills
-  need a separately reviewed explicit resource-effect contract (D11). Do not
+  need a separately reviewed explicit resource-effect contract in a later Core
+  phase; D11 approves deferral, not implementation. Do not
   emulate healing with negative damage, fake regen intervals or direct HP writes.
 - **G5 — Lifesteal (P2, BLOCKED/deferred).** E4 returns damage and E7 applies it,
   but E2 dispatch has no post-applied-damage sustain policy and E6 modifiers
   cannot express hit-resource transfers. Minimal Core proposal links eligible
   applied damage to a validated heal transition; Damage/Combat/Skills ownership,
-  D11 choices include overkill, DoT, dead source and caps. A consumer event
+  later-phase choices include overkill, DoT, dead source and caps (D11 deferral). A consumer event
   listener writing HP is a substitute mechanic, not support.
 - **G6 — Mana on Hit (P2, BLOCKED/deferred).** E1 only commits MP cost; E8 regen
   has no successful-hit gate; E2 `onHit` accepts DoT declarations only. A typed
   Core on-hit resource gain would reuse live MP/maxMana validation in Stats/
-  Combat/Skills, after D11 defines amount, caps, source liveness and eligibility.
+  Combat/Skills in the separate D11-deferred phase, after its own plan defines
+  amount, caps, source liveness and eligibility.
   Do not simulate it by refunding cost or adapting manaRegen.
 
 P1 generic conditions/upgrade behavior is PARTIAL, not claimed fully supported:
 existing filters and replacements work only within E1/E6/E8 contracts. A future
 specific unsupported condition must receive its own gap analysis before code.
 
-## 7. Compatibility and migration proposal (OPEN_DECISION D8)
+## 7. Compatibility under approved minimal opt-in (D8)
 
 Compare adding optional composition fields to the closed legacy definitions
 (small surface but changes accepted schema/unions and risks silent mode changes)
 with a separate versioned opt-in CompositionDefinition wrapping unchanged
-SkillEngineDefinition records. Recommend the wrapper. No composition means exact
+SkillEngineDefinition records. These are implementation shapes to review, not a
+mandated wrapper/facade framework: D8 requires the smallest explicit opt-in that
+preserves current callers and schemas. No composition means exact
 v1.0 mechanic-owned snapshots and costs. Reject unknown mode/version; never
 infer root mode from tags, child IDs or a consumer callback.
 
 | Protected surface | Future plan requiring review |
 | --- | --- |
-| SkillEngineDefinition / SkillGameplayEffect | Preserve closed legacy schemas/discriminants; wrapper carries links/lifetimes and references validated definitions; no `spawn_skill` in legacy union without separate approval |
+| SkillEngineDefinition / SkillGameplayEffect | Preserve closed legacy schemas/discriminants; reviewed opt-in carries links/optional lifetimes and references validated definitions; no `spawn_skill` in legacy union without separate approval |
 | SkillExecutionSnapshot / activation event | Preserve existing action metadata and zero/100% behavior; root association is opt-in, not proof old casts captured offense |
-| SkillEffectRuntime / environment | Public container shape is inherited, including visible stores with internal types; additive fields can break literal construction. Prefer private association plus new typed facade; audit consumer object literals/callbacks and cancellation before choosing D8 |
+| SkillEffectRuntime / environment | Public container shape is inherited, including visible stores with internal types; additive fields can break literal construction. Use the smallest compatible association/opt-in; no extra facade is required. Review object literals/callbacks and cancellation before changing the runtime shape |
 | DamageSnapshot | Preserve legacy definition/rank/attacker/config/options; add separate reusable payload, not reinterpret existing fields or change `snapshotActorDamage` return semantics |
 | EffectDefinition / lifecycle | Preserve stack/refresh/expiry/restrictions; no child masquerading as a status and no generic consume via repeated remove |
 | Public exports / declarations | Add only reviewed root/domain APIs, strict installed TS without Node ambient types, ESM and blocked deep-import tests; widening event unions requires exhaustive-switch consumer review |
@@ -455,68 +469,135 @@ editor/server together only in a later reviewed cross-repo change: installed
 package compile, replay fixtures, event consumption, explicit pin update and
 rollback to old pin/content. This phase does not inspect or modify that consumer.
 
-## 8. Developer decision requests and proposed checkpoints
+## 8. Developer-approved decisions and checkpoint boundaries
 
-All recommendations above remain **OPEN_DECISION**. Approval should record the
-selected option and expected behavior, not a blanket permission to bypass checks.
+Decision authority: the Developer's explicit “RPG Core v1.1 — Developer
+Architecture Decisions (Solo Dev)” instruction, 2026-10-16, recorded here in
+PR #3. All D1–D11 are **USER_APPROVED**. This does not claim that the PR has been
+approved/merged, that exact sketch symbols were accepted, or that implementation
+has started. Priority: **Minimal Implementation → Reuse Existing Core →
+Deterministic → Backward Compatible**. No abstraction solely for future-proofing.
 
-| Decision | Required answer / blocks |
+| Decision | Approved direction |
 | --- | --- |
-| D1 | Successful-start or activation S0 capture, exact expiry/zero/100% ordering; blocks offense implementation |
-| D2 | Reusable DamageSnapshot-derived payload or new source-context; deep immutable data/config boundary |
-| D3 | Pin reachable bundle at root acceptance or child revision at spawn; rank/hot-reload policy |
-| D4 | Detached spawned children or cascading parent cancellation; policy before/after trigger |
-| D5 | Explicit Skill lifetime or last-delivery expiry; whether emitted deliveries outlive expired instance |
-| D6 | Bounded acyclic OnImpact/OnExpire links first, or broader graph; occurrence/target multiplicity and wall/no-target impact |
-| D7 | Child emitted admission: dead source, missing source, stun/silence, event origin/LOS, timing/AS and defense config pin policy |
-| D8 | Opt-in wrapper and thin facade association, future API/event exports and consumer migration compatibility |
-| D9 | Same-time phase total order, queue/reentrancy, receipt compaction, budget accounting/exhaustion and atomic spawn outcomes |
-| D10 | Approve/defer P1 stack consume/conditions/upgrades; no implicit P0 expansion |
-| D11 | Explicitly defer Heal/lifesteal/Mana on Hit or commission separate audited upgrade plans |
+| D1 | Capture Root Offensive Snapshot once at successful cast start. |
+| D2 | Minimal component-independent offense extraction from the current pipeline; no new offensive/damage resolver. |
+| D3 | Pin reachable definitions in an immutable versioned bundle; share validated bundles and avoid repeated unnecessary deep clones. |
+| D4 | Detached children with independent lifecycle; parent ending does not automatically cancel spawned children. |
+| D5 | Explicit gameplay lifetime when OnExpire needs it; instant skills need no artificial duration; deliveries may outlive instances. |
+| D6 | Simple bounded DAG, no cycles; OnImpact and OnExpire first. |
+| D7 | Triggered child execution, no new voluntary cast or second MP/cooldown; same S0, existing live target/contact validation; dead registered source follows delivery policy, missing source rejects. |
+| D8 | Minimal opt-in composition contract preserving v1.0; no unnecessary framework/facade. |
+| D9 | Bounded deterministic queue inside existing Core execution; no second scheduler/event engine/game loop. |
+| D10 | Stack Consumption, Conditional Triggers and Skill Upgrade stay in v1.1, each at its own checkpoint. |
+| D11 | Heal, Lifesteal and Mana on Hit are deferred to a separate Core phase. |
 
-Suggested sequence is a proposal, not authorization or an existing official
-roadmap. Recheck source drift at every checkpoint; do not begin 1.1.1 here.
+### Roadmap alignment
 
-| Checkpoint | Smallest reviewable result | Dependencies / principal risk |
+The earlier agent-proposed split (snapshot assembly in 1.1.2, lifecycle in 1.1.3,
+combined P1/deferred upgrades) is superseded by the Developer's checkpoint scope
+in the supplied v1.1.1 task and this decision record. The table below reflects
+that scope; it does not authorize further renumbering, scope expansion or an
+automatic next checkpoint. If work needs a large refactor or another checkpoint's
+mechanic, report the tradeoff and wait for Developer approval.
+
+| Checkpoint | Scope / acceptance boundary | Dependencies / principal risk |
 | --- | --- | --- |
-| v1.1.1 | Approved contract/compatibility design → opt-in definitions, validators, payload contracts | D1–3/D6–8; closed schema, preservation and installed type checks |
-| v1.1.2 | S0 capture/component assembly through existing delivery boundaries | D1–3/D7; no caster resampling, no legacy timing drift |
-| v1.1.3 | Independent instances, identity/provenance, lifetime/cancel/cleanup | D4–5/D7–8; action slot separation, retained S0 ownership |
-| v1.1.4 | Bounded OnImpact→B, OnExpire→C vertical slice using existing AoE/radial delivery | 1.1.2–3, D6/D9; event origin and no-target/Dodge distinction |
-| v1.1.5 | Receipt replay, bounded same-time queue, cycle/work/fanout protection | D9; must accompany executable triggers before runtime acceptance, not postpone safety until later shipping |
-| v1.1.6 | Optional P1 slice only if separately approved; otherwise harden P0 edge cases | D10; atomic stack consume and kill/condition attribution can expand scope |
-| v1.1.7 | Legacy regression, boundary/RNG determinism and installed consumer acceptance | All runtime decisions; exact old behavior and declaration/legacy preservation |
-| v1.1.8 | Package/API docs and cross-repo upgrade handoff with reviewed server/editor plan | No automatic pin update/release; measure budgets and document remaining gaps |
+| v1.1.0 | Foundation audit, architecture decisions and checkpoint acceptance documentation; this PR only | No runtime or exports changed; no auto-merge |
+| v1.1.1 | **Root Snapshot Inheritance:** successful-start capture/bind/derive, minimal opt-in integration through current delivery paths; section 9 acceptance | D1–3/D7–8; immutable provenance, live defense, legacy compatibility; no child runtime |
+| v1.1.2 | Child Skill Instance/lifecycle, identity, lifetime and detached ownership | D3–5/D7; no extra actor action slots; retain S0 for surviving deliveries |
+| v1.1.3 | Trigger safety: bounded deterministic queue, receipts/replay, DAG/cycle/fanout/work guards | D6/D9; exact order/limits/outcomes reviewed here; required before runnable composition acceptance |
+| v1.1.4 | Child dispatch/composition: OnImpact→B, OnExpire→C using existing AoE/radial delivery | 1.1.1–3; A→B→C runtime proof, no duplicate mechanics |
+| v1.1.5 | Stack Consumption, dedicated checkpoint | D10; atomic N-stack semantics and spawn admission; preserve DoT FIFO |
+| v1.1.6 | Conditional Triggers, dedicated checkpoint | D10; typed conditions/attribution and deterministic occurrence rules |
+| v1.1.7 | Skill Upgrade, dedicated checkpoint | D3/D10; pinned revisions, rank/modifier/cooldown migration without duplicate engines |
+| v1.1.8 | Integration/compatibility evidence and documentation/consumer handoff across approved v1.1 capabilities | Regression/consumer checks also run at each earlier code checkpoint; no automatic release/editor pin update |
 
-## 9. Future implementation acceptance matrix — NOT EXECUTED
+Exact later-checkpoint acceptance is reviewed in its own task. This table does
+not move mandatory verification out of v1.1.1 or introduce new mechanics in it.
 
-These are expected observations to test with actual Core, deterministic caller
-adapters and no assets/alternate engines. Pending-policy cases become exact
-assertions only after the relevant Developer decision is recorded.
+## 9. v1.1.1 — Root Snapshot Inheritance: scope and acceptance
 
-| Case | Expected observation | Checkpoint / decision |
+**Future code checkpoint; NOT IMPLEMENTED / NOT EXECUTED in PR #3.**
+D1–D11 direction is approved. Exact public symbols/type signatures and the minimal
+changed-file/preservation plan are reviewed before implementation; the sketches
+in section 3 do not preapprove a framework or an entire child API. The latest
+Developer instruction authorizes this documentation update only.
+
+### Included scope
+
+1. Extract component-independent offensive inputs using the existing Damage,
+   Modifier and Stat pipeline; no formula, balance or resolver replacement.
+2. Capture S0 once at successful cast start, bind it to trusted root execution
+   identity, capture timestamp and configVersion, and keep it detached/deep
+   immutable. Rejected casts commit no root snapshot; replay cannot recapture.
+3. Reuse that S0 to derive valid DamageSnapshots for at least two independent
+   components with their own definitions, coefficients, rank, type and tags.
+   Share validated immutable bundle references where needed; do not build DAG
+   traversal/child machinery merely to demonstrate two components.
+4. Add the minimal opt-in path through existing direct, melee, projectile,
+   instant AoE, timed AoE sequence, timed object and on-hit DoT delivery. Root
+   mode changes the offense source, not geometry, hit validation, defense or RNG.
+5. Validate provenance, identity/version/session isolation, finite payload and
+   existing modifier budgets; reject missing/forged/rebound/mismatched S0 with
+   stable diagnostics and no live-offense fallback or partial mutation.
+6. Keep target HP/defense/status/faction/eligibility live and use existing source
+   defeat/removal and session cleanup behavior for already emitted deliveries.
+7. Add only necessary public root/domain exports, installed consumer evidence,
+   focused tests and checkpoint notes, including the future
+   `docs/RPG_CORE_V1.1.1_ROOT_SNAPSHOT.md`. Keep legacy declarations/forwarders and
+   provenance intact; review narrowly changed fingerprints with targeted evidence.
+
+Excluded: ChildSkillInstance/lifecycle (1.1.2), trigger queue/safety (1.1.3),
+Skill→Skill dispatch/graph execution (1.1.4), stack consumption (1.1.5),
+conditional triggers (1.1.6), Skill Upgrade (1.1.7), and D11-deferred sustain.
+No new child action slots/cost policies, scheduler, event engine, UI/editor, assets,
+persistence, package bump/release or editor dependency update.
+
+### Acceptance S1–S12 — expected observations, not test results
+
+Use actual Core APIs and existing fixtures with deterministic caller adapters.
+Child-like B/C mean independent Damage Components, not fake child execution.
+
+| ID | Scenario | Required observation |
 | --- | --- | --- |
-| A→B→C | Three distinct pinned definitions/instances and root/parent/receipt IDs; OnImpact activates B at impact origin; natural B expiry activates C radial delivery; A action completion is independent; one root MP/cooldown charge, no child actor slots | 1.1.3–5, D4–6/D9 |
-| S0 capture | Change gear/buff before activation and between generations: start vs activation selects D1's expected S0 exactly; count captures once; B/C never call live offense resolver even after source death | 1.1.2/4, D1–2/D7 |
-| Components and live defense | B and C use different coefficients/ranks/tags against same S0; independently calculate expected B0/B1 with actual Core; mutate armor/MR/dodge/HP/faction/generation before contact and observe live defense/eligibility; no inherited finalDamage | 1.1.2/7 |
-| Cancel before/after trigger | Before accepted trigger: no child. After spawn: recommended detached child survives; cascade alternative must assert its approved terminal behavior; cancellation never emits natural expiry trigger | 1.1.3–5, D4–5 |
-| Source/target/session | Dead-but-registered source retains S0 under D7; missing source/target explicitly rejects without fake entity/retarget; disposal suppresses pending and callback-time spawn, clears references, repeated dispose inert | 1.1.3–5, D7 |
-| Duplicate/conflicting receipts | Same accepted receipt yields no second child/cost/damage/RNG; conflicting payload rejects; rejected/stale receipts cannot revive ended instances; new session generation isolates IDs | 1.1.5, D9 |
-| Cycle and exhaustion | Reject A→B→A bundle; runtime guard catches malformed/dynamic ancestry; each budget fails with approved deterministic reason, bounded work/no partial child batch; prior damage not rolled back | 1.1.5, D6/D9 |
-| Same timestamp / ticks | Expiry, impact, defeat/stun, activation 0/100 and zero-delay descendants produce identical event order, RNG call counts/values and HP for coarse/fine caller partitioning with same seed/external mutations | 1.1.5/7, D9 |
-| Legacy compatibility | Existing projectile B0 20 despite gear/death, emitter B0 50 at emission, sequence 20/40/60, DoT FIFO/no Crit-Dodge, status expiry, slot/cost/cooldown and pinned headless result remain unchanged in legacy mode | 1.1.7, E1–E8 |
-| Radial coverage | More than one direction, angleOffset, wall/lifetime/contact behavior and session disposal use canonical emitter/projectile paths with deterministic expected headings/contacts | 1.1.4/7; adds evidence beyond E3's one-bullet fixture |
-| P1 consume (if approved) | Insufficient stacks leaves group/receipt/children unchanged; exact N consume + spawn atomic; per-source partition, FIFO/selection and expiry follow D10; unchanged DoT FIFO | 1.1.6, D10 |
-| Installed consumer | Public root/domain imports only, strict declarations without Node ambient types, native ESM, all archived forwarders and blocked deep imports; no app dependencies; exhaustive event-switch migration evidence | 1.1.7–8, D8 |
+| S1 | Successful-start capture / rejection / replay | Exactly one committed S0 per accepted root at start, including activation 0/100; failed admission has no committed root state or resource/delivery mutation; retry/dispatch does not recapture or double-charge. |
+| S2 | Gear, buff and offensive Stats change after S0 | Derived components and later root-mode emissions/strikes/applications retain S0; offensive adapter is not called again at those boundaries. |
+| S3 | B-like AoE and C-like radial components | Same root offensive provenance/values, different pinned definitions/scaling/ranks/type/tags and corresponding real-Core B0/B1 results; never pass A's finalDamage or lock B/C to A's coefficients. Label evidence `SNAPSHOT_INHERITANCE_VERIFIED_ONLY`. |
+| S4 | Input/alias mutation | Mutating original input, reused adapter objects, clones or public snapshot views cannot change retained S0 or derived results; no mutable alias into shared validated definitions. |
+| S5 | Target changes after capture | Live HP, armor/MR, Dodge, status/tag filters, faction and generation/eligibility affect the real contact/tick; no target outcome is frozen in S0. |
+| S6 | All existing delivery modes under opt-in | Direct/melee/projectile/instant AoE/sequence/timed emitter/on-hit DoT all derive from S0; canonical collision/lifetime/FIFO/expiry remain intact; radial uses existing emitter/projectile implementation. |
+| S7 | Source defeated after valid emission | Already emitted/scheduled delivery retains S0 under current policy; registered dead source and missing source are distinguished; missing source rejects and session disposal prevents later work. No new-child lifecycle claim. |
+| S8 | Invalid identity/provenance/payload | Forged/rebound handle, wrong root/config/session, missing or invalid/nonfinite/over-budget payload fails closed with stable diagnostics; no live fallback, extra RNG, HP/MP/cooldown or partial delivery. |
+| S9 | Sessions / roots | Two concurrent sessions and roots with different stats/versions remain isolated; same-root component derivation deterministic; no global snapshot cache. |
+| S10 | Legacy opt-out | Existing per-mechanic timing/events/cost/cooldown/activation/cancel remain unchanged, especially emitter emission-time and sequence per-strike snapshots; existing headless hash preserved. |
+| S11 | Coarse/fine advancement | Same seed and same externally partitioned inputs give identical root-mode event order, RNG calls and HP/damage through current Core advancement. No separate clock/loop. |
+| S12 | Installed package | Public capture→bind/derive path compiles/runs using root/domain exports without Node ambient types; ESM, blocked deep imports and archived legacy forwarders preserved. |
 
-Future delivery runs relevant domain/integration tests, build/typecheck,
-architecture/preservation, external consumer and full `npm run verify`. Changed
-behavior must have targeted assertions before a narrowly reviewed preservation
-update; never fake PASS from schema validation or zero selected suites.
+Definition of Done: all S1–S12 have concrete test evidence (combine overlapping
+invariants rather than duplicate suites); targeted changed-area tests and one
+final full `npm run verify` PASS; `git diff --check` clean; API/compatibility and
+narrow preservation changes reviewed. Report exact changed files, public API,
+base/commit/PR, D1–D3/D7–D8 decision references and remaining limits. Stop at
+v1.1.1; do not claim `NESTED_SKILL_EXECUTION_VERIFIED`, start 1.1.2, merge or release.
+If acceptance requires a large refactor or out-of-scope mechanic, report the
+tradeoff and wait; never weaken tests/validation or substitute an engine.
+
+### Later-checkpoint evidence, kept separate
+
+| Scenario | Owning checkpoint / expected observation |
+| --- | --- |
+| Real A→B→C | 1.1.2–4: independent instances/definitions and provenance; OnImpact activates B, explicit B expiry activates C; same S0 and no second cost/action slot. |
+| Detached ownership and lifetime | 1.1.2/4: parent end does not cancel spawned children; instant skills need no artificial duration; deliveries can outlive instances; cleanup still terminal. |
+| Receipt replay / DAG / budgets | 1.1.3–4: duplicate inert, conflict rejects, cycles rejected, bounded deterministic queue/work/fanout, no partial child spawn; explicit approved failure outcomes. |
+| Same-time trigger ordering | 1.1.3–4: expiry/impact/defeat/stun/zero-delay child cases have deterministic events/RNG/HP; preserve legacy order. |
+| Stack consume / conditions / upgrades | 1.1.5 / 1.1.6 / 1.1.7 respectively: each has its own approved contract and real-Core acceptance, without duplicating engines or changing DoT FIFO implicitly. |
+| Cross-capability / consumer handoff | 1.1.8: verify combined v1.1 behavior and compatibility; earlier checkpoints still run their own mandatory full verification. |
 
 ## 10. Validation, limitations and handoff
 
-Actual commands/results for this checkpoint:
+Original v1.1.0 audit commands/results (retained evidence, not rerun for the
+Developer-decision documentation update):
 
 | Command / check | Result |
 | --- | --- |
@@ -527,16 +608,28 @@ Actual commands/results for this checkpoint:
 | `npm run check:architecture` | PASS, 41 modules, no runtime cycles; three existing contract-only type cycles reported |
 | `git diff --check` and local Markdown file-link / evidence-reference check | PASS; scope restricted to this new proposal |
 
-Full verify/build/preservation/consumer were not rerun: task explicitly requests
-lightweight validation for docs-only proposal. Historical coverage reports are
-not fresh execution results. No new nested-skill tests or mechanics exist here.
+Current Developer-decision documentation update validation (2026-10-16):
+
+| Command / check | Result |
+| --- | --- |
+| `npm run verify` | PASS: build, Core/test types, architecture (41 modules, no runtime cycles; three existing type-only cycles), preservation (27 modules, declarations unchanged), 162 tests / 18 files, deterministic example and installed external consumer |
+| Example / consumer | PASS: target HP 70; consumer types, native ESM/public domains, 27 legacy paths and blocked deep imports |
+| `git diff --check`; Markdown / decision / scope check | PASS: 52 local file links resolve, balanced fences, D1–D11 / S1–S12 / v1.1.0–v1.1.8 present; only this document changed |
+
+The full verification checks existing Core behavior, not implementation of the
+future acceptance matrix. Historical coverage reports are not fresh execution
+results. No new nested-skill tests or mechanics exist here.
 Multi-bullet radial integration, external consumer state, production budget sizing,
-crash recovery and all open policy decisions remain outside verified evidence.
+crash recovery and remaining OPEN_DETAIL policies remain outside verified runtime
+evidence. D1–D11 architecture direction is now approved; no runtime is added.
 
 Changed file: `docs/RPG_CORE_V1.1_FOUNDATION.md`, to supply the source-backed
 capability matrix, type sketches, compatibility options, decisions and future
 acceptance handoff. Public API/behavior/legacy compatibility impact: **none**.
-Proposal checkpoint: **READY for Developer review**; G1–G6 dependent upgrades:
-**BLOCKED** pending approved plans. P0 reuse is supported; child composition and
-root inheritance are not implemented. **STOP: no merge, v1.1.1, package publication,
-release or editor dependency update.**
+Documentation checkpoint: **READY for Developer review**. D1–D11 are recorded
+as approved; G1–G6 still describe unimplemented capabilities. Implementation
+requires the separate checkpoint plan/contract review, and G4–G6 remain deferred
+by D11. P0 reuse is supported; child composition and
+root inheritance are not implemented. **STOP: no runtime implementation in this
+PR, automatic start of v1.1.1, merge, package publication, release or editor
+dependency update.**
