@@ -344,12 +344,12 @@
         "25fe3a7378eb5eded618e3ea4240f30c982312dcd8dfaba24285c0b6269eabff",
         "2b3ca040833cbe062b4487a3a39e7dcc5f919b1c987654f16ce1f9fb282b8c7d",
         "85f6ed045ece55e5467915879fa9583b95a6f1ab4cb2975ee474b19330b989ef",
+        "8740ec796abfecd303afef2dc1ee0872fc5ceb1a17c04017c1a86fbfd9c7e4db",
         "8ee20dedcc2767c8e2dc8bca02387947a14cf1722f7076832c703eda19c0fad2",
         "8f24dc4e63f1cf24249c1e1d0d14f1d0ae19a98859fabf9d747871a1a7caac77",
         "9bed3d12152decf7e88b8a9ff3e80385d5464ee5f0034fd0b10a6b7d06306fee",
         "ad77085d05f68c7d4422389adb783ac77e226527266d26dc310fbe9a30777a1a",
         "c91ad0abdc811f37e937b9ba05970a7cfda5d1fa1da8d32f6ba46c93fa87a455",
-        "d4491827c53972a6863995831ff2a62fb5dfae56a0635033039ef846085305d5",
         "f035ce048b6ab59861d11e46ccefbdaa95794733557f87dbd1ed771d83916f71"
       ],
       "approvedChange": {
@@ -423,6 +423,18 @@
                 "after": "d4491827c53972a6863995831ff2a62fb5dfae56a0635033039ef846085305d5"
               }
             ]
+          },
+          {
+            "checkpoint": "v1.1.6",
+            "baseCommit": "a59d7f60174823201dca69fae7280214fe1e3b6e",
+            "authority": "Developer acceptance of v1.1.5 and v1.1.6 delta-plan approval C1-C7 option A with minimal constraints, 2026-10-16; docs/RPG_CORE_V1.1.6_CONDITIONAL_TRIGGERS.md",
+            "declarations": [
+              {
+                "name": "executeSkill",
+                "before": "d4491827c53972a6863995831ff2a62fb5dfae56a0635033039ef846085305d5",
+                "after": "8740ec796abfecd303afef2dc1ee0872fc5ceb1a17c04017c1a86fbfd9c7e4db"
+              }
+            ]
           }
         ]
       }
@@ -435,32 +447,32 @@
       "declarations": [
         "07920f2e4d65f242aaf56d80fb615addee300236dcf23d7bc48c50d123eb91de",
         "0c9121311616b98729f64070ec98fae2dba2c5f700f51414346c9136840bde2c",
+        "0cc12c85178a38cbcfe3f7ae4dee46e3ed4fe1ed8e9aa61989cf8eae3946eb07",
         "166b106d11a9ba04f116bc1669ab4672a731518a9f05112b555ff5884012f726",
         "17067d856e4d37eac0e402c670e8e6ec0d1d099da13670b8db8af286d6395764",
         "1c135c498e1ff8aa3126689c014cbae95fe5f3b3430f8d7a89b62cf9ad3339b0",
-        "1f9467fea19975a8ea5c7aa323cab8890b036ce67e0340c3a2bf3d832e7bbf79",
         "3f1945742cd70e5529fbb61fc965dcfff016459f325ec1bf2684c63a0fce4985",
+        "3f1e3bfc371ce4d2fc643cb27b09a92ecad95343899ebee967895d8c0c418d06",
         "497e66b613ccfc0ccfdef8c8a5a5453967a4a3982b3b85bfaeb594ab7680ee73",
         "4d26efb7c5890b33ce0848a3cb7116043fa542b177dd77704c676a3ce9897b23",
-        "53f4e65be46af73aa708a7fbb14108a6cd263f08c8e79abf1531a51d85d9b78f",
         "60186253213fbd14e294cbbb21f8375e20fd5b40f8c75a58332e7d02c5af2b83",
-        "60ccabc05405195269936ab2328e33c7ac8aa2eb784cf9b5d0a7d0fd500832b0",
         "64ddb796bd4744f5b947a0515d05726cbc26a6114cf40a68e100b1887c07657e",
         "69eeb0f21dcbe1b7625a0cf96ec7f46ff9ca370c21cedcd7dbf629d01733878e",
         "72d6b60800c26218b41401ca01925e39dace813fde1a65fb716c1e60ff363f72",
         "75401b32628dc80d7b734618e9f7b92ee0997a111f6fb73fc52429a4f19f0609",
         "820ba13db287bf25e3f1c8208f0248719212ad6a9a39119dd4d5fd36bfdd89f2",
+        "8a9b9cb1a3bc302bd487330831eb2da28e4ebf6cf079a88c95867f70c57c8b92",
         "8e3831d1ce1f0af61e793e4290d6a21e429d5f7029327e3785538e05f968708a",
-        "9892495e0a644f6dd0b3e5f8182a65259b223d97b35ab870c6d0c0276d9a41c0",
+        "a60661ade14b13dc21cf7d8e36ed154d2b2f5b6b2c5137f5e33b07271aa35912",
         "b355daa0b3619fde1351607961aa4b581fe88f4da3f75bc6f3e5e49b9b60e509",
         "b8c5beb50aa94023a4dfad989100de5d667ff824311784391213ca73a67ca2fb",
         "bc3c8aba7ab328e17ac68e9b7056431a153bc5236806daeb797da4648c601d79",
         "be896081bc4d9fff540eec4918856a5be37e903ec13746692e7750acbace9515",
+        "ca1b36f9e34eafc6a90affa8b6c933885f314e2ce206c0c242f46a472d8aeff0",
         "d622a18aa6db839ae3a811a3767ca7172276bf6da111a4a8cde4dacb7208f85f",
-        "d6b3bcd47bc56a408f32f82d41abd44a7cb3aaf3ef8347e24adcd45354835d96",
-        "eaf21d3e6ae0f1be28bce6cb91b17b0b7acbf1f56d0d6a4bba3b07a35f41b769",
         "f3e21a4b409028b2d6172b7f2d7040e3f7e27b528408fa49837fdc21d04f9df2",
-        "fdd8f45dc52a3688155ace03dd0b512564f5f81d06d99f8182307c87651b115f"
+        "fdd8f45dc52a3688155ace03dd0b512564f5f81d06d99f8182307c87651b115f",
+        "fe5354ce6a3752ea6914246a6e519c3195adbd937a3ff798ae77c5f2acea6422"
       ],
       "approvedChange": {
         "checkpoint": "v1.1.1",
@@ -658,6 +670,43 @@
               {
                 "name": "consumeStackEffect",
                 "after": "be896081bc4d9fff540eec4918856a5be37e903ec13746692e7750acbace9515"
+              }
+            ]
+          },
+          {
+            "checkpoint": "v1.1.6",
+            "baseCommit": "a59d7f60174823201dca69fae7280214fe1e3b6e",
+            "authority": "Developer acceptance of v1.1.5 and v1.1.6 delta-plan approval C1-C7 option A with minimal constraints, 2026-10-16; docs/RPG_CORE_V1.1.6_CONDITIONAL_TRIGGERS.md",
+            "declarations": [
+              {
+                "name": "snapshot",
+                "before": "60ccabc05405195269936ab2328e33c7ac8aa2eb784cf9b5d0a7d0fd500832b0",
+                "after": "fe5354ce6a3752ea6914246a6e519c3195adbd937a3ff798ae77c5f2acea6422"
+              },
+              {
+                "name": "applyDamage",
+                "before": "53f4e65be46af73aa708a7fbb14108a6cd263f08c8e79abf1531a51d85d9b78f",
+                "after": "0cc12c85178a38cbcfe3f7ae4dee46e3ed4fe1ed8e9aa61989cf8eae3946eb07"
+              },
+              {
+                "name": "hit",
+                "before": "1f9467fea19975a8ea5c7aa323cab8890b036ce67e0340c3a2bf3d832e7bbf79",
+                "after": "3f1e3bfc371ce4d2fc643cb27b09a92ecad95343899ebee967895d8c0c418d06"
+              },
+              {
+                "name": "dispatchGameplayEffects",
+                "before": "d6b3bcd47bc56a408f32f82d41abd44a7cb3aaf3ef8347e24adcd45354835d96",
+                "after": "a60661ade14b13dc21cf7d8e36ed154d2b2f5b6b2c5137f5e33b07271aa35912"
+              },
+              {
+                "name": "childDispatcher",
+                "before": "eaf21d3e6ae0f1be28bce6cb91b17b0b7acbf1f56d0d6a4bba3b07a35f41b769",
+                "after": "8a9b9cb1a3bc302bd487330831eb2da28e4ebf6cf079a88c95867f70c57c8b92"
+              },
+              {
+                "name": "advanceSkillEffects",
+                "before": "9892495e0a644f6dd0b3e5f8182a65259b223d97b35ab870c6d0c0276d9a41c0",
+                "after": "ca1b36f9e34eafc6a90affa8b6c933885f314e2ce206c0c242f46a472d8aeff0"
               }
             ]
           }

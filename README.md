@@ -175,3 +175,11 @@ Trigger intents are opt-in through `SkillExecutionEnvironment.triggers`, using a
 supports projectile entity-contact OnImpact and natural Skill lifetime OnExpire;
 accepted intents do not execute children. See the [contract and evidence](docs/RPG_CORE_V1.1.3_TRIGGER_SAFETY.md)
 and [installed-package example](examples/skill-trigger.ts).
+
+
+v1.1.6 extends the existing opt-in trigger bundle with canonical landed `OnHit`,
+fatal-transition `OnKill` and Skill-Apply rising-edge `OnStackThreshold`, plus a
+source-scoped stack predicate and explicit immediate exact-N consume into Child
+admission. See [contract, limits and DoT attribution gap](docs/RPG_CORE_V1.1.6_CONDITIONAL_TRIGGERS.md)
+and [installed-package example](examples/conditional-triggers.ts). Legacy defaults
+and EffectLifecycle Apply remain unchanged.

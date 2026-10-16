@@ -159,9 +159,9 @@ function liveChildren(s:InstanceSession,rootId:string):number {
 }
 /** Internal atomic receipt admission. Public manual registration stays unchanged.
  * Receipt trust permits issued deliveries to outlive finished/cancelled parents. */
-export function registerTriggeredSkillChildren(runtime:SkillEffectRuntime,receipts:readonly SkillTriggerReceipt[],combat:CombatValidationContext):readonly SkillInstanceView[]|undefined {
+export function registerTriggeredSkillChildren(runtime:SkillEffectRuntime,receipts:readonly SkillTriggerReceipt[],combat:CombatValidationContext,beforeCommit?:()=>boolean):readonly SkillInstanceView[]|undefined {
  const s=instanceSessions.get(runtime);if(!s||!runtime.active||!skillTriggerMutationAllowed(runtime)||timeError(s,runtime.now)||!receipts.length)return;
- const data=receipts.map(receipt=>({receipt,payload:pendingSkillTriggerPayload(runtime,receipt)}));
+ const data=receipts.map(receipt=>({receipt,payload:pendingSkillTriggerPayload(runtime,receipt),target:receipt.targetId?combat.findEntity(receipt.targetId):undefined}));
  const first=receipts[0]!;
  if(liveChildren(s,first.rootInstanceId)+receipts.length>SKILL_TRIGGER_LIMITS.maxLiveChildren)return;
  const ids=new Set<string>();
@@ -171,14 +171,15 @@ export function registerTriggeredSkillChildren(runtime:SkillEffectRuntime,receip
    ||!validDeadline(receipt.executeAtMs,payload.pin.lifetimeMs)||s.records.has(receipt.receiptId)||ids.has(receipt.receiptId))return;
   ids.add(receipt.receiptId);
  }
+ if(beforeCommit&&!beforeCommit())return;
  const children:SkillInstanceView[]=[];
- for(const {receipt,payload} of data){
+ for(const {receipt,payload,target} of data){
   const {pin,offense}=payload!;
   const r:RecordEntry={view:undefined as unknown as SkillInstanceView,pinToken:skillInstanceDefinitionToken(pin)!,...(pin.lifetimeMs===undefined?{}:{lifetimeMs:pin.lifetimeMs})};
   observe(s,r,{instanceId:receipt.receiptId,rootInstanceId:receipt.rootInstanceId,parentInstanceId:receipt.instanceId,
    skillId:pin.definition.skillId,casterId:receipt.sourceEntityId,actionInstanceId:offense.actionInstanceId,configVersion:pin.configVersion,
    createdAt:runtime.now,status:'pending',definition:pin.definition,rootOffense:offense});
-  s.records.set(r.view.instanceId,r);bindChildSkillTriggers(runtime,receipt.instanceId,r.view,pin,receipt.origin);children.push(r.view);
+  s.records.set(r.view.instanceId,r);bindChildSkillTriggers(runtime,receipt.instanceId,r.view,pin,receipt.origin,target);children.push(r.view);
  }
  return children;
 }

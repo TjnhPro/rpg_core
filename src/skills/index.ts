@@ -13,4 +13,4 @@ export {pinSkillInstanceDefinition,rootSkillInstance,inspectSkillInstance,regist
 export type {SkillInstanceDefinition,SkillInstanceStatus,SkillInstanceView,SkillInstanceRejection,SkillInstanceResult} from './skill-instance.js';
 
 export {SKILL_TRIGGER_LIMITS,pinSkillTriggerBundle,validateSkillTriggerReceipt} from './skill-trigger.js';
-export type {SkillTrigger,SkillTriggerLink,SkillTriggerBundle,SkillTriggerReceipt,SkillTriggerDimension,SkillTriggerResult,SkillTriggerBinding,SkillTriggerReceiptResult} from './skill-trigger.js';
+export type {SkillStackPredicate,SkillStackThreshold,SkillTrigger,SkillTriggerLink,SkillTriggerBundle,SkillTriggerReceipt,SkillTriggerDimension,SkillTriggerResult,SkillTriggerBinding,SkillTriggerReceiptResult} from './skill-trigger.js';

@@ -72,4 +72,9 @@ owner capability/replay, expiry/isolation, atomic failure, actual Root/Child AoE
 damage, B0 flat contributions and coarse/fine determinism.
 `examples/stack-consumption.ts` runs through the strict installed consumer.
 See [contract and evidence](RPG_CORE_V1.1.5_STACK_CONSUMPTION.md).
-Conditional Triggers (v1.1.6) are not implemented.
+v1.1.6 conditional triggers: `tests/integration/conditional-triggers.test.ts` adds
+actual landed/kill/threshold -> bounded Child/HP evidence, source-scoped predicates,
+exact-N consumption/admission, expiry identity, replay/failure atomicity, exact work
+limits and coarse/fine determinism. `examples/conditional-triggers.ts` runs in the
+installed consumer. DoT OnKill attribution is explicitly deferred as a separate
+capability gap; see [contract and evidence](RPG_CORE_V1.1.6_CONDITIONAL_TRIGGERS.md).

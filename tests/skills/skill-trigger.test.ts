@@ -47,7 +47,7 @@ it('T3: trusted shared pins, finite reachable DAG, closed schema and lifetime va
  const invalid:SkillTriggerBundle[]=[{...f.bundle,definitions:[{...root},child]},{...f.bundle,definitions:[root,child,grand]},
  {...f.bundle,links:[link,link]}, {...f.bundle,links:[{...link,childSkillId:'test'}]},
  {...f.bundle,links:[link,{...link,linkId:'cycle',sourceSkillId:'child',childSkillId:'test'}]}];
- for(const patch of [{childSkillId:'unknown'},{delayMs:-1},{delayMs:Infinity},{maxOccurrences:0},{maxOccurrences:129},{trigger:'OnHit'},{trigger:'OnExpire'},{extra:1}])invalid.push({...f.bundle,links:[{...link,...patch} as SkillTriggerLink]});
+ for(const patch of [{childSkillId:'unknown'},{delayMs:-1},{delayMs:Infinity},{maxOccurrences:0},{maxOccurrences:129},{trigger:'Unknown'},{trigger:'OnExpire'},{extra:1}])invalid.push({...f.bundle,links:[{...link,...patch} as SkillTriggerLink]});
  for(const bundle of invalid)expect(()=>pinSkillTriggerBundle(bundle)).toThrow('invalid_trigger_bundle');
  expect(f.captures()).toBe(0);expect(f.entities[0]!.currentMp).toBe(100);
 });

@@ -100,7 +100,7 @@ export function executeSkill(definition:SkillEngineDefinition,context:SkillExecu
  slot.skillExecution={snapshot:Object.freeze({...(rootOffense?{rootOffense}:{}),actionInstanceId:action.actionInstanceId,casterId:context.casterId,skillId:definition.skillId,configVersion:request.configVersion,definition:pinned.definition,target,startedAt:action.startedAt,durationMs:action.durationMs,activationTime:action.startedAt+offset,
   ...(spatial?{casterPosition:Object.freeze({...casterPosition!}),aimPosition:Object.freeze({...aimPosition!}),facing:Object.freeze(length===1&&facing.x===0&&facing.y===0?{x:1,y:0}:{x:facing.x/length,y:facing.y/length})}:{})}),activated:false};
  if(rootOffense){bindRootOffense(env.rootOffense!.runtime,slot.skillExecution.snapshot);bindRootSkillInstance(env.rootOffense!.runtime,slot.skillExecution.snapshot,env.skillInstanceLifetimeMs);
-  bindRootSkillTriggers(env.rootOffense!.runtime,rootSkillInstance(env.rootOffense!.runtime,slot.skillExecution.snapshot)!,aimPosition??casterPosition,env.triggers);}
+  bindRootSkillTriggers(env.rootOffense!.runtime,rootSkillInstance(env.rootOffense!.runtime,slot.skillExecution.snapshot)!,aimPosition??casterPosition,env.triggers,context.target.mode==='entity'?context.combat.findEntity(context.target.targetId):context.target.mode==='self'?context.combat.findEntity(context.casterId):undefined,context.combat.findEntity(context.casterId));}
  const emitted:SkillExecutionEvent[]=[...events];
  // Zero-percent activation is part of successful start, after MP/deadline commit.
  advanceSkillExecution(slot,context.combat,request.now,emitted);

@@ -43,6 +43,7 @@ try {
   writeFileSync(path.join(consumer, 'skill-trigger.ts'), readFileSync(path.join(root, 'examples/skill-trigger.ts'), 'utf8'));
   writeFileSync(path.join(consumer, 'nested-composition.ts'), readFileSync(path.join(root, 'examples/nested-composition.ts'), 'utf8'));
   writeFileSync(path.join(consumer, 'stack-consumption.ts'), readFileSync(path.join(root, 'examples/stack-consumption.ts'), 'utf8'));
+  writeFileSync(path.join(consumer, 'conditional-triggers.ts'), readFileSync(path.join(root, 'examples/conditional-triggers.ts'), 'utf8'));
   // Repository-relative compatibility paths are deliberately not package exports.
   // Check their declarations and runtime identities in the installed archive too.
   const legacyImports = Object.keys(moduleMap).map((file, i) =>
@@ -79,6 +80,10 @@ import {skillInstanceExample} from './build/skill-instance.js';
 import {skillTriggerExample} from './build/skill-trigger.js';
 import {nestedCompositionExample} from './build/nested-composition.js';
 import {stackConsumptionExample} from './build/stack-consumption.js';
+import {conditionalTriggersExample} from './build/conditional-triggers.js';
+const conditional=conditionalTriggersExample();
+assert.deepEqual(conditional,{consumed:3,selected:['["source",1]','["source",2]','["source",3]'],remaining:0,damage:20,bonus:0,hp:980,captures:1,mp:95,rolls:1,children:1,sharedS0:true});
+console.log(JSON.stringify({status:'CONDITIONAL_TRIGGERS_VERIFIED',...conditional}));
 const stacks2=stackConsumptionExample(2),stacks3=stackConsumptionExample(3),stackChild=stackConsumptionExample(3,true);
 assert.deepEqual(stacks2,{consumed:2,selected:['["source",1]','["source",2]'],remaining:1,damage:34,bonus:14,hp:966,captures:1,mp:95,rolls:1,children:0,sharedS0:true});
 assert.deepEqual(stacks3,{consumed:3,selected:['["source",1]','["source",2]','["source",3]'],remaining:0,damage:41,bonus:21,hp:959,captures:1,mp:95,rolls:1,children:0,sharedS0:true});
@@ -108,7 +113,7 @@ for (const [legacy, canonical] of Object.entries(moduleMap)) {
 for (const internal of ['@rpg/core/skills/skill-execution.js', '@rpg/core/dist/index.js', '@rpg/core/shared/game/skill-execution.js']) {
   await assert.rejects(import(internal), {code: 'ERR_PACKAGE_PATH_NOT_EXPORTED'});
 }
-for (const helper of ['skillEffectWork', 'consumeStackEffect', 'registerTriggeredSkillChildren', 'childInstanceDamage', 'assembleRootDamage', 'admitSkillProjectiles', 'recordSkillProjectile', 'pendingSkillTriggerPayload', 'childDispatcher', 'initializeSkillTriggerSession', 'captureSkillExpiry', 'captureSkillImpact', 'drainSkillTriggers', 'bindRootSkillTriggers', 'trustSkillInstanceDefinition', 'initializeSkillInstances', 'bindRootSkillInstance', 'advanceSkillInstances', 'disposeSkillInstances', 'prepareRootOffense', 'bindRootOffense', 'rootDamageSnapshot', 'actorOffense', 'freezeGameplayData', 'random', 'damageBonusReason', 'tickProjectileBodies', 'debugProjectile']) assert(!(helper in core));
+for (const helper of ['observesSkillConditionalHit', 'observesSkillStackApply', 'captureSkillHit', 'captureSkillStackApply', 'skillStackCount', 'skillEffectWork', 'consumeStackEffect', 'registerTriggeredSkillChildren', 'childInstanceDamage', 'assembleRootDamage', 'admitSkillProjectiles', 'recordSkillProjectile', 'pendingSkillTriggerPayload', 'childDispatcher', 'initializeSkillTriggerSession', 'captureSkillExpiry', 'captureSkillImpact', 'drainSkillTriggers', 'bindRootSkillTriggers', 'trustSkillInstanceDefinition', 'initializeSkillInstances', 'bindRootSkillInstance', 'advanceSkillInstances', 'disposeSkillInstances', 'prepareRootOffense', 'bindRootOffense', 'rootDamageSnapshot', 'actorOffense', 'freezeGameplayData', 'random', 'damageBonusReason', 'tickProjectileBodies', 'debugProjectile']) assert(!(helper in core));
 console.log(JSON.stringify({status: 'PASS', targetHp: a.entities[1].currentHp, deterministic: true, types: true, publicDomains: domains.length, legacyPaths: Object.keys(moduleMap).length, deepImportsBlocked: true}));
 `);
   const result = execFileSync(process.execPath, ['run.mjs'], {cwd: consumer, encoding: 'utf8'});
