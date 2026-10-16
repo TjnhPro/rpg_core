@@ -40,3 +40,54 @@ event-driven cancellation. The small skill-execution fixture isolates action
 admission without a delivery runtime. `source.ts` reads canonical paths from the
 reviewed module map for narrow architecture assertions. No fake damage/lifecycle
 implementation was found or added.
+
+
+v1.1.2 lifecycle evidence: `tests/skills/skill-instance.test.ts` covers the approved
+L1–L14 matrix together with `examples/skill-instance.ts` in the installed strict
+consumer. See [contract and results](RPG_CORE_V1.1.2_SKILL_INSTANCE_LIFECYCLE.md).
+Identity, shared S0, detached lifecycle and expiry are covered; automatic triggers
+and child gameplay dispatch remain outside this checkpoint.
+
+v1.1.3 trigger safety: `tests/skills/skill-trigger.test.ts` covers T1–T10 through
+real projectile/lifecycle paths, pinned DAG/replay/session validation, ordered
+bounded batch reservation and callback cleanup. Existing integration tests cover
+T11 opt-out mechanics; `examples/skill-trigger.ts` is compiled and executed in the
+strict installed consumer for T12. See [checkpoint evidence](RPG_CORE_V1.1.3_TRIGGER_SAFETY.md).
+Nested Child Skill execution was outside that checkpoint.
+
+
+v1.1.4 composition: `tests/skills/nested-composition.test.ts` adds actual-Core
+N1-N11 evidence with `tests/fixtures/nested-skill.ts`: A projectile contact -> B AoE
+-> B natural expiry -> C timed radial projectiles, shared S0/own ranks, live defense,
+detached lifecycle, replay, exact/overflow budgets, concurrent roots and cleanup.
+Existing suites retain N12 legacy coverage and the unchanged headless digest.
+`examples/nested-composition.ts` runs from an installed archive for N13, including
+strict public types, real child damage/HP and single cost/cooldown/action serial.
+See [v1.1.4 contract and evidence](RPG_CORE_V1.1.4_NESTED_COMPOSITION.md).
+
+
+v1.1.5 stack consumption: `tests/effects/stack-consumption.test.ts` and
+`tests/integration/stack-consumption.test.ts` cover authoritative exact-N removal,
+owner capability/replay, expiry/isolation, atomic failure, actual Root/Child AoE
+damage, B0 flat contributions and coarse/fine determinism.
+`examples/stack-consumption.ts` runs through the strict installed consumer.
+See [contract and evidence](RPG_CORE_V1.1.5_STACK_CONSUMPTION.md).
+v1.1.6 conditional triggers: `tests/integration/conditional-triggers.test.ts` adds
+actual landed/kill/threshold -> bounded Child/HP evidence, source-scoped predicates,
+exact-N consumption/admission, expiry identity, replay/failure atomicity, exact work
+limits and coarse/fine determinism. `examples/conditional-triggers.ts` runs in the
+installed consumer. DoT OnKill attribution is explicitly deferred as a separate
+capability gap; see [contract and evidence](RPG_CORE_V1.1.6_CONDITIONAL_TRIGGERS.md).
+
+
+v1.1.7 Skill upgrades: `tests/integration/skill-upgrade.test.ts` covers immutable
+resolution, actual projectile/radial/AoE/slow/Child gameplay, atomic rejection,
+revision isolation, exact limits, conditional consume/replay and determinism.
+`examples/skill-upgrades.ts` runs old/new revisions in the installed consumer.
+See [contract and evidence](RPG_CORE_V1.1.7_SKILL_UPGRADES.md).
+
+
+v1.1.8 final acceptance: [closure matrix and evidence](RPG_CORE_V1.1.8_ACCEPTANCE_CLOSURE.md)
+reuses checkpoint suites and the installed consumer. One added upgrade-suite case
+connects upgraded Apply, threshold, exact-N consume and Child landed/Dodge/empty
+outcomes, including no refund, replay and disposal; no production source changes.

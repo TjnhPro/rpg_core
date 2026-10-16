@@ -8,7 +8,12 @@ import {validateEffectDefinition,type EffectDefinition} from '../effects/effect-
 export interface SkillDamageComponent {id:string;definition:DamageDefinition;damageType:'Physical'|'Magic';tags:string[];rank:number}
 export interface SkillOnHitDot {config:DotConfig;damage:SkillDamageComponent}
 interface EffectBase {allowedTargetRelations?:readonly FactionRelation[];onHit?:SkillOnHitDot[]}
+export interface SkillStackConsumption {
+ type:'consume_stacks';effectId:string;requiredStacks:number;flatPerStack:number;
+ outcome:{type:'instant_aoe';config:InstantAOE;damage:SkillDamageComponent};
+}
 export type SkillGameplayEffect=EffectBase & (
+ | SkillStackConsumption
  | {type:'modifier_effect';definition:EffectDefinition;target:'self'|'selected'}
  | {type:'direct_hit';damage:SkillDamageComponent}
  | {type:'melee_hitbox';config:MeleeHitbox;damage:SkillDamageComponent}
@@ -33,7 +38,15 @@ export function validateSkillEffects(value:unknown):string[]{
  if(!Array.isArray(value)||value.length>32)return ['effects: ordered list, max32 required'];
  const errors:string[]=[];
  for(const e of value){
-  if(!object(e)||!['direct_hit','melee_hitbox','projectile','instant_aoe','timed_aoe_sequence','timed_object','modifier_effect'].includes(String(e.type))){errors.push('effects: unsupported type');continue;}
+  if(!object(e)||!['consume_stacks','direct_hit','melee_hitbox','projectile','instant_aoe','timed_aoe_sequence','timed_object','modifier_effect'].includes(String(e.type))){errors.push('effects: unsupported type');continue;}
+  if(e.type==='consume_stacks'){
+   if(!exact(e,['type','effectId','requiredStacks','flatPerStack','outcome'])||typeof e.effectId!=='string'||!e.effectId.trim()
+    ||!Number.isSafeInteger(e.requiredStacks)||Number(e.requiredStacks)<=0||typeof e.flatPerStack!=='number'||!Number.isFinite(e.flatPerStack)||e.flatPerStack<0
+    ||!Number.isFinite(Number(e.requiredStacks)*Number(e.flatPerStack))||Number(e.requiredStacks)*Number(e.flatPerStack)>1000000)errors.push('effects: invalid stack consumption');
+   if(!object(e.outcome)||e.outcome.type!=='instant_aoe'||!exact(e.outcome,['type','config','damage']))errors.push('effects: instant_aoe outcome required');
+   else errors.push(...validateSkillEffects([e.outcome]));
+   continue;
+  }
   if(e.type==='modifier_effect'){
    if(!exact(e,['type','definition','target',...(Object.hasOwn(e,'allowedTargetRelations')?['allowedTargetRelations']:[])]))errors.push('effects: unknown/missing modifier effect fields');
    if(e.target!=='self'&&e.target!=='selected')errors.push('effects: invalid modifier recipient');

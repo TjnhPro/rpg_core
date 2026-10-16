@@ -142,16 +142,38 @@
         "src/skills/skill-effects.ts"
       ],
       "declarations": [
+        "0b5a8e1ed742bc9e95c489ae2c309f45c4a5d29ed7f9e2bec8657fbc754bbb47",
         "16aafaa346f15c2a4825ea958fff9ea75841c038c8a1bbddb0609a7e96c48ce4",
         "4e388f20cd2d26d288b1040b1a09455d039dfc89aa440faaeeb2d085dcc31ef3",
         "60e77d443a4e3f87d8220e8b3714e735ddabec061ee7d58a3b0818a60cefa372",
         "70b1ddf3744afb53b0c4a230561da455e937ee19bf7e3faf848c29e88befb75f",
-        "a2cf978d57fcdb62f8eea18c164c142d5114cdd11086f95c00c0ee249af3a82f",
-        "e0cb7e273308af6699a96ca5007059d2a475cb92b272ed7e60d3da9cc6555c28",
+        "73e15f18e3c6b773569de2d8e5c6a5c8c5830bdf6bc9505800dbcca5d3642574",
+        "830bfbc0ccadaa9df7042ede07b1c55e83a809c9be391b12247fdbde82cfb190",
         "f7c6d55e0602a7f03c77af1991713f8c0c152ee0d18c1cc074020e3b7966ecf6",
         "f955e9100f21f1f4bda570ff22103009415f148ff7e1831cc2321fe61cf3c898",
         "f9ab77658c46dd844dbfb9d2c0c94528aa2387272f9cf6c0cfe9201c99c0ab2b"
-      ]
+      ],
+      "approvedChange": {
+        "checkpoint": "v1.1.5",
+        "baseCommit": "f8d75751917f441907925e756e24c7c617211015",
+        "authority": "Developer acceptance of v1.1.4 and v1.1.5 delta-plan approval S1-S6 A/A/A/A/A/A; docs/RPG_CORE_V1.1.5_STACK_CONSUMPTION.md",
+        "declarations": [
+          {
+            "name": "SkillStackConsumption",
+            "after": "73e15f18e3c6b773569de2d8e5c6a5c8c5830bdf6bc9505800dbcca5d3642574"
+          },
+          {
+            "name": "SkillGameplayEffect",
+            "before": "a2cf978d57fcdb62f8eea18c164c142d5114cdd11086f95c00c0ee249af3a82f",
+            "after": "0b5a8e1ed742bc9e95c489ae2c309f45c4a5d29ed7f9e2bec8657fbc754bbb47"
+          },
+          {
+            "name": "validateSkillEffects",
+            "before": "e0cb7e273308af6699a96ca5007059d2a475cb92b272ed7e60d3da9cc6555c28",
+            "after": "830bfbc0ccadaa9df7042ede07b1c55e83a809c9be391b12247fdbde82cfb190"
+          }
+        ]
+      }
     },
     {
       "originalFile": "src/shared/game/combat-entity.ts",
@@ -315,20 +337,20 @@
         "src/skills/skill-execution.ts"
       ],
       "declarations": [
+        "00471c9abdc83dc07b35ac21f45e78d21e4f628a3789cc2bf8d7749d9f6a12a0",
+        "0559c0fcd1c66ddb8139a66e0c877ababc3a4493e7a57a6236e46e15cf6e35f0",
         "1316a9f087386717f5e9d5f4080dc312e8823e44b72075b4507da77ec8502a70",
-        "14fc770e33084136f1c76111a4b7518f0b2dbca8a5894649b296c6b008bc7a99",
+        "14dc8184162b1623978cb5454b973292e79a836434f15be90f939d4f2a74a27a",
         "25fe3a7378eb5eded618e3ea4240f30c982312dcd8dfaba24285c0b6269eabff",
         "2b3ca040833cbe062b4487a3a39e7dcc5f919b1c987654f16ce1f9fb282b8c7d",
-        "60d77136622c6058ed822af8be0422b8b77667a1b4e0c41177c83f5d245d45e3",
-        "6624f0e3bfc7639419d65a65e20389df2ad859031d69d003dacb2b03f5d495ba",
         "85f6ed045ece55e5467915879fa9583b95a6f1ab4cb2975ee474b19330b989ef",
+        "8740ec796abfecd303afef2dc1ee0872fc5ceb1a17c04017c1a86fbfd9c7e4db",
         "8ee20dedcc2767c8e2dc8bca02387947a14cf1722f7076832c703eda19c0fad2",
         "8f24dc4e63f1cf24249c1e1d0d14f1d0ae19a98859fabf9d747871a1a7caac77",
         "9bed3d12152decf7e88b8a9ff3e80385d5464ee5f0034fd0b10a6b7d06306fee",
+        "ad77085d05f68c7d4422389adb783ac77e226527266d26dc310fbe9a30777a1a",
         "c91ad0abdc811f37e937b9ba05970a7cfda5d1fa1da8d32f6ba46c93fa87a455",
-        "d98344fbc944c9da184c9f56c10910a144e56ad052228994c4f77f8b08b94fa4",
-        "f035ce048b6ab59861d11e46ccefbdaa95794733557f87dbd1ed771d83916f71",
-        "f1a904c4722b387e9d90d7534bc9efc1f453d85c4ccef6eb7e54fb9c114921f7"
+        "f035ce048b6ab59861d11e46ccefbdaa95794733557f87dbd1ed771d83916f71"
       ],
       "approvedChange": {
         "checkpoint": "v1.1.1",
@@ -351,6 +373,69 @@
           "SkillExecutionSnapshot",
           "executeSkill",
           "advanceSkillExecution"
+        ],
+        "followUpChanges": [
+          {
+            "checkpoint": "v1.1.2",
+            "baseCommit": "0fd9f6ad269f59769ba89366763858d4a7ec9267",
+            "authority": "Developer acceptance of v1.1.1 and approval to implement v1.1.2 with P1-P6, 2026-10-16; docs/RPG_CORE_V1.1.2_SKILL_INSTANCE_LIFECYCLE.md",
+            "declarations": [
+              {
+                "name": "SkillExecutionEnvironment",
+                "before": "14fc770e33084136f1c76111a4b7518f0b2dbca8a5894649b296c6b008bc7a99",
+                "after": "971ff44e9bd06fd7977db5aef63f2a5c743fe2d7e79c00c47dbedfd6ce1de25c"
+              },
+              {
+                "name": "executeSkill",
+                "before": "60d77136622c6058ed822af8be0422b8b77667a1b4e0c41177c83f5d245d45e3",
+                "after": "299ecde1c546582fa6a24000b3de7548f5565584136dd2ff0b461cbeeec2c2bd"
+              },
+              {
+                "name": "cancelSkillExecution",
+                "before": "6624f0e3bfc7639419d65a65e20389df2ad859031d69d003dacb2b03f5d495ba",
+                "after": "00471c9abdc83dc07b35ac21f45e78d21e4f628a3789cc2bf8d7749d9f6a12a0"
+              },
+              {
+                "name": "reconcileSkillRestrictions",
+                "before": "d98344fbc944c9da184c9f56c10910a144e56ad052228994c4f77f8b08b94fa4",
+                "after": "0559c0fcd1c66ddb8139a66e0c877ababc3a4493e7a57a6236e46e15cf6e35f0"
+              },
+              {
+                "name": "advanceSkillExecution",
+                "before": "f1a904c4722b387e9d90d7534bc9efc1f453d85c4ccef6eb7e54fb9c114921f7",
+                "after": "14dc8184162b1623978cb5454b973292e79a836434f15be90f939d4f2a74a27a"
+              }
+            ]
+          },
+          {
+            "checkpoint": "v1.1.3",
+            "baseCommit": "263c9c08dce96e80716c435ed35de42be409e0c7",
+            "authority": "Developer v1.1.3 delta-plan approval A/A/A with terminal delivery policy and fixed caps; docs/RPG_CORE_V1.1.3_TRIGGER_SAFETY.md",
+            "declarations": [
+              {
+                "name": "SkillExecutionEnvironment",
+                "before": "971ff44e9bd06fd7977db5aef63f2a5c743fe2d7e79c00c47dbedfd6ce1de25c",
+                "after": "ad77085d05f68c7d4422389adb783ac77e226527266d26dc310fbe9a30777a1a"
+              },
+              {
+                "name": "executeSkill",
+                "before": "299ecde1c546582fa6a24000b3de7548f5565584136dd2ff0b461cbeeec2c2bd",
+                "after": "d4491827c53972a6863995831ff2a62fb5dfae56a0635033039ef846085305d5"
+              }
+            ]
+          },
+          {
+            "checkpoint": "v1.1.6",
+            "baseCommit": "a59d7f60174823201dca69fae7280214fe1e3b6e",
+            "authority": "Developer acceptance of v1.1.5 and v1.1.6 delta-plan approval C1-C7 option A with minimal constraints, 2026-10-16; docs/RPG_CORE_V1.1.6_CONDITIONAL_TRIGGERS.md",
+            "declarations": [
+              {
+                "name": "executeSkill",
+                "before": "d4491827c53972a6863995831ff2a62fb5dfae56a0635033039ef846085305d5",
+                "after": "8740ec796abfecd303afef2dc1ee0872fc5ceb1a17c04017c1a86fbfd9c7e4db"
+              }
+            ]
+          }
         ]
       }
     },
@@ -362,26 +447,32 @@
       "declarations": [
         "07920f2e4d65f242aaf56d80fb615addee300236dcf23d7bc48c50d123eb91de",
         "0c9121311616b98729f64070ec98fae2dba2c5f700f51414346c9136840bde2c",
+        "0cc12c85178a38cbcfe3f7ae4dee46e3ed4fe1ed8e9aa61989cf8eae3946eb07",
         "166b106d11a9ba04f116bc1669ab4672a731518a9f05112b555ff5884012f726",
-        "1f9467fea19975a8ea5c7aa323cab8890b036ce67e0340c3a2bf3d832e7bbf79",
-        "3bfa396fba9b390152c01842da482944509dedff79d98b418bb14e5355ae318d",
+        "17067d856e4d37eac0e402c670e8e6ec0d1d099da13670b8db8af286d6395764",
+        "1c135c498e1ff8aa3126689c014cbae95fe5f3b3430f8d7a89b62cf9ad3339b0",
         "3f1945742cd70e5529fbb61fc965dcfff016459f325ec1bf2684c63a0fce4985",
-        "4806f6d8f75600f37c1fc17ac6041ab178436e356555458aff4b7831b9d14c54",
+        "3f1e3bfc371ce4d2fc643cb27b09a92ecad95343899ebee967895d8c0c418d06",
         "497e66b613ccfc0ccfdef8c8a5a5453967a4a3982b3b85bfaeb594ab7680ee73",
         "4d26efb7c5890b33ce0848a3cb7116043fa542b177dd77704c676a3ce9897b23",
-        "53f4e65be46af73aa708a7fbb14108a6cd263f08c8e79abf1531a51d85d9b78f",
         "60186253213fbd14e294cbbb21f8375e20fd5b40f8c75a58332e7d02c5af2b83",
-        "658a9b29c476e51e541ca44b9ffd1304a6faa3c8df2d1299fb60153420bbf9bb",
-        "6af0557427f37f9e07b5e941d88ad092751375ba7b781da69563e583fd9798d9",
-        "a0b181f747e6c36234f682e760b4cfde7f76ccf4b1fc9e9c44ffb2a2956ab8d1",
+        "64ddb796bd4744f5b947a0515d05726cbc26a6114cf40a68e100b1887c07657e",
+        "69eeb0f21dcbe1b7625a0cf96ec7f46ff9ca370c21cedcd7dbf629d01733878e",
+        "72d6b60800c26218b41401ca01925e39dace813fde1a65fb716c1e60ff363f72",
+        "75401b32628dc80d7b734618e9f7b92ee0997a111f6fb73fc52429a4f19f0609",
+        "820ba13db287bf25e3f1c8208f0248719212ad6a9a39119dd4d5fd36bfdd89f2",
+        "8a9b9cb1a3bc302bd487330831eb2da28e4ebf6cf079a88c95867f70c57c8b92",
+        "8e3831d1ce1f0af61e793e4290d6a21e429d5f7029327e3785538e05f968708a",
+        "a60661ade14b13dc21cf7d8e36ed154d2b2f5b6b2c5137f5e33b07271aa35912",
         "b355daa0b3619fde1351607961aa4b581fe88f4da3f75bc6f3e5e49b9b60e509",
+        "b8c5beb50aa94023a4dfad989100de5d667ff824311784391213ca73a67ca2fb",
         "bc3c8aba7ab328e17ac68e9b7056431a153bc5236806daeb797da4648c601d79",
-        "be8e709bf185d49dd0709ccdc38ad4501e12c7f51bfea9b072049e9e6e0f551b",
-        "c40f6792559ea29536bc58fc0601afc7eed677cf16757fcfa02f8345eb28836f",
-        "cb647849b9ba962adb4df574b14391dac01afbd81a3173c6834add6f0a9a19e3",
+        "be896081bc4d9fff540eec4918856a5be37e903ec13746692e7750acbace9515",
+        "ca1b36f9e34eafc6a90affa8b6c933885f314e2ce206c0c242f46a472d8aeff0",
         "d622a18aa6db839ae3a811a3767ca7172276bf6da111a4a8cde4dacb7208f85f",
-        "dbd3aad8df90920d112128d018a00bf17a420fb9ab0299bf9b2247cd7bb6fa90",
-        "fdd8f45dc52a3688155ace03dd0b512564f5f81d06d99f8182307c87651b115f"
+        "f3e21a4b409028b2d6172b7f2d7040e3f7e27b528408fa49837fdc21d04f9df2",
+        "fdd8f45dc52a3688155ace03dd0b512564f5f81d06d99f8182307c87651b115f",
+        "fe5354ce6a3752ea6914246a6e519c3195adbd937a3ff798ae77c5f2acea6422"
       ],
       "approvedChange": {
         "checkpoint": "v1.1.1",
@@ -438,7 +529,188 @@
               "fingerprint": "658a9b29c476e51e541ca44b9ffd1304a6faa3c8df2d1299fb60153420bbf9bb"
             }
           ]
-        }
+        },
+        "followUpChanges": [
+          {
+            "checkpoint": "v1.1.2",
+            "baseCommit": "0fd9f6ad269f59769ba89366763858d4a7ec9267",
+            "authority": "Developer acceptance of v1.1.1 and approval to implement v1.1.2 with P1-P6, 2026-10-16; docs/RPG_CORE_V1.1.2_SKILL_INSTANCE_LIFECYCLE.md",
+            "declarations": [
+              {
+                "name": "createSkillEffectRuntime",
+                "before": "be8e709bf185d49dd0709ccdc38ad4501e12c7f51bfea9b072049e9e6e0f551b",
+                "after": "4c25defad4f715797896b318c715e975d14960ad284ff12b1d83b5548c429194"
+              },
+              {
+                "name": "clearSkillEffects",
+                "before": "a0b181f747e6c36234f682e760b4cfde7f76ccf4b1fc9e9c44ffb2a2956ab8d1",
+                "after": "e310101cd6660fa730fcfa712952edaf7fed505486b41f6449149c02e889f3fd"
+              },
+              {
+                "name": "nextSkillEffectBoundary",
+                "before": "dbd3aad8df90920d112128d018a00bf17a420fb9ab0299bf9b2247cd7bb6fa90",
+                "after": "77164522131768622897681870b87be0644700807a095c7fa2335b1cfb3bc666"
+              },
+              {
+                "name": "advanceSkillEffects",
+                "before": "658a9b29c476e51e541ca44b9ffd1304a6faa3c8df2d1299fb60153420bbf9bb",
+                "after": "e480cbbcf269ea1b83ad037c9a96f8f2b3eb83f5c87df9ada4b87e3272f16a9b"
+              }
+            ]
+          },
+          {
+            "checkpoint": "v1.1.3",
+            "baseCommit": "263c9c08dce96e80716c435ed35de42be409e0c7",
+            "authority": "Developer v1.1.3 delta-plan approval A/A/A with terminal delivery policy and fixed caps; docs/RPG_CORE_V1.1.3_TRIGGER_SAFETY.md",
+            "declarations": [
+              {
+                "name": "createSkillEffectRuntime",
+                "before": "4c25defad4f715797896b318c715e975d14960ad284ff12b1d83b5548c429194",
+                "after": "8e3831d1ce1f0af61e793e4290d6a21e429d5f7029327e3785538e05f968708a"
+              },
+              {
+                "name": "clearSkillEffects",
+                "before": "e310101cd6660fa730fcfa712952edaf7fed505486b41f6449149c02e889f3fd",
+                "after": "69eeb0f21dcbe1b7625a0cf96ec7f46ff9ca370c21cedcd7dbf629d01733878e"
+              },
+              {
+                "name": "launch",
+                "before": "cb647849b9ba962adb4df574b14391dac01afbd81a3173c6834add6f0a9a19e3",
+                "after": "65e42a0f20e3903e016e074653ef9f3211f2ed71e05ef76793fc91e4d02937a8"
+              },
+              {
+                "name": "dispatchSkillEffects",
+                "before": "6af0557427f37f9e07b5e941d88ad092751375ba7b781da69563e583fd9798d9",
+                "after": "d0213a0bef999e6719a8fed9dc4bd6800e5817e6da44fa5178e602a44594e06c"
+              },
+              {
+                "name": "advanceSkillEffects",
+                "before": "e480cbbcf269ea1b83ad037c9a96f8f2b3eb83f5c87df9ada4b87e3272f16a9b",
+                "after": "1b26d3d544c53c1ea31f140fa73b5628f91cc8d43c567bb96c43bdf3618b0d5d"
+              },
+              {
+                "name": "guardedEnvironment",
+                "after": "17067d856e4d37eac0e402c670e8e6ec0d1d099da13670b8db8af286d6395764"
+              }
+            ]
+          },
+          {
+            "checkpoint": "v1.1.4",
+            "baseCommit": "0e85797ee5907ab574018deac749744519125bc6",
+            "authority": "Developer v1.1.4 delta-plan approval with actual-emission projectile budget, existing cancellation policy and session retention; docs/RPG_CORE_V1.1.4_NESTED_COMPOSITION.md",
+            "declarations": [
+              {
+                "name": "Delivery",
+                "before": "4806f6d8f75600f37c1fc17ac6041ab178436e356555458aff4b7831b9d14c54",
+                "after": "3b8ae2d990f3d2d071bec3d49e9999391daae3091580e8ed58d14c3f0657010e"
+              },
+              {
+                "name": "snapshot",
+                "before": "c40f6792559ea29536bc58fc0601afc7eed677cf16757fcfa02f8345eb28836f",
+                "after": "60ccabc05405195269936ab2328e33c7ac8aa2eb784cf9b5d0a7d0fd500832b0"
+              },
+              {
+                "name": "launch",
+                "before": "65e42a0f20e3903e016e074653ef9f3211f2ed71e05ef76793fc91e4d02937a8",
+                "after": "f3e21a4b409028b2d6172b7f2d7040e3f7e27b528408fa49837fdc21d04f9df2"
+              },
+              {
+                "name": "dispatchSkillEffects",
+                "before": "d0213a0bef999e6719a8fed9dc4bd6800e5817e6da44fa5178e602a44594e06c",
+                "after": "820ba13db287bf25e3f1c8208f0248719212ad6a9a39119dd4d5fd36bfdd89f2"
+              },
+              {
+                "name": "nextSkillEffectBoundary",
+                "before": "77164522131768622897681870b87be0644700807a095c7fa2335b1cfb3bc666",
+                "after": "64ddb796bd4744f5b947a0515d05726cbc26a6114cf40a68e100b1887c07657e"
+              },
+              {
+                "name": "advanceSkillEffects",
+                "before": "1b26d3d544c53c1ea31f140fa73b5628f91cc8d43c567bb96c43bdf3618b0d5d",
+                "after": "9892495e0a644f6dd0b3e5f8182a65259b223d97b35ab870c6d0c0276d9a41c0"
+              },
+              {
+                "name": "GameplayActivation",
+                "after": "75401b32628dc80d7b734618e9f7b92ee0997a111f6fb73fc52429a4f19f0609"
+              },
+              {
+                "name": "dispatchGameplayEffects",
+                "after": "e1618416e3c2208f1cc372e059a70669c37a68e96570e71be42a2fc42ed62e37"
+              },
+              {
+                "name": "childTarget",
+                "after": "72d6b60800c26218b41401ca01925e39dace813fde1a65fb716c1e60ff363f72"
+              },
+              {
+                "name": "childDispatcher",
+                "after": "eaf21d3e6ae0f1be28bce6cb91b17b0b7acbf1f56d0d6a4bba3b07a35f41b769"
+              }
+            ]
+          },
+          {
+            "checkpoint": "v1.1.5",
+            "baseCommit": "f8d75751917f441907925e756e24c7c617211015",
+            "authority": "Developer acceptance of v1.1.4 and v1.1.5 delta-plan approval S1-S6 A/A/A/A/A/A; docs/RPG_CORE_V1.1.5_STACK_CONSUMPTION.md",
+            "declarations": [
+              {
+                "name": "Delivery",
+                "before": "3b8ae2d990f3d2d071bec3d49e9999391daae3091580e8ed58d14c3f0657010e",
+                "after": "b8c5beb50aa94023a4dfad989100de5d667ff824311784391213ca73a67ca2fb"
+              },
+              {
+                "name": "aoe",
+                "before": "3bfa396fba9b390152c01842da482944509dedff79d98b418bb14e5355ae318d",
+                "after": "1c135c498e1ff8aa3126689c014cbae95fe5f3b3430f8d7a89b62cf9ad3339b0"
+              },
+              {
+                "name": "dispatchGameplayEffects",
+                "before": "e1618416e3c2208f1cc372e059a70669c37a68e96570e71be42a2fc42ed62e37",
+                "after": "d6b3bcd47bc56a408f32f82d41abd44a7cb3aaf3ef8347e24adcd45354835d96"
+              },
+              {
+                "name": "consumeStackEffect",
+                "after": "be896081bc4d9fff540eec4918856a5be37e903ec13746692e7750acbace9515"
+              }
+            ]
+          },
+          {
+            "checkpoint": "v1.1.6",
+            "baseCommit": "a59d7f60174823201dca69fae7280214fe1e3b6e",
+            "authority": "Developer acceptance of v1.1.5 and v1.1.6 delta-plan approval C1-C7 option A with minimal constraints, 2026-10-16; docs/RPG_CORE_V1.1.6_CONDITIONAL_TRIGGERS.md",
+            "declarations": [
+              {
+                "name": "snapshot",
+                "before": "60ccabc05405195269936ab2328e33c7ac8aa2eb784cf9b5d0a7d0fd500832b0",
+                "after": "fe5354ce6a3752ea6914246a6e519c3195adbd937a3ff798ae77c5f2acea6422"
+              },
+              {
+                "name": "applyDamage",
+                "before": "53f4e65be46af73aa708a7fbb14108a6cd263f08c8e79abf1531a51d85d9b78f",
+                "after": "0cc12c85178a38cbcfe3f7ae4dee46e3ed4fe1ed8e9aa61989cf8eae3946eb07"
+              },
+              {
+                "name": "hit",
+                "before": "1f9467fea19975a8ea5c7aa323cab8890b036ce67e0340c3a2bf3d832e7bbf79",
+                "after": "3f1e3bfc371ce4d2fc643cb27b09a92ecad95343899ebee967895d8c0c418d06"
+              },
+              {
+                "name": "dispatchGameplayEffects",
+                "before": "d6b3bcd47bc56a408f32f82d41abd44a7cb3aaf3ef8347e24adcd45354835d96",
+                "after": "a60661ade14b13dc21cf7d8e36ed154d2b2f5b6b2c5137f5e33b07271aa35912"
+              },
+              {
+                "name": "childDispatcher",
+                "before": "eaf21d3e6ae0f1be28bce6cb91b17b0b7acbf1f56d0d6a4bba3b07a35f41b769",
+                "after": "8a9b9cb1a3bc302bd487330831eb2da28e4ebf6cf079a88c95867f70c57c8b92"
+              },
+              {
+                "name": "advanceSkillEffects",
+                "before": "9892495e0a644f6dd0b3e5f8182a65259b223d97b35ab870c6d0c0276d9a41c0",
+                "after": "ca1b36f9e34eafc6a90affa8b6c933885f314e2ce206c0c242f46a472d8aeff0"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -480,18 +752,55 @@
       ],
       "declarations": [
         "11349f29a2855606853e1933e27aa1b5d5772eac1161a8615992e0dac3b451bc",
-        "148c0706b6edda3afbbae78d21c88ccfaa6a73ab10b862153d4e5baa96444caa",
+        "143438d1e880cc6d945af99abf2be62f560624d4c9b52fc66f81e6f27c991f55",
         "18d265773e9f96dd7fb285109d22ede5a5e9d84739af2a4bfff56b55a679c776",
         "1bec87b4ff3ac6a76d1ba751f6553a3d278b868ce09cb28222c6bb926657df9b",
+        "1fbd03351355b839db728aa148d27b02ff9e10a533cf955dfb90aaa52d882fd4",
         "23dab305335cf91424e29a6ffc4f63dd49a076e9b77850158cc46f473b977432",
         "3a3e6fe5295d5159444dc8a35ab46d195cc717398848c195080de46392dd615b",
+        "4306e77d52cc0d37d5968cd6b805399f2643d85b0f857802832b298ad150fdad",
         "667baa991342ff876d798c18a82a0b53c60027b3144400f281b910a514da0f9a",
+        "6ead5513687d8a6ad9d357199dc0277a89bb065f96a2423baeddbaa3c74a5d41",
         "826e73190924ec41261053112a23f777578a20dc3758f1e41ef2379badd2fac5",
         "9092a8c2dd90d544801629f9e53c643ad9d1eb4e84e25ab755a0e64245d975f7",
         "9ce1caa30359b55aefb1cf82c719b3c3ca7d26971abb8eac7ff228701a260cb8",
         "c88fc9a49cf2e8de6f9d72889ad578c4ec1e91598d84d09860cbac470f8f2468",
-        "dde8220c9efcead8dd6b8cd3a1d4216a0f25e3f2d815e9e0a3abd11f970ebe3a"
-      ]
+        "ccd15562a6cff465c01b1220801206eebfd70afef390f5f09fe5cc1824e2677a",
+        "fc160387c1944f192d2795485061769228447a945168e18d13772471eeb61af1"
+      ],
+      "approvedChange": {
+        "checkpoint": "v1.1.5",
+        "baseCommit": "f8d75751917f441907925e756e24c7c617211015",
+        "authority": "Developer acceptance of v1.1.4 and v1.1.5 delta-plan approval S1-S6 A/A/A/A/A/A; docs/RPG_CORE_V1.1.5_STACK_CONSUMPTION.md",
+        "declarations": [
+          {
+            "name": "EffectRemovalReason",
+            "before": "dde8220c9efcead8dd6b8cd3a1d4216a0f25e3f2d815e9e0a3abd11f970ebe3a",
+            "after": "6ead5513687d8a6ad9d357199dc0277a89bb065f96a2423baeddbaa3c74a5d41"
+          },
+          {
+            "name": "EffectStackConsumeRequest",
+            "after": "143438d1e880cc6d945af99abf2be62f560624d4c9b52fc66f81e6f27c991f55"
+          },
+          {
+            "name": "EffectStackConsumePlan",
+            "after": "1fbd03351355b839db728aa148d27b02ff9e10a533cf955dfb90aaa52d882fd4"
+          },
+          {
+            "name": "EffectStackConsumeRejection",
+            "after": "4306e77d52cc0d37d5968cd6b805399f2643d85b0f857802832b298ad150fdad"
+          },
+          {
+            "name": "EffectStackConsumeResult",
+            "after": "fc160387c1944f192d2795485061769228447a945168e18d13772471eeb61af1"
+          },
+          {
+            "name": "EffectLifecycle",
+            "before": "148c0706b6edda3afbbae78d21c88ccfaa6a73ab10b862153d4e5baa96444caa",
+            "after": "ccd15562a6cff465c01b1220801206eebfd70afef390f5f09fe5cc1824e2677a"
+          }
+        ]
+      }
     },
     {
       "originalFile": "src/shared/game/dot-core.ts",
@@ -561,14 +870,26 @@
       ],
       "declarations": [
         "1b459352576f5a1d5988aa0b9b2c2aa52c26d9abc51440fcb3abd40dfba58174",
-        "2308851ce0b7581a0536025108f3f0035d495eca5f3eb1887b4c800576219a8f",
         "2422ffefa4aa4d2c1383a063b5b58378c11c9062501c671cfebe9d22e2072fd6",
         "2d21820b4d78af9ba58ad2e0523ded6e846f435c676f56bad6fcd5bf86000152",
         "41c3feee43456d21fd9250bf9960c3250800e1b9657fa509d40f3922a01fda85",
         "68480065d15138d7b9020a881f34e5ab34b9917141b1497472fa31ab20a31317",
+        "adcb4f7b2305cad46a5f28f7c8ad2df746ddbea53acbffc9865ac97645f45668",
         "bdd85d50f0f193790fe4944ac89eff73274934e7640361a8bcb4dd8172d88697",
         "f1d70cbba0ef1173e2e5c6eba8d336b1e0899df50d46dbf5f9f0302158e1ea35"
-      ]
+      ],
+      "approvedChange": {
+        "checkpoint": "v1.1.3",
+        "baseCommit": "263c9c08dce96e80716c435ed35de42be409e0c7",
+        "authority": "Developer v1.1.3 delta-plan approval A/A/A with terminal delivery policy and fixed caps; docs/RPG_CORE_V1.1.3_TRIGGER_SAFETY.md",
+        "declarations": [
+          {
+            "name": "tickProjectileBodies",
+            "before": "2308851ce0b7581a0536025108f3f0035d495eca5f3eb1887b4c800576219a8f",
+            "after": "adcb4f7b2305cad46a5f28f7c8ad2df746ddbea53acbffc9865ac97645f45668"
+          }
+        ]
+      }
     },
     {
       "originalFile": "src/shared/game/grid-geometry.ts",

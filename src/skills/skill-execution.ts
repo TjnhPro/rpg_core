@@ -1,3 +1,5 @@
+import {prepareSkillTriggers,bindRootSkillTriggers,type SkillTriggerBinding} from './skill-trigger.js';
+import {prepareRootSkillInstance,bindRootSkillInstance,rootSkillInstance,validateRootInstanceTime,activateRootSkillInstance,cancelRootSkillInstance} from './skill-instance.js';
 import {activateRootOffense,prepareRootOffense,bindRootOffense,type SkillRootOffenseCapture,type RootOffensiveSnapshot} from './root-offense.js';
 import {skillActionAdmission,skillAvailability,startSkillAction,defineSkill,type SkillEngineDefinition,type SkillExecutionContext,type SkillCooldownState,type SkillResult,type SkillAvailability} from './skill-engine.js';
 import {completeCombatAction,cancelCombatAction,reconcileCombatRestrictions,type CombatActionSlot,type EntityCombatEvent,type CombatValidationContext,type ActiveCombatAction} from '../combat/combat-state.js';
@@ -8,6 +10,9 @@ import type {CombatEntity} from '../combat/combat-entity.js';
 /** Trusted game adapter, not request-body stats or player-only state. */
 export interface SkillExecutionEnvironment {
  readonly rootOffense?:SkillRootOffenseCapture;
+ readonly triggers?:SkillTriggerBinding;
+ /** Explicit gameplay lifetime from activation; requires opt-in instance session. */
+ readonly skillInstanceLifetimeMs?:number;
  readonly grid:Walkability;
  position(entityId:string):Readonly<MapPoint>|undefined;
  resolveStats(entity:CombatEntity):{attackSpeed:number;cooldownReduction:number};
@@ -79,6 +84,8 @@ export function executeSkill(definition:SkillEngineDefinition,context:SkillExecu
  if(spatial&&!pointValid(facing))return {success:false,reason:'invalid_target_position'};
  const length=Math.hypot(facing.x,facing.y)||1;
  const target=context.target.mode==='ground'?Object.freeze({...context.target,position:Object.freeze({...context.target.position})}):Object.freeze({...context.target});
+ if(!prepareRootSkillInstance(env.rootOffense?.runtime,`${context.casterId}#${request.expectedSerial}`,request.now,request.now+offset,env.skillInstanceLifetimeMs))return {success:false,reason:'invalid_context'};
+ if(!prepareSkillTriggers(env.rootOffense?.runtime,pinned.definition,request.configVersion,env.skillInstanceLifetimeMs,aimPosition??casterPosition,env.triggers))return {success:false,reason:'invalid_context'};
  let rootOffense:RootOffensiveSnapshot|undefined;
  if(env.rootOffense){
   // Reject stale admission before calling the trusted offense adapter.
@@ -92,7 +99,8 @@ export function executeSkill(definition:SkillEngineDefinition,context:SkillExecu
  const action=slot.activeAction!;
  slot.skillExecution={snapshot:Object.freeze({...(rootOffense?{rootOffense}:{}),actionInstanceId:action.actionInstanceId,casterId:context.casterId,skillId:definition.skillId,configVersion:request.configVersion,definition:pinned.definition,target,startedAt:action.startedAt,durationMs:action.durationMs,activationTime:action.startedAt+offset,
   ...(spatial?{casterPosition:Object.freeze({...casterPosition!}),aimPosition:Object.freeze({...aimPosition!}),facing:Object.freeze(length===1&&facing.x===0&&facing.y===0?{x:1,y:0}:{x:facing.x/length,y:facing.y/length})}:{})}),activated:false};
- if(rootOffense)bindRootOffense(env.rootOffense!.runtime,slot.skillExecution.snapshot);
+ if(rootOffense){bindRootOffense(env.rootOffense!.runtime,slot.skillExecution.snapshot);bindRootSkillInstance(env.rootOffense!.runtime,slot.skillExecution.snapshot,env.skillInstanceLifetimeMs);
+  bindRootSkillTriggers(env.rootOffense!.runtime,rootSkillInstance(env.rootOffense!.runtime,slot.skillExecution.snapshot)!,aimPosition??casterPosition,env.triggers,context.target.mode==='entity'?context.combat.findEntity(context.target.targetId):context.target.mode==='self'?context.combat.findEntity(context.casterId):undefined,context.combat.findEntity(context.casterId));}
  const emitted:SkillExecutionEvent[]=[...events];
  // Zero-percent activation is part of successful start, after MP/deadline commit.
  advanceSkillExecution(slot,context.combat,request.now,emitted);
@@ -101,15 +109,19 @@ export function executeSkill(definition:SkillEngineDefinition,context:SkillExecu
 }
 
 export function cancelSkillExecution(slot:SkillExecutionSlot,now:number,reason:Extract<EntityCombatEvent,{type:'action-cancelled'}>['reason'],out?:SkillExecutionEvent[]):boolean {
+ validateRootInstanceTime(slot.skillExecution?.snapshot,now);
  const events:EntityCombatEvent[]=[];const cancelled=cancelCombatAction(slot,now,reason,events);
+ if(cancelled)cancelRootSkillInstance(slot.skillExecution?.snapshot,now,reason);
  delete slot.skillExecution;out?.push(...events);return cancelled;
 }
 /** Trusted Apply event consumer calls this at the Apply timestamp. The Effect
  * layer never imports Skill/actions. Already-dispatched deliveries are untouched. */
 export function reconcileSkillRestrictions(slot:SkillExecutionSlot,combat:CombatValidationContext,now:number,out?:SkillExecutionEvent[]):boolean {
  const events:EntityCombatEvent[]=[];
+ validateRootInstanceTime(slot.skillExecution?.snapshot,now);
  const cancelled=reconcileCombatRestrictions(slot,combat,now,events);
- if(cancelled||!slot.activeAction)delete slot.skillExecution;
+ if(cancelled)cancelRootSkillInstance(slot.skillExecution?.snapshot,now,events.find(e=>e.type==='action-cancelled')?.reason??'restriction');
+ if(!slot.activeAction){cancelRootSkillInstance(slot.skillExecution?.snapshot,now,'action_lost');delete slot.skillExecution;}
  out?.push(...events);return cancelled;
 }
 /** One tick hook, not a scheduler/clock/state machine. Terminal helpers are v0.7.
@@ -121,12 +133,12 @@ export function advanceSkillExecution(slot:SkillExecutionSlot,combat:CombatValid
  if(reconcileSkillRestrictions(slot,combat,now,out))return;
  const execution=slot.skillExecution,action=slot.activeAction;
  if(!execution)return;
- if(!action||action.actionInstanceId!==execution.snapshot.actionInstanceId){delete slot.skillExecution;return;}
+ if(!action||action.actionInstanceId!==execution.snapshot.actionInstanceId){cancelRootSkillInstance(execution.snapshot,now,'action_lost');delete slot.skillExecution;return;}
  const caster=combat.findEntity(execution.snapshot.casterId);
  if(!caster||caster.currentHp<=0){cancelSkillExecution(slot,now,caster?'defeated':'session_end',out);return;}
  const s=execution.snapshot;
  if(!execution.activated&&now+1e-6>=s.activationTime){
-  execution.activated=true;activateRootOffense(s);
+  execution.activated=true;activateRootOffense(s);activateRootSkillInstance(s);
   out?.push({type:'skill-activated',status:'activated',atMs:s.activationTime,actionInstanceId:s.actionInstanceId,skillId:s.skillId,casterId:s.casterId,target:s.target,snapshot:s});
  }
  const events:EntityCombatEvent[]=[];

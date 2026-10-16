@@ -20,7 +20,7 @@ export const sequence=():SkillGameplayEffect=>({type:'timed_aoe_sequence',damage
 export const timed=():SkillGameplayEffect=>({type:'timed_object',config:{...DEFAULT_TIMED_OBJECT,delayMs:100,projectileRef:'component',bulletCount:1,placement:'self'},projectile:{config:{...DEFAULT_PROJECTILE,spawnOffset:0,speed:100,collisionRadius:2,spreadAngles:[0]},damage:damage()}});
 export const dot=()=>({config:{...DEFAULT_DOT,damageComponent:'component',tags:['DoT','Poison'],firstTickMs:100,tickIntervalMs:100,durationMs:1000},damage:{...damage(),tags:['DoT','Poison']}});
 
-export function fixture(effects:SkillGameplayEffect[]=[direct()],casterIndex=0,root=false){
+export function fixture(effects:SkillGameplayEffect[]=[direct()],casterIndex=0,root=false,instanceSession?:string){
  const entities:CombatEntity[]=['player','monster','monster','player'].map((entityType,i)=>({entityId:`actor${i}`,entityType:entityType as CombatEntity['entityType'],level:1,factionId:entityType,targetTags:[],baseStats:{str:0,dex:0,int:0,vit:0,physicalAttack:10,maxHp:1000,maxMana:100,criticalChance:0,dodgeChance:0},currentHp:1000,currentMp:100}));
  const positions:Record<string,{x:number;y:number}>={actor0:{x:30,y:50},actor1:{x:80,y:50},actor2:{x:130,y:50},actor3:{x:80,y:50}};
  const config=structuredClone(DEFAULT_CORE_STATS);const defense=structuredClone(DEFAULT_DEFENSE_SETTINGS);
@@ -32,7 +32,7 @@ export function fixture(effects:SkillGameplayEffect[]=[direct()],casterIndex=0,r
  const casterId=`actor${casterIndex}`,targetId=casterIndex===0?'actor1':'actor0';
  const context:{-readonly [K in keyof SkillExecutionContext]:SkillExecutionContext[K]}={skillId:'test',casterId,target:{mode:'entity',casterId,targetId},combat:{findEntity:id=>entities.find(e=>e.entityId===id),relation:(a,b)=>a.factionId===b.factionId?'ally':'enemy',hasRestriction:(id,r)=>runtime.effects.hasRestriction(id,r)}};
  const definition:{-readonly [K in keyof SkillEngineDefinition]:SkillEngineDefinition[K]}={skillId:'test',targetMode:'entity',allowedTargetRelations:['enemy'],baseActionDurationMs:100,activationPercent:50,castRange:400,mpCost:5,cooldownMs:0,effects};
- const events:SkillEffectEvent[]=[],actions:SkillExecutionEvent[]=[],slot:SkillExecutionSlot={},cooldowns=createSkillCooldownState(),runtime=createSkillEffectRuntime(0,undefined,{offenseMode:root?'root':'legacy'});
+ const events:SkillEffectEvent[]=[],actions:SkillExecutionEvent[]=[],slot:SkillExecutionSlot={},cooldowns=createSkillCooldownState(),runtime=createSkillEffectRuntime(0,undefined,{offenseMode:root?'root':'legacy',...(instanceSession===undefined?{}:{instanceSession})});
  let critCalls=0,dodgeCalls=0,positionCalls=0,seed=123;
  const env:SkillEffectEnvironment={combat:context.combat,grid:{cellSize:20,columns:40,rows:10,cells:Array(10).fill('1'.repeat(40))},entityIds:()=>entities.map(e=>e.entityId),position:id=>positions[id],
   snapshotDamage:(entity,component)=>{const result=resolved(entity),s=result.values;return {...snapshotActorDamage(component.definition,{...result.attributes,physicalAttack:s.physicalAttack,magicAttack:s.magicAttack},contributions(entity.entityId),{skills:{},modifiers:[]},s.criticalChance,s.criticalDamage),rank:component.rank,attacker:entity,defenseConfig:{revision:1,settings:defense},options:[]};},

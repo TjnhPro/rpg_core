@@ -39,6 +39,12 @@ try {
   assert(!/from ['"]\./.test(example));
   writeFileSync(path.join(consumer, 'headless.ts'), example);
   writeFileSync(path.join(consumer, 'root-snapshot.ts'), readFileSync(path.join(root, 'examples/root-snapshot.ts'), 'utf8'));
+  writeFileSync(path.join(consumer, 'skill-instance.ts'), readFileSync(path.join(root, 'examples/skill-instance.ts'), 'utf8'));
+  writeFileSync(path.join(consumer, 'skill-trigger.ts'), readFileSync(path.join(root, 'examples/skill-trigger.ts'), 'utf8'));
+  writeFileSync(path.join(consumer, 'nested-composition.ts'), readFileSync(path.join(root, 'examples/nested-composition.ts'), 'utf8'));
+  writeFileSync(path.join(consumer, 'stack-consumption.ts'), readFileSync(path.join(root, 'examples/stack-consumption.ts'), 'utf8'));
+  writeFileSync(path.join(consumer, 'conditional-triggers.ts'), readFileSync(path.join(root, 'examples/conditional-triggers.ts'), 'utf8'));
+  writeFileSync(path.join(consumer, 'skill-upgrades.ts'), readFileSync(path.join(root, 'examples/skill-upgrades.ts'), 'utf8'));
   // Repository-relative compatibility paths are deliberately not package exports.
   // Check their declarations and runtime identities in the installed archive too.
   const legacyImports = Object.keys(moduleMap).map((file, i) =>
@@ -71,6 +77,30 @@ import {createHash} from 'node:crypto';
 import * as core from '@rpg/core';
 import {headlessCombat} from './build/headless.js';
 import {rootSnapshotExample} from './build/root-snapshot.js';
+import {skillInstanceExample} from './build/skill-instance.js';
+import {skillTriggerExample} from './build/skill-trigger.js';
+import {nestedCompositionExample} from './build/nested-composition.js';
+import {stackConsumptionExample} from './build/stack-consumption.js';
+import {conditionalTriggersExample} from './build/conditional-triggers.js';
+import {skillUpgradesExample} from './build/skill-upgrades.js';
+const upgrades=skillUpgradesExample();
+assert.deepEqual(upgrades.old,{revision:'v1',projectiles:1,hp:980,captures:1,mp:95});
+assert.deepEqual(upgrades.upgraded,{revision:'v2',projectiles:3,hp:940,captures:1,mp:95});
+assert.deepEqual(upgrades.oldAgain,upgrades.old);
+console.log(JSON.stringify({status:'UPGRADES_VERIFIED',...upgrades}));
+const conditional=conditionalTriggersExample();
+assert.deepEqual(conditional,{consumed:3,selected:['["source",1]','["source",2]','["source",3]'],remaining:0,damage:20,bonus:0,hp:980,captures:1,mp:95,rolls:1,children:1,sharedS0:true});
+console.log(JSON.stringify({status:'CONDITIONAL_TRIGGERS_VERIFIED',...conditional}));
+const stacks2=stackConsumptionExample(2),stacks3=stackConsumptionExample(3),stackChild=stackConsumptionExample(3,true);
+assert.deepEqual(stacks2,{consumed:2,selected:['["source",1]','["source",2]'],remaining:1,damage:34,bonus:14,hp:966,captures:1,mp:95,rolls:1,children:0,sharedS0:true});
+assert.deepEqual(stacks3,{consumed:3,selected:['["source",1]','["source",2]','["source",3]'],remaining:0,damage:41,bonus:21,hp:959,captures:1,mp:95,rolls:1,children:0,sharedS0:true});
+assert.deepEqual(stackChild,{...stacks3,hp:939,rolls:2,children:1});
+console.log(JSON.stringify({status:'STACK_CONSUMPTION_VERIFIED',stacks2,stacks3,stackChild}));
+const nested=nestedCompositionExample();
+assert.deepEqual(nested,{instances:3,sharedS0:true,bHits:1,cHits:4,radialDirections:4,targetHp:615,captures:1,mp:95,actionSerial:1,cooldownUnchanged:true,actionCompleted:true,intents:2});
+console.log(JSON.stringify({status:'NESTED_SKILL_EXECUTION_VERIFIED',...nested}));
+assert.deepEqual(skillTriggerExample(), {intents:1,status:'expired',executeAtMs:110,replay:true,forged:false,disposed:false,captures:1,mp:95});
+assert.deepEqual(skillInstanceExample(), {root:'finished',child:'active',grandchild:'pending',sharedSnapshot:true,sharedPin:true,captures:1,mp:95});
 assert.deepEqual(rootSnapshotExample(), {b:20,c:60,captures:1,mp:95,configVersion:'content-v1'});
 const a = headlessCombat(73), b = headlessCombat(73);
 assert.deepEqual(a, b);
@@ -90,7 +120,7 @@ for (const [legacy, canonical] of Object.entries(moduleMap)) {
 for (const internal of ['@rpg/core/skills/skill-execution.js', '@rpg/core/dist/index.js', '@rpg/core/shared/game/skill-execution.js']) {
   await assert.rejects(import(internal), {code: 'ERR_PACKAGE_PATH_NOT_EXPORTED'});
 }
-for (const helper of ['prepareRootOffense', 'bindRootOffense', 'rootDamageSnapshot', 'actorOffense', 'freezeGameplayData', 'random', 'damageBonusReason', 'tickProjectileBodies', 'debugProjectile']) assert(!(helper in core));
+for (const helper of ['isPinnedSkillTriggerBundle', 'observesSkillConditionalHit', 'observesSkillStackApply', 'captureSkillHit', 'captureSkillStackApply', 'skillStackCount', 'skillEffectWork', 'consumeStackEffect', 'registerTriggeredSkillChildren', 'childInstanceDamage', 'assembleRootDamage', 'admitSkillProjectiles', 'recordSkillProjectile', 'pendingSkillTriggerPayload', 'childDispatcher', 'initializeSkillTriggerSession', 'captureSkillExpiry', 'captureSkillImpact', 'drainSkillTriggers', 'bindRootSkillTriggers', 'trustSkillInstanceDefinition', 'initializeSkillInstances', 'bindRootSkillInstance', 'advanceSkillInstances', 'disposeSkillInstances', 'prepareRootOffense', 'bindRootOffense', 'rootDamageSnapshot', 'actorOffense', 'freezeGameplayData', 'random', 'damageBonusReason', 'tickProjectileBodies', 'debugProjectile']) assert(!(helper in core));
 console.log(JSON.stringify({status: 'PASS', targetHp: a.entities[1].currentHp, deterministic: true, types: true, publicDomains: domains.length, legacyPaths: Object.keys(moduleMap).length, deepImportsBlocked: true}));
 `);
   const result = execFileSync(process.execPath, ['run.mjs'], {cwd: consumer, encoding: 'utf8'});

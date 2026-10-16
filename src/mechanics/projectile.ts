@@ -14,7 +14,7 @@ export function nextProjectileBodyBoundary<B extends ProjectileBody & {config:Pr
  return next;
 }
 /** Shared chronological delivery kernel. Actor/stat acquisition stays with callers. */
-export function tickProjectileBodies<B extends ProjectileBody & {config:ProjectileConfig}>(runtime:{bullets:B[]},ms:number,targets:(bullet:B)=>readonly ProjectileTarget[],grid:Walkability,onHit:(bullet:B,target:string,elapsedMs:number)=>void,active:()=>boolean=()=>true):void {
+export function tickProjectileBodies<B extends ProjectileBody & {config:ProjectileConfig}>(runtime:{bullets:B[]},ms:number,targets:(bullet:B)=>readonly ProjectileTarget[],grid:Walkability,onHit:(bullet:B,target:string,elapsedMs:number,point:Readonly<MapPoint>)=>void,active:()=>boolean=()=>true):void {
  let remaining=Math.max(0,ms),elapsed=0;
  do{
   let step=remaining;
@@ -28,7 +28,7 @@ export function tickProjectileBodies<B extends ProjectileBody & {config:Projecti
   const remainingBullets=runtime.bullets.filter(b=>{
    if(!active())return false;
    const result=moveProjectile(b,b.config,step,targets(b),grid);
-   for(const hit of result.hits){if(!active())break;onHit(b,hit.id,elapsed);}
+   for(const hit of result.hits){if(!active())break;onHit(b,hit.id,elapsed,hit.point);}
    return !result.expired;
   });
   if(!active())return;

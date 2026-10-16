@@ -1,5 +1,8 @@
 # RPG Core
 
+v1.1.7 adds opt-in immutable Skill Configuration upgrades before cast admission.
+See [Skill Modifier & Upgrade contract and evidence](docs/RPG_CORE_V1.1.7_SKILL_UPGRADES.md).
+
 Reusable, headless TypeScript RPG stats, combat, skill and effect execution.
 One canonical implementation, with ESM JavaScript and declarations for package
 consumers. Application content, clocks, RNG, entities and event wiring are inputs.
@@ -169,3 +172,17 @@ locally implemented with behavior informed by earlier research; this is not a
 claim that all pre-existing code has clean-room legal provenance. Build dependency
 licenses remain their own: TypeScript Apache-2.0, Vitest MIT, @types/node MIT;
 transitive packages are restored by npm, not vendored.
+
+Trigger intents are opt-in through `SkillExecutionEnvironment.triggers`, using a
+`pinSkillTriggerBundle` of existing immutable instance definition pins. v1.1.3
+supports projectile entity-contact OnImpact and natural Skill lifetime OnExpire;
+accepted intents do not execute children. See the [contract and evidence](docs/RPG_CORE_V1.1.3_TRIGGER_SAFETY.md)
+and [installed-package example](examples/skill-trigger.ts).
+
+
+v1.1.6 extends the existing opt-in trigger bundle with canonical landed `OnHit`,
+fatal-transition `OnKill` and Skill-Apply rising-edge `OnStackThreshold`, plus a
+source-scoped stack predicate and explicit immediate exact-N consume into Child
+admission. See [contract, limits and DoT attribution gap](docs/RPG_CORE_V1.1.6_CONDITIONAL_TRIGGERS.md)
+and [installed-package example](examples/conditional-triggers.ts). Legacy defaults
+and EffectLifecycle Apply remain unchanged.
