@@ -40,3 +40,10 @@ event-driven cancellation. The small skill-execution fixture isolates action
 admission without a delivery runtime. `source.ts` reads canonical paths from the
 reviewed module map for narrow architecture assertions. No fake damage/lifecycle
 implementation was found or added.
+
+
+v1.1.2 lifecycle evidence: `tests/skills/skill-instance.test.ts` covers the approved
+L1–L14 matrix together with `examples/skill-instance.ts` in the installed strict
+consumer. See [contract and results](RPG_CORE_V1.1.2_SKILL_INSTANCE_LIFECYCLE.md).
+Identity, shared S0, detached lifecycle and expiry are covered; automatic triggers
+and child gameplay dispatch remain outside this checkpoint.

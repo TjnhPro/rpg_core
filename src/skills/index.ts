@@ -8,3 +8,6 @@ export {skillRangeAvailability,skillExecutionAvailability,executeSkill,cancelSki
 export type {SkillExecutionEnvironment,SkillExecutionSnapshot,SkillExecutionSlot,SkillActivatedEvent,SkillExecutionEvent,SkillExecutionResult} from './skill-execution.js';
 export {deriveSkillRootDamage} from './root-offense.js';
 export type {RootOffensiveSnapshot,SkillRootOffenseCapture} from './root-offense.js';
+
+export {pinSkillInstanceDefinition,rootSkillInstance,inspectSkillInstance,registerChildSkillInstance,activateSkillInstance,finishSkillInstance,cancelSkillInstance} from './skill-instance.js';
+export type {SkillInstanceDefinition,SkillInstanceStatus,SkillInstanceView,SkillInstanceRejection,SkillInstanceResult} from './skill-instance.js';

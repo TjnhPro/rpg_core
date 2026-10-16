@@ -1,3 +1,4 @@
+import {initializeSkillInstances,disposeSkillInstances,advanceSkillInstances,nextSkillInstanceExpiration,type SkillInstanceView} from './skill-instance.js';
 import {initializeRootOffense,clearRootOffense,validateRootActivation,rootDamageSnapshot} from './root-offense.js';
 import type { DamageContext } from '../contracts/damage-contracts.js';
 import type { ProjectileConfig,TimedAOESequence,TimedObjectConfig } from '../contracts/mechanic-contracts.js';
@@ -47,18 +48,22 @@ export interface SkillEffectRuntime {
  dotPolicies:Map<DotGroup<string>,Delivery>;
  readonly effects:EffectLifecycle;
 }
-export function createSkillEffectRuntime(now=0,effects=new EffectLifecycle(now),options:{offenseMode?:'legacy'|'root'}={}):SkillEffectRuntime {
+export function createSkillEffectRuntime(now=0,effects=new EffectLifecycle(now),options:{offenseMode?:'legacy'|'root';instanceSession?:string}={}):SkillEffectRuntime {
  if(!Number.isFinite(now)||now<0)throw Error('Invalid simulation time');
  if(options.offenseMode!==undefined&&options.offenseMode!=='legacy'&&options.offenseMode!=='root')throw Error('invalid_root_offense');
  if(!effects.active||effects.now!==now)throw Error('Reuse the active session effect owner at the same simulation time');
+ if(options.instanceSession!==undefined&&options.offenseMode!=='root')throw Error('invalid_instance_session');
  const runtime:SkillEffectRuntime={now,active:true,lastActivation:new Map(),bullets:[],objects:[],sequences:[],dots:{groups:[]},dotPolicies:new Map(),effects};
  if(options.offenseMode==='root')initializeRootOffense(runtime);
+ if(options.instanceSession!==undefined)initializeSkillInstances(runtime,options.instanceSession);
  return runtime;
 }
-export function clearSkillEffects(r:SkillEffectRuntime,env?:SkillEffectEnvironment):void {
+export function clearSkillEffects(r:SkillEffectRuntime,env?:SkillEffectEnvironment):readonly SkillInstanceView[]|undefined {
+ const instances=disposeSkillInstances(r);
  clearRootOffense(r);
  r.active=false;r.bullets=[];r.objects=[];r.sequences=[];r.dots.groups=[];r.dotPolicies.clear();r.lastActivation.clear();
  const result=r.effects.dispose(r.now);if(result.success)for(const event of result.events)env?.emit(event);
+ return instances;
 }
 function effectEvents(result:EffectOperationResult,env:SkillEffectEnvironment):void {
  if(!result.success)throw Error('Invalid trusted effect lifecycle: '+result.reason);
@@ -175,7 +180,7 @@ export function dispatchSkillEffects(r:SkillEffectRuntime,event:SkillActivatedEv
 export function nextSkillEffectBoundary(r:SkillEffectRuntime,env:SkillEffectEnvironment,horizon:number):number {
  if(!r.active)return Infinity;
  return Math.min(nextProjectileBodyBoundary(r.bullets,horizon,b=>targets(env).filter(t=>eligible(b,t.id,env).allowed),env.grid),
-  Math.max(0,r.effects.nextExpiration()-r.now),...r.objects.map(o=>o.remainingMs),...r.sequences.map(s=>s.remainingMs),...r.dots.groups.map(g=>Math.min(g.remainingMs,g.nextTickMs)));
+  Math.max(0,nextSkillInstanceExpiration(r)-r.now),Math.max(0,r.effects.nextExpiration()-r.now),...r.objects.map(o=>o.remainingMs),...r.sequences.map(s=>s.remainingMs),...r.dots.groups.map(g=>Math.min(g.remainingMs,g.nextTickMs)));
 }
 /** Existing simulation loop supplies elapsed time. Partitioning preserves live
  * per-wave/strike stats and lets on-hit stacks start at the actual contact time. */
@@ -184,6 +189,7 @@ export function advanceSkillEffects(r:SkillEffectRuntime,now:number,env:SkillEff
  while(r.active){
   const horizon=now-r.now,boundary=nextSkillEffectBoundary(r,env,horizon),step=Math.min(horizon,boundary);
   r.now+=step;
+  advanceSkillInstances(r,r.now);
   effectEvents(r.effects.advance(r.now,env.combat),env);
   if(!r.active)break;
   tickDotRuntime(r.dots,step,g=>{

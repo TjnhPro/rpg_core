@@ -315,20 +315,20 @@
         "src/skills/skill-execution.ts"
       ],
       "declarations": [
+        "00471c9abdc83dc07b35ac21f45e78d21e4f628a3789cc2bf8d7749d9f6a12a0",
+        "0559c0fcd1c66ddb8139a66e0c877ababc3a4493e7a57a6236e46e15cf6e35f0",
         "1316a9f087386717f5e9d5f4080dc312e8823e44b72075b4507da77ec8502a70",
-        "14fc770e33084136f1c76111a4b7518f0b2dbca8a5894649b296c6b008bc7a99",
+        "14dc8184162b1623978cb5454b973292e79a836434f15be90f939d4f2a74a27a",
         "25fe3a7378eb5eded618e3ea4240f30c982312dcd8dfaba24285c0b6269eabff",
+        "299ecde1c546582fa6a24000b3de7548f5565584136dd2ff0b461cbeeec2c2bd",
         "2b3ca040833cbe062b4487a3a39e7dcc5f919b1c987654f16ce1f9fb282b8c7d",
-        "60d77136622c6058ed822af8be0422b8b77667a1b4e0c41177c83f5d245d45e3",
-        "6624f0e3bfc7639419d65a65e20389df2ad859031d69d003dacb2b03f5d495ba",
         "85f6ed045ece55e5467915879fa9583b95a6f1ab4cb2975ee474b19330b989ef",
         "8ee20dedcc2767c8e2dc8bca02387947a14cf1722f7076832c703eda19c0fad2",
         "8f24dc4e63f1cf24249c1e1d0d14f1d0ae19a98859fabf9d747871a1a7caac77",
+        "971ff44e9bd06fd7977db5aef63f2a5c743fe2d7e79c00c47dbedfd6ce1de25c",
         "9bed3d12152decf7e88b8a9ff3e80385d5464ee5f0034fd0b10a6b7d06306fee",
         "c91ad0abdc811f37e937b9ba05970a7cfda5d1fa1da8d32f6ba46c93fa87a455",
-        "d98344fbc944c9da184c9f56c10910a144e56ad052228994c4f77f8b08b94fa4",
-        "f035ce048b6ab59861d11e46ccefbdaa95794733557f87dbd1ed771d83916f71",
-        "f1a904c4722b387e9d90d7534bc9efc1f453d85c4ccef6eb7e54fb9c114921f7"
+        "f035ce048b6ab59861d11e46ccefbdaa95794733557f87dbd1ed771d83916f71"
       ],
       "approvedChange": {
         "checkpoint": "v1.1.1",
@@ -351,6 +351,40 @@
           "SkillExecutionSnapshot",
           "executeSkill",
           "advanceSkillExecution"
+        ],
+        "followUpChanges": [
+          {
+            "checkpoint": "v1.1.2",
+            "baseCommit": "0fd9f6ad269f59769ba89366763858d4a7ec9267",
+            "authority": "Developer acceptance of v1.1.1 and approval to implement v1.1.2 with P1-P6, 2026-10-16; docs/RPG_CORE_V1.1.2_SKILL_INSTANCE_LIFECYCLE.md",
+            "declarations": [
+              {
+                "name": "SkillExecutionEnvironment",
+                "before": "14fc770e33084136f1c76111a4b7518f0b2dbca8a5894649b296c6b008bc7a99",
+                "after": "971ff44e9bd06fd7977db5aef63f2a5c743fe2d7e79c00c47dbedfd6ce1de25c"
+              },
+              {
+                "name": "executeSkill",
+                "before": "60d77136622c6058ed822af8be0422b8b77667a1b4e0c41177c83f5d245d45e3",
+                "after": "299ecde1c546582fa6a24000b3de7548f5565584136dd2ff0b461cbeeec2c2bd"
+              },
+              {
+                "name": "cancelSkillExecution",
+                "before": "6624f0e3bfc7639419d65a65e20389df2ad859031d69d003dacb2b03f5d495ba",
+                "after": "00471c9abdc83dc07b35ac21f45e78d21e4f628a3789cc2bf8d7749d9f6a12a0"
+              },
+              {
+                "name": "reconcileSkillRestrictions",
+                "before": "d98344fbc944c9da184c9f56c10910a144e56ad052228994c4f77f8b08b94fa4",
+                "after": "0559c0fcd1c66ddb8139a66e0c877ababc3a4493e7a57a6236e46e15cf6e35f0"
+              },
+              {
+                "name": "advanceSkillExecution",
+                "before": "f1a904c4722b387e9d90d7534bc9efc1f453d85c4ccef6eb7e54fb9c114921f7",
+                "after": "14dc8184162b1623978cb5454b973292e79a836434f15be90f939d4f2a74a27a"
+              }
+            ]
+          }
         ]
       }
     },
@@ -368,19 +402,19 @@
         "3f1945742cd70e5529fbb61fc965dcfff016459f325ec1bf2684c63a0fce4985",
         "4806f6d8f75600f37c1fc17ac6041ab178436e356555458aff4b7831b9d14c54",
         "497e66b613ccfc0ccfdef8c8a5a5453967a4a3982b3b85bfaeb594ab7680ee73",
+        "4c25defad4f715797896b318c715e975d14960ad284ff12b1d83b5548c429194",
         "4d26efb7c5890b33ce0848a3cb7116043fa542b177dd77704c676a3ce9897b23",
         "53f4e65be46af73aa708a7fbb14108a6cd263f08c8e79abf1531a51d85d9b78f",
         "60186253213fbd14e294cbbb21f8375e20fd5b40f8c75a58332e7d02c5af2b83",
-        "658a9b29c476e51e541ca44b9ffd1304a6faa3c8df2d1299fb60153420bbf9bb",
         "6af0557427f37f9e07b5e941d88ad092751375ba7b781da69563e583fd9798d9",
-        "a0b181f747e6c36234f682e760b4cfde7f76ccf4b1fc9e9c44ffb2a2956ab8d1",
+        "77164522131768622897681870b87be0644700807a095c7fa2335b1cfb3bc666",
         "b355daa0b3619fde1351607961aa4b581fe88f4da3f75bc6f3e5e49b9b60e509",
         "bc3c8aba7ab328e17ac68e9b7056431a153bc5236806daeb797da4648c601d79",
-        "be8e709bf185d49dd0709ccdc38ad4501e12c7f51bfea9b072049e9e6e0f551b",
         "c40f6792559ea29536bc58fc0601afc7eed677cf16757fcfa02f8345eb28836f",
         "cb647849b9ba962adb4df574b14391dac01afbd81a3173c6834add6f0a9a19e3",
         "d622a18aa6db839ae3a811a3767ca7172276bf6da111a4a8cde4dacb7208f85f",
-        "dbd3aad8df90920d112128d018a00bf17a420fb9ab0299bf9b2247cd7bb6fa90",
+        "e310101cd6660fa730fcfa712952edaf7fed505486b41f6449149c02e889f3fd",
+        "e480cbbcf269ea1b83ad037c9a96f8f2b3eb83f5c87df9ada4b87e3272f16a9b",
         "fdd8f45dc52a3688155ace03dd0b512564f5f81d06d99f8182307c87651b115f"
       ],
       "approvedChange": {
@@ -438,7 +472,36 @@
               "fingerprint": "658a9b29c476e51e541ca44b9ffd1304a6faa3c8df2d1299fb60153420bbf9bb"
             }
           ]
-        }
+        },
+        "followUpChanges": [
+          {
+            "checkpoint": "v1.1.2",
+            "baseCommit": "0fd9f6ad269f59769ba89366763858d4a7ec9267",
+            "authority": "Developer acceptance of v1.1.1 and approval to implement v1.1.2 with P1-P6, 2026-10-16; docs/RPG_CORE_V1.1.2_SKILL_INSTANCE_LIFECYCLE.md",
+            "declarations": [
+              {
+                "name": "createSkillEffectRuntime",
+                "before": "be8e709bf185d49dd0709ccdc38ad4501e12c7f51bfea9b072049e9e6e0f551b",
+                "after": "4c25defad4f715797896b318c715e975d14960ad284ff12b1d83b5548c429194"
+              },
+              {
+                "name": "clearSkillEffects",
+                "before": "a0b181f747e6c36234f682e760b4cfde7f76ccf4b1fc9e9c44ffb2a2956ab8d1",
+                "after": "e310101cd6660fa730fcfa712952edaf7fed505486b41f6449149c02e889f3fd"
+              },
+              {
+                "name": "nextSkillEffectBoundary",
+                "before": "dbd3aad8df90920d112128d018a00bf17a420fb9ab0299bf9b2247cd7bb6fa90",
+                "after": "77164522131768622897681870b87be0644700807a095c7fa2335b1cfb3bc666"
+              },
+              {
+                "name": "advanceSkillEffects",
+                "before": "658a9b29c476e51e541ca44b9ffd1304a6faa3c8df2d1299fb60153420bbf9bb",
+                "after": "e480cbbcf269ea1b83ad037c9a96f8f2b3eb83f5c87df9ada4b87e3272f16a9b"
+              }
+            ]
+          }
+        ]
       }
     },
     {
