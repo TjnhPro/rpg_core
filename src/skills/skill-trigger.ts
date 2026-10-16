@@ -47,6 +47,7 @@ export function trustSkillInstanceDefinition(pin:SkillInstanceDefinition):void {
 export function skillInstanceDefinitionToken(pin:SkillInstanceDefinition):object|undefined {return definitionTokens.get(pin);}
 interface BundleData {definitions:Map<string,SkillInstanceDefinition>;links:Map<string,readonly SkillTriggerLink[]>}
 const bundles=new WeakMap<SkillTriggerBundle,BundleData>();
+export function isPinnedSkillTriggerBundle(value:SkillTriggerBundle):boolean {return bundles.has(value);}
 const id=(v:unknown):v is string=>typeof v==='string'&&v.length>0&&v.trim()===v;
 const point=(v:Readonly<MapPoint>|undefined):v is Readonly<MapPoint>=>!!v&&Number.isFinite(v.x)&&Number.isFinite(v.y);
 const closed=(v:object,keys:readonly string[])=>Object.keys(v).every(k=>keys.includes(k));

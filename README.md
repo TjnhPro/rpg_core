@@ -1,5 +1,8 @@
 # RPG Core
 
+v1.1.7 adds opt-in immutable Skill Configuration upgrades before cast admission.
+See [Skill Modifier & Upgrade contract and evidence](docs/RPG_CORE_V1.1.7_SKILL_UPGRADES.md).
+
 Reusable, headless TypeScript RPG stats, combat, skill and effect execution.
 One canonical implementation, with ESM JavaScript and declarations for package
 consumers. Application content, clocks, RNG, entities and event wiring are inputs.

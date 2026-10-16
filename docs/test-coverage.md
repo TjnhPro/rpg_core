@@ -78,3 +78,10 @@ exact-N consumption/admission, expiry identity, replay/failure atomicity, exact 
 limits and coarse/fine determinism. `examples/conditional-triggers.ts` runs in the
 installed consumer. DoT OnKill attribution is explicitly deferred as a separate
 capability gap; see [contract and evidence](RPG_CORE_V1.1.6_CONDITIONAL_TRIGGERS.md).
+
+
+v1.1.7 Skill upgrades: `tests/integration/skill-upgrade.test.ts` covers immutable
+resolution, actual projectile/radial/AoE/slow/Child gameplay, atomic rejection,
+revision isolation, exact limits, conditional consume/replay and determinism.
+`examples/skill-upgrades.ts` runs old/new revisions in the installed consumer.
+See [contract and evidence](RPG_CORE_V1.1.7_SKILL_UPGRADES.md).

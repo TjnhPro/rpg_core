@@ -44,6 +44,7 @@ try {
   writeFileSync(path.join(consumer, 'nested-composition.ts'), readFileSync(path.join(root, 'examples/nested-composition.ts'), 'utf8'));
   writeFileSync(path.join(consumer, 'stack-consumption.ts'), readFileSync(path.join(root, 'examples/stack-consumption.ts'), 'utf8'));
   writeFileSync(path.join(consumer, 'conditional-triggers.ts'), readFileSync(path.join(root, 'examples/conditional-triggers.ts'), 'utf8'));
+  writeFileSync(path.join(consumer, 'skill-upgrades.ts'), readFileSync(path.join(root, 'examples/skill-upgrades.ts'), 'utf8'));
   // Repository-relative compatibility paths are deliberately not package exports.
   // Check their declarations and runtime identities in the installed archive too.
   const legacyImports = Object.keys(moduleMap).map((file, i) =>
@@ -81,6 +82,12 @@ import {skillTriggerExample} from './build/skill-trigger.js';
 import {nestedCompositionExample} from './build/nested-composition.js';
 import {stackConsumptionExample} from './build/stack-consumption.js';
 import {conditionalTriggersExample} from './build/conditional-triggers.js';
+import {skillUpgradesExample} from './build/skill-upgrades.js';
+const upgrades=skillUpgradesExample();
+assert.deepEqual(upgrades.old,{revision:'v1',projectiles:1,hp:980,captures:1,mp:95});
+assert.deepEqual(upgrades.upgraded,{revision:'v2',projectiles:3,hp:940,captures:1,mp:95});
+assert.deepEqual(upgrades.oldAgain,upgrades.old);
+console.log(JSON.stringify({status:'UPGRADES_VERIFIED',...upgrades}));
 const conditional=conditionalTriggersExample();
 assert.deepEqual(conditional,{consumed:3,selected:['["source",1]','["source",2]','["source",3]'],remaining:0,damage:20,bonus:0,hp:980,captures:1,mp:95,rolls:1,children:1,sharedS0:true});
 console.log(JSON.stringify({status:'CONDITIONAL_TRIGGERS_VERIFIED',...conditional}));
@@ -113,7 +120,7 @@ for (const [legacy, canonical] of Object.entries(moduleMap)) {
 for (const internal of ['@rpg/core/skills/skill-execution.js', '@rpg/core/dist/index.js', '@rpg/core/shared/game/skill-execution.js']) {
   await assert.rejects(import(internal), {code: 'ERR_PACKAGE_PATH_NOT_EXPORTED'});
 }
-for (const helper of ['observesSkillConditionalHit', 'observesSkillStackApply', 'captureSkillHit', 'captureSkillStackApply', 'skillStackCount', 'skillEffectWork', 'consumeStackEffect', 'registerTriggeredSkillChildren', 'childInstanceDamage', 'assembleRootDamage', 'admitSkillProjectiles', 'recordSkillProjectile', 'pendingSkillTriggerPayload', 'childDispatcher', 'initializeSkillTriggerSession', 'captureSkillExpiry', 'captureSkillImpact', 'drainSkillTriggers', 'bindRootSkillTriggers', 'trustSkillInstanceDefinition', 'initializeSkillInstances', 'bindRootSkillInstance', 'advanceSkillInstances', 'disposeSkillInstances', 'prepareRootOffense', 'bindRootOffense', 'rootDamageSnapshot', 'actorOffense', 'freezeGameplayData', 'random', 'damageBonusReason', 'tickProjectileBodies', 'debugProjectile']) assert(!(helper in core));
+for (const helper of ['isPinnedSkillTriggerBundle', 'observesSkillConditionalHit', 'observesSkillStackApply', 'captureSkillHit', 'captureSkillStackApply', 'skillStackCount', 'skillEffectWork', 'consumeStackEffect', 'registerTriggeredSkillChildren', 'childInstanceDamage', 'assembleRootDamage', 'admitSkillProjectiles', 'recordSkillProjectile', 'pendingSkillTriggerPayload', 'childDispatcher', 'initializeSkillTriggerSession', 'captureSkillExpiry', 'captureSkillImpact', 'drainSkillTriggers', 'bindRootSkillTriggers', 'trustSkillInstanceDefinition', 'initializeSkillInstances', 'bindRootSkillInstance', 'advanceSkillInstances', 'disposeSkillInstances', 'prepareRootOffense', 'bindRootOffense', 'rootDamageSnapshot', 'actorOffense', 'freezeGameplayData', 'random', 'damageBonusReason', 'tickProjectileBodies', 'debugProjectile']) assert(!(helper in core));
 console.log(JSON.stringify({status: 'PASS', targetHp: a.entities[1].currentHp, deterministic: true, types: true, publicDomains: domains.length, legacyPaths: Object.keys(moduleMap).length, deepImportsBlocked: true}));
 `);
   const result = execFileSync(process.execPath, ['run.mjs'], {cwd: consumer, encoding: 'utf8'});
