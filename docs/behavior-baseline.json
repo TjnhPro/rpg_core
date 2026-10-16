@@ -415,24 +415,28 @@
         "0c9121311616b98729f64070ec98fae2dba2c5f700f51414346c9136840bde2c",
         "166b106d11a9ba04f116bc1669ab4672a731518a9f05112b555ff5884012f726",
         "17067d856e4d37eac0e402c670e8e6ec0d1d099da13670b8db8af286d6395764",
-        "1b26d3d544c53c1ea31f140fa73b5628f91cc8d43c567bb96c43bdf3618b0d5d",
         "1f9467fea19975a8ea5c7aa323cab8890b036ce67e0340c3a2bf3d832e7bbf79",
+        "3b8ae2d990f3d2d071bec3d49e9999391daae3091580e8ed58d14c3f0657010e",
         "3bfa396fba9b390152c01842da482944509dedff79d98b418bb14e5355ae318d",
         "3f1945742cd70e5529fbb61fc965dcfff016459f325ec1bf2684c63a0fce4985",
-        "4806f6d8f75600f37c1fc17ac6041ab178436e356555458aff4b7831b9d14c54",
         "497e66b613ccfc0ccfdef8c8a5a5453967a4a3982b3b85bfaeb594ab7680ee73",
         "4d26efb7c5890b33ce0848a3cb7116043fa542b177dd77704c676a3ce9897b23",
         "53f4e65be46af73aa708a7fbb14108a6cd263f08c8e79abf1531a51d85d9b78f",
         "60186253213fbd14e294cbbb21f8375e20fd5b40f8c75a58332e7d02c5af2b83",
-        "65e42a0f20e3903e016e074653ef9f3211f2ed71e05ef76793fc91e4d02937a8",
+        "60ccabc05405195269936ab2328e33c7ac8aa2eb784cf9b5d0a7d0fd500832b0",
+        "64ddb796bd4744f5b947a0515d05726cbc26a6114cf40a68e100b1887c07657e",
         "69eeb0f21dcbe1b7625a0cf96ec7f46ff9ca370c21cedcd7dbf629d01733878e",
-        "77164522131768622897681870b87be0644700807a095c7fa2335b1cfb3bc666",
+        "72d6b60800c26218b41401ca01925e39dace813fde1a65fb716c1e60ff363f72",
+        "75401b32628dc80d7b734618e9f7b92ee0997a111f6fb73fc52429a4f19f0609",
+        "820ba13db287bf25e3f1c8208f0248719212ad6a9a39119dd4d5fd36bfdd89f2",
         "8e3831d1ce1f0af61e793e4290d6a21e429d5f7029327e3785538e05f968708a",
+        "9892495e0a644f6dd0b3e5f8182a65259b223d97b35ab870c6d0c0276d9a41c0",
         "b355daa0b3619fde1351607961aa4b581fe88f4da3f75bc6f3e5e49b9b60e509",
         "bc3c8aba7ab328e17ac68e9b7056431a153bc5236806daeb797da4648c601d79",
-        "c40f6792559ea29536bc58fc0601afc7eed677cf16757fcfa02f8345eb28836f",
-        "d0213a0bef999e6719a8fed9dc4bd6800e5817e6da44fa5178e602a44594e06c",
         "d622a18aa6db839ae3a811a3767ca7172276bf6da111a4a8cde4dacb7208f85f",
+        "e1618416e3c2208f1cc372e059a70669c37a68e96570e71be42a2fc42ed62e37",
+        "eaf21d3e6ae0f1be28bce6cb91b17b0b7acbf1f56d0d6a4bba3b07a35f41b769",
+        "f3e21a4b409028b2d6172b7f2d7040e3f7e27b528408fa49837fdc21d04f9df2",
         "fdd8f45dc52a3688155ace03dd0b512564f5f81d06d99f8182307c87651b115f"
       ],
       "approvedChange": {
@@ -552,6 +556,59 @@
               {
                 "name": "guardedEnvironment",
                 "after": "17067d856e4d37eac0e402c670e8e6ec0d1d099da13670b8db8af286d6395764"
+              }
+            ]
+          },
+          {
+            "checkpoint": "v1.1.4",
+            "baseCommit": "0e85797ee5907ab574018deac749744519125bc6",
+            "authority": "Developer v1.1.4 delta-plan approval with actual-emission projectile budget, existing cancellation policy and session retention; docs/RPG_CORE_V1.1.4_NESTED_COMPOSITION.md",
+            "declarations": [
+              {
+                "name": "Delivery",
+                "before": "4806f6d8f75600f37c1fc17ac6041ab178436e356555458aff4b7831b9d14c54",
+                "after": "3b8ae2d990f3d2d071bec3d49e9999391daae3091580e8ed58d14c3f0657010e"
+              },
+              {
+                "name": "snapshot",
+                "before": "c40f6792559ea29536bc58fc0601afc7eed677cf16757fcfa02f8345eb28836f",
+                "after": "60ccabc05405195269936ab2328e33c7ac8aa2eb784cf9b5d0a7d0fd500832b0"
+              },
+              {
+                "name": "launch",
+                "before": "65e42a0f20e3903e016e074653ef9f3211f2ed71e05ef76793fc91e4d02937a8",
+                "after": "f3e21a4b409028b2d6172b7f2d7040e3f7e27b528408fa49837fdc21d04f9df2"
+              },
+              {
+                "name": "dispatchSkillEffects",
+                "before": "d0213a0bef999e6719a8fed9dc4bd6800e5817e6da44fa5178e602a44594e06c",
+                "after": "820ba13db287bf25e3f1c8208f0248719212ad6a9a39119dd4d5fd36bfdd89f2"
+              },
+              {
+                "name": "nextSkillEffectBoundary",
+                "before": "77164522131768622897681870b87be0644700807a095c7fa2335b1cfb3bc666",
+                "after": "64ddb796bd4744f5b947a0515d05726cbc26a6114cf40a68e100b1887c07657e"
+              },
+              {
+                "name": "advanceSkillEffects",
+                "before": "1b26d3d544c53c1ea31f140fa73b5628f91cc8d43c567bb96c43bdf3618b0d5d",
+                "after": "9892495e0a644f6dd0b3e5f8182a65259b223d97b35ab870c6d0c0276d9a41c0"
+              },
+              {
+                "name": "GameplayActivation",
+                "after": "75401b32628dc80d7b734618e9f7b92ee0997a111f6fb73fc52429a4f19f0609"
+              },
+              {
+                "name": "dispatchGameplayEffects",
+                "after": "e1618416e3c2208f1cc372e059a70669c37a68e96570e71be42a2fc42ed62e37"
+              },
+              {
+                "name": "childTarget",
+                "after": "72d6b60800c26218b41401ca01925e39dace813fde1a65fb716c1e60ff363f72"
+              },
+              {
+                "name": "childDispatcher",
+                "after": "eaf21d3e6ae0f1be28bce6cb91b17b0b7acbf1f56d0d6a4bba3b07a35f41b769"
               }
             ]
           }

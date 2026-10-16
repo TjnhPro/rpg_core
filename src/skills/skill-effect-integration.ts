@@ -1,5 +1,5 @@
-import {initializeSkillTriggerSession,disposeSkillTriggers,bindSkillTriggerDelivery,captureSkillImpact,drainSkillTriggers,skillTriggerMutationAllowed,observeSkillTriggerBoundary,beginSkillTriggerAdvance,endSkillTriggerAdvance} from './skill-trigger.js';
-import {rootSkillInstance,initializeSkillInstances,disposeSkillInstances,advanceSkillInstances,nextSkillInstanceExpiration,type SkillInstanceView} from './skill-instance.js';
+import {initializeSkillTriggerSession,disposeSkillTriggers,bindSkillTriggerDelivery,captureSkillImpact,drainSkillTriggers,skillTriggerMutationAllowed,observeSkillTriggerBoundary,beginSkillTriggerAdvance,endSkillTriggerAdvance,nextSkillTriggerExecution,admitSkillProjectiles,recordSkillProjectile,skillCompositionEnabled,pendingSkillTriggerPayload,type SkillTriggerReceipt,type TriggerChildDispatcher} from './skill-trigger.js';
+import {rootSkillInstance,initializeSkillInstances,disposeSkillInstances,advanceSkillInstances,nextSkillInstanceExpiration,registerTriggeredSkillChildren,canRegisterTriggeredSkillChildren,activateSkillInstance,cancelSkillInstance,inspectSkillInstance,childInstanceDamage,type SkillInstanceView} from './skill-instance.js';
 import {initializeRootOffense,clearRootOffense,validateRootActivation,rootDamageSnapshot} from './root-offense.js';
 import type { DamageContext } from '../contracts/damage-contracts.js';
 import type { ProjectileConfig,TimedAOESequence,TimedObjectConfig } from '../contracts/mechanic-contracts.js';
@@ -16,7 +16,9 @@ import { detectInstantAOE,lockAOEPosition } from '../mechanics/instant-aoe.js';
 import { detectMeleeHitbox } from '../mechanics/melee-hitbox.js';
 import { nextProjectileBodyBoundary,projectileDirections,tickProjectileBodies,type ProjectileBody } from '../mechanics/projectile.js';
 import { inRange } from '../spatial/range.js';
-import { reconcileSkillRestrictions,type SkillActivatedEvent,type SkillExecutionSlot } from './skill-execution.js';
+import { reconcileSkillRestrictions,type SkillActivatedEvent,type SkillExecutionSlot,type SkillExecutionSnapshot } from './skill-execution.js';
+import type {SkillEngineDefinition} from './skill-engine.js';
+import type {TargetContext} from '../combat/combat-state.js';
 
 /** Trusted session adapter. Actor-owned base/config/modifiers use existing stat
  * resolver + snapshotActorDamage; never client-supplied damage/HP or UI values. */
@@ -33,7 +35,13 @@ export interface SkillEffectEnvironment {
   * immediate cancellation even when the next frame is after effect expiry. */
  actionSlot?(entityId:string):SkillExecutionSlot|undefined;
 }
-interface Delivery {id:string;activation:SkillActivatedEvent;effect:Exclude<SkillGameplayEffect,{type:'modifier_effect'}>;relations:readonly FactionRelation[]}
+/** Gameplay dispatch data, not a synthetic root action/SkillActivatedEvent. */
+interface GameplayActivation {
+ actionInstanceId:string;skillId:string;casterId:string;target:Readonly<TargetContext>;
+ snapshot:Pick<SkillExecutionSnapshot,'configVersion'|'rootOffense'|'casterPosition'|'aimPosition'|'facing'> & {readonly definition:SkillEngineDefinition};
+ rootExecution?:SkillExecutionSnapshot;child?:SkillInstanceView;
+}
+interface Delivery {id:string;activation:GameplayActivation;effect:Exclude<SkillGameplayEffect,{type:'modifier_effect'}>;relations:readonly FactionRelation[]}
 interface Bullet extends Delivery,ProjectileBody {config:ProjectileConfig;snapshot:DamageSnapshot}
 interface Emitter extends Delivery {position:MapPoint;remainingMs:number;config:TimedObjectConfig}
 interface Sequence extends Delivery {center:MapPoint;nextStrike:number;remainingMs:number;config:TimedAOESequence}
@@ -88,7 +96,8 @@ function snapshot(r:SkillEffectRuntime,d:Delivery,env:SkillEffectEnvironment,c=c
   if(d.activation.snapshot.rootOffense)env.emit({type:'effect-rejected',atMs:r.now,instanceId:d.id,targetId:d.activation.casterId,reason:'entity_not_found'});
   return;
  }
- if(d.activation.snapshot.rootOffense)return rootDamageSnapshot(r,d.activation.snapshot,c);
+ if(d.activation.child)return childInstanceDamage(r,d.activation.child,c);
+ if(d.activation.snapshot.rootOffense)return rootDamageSnapshot(r,d.activation.rootExecution!,c);
  return structuredClone({...env.snapshotDamage(caster,c,d.activation.snapshot.configVersion),definition:c.definition,rank:c.rank,
   attacker:{entityId:caster.entityId,entityType:caster.entityType,level:caster.level,targetTags:[...caster.targetTags]}});
 }
@@ -122,14 +131,17 @@ function hit(r:SkillEffectRuntime,d:Delivery,targetId:string,offense:DamageSnaps
 function launch(r:SkillEffectRuntime,d:Delivery,config:ProjectileConfig,origin:MapPoint,direction:MapPoint,env:SkillEffectEnvironment):void {
  if(!r.active||!config.enabled)return;
  const offense=snapshot(r,d,env);if(!offense)return;
- for(const [index,heading]of projectileDirections(direction,config.spreadAngles).entries()){
+ const instance=d.activation.child?inspectSkillInstance(r,d.activation.child.instanceId):d.activation.rootExecution&&rootSkillInstance(r,d.activation.rootExecution);
+ const composition=instance&&skillCompositionEnabled(r,instance.instanceId);
+ const headings=projectileDirections(direction,config.spreadAngles).map((heading,index)=>({heading,index,position:{x:origin.x+heading.x*config.spawnOffset,y:origin.y+heading.y*config.spawnOffset}}))
+  .filter(b=>!composition||canTraverse(env.grid,origin,b.position));
+ if(instance&&!admitSkillProjectiles(r,instance.instanceId,headings.length))return;
+ for(const {index,heading,position}of headings){
   if(!r.active)break;
-  const position={x:origin.x+heading.x*config.spawnOffset,y:origin.y+heading.y*config.spawnOffset};
-  if(!canTraverse(env.grid,origin,position))continue;
+  if(!composition&&!canTraverse(env.grid,origin,position))continue;
   const bullet:Bullet={...d,id:`${d.id}/bullet${index}`,config,position,direction:heading,travelled:0,remainingMs:config.lifetime,hitTargets:[],snapshot:offense};
-  const instance=rootSkillInstance(r,d.activation.snapshot);
   if(instance&&instance.status!=='cancelled')bindSkillTriggerDelivery(r,bullet,instance.instanceId,d.activation.snapshot.rootOffense);
-  r.bullets.push(bullet);env.emit({type:'effect-created',atMs:r.now,instanceId:bullet.id,actionInstanceId:d.activation.actionInstanceId,mechanic:'projectile'});
+  r.bullets.push(bullet);if(instance)recordSkillProjectile(r,instance.instanceId);env.emit({type:'effect-created',atMs:r.now,instanceId:bullet.id,actionInstanceId:d.activation.actionInstanceId,mechanic:'projectile'});
  }
 }
 function aoe(r:SkillEffectRuntime,d:Delivery,center:MapPoint,radius:number,env:SkillEffectEnvironment,config=strikeAOE(radius),mechanic:'instant_aoe'|'timed_aoe_sequence'='instant_aoe'):void {
@@ -149,19 +161,23 @@ export function dispatchSkillEffects(r:SkillEffectRuntime,event:SkillActivatedEv
  if(serial<=(r.lastActivation.get(event.casterId)??0))return false;
  if(event.snapshot.rootOffense&&!env.combat.findEntity(event.casterId))throw Error('invalid_root_offense');
  r.lastActivation.set(event.casterId,serial);
+ dispatchGameplayEffects(r,{...event,rootExecution:event.snapshot},env,event.actionInstanceId);
+ return true;
+}
+function dispatchGameplayEffects(r:SkillEffectRuntime,event:GameplayActivation,env:SkillEffectEnvironment,instanceId:string):void {
  for(const [index,effect]of (event.snapshot.definition.effects??[]).entries()){
   if(!r.active)break;
   if(effect.type==='modifier_effect'){
    const targetId=effect.target==='self'?event.casterId:event.target.mode==='self'?event.casterId:event.target.mode==='entity'?event.target.targetId:undefined;
-   if(!targetId){env.emit({type:'effect-rejected',atMs:r.now,instanceId:`${event.actionInstanceId}/effect${index}`,targetId:event.casterId,reason:'invalid_target_mode'});continue;}
+   if(!targetId){env.emit({type:'effect-rejected',atMs:r.now,instanceId:`${instanceId}/effect${index}`,targetId:event.casterId,reason:'invalid_target_mode'});continue;}
    const result=r.effects.apply({effectId:effect.definition.effectId,sourceEntityId:event.casterId,targetEntityId:targetId,
     allowedTargetRelations:effect.allowedTargetRelations??event.snapshot.definition.allowedTargetRelations},effect.definition,{now:r.now,combat:env.combat},r.effects.nextApplicationSerial(event.casterId));
-   if(result.success)effectEvents(result,env);else env.emit({type:'effect-rejected',atMs:r.now,instanceId:`${event.actionInstanceId}/effect${index}`,targetId,reason:result.reason});
+   if(result.success)effectEvents(result,env);else env.emit({type:'effect-rejected',atMs:r.now,instanceId:`${instanceId}/effect${index}`,targetId,reason:result.reason});
    continue;
   }
-  const d:Delivery={id:`${event.actionInstanceId}/effect${index}`,activation:event,effect,relations:effect.allowedTargetRelations??event.snapshot.definition.allowedTargetRelations};
+  const d:Delivery={id:`${instanceId}/effect${index}`,activation:event,effect,relations:effect.allowedTargetRelations??event.snapshot.definition.allowedTargetRelations};
   if(effect.type!=='direct_hit'&&!effect.config.enabled)continue;
-  const s=event.snapshot,source=env.position(event.casterId),aim=s.aimPosition,origin=s.casterPosition,facing=s.facing;
+  const s=event.snapshot,source=event.child?s.casterPosition:env.position(event.casterId),aim=s.aimPosition,origin=s.casterPosition,facing=s.facing;
   switch(effect.type){
    case 'direct_hit':{
     if(event.target.mode==='ground')break;
@@ -180,12 +196,45 @@ export function dispatchSkillEffects(r:SkillEffectRuntime,event:SkillActivatedEv
    case 'timed_aoe_sequence':if(aim){r.sequences.push({...d,center:{...aim},nextStrike:0,remainingMs:effect.config.firstDelayMs,config:effect.config});env.emit({type:'effect-created',atMs:r.now,instanceId:d.id,actionInstanceId:event.actionInstanceId,mechanic:effect.type});}break;
   }
  }
- return true;
+}
+function childTarget(child:SkillInstanceView,receipt:SkillTriggerReceipt):Readonly<TargetContext>|undefined {
+ const mode=child.definition!.targetMode,casterId=child.casterId;
+ return mode==='self'?{mode,casterId}:mode==='ground'?{mode,casterId,position:receipt.origin}:receipt.targetId?{mode,casterId,targetId:receipt.targetId}:undefined;
+}
+function childDispatcher(r:SkillEffectRuntime,env:SkillEffectEnvironment):TriggerChildDispatcher {
+ return {
+  cancel(child){cancelSkillInstance(r,child,r.now);},
+  admit(receipts){
+   for(const receipt of receipts){
+    const payload=pendingSkillTriggerPayload(r,receipt);if(!payload)return {reason:'invalid_ancestry'};
+    if(payload.pin.definition.targetMode==='entity'){
+     if(!receipt.targetId||!validateCombatHit({casterId:receipt.sourceEntityId,targetId:receipt.targetId,allowedRelations:payload.pin.definition.allowedTargetRelations,requiresLivingTarget:true},env.combat).allowed)return {reason:'invalid_child_target'};
+    }
+   }
+   if(!canRegisterTriggeredSkillChildren(r,receipts[0]!.rootInstanceId,receipts.length))return {reason:'budget_exceeded',dimension:'maxLiveChildren'};
+   const children=registerTriggeredSkillChildren(r,receipts,env.combat);
+   return children?{children}:{reason:'invalid_ancestry'};
+  },
+  execute(child,receipt){
+   const current=inspectSkillInstance(r,child.instanceId);if(current?.status!=='pending')return false;
+   const target=childTarget(child,receipt);
+   const source=env.combat.findEntity(child.casterId);
+   if(!source||!target||target.mode==='entity'&&!validateCombatHit({casterId:child.casterId,targetId:target.targetId,allowedRelations:child.definition!.allowedTargetRelations,requiresLivingTarget:true},env.combat).allowed){
+    cancelSkillInstance(r,child,r.now);env.emit({type:'effect-rejected',atMs:r.now,instanceId:child.instanceId,targetId:receipt.targetId??child.casterId,reason:source?'invalid_child_target':'entity_not_found'});return false;
+   }
+   const activated=activateSkillInstance(r,child,r.now,env.combat);if(!activated.success||!activated.changed)return false;
+   const aim=target.mode==='entity'?env.position(target.targetId):receipt.origin;
+   // Each child starts at its authenticated contact/expiry anchor, not root/caster position.
+   dispatchGameplayEffects(r,{actionInstanceId:child.actionInstanceId,skillId:child.skillId,casterId:child.casterId,target,child,
+    snapshot:{definition:child.definition as SkillEngineDefinition,configVersion:child.configVersion,rootOffense:child.rootOffense!,casterPosition:receipt.origin,...(aim?{aimPosition:aim}:{}),facing:{x:1,y:0}}},env,child.instanceId);
+   return true;
+  }
+ };
 }
 export function nextSkillEffectBoundary(r:SkillEffectRuntime,env:SkillEffectEnvironment,horizon:number):number {
  if(!r.active)return Infinity;
  return Math.min(nextProjectileBodyBoundary(r.bullets,horizon,b=>targets(env).filter(t=>eligible(b,t.id,env).allowed),env.grid),
-  Math.max(0,nextSkillInstanceExpiration(r)-r.now),Math.max(0,r.effects.nextExpiration()-r.now),...r.objects.map(o=>o.remainingMs),...r.sequences.map(s=>s.remainingMs),...r.dots.groups.map(g=>Math.min(g.remainingMs,g.nextTickMs)));
+  Math.max(0,nextSkillInstanceExpiration(r)-r.now),Math.max(0,nextSkillTriggerExecution(r)-r.now),Math.max(0,r.effects.nextExpiration()-r.now),...r.objects.map(o=>o.remainingMs),...r.sequences.map(s=>s.remainingMs),...r.dots.groups.map(g=>Math.min(g.remainingMs,g.nextTickMs)));
 }
 /** Existing simulation loop supplies elapsed time. Partitioning preserves live
  * per-wave/strike stats and lets on-hit stacks start at the actual contact time. */
@@ -213,7 +262,7 @@ export function advanceSkillEffects(r:SkillEffectRuntime,now:number,env:SkillEff
   if(!r.active)break;
   tickAOESequenceRuntime(r,step,env.positionRoll,(s,center,index)=>aoe(r,{...s,id:`${s.id}/strike${index}`},center,s.config.aoeRadius,env,undefined,'timed_aoe_sequence'),()=>r.active);
   for(const group of r.dotPolicies.keys())if(!r.dots.groups.includes(group))r.dotPolicies.delete(group);
-  drainSkillTriggers(r,env.combat);
+  drainSkillTriggers(r,env.combat,childDispatcher(r,env));
   if(r.now>=now&&nextSkillEffectBoundary(r,env,0)>1e-6)break;
  }
  }finally{endSkillTriggerAdvance(r);}

@@ -41,6 +41,7 @@ try {
   writeFileSync(path.join(consumer, 'root-snapshot.ts'), readFileSync(path.join(root, 'examples/root-snapshot.ts'), 'utf8'));
   writeFileSync(path.join(consumer, 'skill-instance.ts'), readFileSync(path.join(root, 'examples/skill-instance.ts'), 'utf8'));
   writeFileSync(path.join(consumer, 'skill-trigger.ts'), readFileSync(path.join(root, 'examples/skill-trigger.ts'), 'utf8'));
+  writeFileSync(path.join(consumer, 'nested-composition.ts'), readFileSync(path.join(root, 'examples/nested-composition.ts'), 'utf8'));
   // Repository-relative compatibility paths are deliberately not package exports.
   // Check their declarations and runtime identities in the installed archive too.
   const legacyImports = Object.keys(moduleMap).map((file, i) =>
@@ -75,6 +76,10 @@ import {headlessCombat} from './build/headless.js';
 import {rootSnapshotExample} from './build/root-snapshot.js';
 import {skillInstanceExample} from './build/skill-instance.js';
 import {skillTriggerExample} from './build/skill-trigger.js';
+import {nestedCompositionExample} from './build/nested-composition.js';
+const nested=nestedCompositionExample();
+assert.deepEqual(nested,{instances:3,sharedS0:true,bHits:1,cHits:4,radialDirections:4,targetHp:615,captures:1,mp:95,actionSerial:1,cooldownUnchanged:true,actionCompleted:true,intents:2});
+console.log(JSON.stringify({status:'NESTED_SKILL_EXECUTION_VERIFIED',...nested}));
 assert.deepEqual(skillTriggerExample(), {intents:1,status:'expired',executeAtMs:110,replay:true,forged:false,disposed:false,captures:1,mp:95});
 assert.deepEqual(skillInstanceExample(), {root:'finished',child:'active',grandchild:'pending',sharedSnapshot:true,sharedPin:true,captures:1,mp:95});
 assert.deepEqual(rootSnapshotExample(), {b:20,c:60,captures:1,mp:95,configVersion:'content-v1'});
@@ -96,7 +101,7 @@ for (const [legacy, canonical] of Object.entries(moduleMap)) {
 for (const internal of ['@rpg/core/skills/skill-execution.js', '@rpg/core/dist/index.js', '@rpg/core/shared/game/skill-execution.js']) {
   await assert.rejects(import(internal), {code: 'ERR_PACKAGE_PATH_NOT_EXPORTED'});
 }
-for (const helper of ['initializeSkillTriggerSession', 'captureSkillExpiry', 'captureSkillImpact', 'drainSkillTriggers', 'bindRootSkillTriggers', 'trustSkillInstanceDefinition', 'initializeSkillInstances', 'bindRootSkillInstance', 'advanceSkillInstances', 'disposeSkillInstances', 'prepareRootOffense', 'bindRootOffense', 'rootDamageSnapshot', 'actorOffense', 'freezeGameplayData', 'random', 'damageBonusReason', 'tickProjectileBodies', 'debugProjectile']) assert(!(helper in core));
+for (const helper of ['registerTriggeredSkillChildren', 'childInstanceDamage', 'assembleRootDamage', 'admitSkillProjectiles', 'recordSkillProjectile', 'pendingSkillTriggerPayload', 'childDispatcher', 'initializeSkillTriggerSession', 'captureSkillExpiry', 'captureSkillImpact', 'drainSkillTriggers', 'bindRootSkillTriggers', 'trustSkillInstanceDefinition', 'initializeSkillInstances', 'bindRootSkillInstance', 'advanceSkillInstances', 'disposeSkillInstances', 'prepareRootOffense', 'bindRootOffense', 'rootDamageSnapshot', 'actorOffense', 'freezeGameplayData', 'random', 'damageBonusReason', 'tickProjectileBodies', 'debugProjectile']) assert(!(helper in core));
 console.log(JSON.stringify({status: 'PASS', targetHp: a.entities[1].currentHp, deterministic: true, types: true, publicDomains: domains.length, legacyPaths: Object.keys(moduleMap).length, deepImportsBlocked: true}));
 `);
   const result = execFileSync(process.execPath, ['run.mjs'], {cwd: consumer, encoding: 'utf8'});

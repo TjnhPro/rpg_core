@@ -40,7 +40,12 @@ export function validateRootOffense(runtime:SkillEffectRuntime,snapshot:SkillExe
  * live session. B/C-like components are not child Skill execution. */
 export function rootDamageSnapshot(runtime:SkillEffectRuntime,snapshot:SkillExecutionSnapshot,component:SkillDamageComponent):DamageSnapshot {
  if(!runtime.active||!sessions.has(runtime)||!validateRootOffense(runtime,snapshot)||validateSkillDamageComponent(component).length)throw Error('invalid_root_offense');
- return {...snapshot.rootOffense!.offense,definition:component.definition,rank:component.rank} as DamageSnapshot;
+ return assembleRootDamage(snapshot.rootOffense!,component);
+}
+/** Component assembly shared by authenticated root and child delivery paths. */
+export function assembleRootDamage(root:RootOffensiveSnapshot,component:SkillDamageComponent):DamageSnapshot {
+ if(validateSkillDamageComponent(component).length)throw Error('invalid_root_offense');
+ return {...root.offense,definition:component.definition,rank:component.rank} as DamageSnapshot;
 }
 
 /** Public detached copy; internal delivery shares immutable S0/pinned definitions. */

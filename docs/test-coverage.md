@@ -53,4 +53,14 @@ real projectile/lifecycle paths, pinned DAG/replay/session validation, ordered
 bounded batch reservation and callback cleanup. Existing integration tests cover
 T11 opt-out mechanics; `examples/skill-trigger.ts` is compiled and executed in the
 strict installed consumer for T12. See [checkpoint evidence](RPG_CORE_V1.1.3_TRIGGER_SAFETY.md).
-Nested Child Skill execution remains unimplemented (v1.1.4).
+Nested Child Skill execution was outside that checkpoint.
+
+
+v1.1.4 composition: `tests/skills/nested-composition.test.ts` adds actual-Core
+N1-N11 evidence with `tests/fixtures/nested-skill.ts`: A projectile contact -> B AoE
+-> B natural expiry -> C timed radial projectiles, shared S0/own ranks, live defense,
+detached lifecycle, replay, exact/overflow budgets, concurrent roots and cleanup.
+Existing suites retain N12 legacy coverage and the unchanged headless digest.
+`examples/nested-composition.ts` runs from an installed archive for N13, including
+strict public types, real child damage/HP and single cost/cooldown/action serial.
+See [v1.1.4 contract and evidence](RPG_CORE_V1.1.4_NESTED_COMPOSITION.md).

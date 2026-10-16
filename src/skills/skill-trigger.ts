@@ -4,6 +4,7 @@ import type {SkillEffectRuntime} from './skill-effect-integration.js';
 import type {RootOffensiveSnapshot} from './root-offense.js';
 import type {MapPoint} from '../spatial/grid-geometry.js';
 import type {CombatValidationContext} from '../combat/combat-state.js';
+import type {CombatEntity} from '../combat/combat-entity.js';
 
 export const SKILL_TRIGGER_LIMITS=Object.freeze({maxDepth:8,maxIntentsPerRoot:128,maxLiveChildren:32,maxQueuedPerBoundary:256,maxWorkPerBoundary:512});
 export type SkillTrigger='OnImpact'|'OnExpire';
@@ -24,15 +25,15 @@ export interface SkillTriggerReceipt {
  readonly linkId:string;readonly childSkillId:string;readonly depth:number;readonly origin:Readonly<MapPoint>;
  readonly deliveryId?:string;readonly targetId?:string;
 }
-export type SkillTriggerDimension='maxDepth'|'maxIntentsPerRoot'|'maxQueuedPerBoundary'|'maxWorkPerBoundary'|'maxOccurrences';
+export type SkillTriggerDimension='maxDepth'|'maxIntentsPerRoot'|'maxQueuedPerBoundary'|'maxWorkPerBoundary'|'maxOccurrences'|'maxLiveChildren'|'maxProjectilesPerRoot';
 export interface SkillTriggerResult {
  readonly status:'accepted'|'rejected';readonly atMs:number;readonly instanceId:string;readonly rootInstanceId:string;
  readonly linkIds:readonly string[];readonly receipt?:SkillTriggerReceipt;
- readonly reason?:'budget_exceeded'|'invalid_ancestry'|'invalid_time'|'entity_not_found';readonly dimension?:SkillTriggerDimension;
+ readonly reason?:'budget_exceeded'|'invalid_ancestry'|'invalid_time'|'entity_not_found'|'invalid_child_target';readonly dimension?:SkillTriggerDimension;
  /** Work-overflow diagnostics aggregate further rejected batches, never intents. */
  readonly rejectedBatches?:number;
 }
-export interface SkillTriggerBinding {readonly bundle:SkillTriggerBundle;observe(result:SkillTriggerResult):void}
+export interface SkillTriggerBinding {readonly bundle:SkillTriggerBundle;readonly executeChildren?:boolean;observe(result:SkillTriggerResult):void}
 export type SkillTriggerReceiptResult={success:true;changed:false}|{success:false;reason:'invalid_session'|'invalid_receipt'};
 
 // One canonical pin trust table, reused by instance registration and bundle validation.
@@ -79,7 +80,7 @@ export function pinSkillTriggerBundle(input:SkillTriggerBundle):SkillTriggerBund
  const bundle=Object.freeze({version:input.version,rootSkillId:input.rootSkillId,definitions:Object.freeze([...input.definitions]),links:Object.freeze(pinnedLinks)});
  bundles.set(bundle,{definitions,links});return bundle;
 }
-interface RootContext {order:number;used:number;pending:number}
+interface RootContext {order:number;used:number;pending:number;projectiles:number}
 interface Context {
  binding:SkillTriggerBinding;root:RootContext;instanceId:string;rootInstanceId:string;parentInstanceId:string|null;
  casterId:string;skillId:string;anchor:Readonly<MapPoint>;path:readonly string[];sequence:number;occurrences:Map<string,number>;
@@ -88,8 +89,9 @@ interface Occurrence {trigger:SkillTrigger;atMs:number;occurrenceId:string;origi
 interface Batch {context:Context;occurrence:Occurrence;sequence:number;links:readonly SkillTriggerLink[];offense:RootOffensiveSnapshot;
  reason?:SkillTriggerResult['reason'];dimension?:SkillTriggerDimension;reserved:boolean}
 interface TriggerSession {
- runtime:SkillEffectRuntime;namespace:string;receiptData:WeakMap<SkillTriggerReceipt,{offense:RootOffensiveSnapshot;pin:SkillInstanceDefinition}>;contexts:Map<string,Context>;nextRoot:number;enabled:boolean;
+ runtime:SkillEffectRuntime;namespace:string;receiptData:WeakMap<SkillTriggerReceipt,{offense:RootOffensiveSnapshot;pin:SkillInstanceDefinition;consumed:boolean}>;contexts:Map<string,Context>;nextRoot:number;enabled:boolean;
  notifying:boolean;advancing:boolean;boundary:number;work:number;queued:number;batches:Batch[];overflow?:{batch:Batch;count:number};
+ executions:{receipt:SkillTriggerReceipt;child:SkillInstanceView;batch:Batch;source:CombatEntity;target?:CombatEntity}[];
 }
 const sessions=new WeakMap<SkillEffectRuntime,TriggerSession>();
 // Payloads are weakly held within the session and released on shutdown, even
@@ -97,11 +99,11 @@ const sessions=new WeakMap<SkillEffectRuntime,TriggerSession>();
 const receipts=new WeakMap<SkillTriggerReceipt,TriggerSession>();
 const deliveries=new WeakMap<object,{session:TriggerSession;context:Context;offense:RootOffensiveSnapshot}>();
 export function initializeSkillTriggerSession(runtime:SkillEffectRuntime,namespace:string):void {
- sessions.set(runtime,{runtime,namespace,receiptData:new WeakMap(),contexts:new Map(),nextRoot:0,enabled:false,notifying:false,advancing:false,boundary:runtime.now,work:0,queued:0,batches:[]});
+ sessions.set(runtime,{runtime,namespace,receiptData:new WeakMap(),contexts:new Map(),nextRoot:0,enabled:false,notifying:false,advancing:false,boundary:runtime.now,work:0,queued:0,batches:[],executions:[]});
 }
 export function disposeSkillTriggers(runtime:SkillEffectRuntime):void {
  const s=sessions.get(runtime);if(!s)return;
- s.receiptData=new WeakMap();s.contexts.clear();s.batches=[];delete s.overflow;s.queued=0;sessions.delete(runtime);
+ s.receiptData=new WeakMap();s.contexts.clear();s.batches=[];s.executions=[];delete s.overflow;s.queued=0;sessions.delete(runtime);
 }
 export function skillTriggerMutationAllowed(runtime:SkillEffectRuntime|undefined):boolean {return !runtime||!sessions.get(runtime)?.notifying;}
 /** Existing emit callbacks keep their API; only opt-in sessions get the guard. */
@@ -126,19 +128,20 @@ export function prepareSkillTriggers(runtime:SkillEffectRuntime|undefined,defini
  if(!binding)return true;
  const s=runtime&&sessions.get(runtime),data=binding.bundle&&bundles.get(binding.bundle),pin=data?.definitions.get(definition.skillId);
  return !!s&&runtime!.active&&Number.isSafeInteger(s.nextRoot+1)&&!!pin&&binding.bundle.rootSkillId===definition.skillId
-  &&pin.configVersion===version&&pin.lifetimeMs===lifetime&&typeof binding.observe==='function'&&point(anchor)&&canonical(definition)===canonical(pin.definition);
+  &&pin.configVersion===version&&pin.lifetimeMs===lifetime&&typeof binding.observe==='function'
+  &&(binding.executeChildren===undefined||typeof binding.executeChildren==='boolean')&&point(anchor)&&canonical(definition)===canonical(pin.definition);
 }
 export function bindRootSkillTriggers(runtime:SkillEffectRuntime,view:SkillInstanceView,anchor:Readonly<MapPoint>|undefined,binding:SkillTriggerBinding|undefined):void {
  if(!binding)return;const s=sessions.get(runtime)!;s.enabled=true;
- const context:Context={binding:Object.freeze({bundle:binding.bundle,observe:binding.observe}),root:{order:++s.nextRoot,used:0,pending:0},
+ const context:Context={binding:Object.freeze({...binding}),root:{order:++s.nextRoot,used:0,pending:0,projectiles:0},
   instanceId:view.instanceId,rootInstanceId:view.rootInstanceId,parentInstanceId:null,casterId:view.casterId,skillId:view.skillId,
   anchor:Object.freeze({...anchor!}),path:Object.freeze([view.skillId]),sequence:0,occurrences:new Map()};
  s.contexts.set(view.instanceId,context);
 }
-export function bindChildSkillTriggers(runtime:SkillEffectRuntime,parentId:string,view:SkillInstanceView,pin:SkillInstanceDefinition):void {
+export function bindChildSkillTriggers(runtime:SkillEffectRuntime,parentId:string,view:SkillInstanceView,pin:SkillInstanceDefinition,anchor?:Readonly<MapPoint>):void {
  const s=sessions.get(runtime),parent=s?.contexts.get(parentId);
  if(!parent||bundles.get(parent.binding.bundle)!.definitions.get(view.skillId)!==pin)return;
- s!.contexts.set(view.instanceId,{...parent,instanceId:view.instanceId,parentInstanceId:parentId,skillId:view.skillId,
+ s!.contexts.set(view.instanceId,{...parent,anchor:anchor??parent.anchor,instanceId:view.instanceId,parentInstanceId:parentId,skillId:view.skillId,
   path:Object.freeze([...parent.path,view.skillId]),sequence:0,occurrences:new Map()});
 }
 export function bindSkillTriggerDelivery(runtime:SkillEffectRuntime,delivery:object,instanceId:string,offense:RootOffensiveSnapshot|undefined):void {
@@ -204,8 +207,14 @@ function result(batch:Batch,reason:NonNullable<SkillTriggerResult['reason']>,dim
   linkIds:Object.freeze(batch.links.map(l=>l.linkId)),reason,...(dimension?{dimension}:{}),...(count===undefined?{}:{rejectedBatches:count})});
 }
 /** Runs at the end of existing gameplay boundary, never recursively from contact. */
-export function drainSkillTriggers(runtime:SkillEffectRuntime,combat:CombatValidationContext):void {
+export interface TriggerChildDispatcher {
+ admit(receipts:readonly SkillTriggerReceipt[]):{children:readonly SkillInstanceView[]}|{reason:NonNullable<SkillTriggerResult['reason']>;dimension?:SkillTriggerDimension};
+ execute(child:SkillInstanceView,receipt:SkillTriggerReceipt):boolean;
+ cancel(child:SkillInstanceView):void;
+}
+export function drainSkillTriggers(runtime:SkillEffectRuntime,combat:CombatValidationContext,children?:TriggerChildDispatcher):void {
  const s=sessions.get(runtime);if(!s?.enabled)return;
+ boundary(s,runtime.now);
  const batches=s.batches;s.batches=[];
  for(const b of batches)if(b.reserved)b.context.root.pending-=b.links.length;
  const overflow=s.overflow;delete s.overflow;s.queued=0;
@@ -216,19 +225,81 @@ export function drainSkillTriggers(runtime:SkillEffectRuntime,combat:CombatValid
   const notify=(r:SkillTriggerResult)=>observeSkillTriggerBoundary(runtime,()=>b.context.binding.observe(r));
   if(b.reason){notify(result(b,b.reason,b.dimension,b===overflow?.batch?overflow.count:undefined));continue;}
   if(!combat.findEntity(b.context.casterId)){notify(result(b,'entity_not_found'));continue;}
-  // Commit the complete batch before observing it. No child resources/state are reserved.
-  b.context.root.used+=b.links.length;
+  if(b.context.binding.executeChildren&&s.executions.length+b.links.length>SKILL_TRIGGER_LIMITS.maxQueuedPerBoundary){notify(result(b,'budget_exceeded','maxQueuedPerBoundary'));continue;}
+  // Commit the complete batch before observing it; nested mode registers real pending children.
   const accepted=b.links.map(link=>{
    const o=b.occurrence,c=b.context;
    const receipt:SkillTriggerReceipt=Object.freeze({receiptId:JSON.stringify([c.instanceId,o.trigger,o.occurrenceId,link.linkId,o.atMs]),
     sessionNamespace:s.namespace,rootInstanceId:c.rootInstanceId,instanceId:c.instanceId,parentInstanceId:c.parentInstanceId,sourceEntityId:c.casterId,
     trigger:o.trigger,occurrenceId:o.occurrenceId,atMs:o.atMs,executeAtMs:o.atMs+link.delayMs,linkId:link.linkId,childSkillId:link.childSkillId,
     depth:c.path.length,origin:o.origin,...(o.deliveryId===undefined?{}:{deliveryId:o.deliveryId}),...(o.targetId===undefined?{}:{targetId:o.targetId})});
-   receipts.set(receipt,s);s.receiptData.set(receipt,{offense:b.offense,pin:bundles.get(c.binding.bundle)!.definitions.get(link.childSkillId)!});
+   receipts.set(receipt,s);s.receiptData.set(receipt,{offense:b.offense,pin:bundles.get(c.binding.bundle)!.definitions.get(link.childSkillId)!,consumed:false});
    return Object.freeze({status:'accepted' as const,atMs:o.atMs,instanceId:c.instanceId,rootInstanceId:c.rootInstanceId,linkIds:Object.freeze([link.linkId]),receipt});
   });
+  if(b.context.binding.executeChildren){
+   const admission=children?.admit(accepted.map(r=>r.receipt));
+   if(!admission||!('children' in admission)){
+    for(const r of accepted){s.receiptData.delete(r.receipt);receipts.delete(r.receipt);}
+    notify(result(b,admission?.reason??'invalid_ancestry',admission?.dimension));continue;
+   }
+   accepted.forEach((r,i)=>{
+    s.receiptData.get(r.receipt)!.consumed=true;
+    const child=admission.children[i]!,source=combat.findEntity(child.casterId)!;
+    const target=child.definition!.targetMode==='entity'&&r.receipt.targetId?combat.findEntity(r.receipt.targetId):undefined;
+    s.executions.push({receipt:r.receipt,child,batch:b,source,...(target?{target}:{})});
+   });
+  }
+  b.context.root.used+=b.links.length;
   for(const r of accepted){if(!runtime.active||sessions.get(runtime)!==s)break;notify(r);}
  }
+ if(!children)return;
+ s.executions.sort((a,b)=>a.receipt.executeAtMs-b.receipt.executeAtMs||compare(a.batch,b.batch)||a.batch.links.findIndex(l=>l.linkId===a.receipt.linkId)-b.batch.links.findIndex(l=>l.linkId===b.receipt.linkId));
+ const due=s.executions.filter(e=>e.receipt.executeAtMs<=runtime.now);s.executions=s.executions.filter(e=>e.receipt.executeAtMs>runtime.now);
+ const admitted=new Set<Batch>(),rejected=new Set<Batch>();
+ for(const e of due){
+  if(!runtime.active||sessions.get(runtime)!==s)break;
+  if(!admitted.has(e.batch)&&!rejected.has(e.batch)){
+   const cost=due.filter(n=>n.batch===e.batch).length;
+   if(s.work+cost>SKILL_TRIGGER_LIMITS.maxWorkPerBoundary){
+    rejected.add(e.batch);
+    for(const n of due)if(n.batch===e.batch)children.cancel(n.child);
+    observeSkillTriggerBoundary(runtime,()=>e.batch.context.binding.observe(result(e.batch,'budget_exceeded','maxWorkPerBoundary')));
+   }else{s.work+=cost;admitted.add(e.batch);}
+  }
+  if(rejected.has(e.batch))continue;
+  if(combat.findEntity(e.child.casterId)!==e.source||e.target&&combat.findEntity(e.target.entityId)!==e.target){
+   children.cancel(e.child);
+   observeSkillTriggerBoundary(runtime,()=>e.batch.context.binding.observe(Object.freeze({...result(e.batch,combat.findEntity(e.child.casterId)!==e.source?'entity_not_found':'invalid_child_target'),atMs:runtime.now})));continue;
+  }
+  children.execute(e.child,e.receipt);
+ }
+}
+/** Delays share the trigger session and existing effect-loop clock. */
+export function nextSkillTriggerExecution(runtime:SkillEffectRuntime):number {
+ const s=sessions.get(runtime);return s?.executions.reduce((at,e)=>Math.min(at,e.receipt.executeAtMs),Infinity)??Infinity;
+}
+/** Internal capability lookup. Consumed receipts cannot register another child. */
+export function pendingSkillTriggerPayload(runtime:SkillEffectRuntime,receipt:SkillTriggerReceipt){
+ const s=sessions.get(runtime),data=s?.receiptData.get(receipt);
+ return runtime.active&&receipts.get(receipt)===s&&data&&!data.consumed?data:undefined;
+}
+export function skillCompositionEnabled(runtime:SkillEffectRuntime,instanceId:string):boolean {
+ return sessions.get(runtime)?.contexts.get(instanceId)?.binding.executeChildren===true;
+}
+/** Count only traversable bullets in a whole actual emission, never future bursts. */
+export function admitSkillProjectiles(runtime:SkillEffectRuntime,instanceId:string,count:number):boolean {
+ const s=sessions.get(runtime),c=s?.contexts.get(instanceId);if(!s||!c?.binding.executeChildren)return true;
+ boundary(s,runtime.now);
+ const dimension=c.root.projectiles+count>256?'maxProjectilesPerRoot':s.work+count>SKILL_TRIGGER_LIMITS.maxWorkPerBoundary?'maxWorkPerBoundary':undefined;
+ if(dimension){
+  observeSkillTriggerBoundary(runtime,()=>c.binding.observe(Object.freeze({status:'rejected',atMs:runtime.now,instanceId,rootInstanceId:c.rootInstanceId,linkIds:Object.freeze([]),reason:'budget_exceeded',dimension})));
+  return false;
+ }
+ return true;
+}
+export function recordSkillProjectile(runtime:SkillEffectRuntime,instanceId:string):void {
+ const s=sessions.get(runtime),c=s?.contexts.get(instanceId);
+ if(s&&c?.binding.executeChildren){c.root.projectiles++;s.work++;}
 }
 /** Validation/replay is read-only: no requeue, observer call, RNG or resource work. */
 export function validateSkillTriggerReceipt(runtime:SkillEffectRuntime,receipt:SkillTriggerReceipt):SkillTriggerReceiptResult {

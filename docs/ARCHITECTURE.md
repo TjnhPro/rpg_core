@@ -125,6 +125,11 @@ Adapters provide inputs and event/clock wiring; they do not replace damage/effec
 
 ## Extending a mechanic
 
+The [v1.1.4 nested composition contract](RPG_CORE_V1.1.4_NESTED_COMPOSITION.md)
+documents opt-in trusted child dispatch through these same mechanics, root S0,
+session-owned trigger delays, actual-emission budgets and detached lifecycle.
+Default and v1.1.3 intent-only execution remain unchanged.
+
 Before adding delivery, inspect `SkillGameplayEffect` in `src/skills/skill-effects.ts`,
 the existing dispatch in `src/skills/skill-effect-integration.ts`, and `src/mechanics`.
 For example, the existing timed projectile emitter already composes validated

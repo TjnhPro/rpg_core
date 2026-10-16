@@ -1,4 +1,6 @@
-import {trustSkillInstanceDefinition,skillInstanceDefinitionToken,captureSkillExpiry,skillTriggerMutationAllowed,bindChildSkillTriggers} from './skill-trigger.js';
+import {trustSkillInstanceDefinition,skillInstanceDefinitionToken,captureSkillExpiry,skillTriggerMutationAllowed,bindChildSkillTriggers,pendingSkillTriggerPayload,skillCompositionEnabled,SKILL_TRIGGER_LIMITS,type SkillTriggerReceipt} from './skill-trigger.js';
+import {assembleRootDamage} from './root-offense.js';
+import type {SkillDamageComponent} from './skill-effects.js';
 import {defineSkill,type SkillEngineDefinition} from './skill-engine.js';
 import type {SkillEffectRuntime} from './skill-effect-integration.js';
 import type {SkillExecutionSnapshot} from './skill-execution.js';
@@ -20,7 +22,7 @@ export interface SkillInstanceView {
  readonly definition?:Immutable<SkillEngineDefinition>;readonly rootOffense?:RootOffensiveSnapshot;
 }
 export type SkillInstanceRejection='invalid_session'|'invalid_time'|'invalid_instance'|'invalid_definition'
- |'invalid_receipt'|'conflicting_replay'|'parent_terminal'|'invalid_transition'|'action_owned'|'entity_not_found';
+ |'invalid_receipt'|'conflicting_replay'|'parent_terminal'|'invalid_transition'|'action_owned'|'entity_not_found'|'maxLiveChildren';
 export type SkillInstanceResult={success:true;instance:SkillInstanceView;changed:boolean}|{success:false;reason:SkillInstanceRejection};
 interface RecordEntry {view:SkillInstanceView;pinToken:object; lifetimeMs?:number}
 interface InstanceSession {
@@ -143,6 +145,7 @@ export function registerChildSkillInstance(runtime:SkillEffectRuntime,parent:Ski
  if(existing)return existing.pinToken===token?ok(existing,false):fail('conflicting_replay');
  const p=s.records.get(parent.instanceId)!;
  if(!isLive(p.view))return fail('parent_terminal');
+ if(skillCompositionEnabled(runtime,parent.instanceId)&&liveChildren(s,p.view.rootInstanceId)>=SKILL_TRIGGER_LIMITS.maxLiveChildren)return fail('maxLiveChildren');
  if(!combat.findEntity(p.view.casterId))return fail('entity_not_found');
  if(!validDeadline(now,pin.lifetimeMs))return fail('invalid_time');
  const r:RecordEntry={view:undefined as unknown as SkillInstanceView,pinToken:token,...(pin.lifetimeMs===undefined?{}:{lifetimeMs:pin.lifetimeMs})};
@@ -150,6 +153,43 @@ export function registerChildSkillInstance(runtime:SkillEffectRuntime,parent:Ski
   actionInstanceId:p.view.actionInstanceId,casterId:p.view.casterId,createdAt:now,configVersion:pin.configVersion,status:'pending',
   definition:pin.definition,rootOffense:p.view.rootOffense!});
  s.records.set(id,r);bindChildSkillTriggers(runtime,p.view.instanceId,r.view,pin);s.now=now;return ok(r,true);
+}
+function liveChildren(s:InstanceSession,rootId:string):number {
+ return [...s.records.values()].filter(r=>r.view.rootInstanceId===rootId&&r.view.parentInstanceId!==null&&isLive(r.view)).length;
+}
+/** Internal atomic receipt admission. Public manual registration stays unchanged.
+ * Receipt trust permits issued deliveries to outlive finished/cancelled parents. */
+export function registerTriggeredSkillChildren(runtime:SkillEffectRuntime,receipts:readonly SkillTriggerReceipt[],combat:CombatValidationContext):readonly SkillInstanceView[]|undefined {
+ const s=instanceSessions.get(runtime);if(!s||!runtime.active||!skillTriggerMutationAllowed(runtime)||timeError(s,runtime.now)||!receipts.length)return;
+ const data=receipts.map(receipt=>({receipt,payload:pendingSkillTriggerPayload(runtime,receipt)}));
+ const first=receipts[0]!;
+ if(liveChildren(s,first.rootInstanceId)+receipts.length>SKILL_TRIGGER_LIMITS.maxLiveChildren)return;
+ const ids=new Set<string>();
+ for(const {receipt,payload} of data){
+  if(!payload||receipt.rootInstanceId!==first.rootInstanceId||receipt.instanceId!==first.instanceId||receipt.atMs!==runtime.now
+   ||receipt.depth>SKILL_TRIGGER_LIMITS.maxDepth||!s.records.has(receipt.instanceId)||!combat.findEntity(receipt.sourceEntityId)
+   ||!validDeadline(receipt.executeAtMs,payload.pin.lifetimeMs)||s.records.has(receipt.receiptId)||ids.has(receipt.receiptId))return;
+  ids.add(receipt.receiptId);
+ }
+ const children:SkillInstanceView[]=[];
+ for(const {receipt,payload} of data){
+  const {pin,offense}=payload!;
+  const r:RecordEntry={view:undefined as unknown as SkillInstanceView,pinToken:skillInstanceDefinitionToken(pin)!,...(pin.lifetimeMs===undefined?{}:{lifetimeMs:pin.lifetimeMs})};
+  observe(s,r,{instanceId:receipt.receiptId,rootInstanceId:receipt.rootInstanceId,parentInstanceId:receipt.instanceId,
+   skillId:pin.definition.skillId,casterId:receipt.sourceEntityId,actionInstanceId:offense.actionInstanceId,configVersion:pin.configVersion,
+   createdAt:runtime.now,status:'pending',definition:pin.definition,rootOffense:offense});
+  s.records.set(r.view.instanceId,r);bindChildSkillTriggers(runtime,receipt.instanceId,r.view,pin,receipt.origin);children.push(r.view);
+ }
+ return children;
+}
+export function canRegisterTriggeredSkillChildren(runtime:SkillEffectRuntime,rootId:string,count:number):boolean {
+ const s=instanceSessions.get(runtime);return !!s&&liveChildren(s,rootId)+count<=SKILL_TRIGGER_LIMITS.maxLiveChildren;
+}
+/** Older trusted observations retain S0 for detached delivery after compaction. */
+export function childInstanceDamage(runtime:SkillEffectRuntime,child:SkillInstanceView,component:SkillDamageComponent){
+ const s=instanceSessions.get(runtime);
+ if(!runtime.active||!s?.handles.has(child)||!child.parentInstanceId||!child.rootOffense)throw Error('invalid_root_offense');
+ return assembleRootDamage(child.rootOffense,component);
 }
 export function activateSkillInstance(runtime:SkillEffectRuntime,handle:SkillInstanceView,now:number,combat:CombatValidationContext):SkillInstanceResult {
  const s=owner(runtime,handle,now);if(typeof s==='string')return fail(s);
