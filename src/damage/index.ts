@@ -5,3 +5,5 @@ export {damageDefinition,DAMAGE_SOURCES,DAMAGE_TAGS} from '../contracts/damage-c
 export type {DamageSource,DamageDefinition,DamageContext,DamageModifier,DamageSettings} from '../contracts/damage-contracts.js';
 export {DEFAULT_DEFENSE_SETTINGS,validateDefenseSettings} from '../contracts/defense-settings.js';
 export type {DefenseType,DefenseRule,DefenseSettings,DamageDelivery,DefenseActor,DefenseContext,DefenseConfigSnapshot} from '../contracts/defense-settings.js';
+export {snapshotActorOffense} from './damage-core.js';
+export type {ActorOffenseInput,ActorOffenseSnapshot} from './damage-core.js';

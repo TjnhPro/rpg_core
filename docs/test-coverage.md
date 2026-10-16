@@ -1,8 +1,16 @@
 # Core test coverage matrix
 
-Phase 2 baseline: `8176acb` (144 tests). Current suite: 162 tests in 18 files.
+Phase 2 baseline: `8176acb` (144 tests); completed Phase 2: 162 tests in 18 files.
 This is a contract/evidence matrix, not a line-coverage or balance certification.
 All existing cases survive the domain organization; 18 focused cases were added.
+
+v1.1.1 adds root snapshot integration evidence in
+[`tests/integration/root-offense.test.ts`](../tests/integration/root-offense.test.ts)
+and an installed-package recipe in [`examples/root-snapshot.ts`](../examples/root-snapshot.ts).
+The [S1–S12 mapping](RPG_CORE_V1.1.1_ROOT_SNAPSHOT.md#evidence-and-compatibility)
+covers all existing delivery modes under opt-in, live target validation, immutable
+offense, rejection/replay/session isolation and deterministic advancement. Legacy
+tests and the consumer's example hash remain unchanged. No child runtime is claimed.
 
 | Domain | Verified contract | Evidence | Phase 2 change / limits |
 | --- | --- | --- | --- |

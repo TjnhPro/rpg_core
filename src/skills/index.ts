@@ -6,3 +6,5 @@ export {validateSkillDefinition,createSkillCooldownState,remainingSkillCooldown,
 export type {SkillIdentity,SkillEngineDefinition,SkillExecutionContext,SkillRejection,SkillResult,SkillCooldownState,SkillAvailability,AcceptedSkillReplacement} from './skill-engine.js';
 export {skillRangeAvailability,skillExecutionAvailability,executeSkill,cancelSkillExecution,reconcileSkillRestrictions,advanceSkillExecution} from './skill-execution.js';
 export type {SkillExecutionEnvironment,SkillExecutionSnapshot,SkillExecutionSlot,SkillActivatedEvent,SkillExecutionEvent,SkillExecutionResult} from './skill-execution.js';
+export {deriveSkillRootDamage} from './root-offense.js';
+export type {RootOffensiveSnapshot,SkillRootOffenseCapture} from './root-offense.js';

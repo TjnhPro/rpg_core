@@ -123,6 +123,15 @@ Use `collectActiveModifiers` with application-owned source instance IDs, merge
 live. Emitted DoT/projectiles survive caster defeat; session end disposes them.
 Applications supply deterministic ordering, clock, RNG and event wiring.
 
+v1.1.1 adds explicit root-offense opt-in: create the existing effect runtime with
+`{offenseMode:'root'}` as its third argument, and supply `rootOffense: {runtime,
+capture}` on the execution environment. Core binds one immutable offensive input
+snapshot at successful cast start; existing deliveries derive their own component
+damage from it. Default legacy capture timing is unchanged. See the
+[contract and evidence](docs/RPG_CORE_V1.1.1_ROOT_SNAPSHOT.md) and
+[public-package recipe](examples/root-snapshot.ts). This is snapshot inheritance,
+not child Skill lifecycle or nested execution.
+
 Existing formulas, caps, B0/B1, critical/dodge, armor/MR, snapshot timing and
 execution behavior are preserved. Fallback configuration seeds provide numeric
 compatibility, not a mandatory balance model. Defense rating coefficients must

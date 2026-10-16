@@ -38,6 +38,7 @@ try {
   const example = readFileSync(path.join(root, 'examples/headless.ts'), 'utf8');
   assert(!/from ['"]\./.test(example));
   writeFileSync(path.join(consumer, 'headless.ts'), example);
+  writeFileSync(path.join(consumer, 'root-snapshot.ts'), readFileSync(path.join(root, 'examples/root-snapshot.ts'), 'utf8'));
   // Repository-relative compatibility paths are deliberately not package exports.
   // Check their declarations and runtime identities in the installed archive too.
   const legacyImports = Object.keys(moduleMap).map((file, i) =>
@@ -69,6 +70,8 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import * as core from '@rpg/core';
 import {headlessCombat} from './build/headless.js';
+import {rootSnapshotExample} from './build/root-snapshot.js';
+assert.deepEqual(rootSnapshotExample(), {b:20,c:60,captures:1,mp:95,configVersion:'content-v1'});
 const a = headlessCombat(73), b = headlessCombat(73);
 assert.deepEqual(a, b);
 assert.equal(a.entities[1].currentHp, 70);
@@ -87,7 +90,7 @@ for (const [legacy, canonical] of Object.entries(moduleMap)) {
 for (const internal of ['@rpg/core/skills/skill-execution.js', '@rpg/core/dist/index.js', '@rpg/core/shared/game/skill-execution.js']) {
   await assert.rejects(import(internal), {code: 'ERR_PACKAGE_PATH_NOT_EXPORTED'});
 }
-for (const helper of ['freezeGameplayData', 'random', 'damageBonusReason', 'tickProjectileBodies', 'debugProjectile']) assert(!(helper in core));
+for (const helper of ['prepareRootOffense', 'bindRootOffense', 'rootDamageSnapshot', 'actorOffense', 'freezeGameplayData', 'random', 'damageBonusReason', 'tickProjectileBodies', 'debugProjectile']) assert(!(helper in core));
 console.log(JSON.stringify({status: 'PASS', targetHp: a.entities[1].currentHp, deterministic: true, types: true, publicDomains: domains.length, legacyPaths: Object.keys(moduleMap).length, deepImportsBlocked: true}));
 `);
   const result = execFileSync(process.execPath, ['run.mjs'], {cwd: consumer, encoding: 'utf8'});

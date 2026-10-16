@@ -1,5 +1,11 @@
 # RPG Core v1.1.0 — Foundation & Architecture
 
+Historical v1.1.0 record through `2c32ebc`: the documentation-only boundaries and
+NOT IMPLEMENTED statements below describe that checkpoint. The Developer later
+authorized v1.1.1 on this same branch; its concrete contract, implementation and
+verification are recorded in [Root Snapshot Inheritance](RPG_CORE_V1.1.1_ROOT_SNAPSHOT.md).
+The decisions/roadmap below remain intact; this note does not approve later checkpoints.
+
 **DOCUMENTATION CHECKPOINT — AUDIT + DEVELOPER-APPROVED ARCHITECTURE DIRECTION.**
 Prepared and decisions recorded 2026-10-16. This PR contains documentation only;
 implementation requires the separate checkpoint plan/review workflow.
