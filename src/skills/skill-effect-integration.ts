@@ -128,7 +128,7 @@ function launch(r:SkillEffectRuntime,d:Delivery,config:ProjectileConfig,origin:M
   if(!canTraverse(env.grid,origin,position))continue;
   const bullet:Bullet={...d,id:`${d.id}/bullet${index}`,config,position,direction:heading,travelled:0,remainingMs:config.lifetime,hitTargets:[],snapshot:offense};
   const instance=rootSkillInstance(r,d.activation.snapshot);
-  if(instance)bindSkillTriggerDelivery(r,bullet,instance.instanceId,d.activation.snapshot.rootOffense);
+  if(instance&&instance.status!=='cancelled')bindSkillTriggerDelivery(r,bullet,instance.instanceId,d.activation.snapshot.rootOffense);
   r.bullets.push(bullet);env.emit({type:'effect-created',atMs:r.now,instanceId:bullet.id,actionInstanceId:d.activation.actionInstanceId,mechanic:'projectile'});
  }
 }

@@ -3,7 +3,7 @@ import {DEFAULT_INSTANT_AOE} from '../../src/contracts/mechanic-contracts.js';
 import {fixture,projectile,direct,damage} from '../fixtures/skill-core.js';
 import {pinSkillInstanceDefinition,pinSkillTriggerBundle,validateSkillTriggerReceipt,rootSkillInstance,inspectSkillInstance,cancelSkillInstance,registerChildSkillInstance,activateSkillInstance,type SkillTriggerResult,type SkillTriggerLink,type SkillTriggerBundle,SKILL_TRIGGER_LIMITS} from '../../src/skills/index.js';
 import {advanceSkillEffects,clearSkillEffects,dispatchSkillEffects} from '../../src/skills/skill-effect-integration.js';
-import {advanceSkillExecution,cancelSkillExecution} from '../../src/skills/skill-execution.js';
+import {advanceSkillExecution,cancelSkillExecution,type SkillActivatedEvent} from '../../src/skills/skill-execution.js';
 
 function setup(trigger:'OnImpact'|'OnExpire'='OnImpact',lifetime?:number,behavior:'stop_on_hit'|'pierce'='stop_on_hit',count=1,maxOccurrences=128){
  const f=fixture([projectile(behavior)],0,true,'session'),results:SkillTriggerResult[]=[];
@@ -97,6 +97,13 @@ it('T8: cancelled/finished parents retain issued delivery authority; dead regist
   if(mode==='missing')f.entities.splice(0,1);
   advanceSkillEffects(f.runtime,600,f.env);expect(f.accepted()).toHaveLength(mode==='missing'?0:1);expect(f.captures()).toBe(1);
  }
+ const late=setup('OnImpact',1000);expect(late.start().success).toBe(true);
+ advanceSkillEffects(late.runtime,50,late.env);advanceSkillExecution(late.slot,late.context.combat,50,late.actions);
+ const root=rootSkillInstance(late.runtime,late.slot.skillExecution!.snapshot)!;
+ expect(cancelSkillInstance(late.runtime,root,50).success).toBe(true);
+ dispatchSkillEffects(late.runtime,late.actions.find((e):e is SkillActivatedEvent=>e.type==='skill-activated')!,late.env);
+ advanceSkillEffects(late.runtime,600,late.env);expect(late.hits()).toHaveLength(1);expect(late.results).toEqual([]);
+
 });
 it('T11: opt-out stays inert; invalid bundle admission has no costs or snapshot capture',()=>{
  const legacy=fixture([projectile()]);legacy.activate();advanceSkillEffects(legacy.runtime,600,legacy.env);expect(legacy.hits()).toHaveLength(1);

@@ -50,6 +50,9 @@ No parsing of effect-hit, visual callbacks or synthetic activation events is use
 Wall, ground landing, no-target and AoE/direct/melee impacts are unsupported here.
 **Ground-impact Meteor is not supported.** Projectiles from the existing timed
 emitter use the same contact path and retain the original instance provenance.
+Only projectiles actually launched before parent cancellation retain trigger
+authority; later emissions/late activation dispatch can retain legacy delivery
+behavior but do not mint new OnImpact authority for a cancelled parent.
 
 Action completion, status expiry, projectile termination, explicit cancellation
 and session disposal never become natural Skill expiry. Finished/expired parents
