@@ -213,11 +213,35 @@
         "src/damage/damage-core.ts"
       ],
       "declarations": [
+        "19fdb48027fd7762cc5f97bdd3aedd94d975470822c2c939d195b6bef748aa02",
+        "2323568f897eed1197b64bf9de64e9ed6169550394ed71a1eb964ce846759a61",
         "69ad5533c02e2a878b3b81e651790f90f6d9ebff598fb72ea4a02c54300d74a1",
+        "96627cf6aa481446a844558db520a0573ffe39ee0c41cb0785584634170bdbfe",
+        "b1271afd144a20d4a3c938130666c3b83bc58c8dde96a5bae2e8d9a7c67cfe11",
         "bfc6d1e55a0a2ed0c2d53ff344827f4f11b662c9958d9ea2b0a905dfc1031f7a",
-        "c01ac125fe886154dd2eb618ec0e183b7264e493ba2de9b31cbe89f97272e5bc",
+        "c1e421ff6bc4de0eb39ead587978cea8189a26d9f9151b2b2e1c0193c44fa649",
+        "d222a4d010ebd244f1f97bc29bd7329520d61e56db03682c387b17224b8f019a",
         "dcdffe845c2b01dd4a036a2ebda535df40e9dfc6a42f73cc75e7681e0fa86a4e"
-      ]
+      ],
+      "approvedChange": {
+        "checkpoint": "v1.1.1",
+        "baseCommit": "2c32ebce3a5b8b86e3c22d1095645249a4202cfd",
+        "authority": "Developer approval of implementation plan, 2026-10-16; docs/RPG_CORE_V1.1.1_ROOT_SNAPSHOT.md",
+        "previousDeclarations": [
+          "c01ac125fe886154dd2eb618ec0e183b7264e493ba2de9b31cbe89f97272e5bc"
+        ],
+        "removedDeclarations": [
+          "snapshotActorDamage"
+        ],
+        "addedDeclarations": [
+          "actorOffense",
+          "snapshotActorDamage",
+          "ActorOffenseInput",
+          "DeepReadonly",
+          "ActorOffenseSnapshot",
+          "snapshotActorOffense"
+        ]
+      }
     },
     {
       "originalFile": "src/shared/game/defense-engine.ts",
@@ -292,20 +316,43 @@
       ],
       "declarations": [
         "1316a9f087386717f5e9d5f4080dc312e8823e44b72075b4507da77ec8502a70",
+        "14fc770e33084136f1c76111a4b7518f0b2dbca8a5894649b296c6b008bc7a99",
         "25fe3a7378eb5eded618e3ea4240f30c982312dcd8dfaba24285c0b6269eabff",
         "2b3ca040833cbe062b4487a3a39e7dcc5f919b1c987654f16ce1f9fb282b8c7d",
-        "5d22692beabbfd01b684733e5162f4d11e2511bf051dd5cb34dc7caa3f372d14",
-        "64a6f2b2ead7da386e01bfa3c56c042c42701cbe3803facbea5715190bcdaee7",
+        "60d77136622c6058ed822af8be0422b8b77667a1b4e0c41177c83f5d245d45e3",
         "6624f0e3bfc7639419d65a65e20389df2ad859031d69d003dacb2b03f5d495ba",
+        "85f6ed045ece55e5467915879fa9583b95a6f1ab4cb2975ee474b19330b989ef",
         "8ee20dedcc2767c8e2dc8bca02387947a14cf1722f7076832c703eda19c0fad2",
         "8f24dc4e63f1cf24249c1e1d0d14f1d0ae19a98859fabf9d747871a1a7caac77",
         "9bed3d12152decf7e88b8a9ff3e80385d5464ee5f0034fd0b10a6b7d06306fee",
-        "9f82e976e22143688722439e6b83a62b828b6bbf234a1726cccf163935cae679",
         "c91ad0abdc811f37e937b9ba05970a7cfda5d1fa1da8d32f6ba46c93fa87a455",
         "d98344fbc944c9da184c9f56c10910a144e56ad052228994c4f77f8b08b94fa4",
-        "e9095abadac5f955a3f40f5324df726716e3629889f003ca9178ea1a4d216ded",
-        "f035ce048b6ab59861d11e46ccefbdaa95794733557f87dbd1ed771d83916f71"
-      ]
+        "f035ce048b6ab59861d11e46ccefbdaa95794733557f87dbd1ed771d83916f71",
+        "f1a904c4722b387e9d90d7534bc9efc1f453d85c4ccef6eb7e54fb9c114921f7"
+      ],
+      "approvedChange": {
+        "checkpoint": "v1.1.1",
+        "baseCommit": "2c32ebce3a5b8b86e3c22d1095645249a4202cfd",
+        "authority": "Developer approval of implementation plan, 2026-10-16; docs/RPG_CORE_V1.1.1_ROOT_SNAPSHOT.md",
+        "previousDeclarations": [
+          "5d22692beabbfd01b684733e5162f4d11e2511bf051dd5cb34dc7caa3f372d14",
+          "64a6f2b2ead7da386e01bfa3c56c042c42701cbe3803facbea5715190bcdaee7",
+          "9f82e976e22143688722439e6b83a62b828b6bbf234a1726cccf163935cae679",
+          "e9095abadac5f955a3f40f5324df726716e3629889f003ca9178ea1a4d216ded"
+        ],
+        "removedDeclarations": [
+          "SkillExecutionEnvironment",
+          "SkillExecutionSnapshot",
+          "executeSkill",
+          "advanceSkillExecution"
+        ],
+        "addedDeclarations": [
+          "SkillExecutionEnvironment",
+          "SkillExecutionSnapshot",
+          "executeSkill",
+          "advanceSkillExecution"
+        ]
+      }
     },
     {
       "originalFile": "src/shared/game/skill-effect-integration.ts",
@@ -316,26 +363,83 @@
         "07920f2e4d65f242aaf56d80fb615addee300236dcf23d7bc48c50d123eb91de",
         "0c9121311616b98729f64070ec98fae2dba2c5f700f51414346c9136840bde2c",
         "166b106d11a9ba04f116bc1669ab4672a731518a9f05112b555ff5884012f726",
+        "1f9467fea19975a8ea5c7aa323cab8890b036ce67e0340c3a2bf3d832e7bbf79",
+        "3bfa396fba9b390152c01842da482944509dedff79d98b418bb14e5355ae318d",
         "3f1945742cd70e5529fbb61fc965dcfff016459f325ec1bf2684c63a0fce4985",
         "4806f6d8f75600f37c1fc17ac6041ab178436e356555458aff4b7831b9d14c54",
         "497e66b613ccfc0ccfdef8c8a5a5453967a4a3982b3b85bfaeb594ab7680ee73",
-        "4b408fe43fe9f7c655ace34ef7acee452b09c46434703959dbc4ea9206446497",
         "4d26efb7c5890b33ce0848a3cb7116043fa542b177dd77704c676a3ce9897b23",
         "53f4e65be46af73aa708a7fbb14108a6cd263f08c8e79abf1531a51d85d9b78f",
         "60186253213fbd14e294cbbb21f8375e20fd5b40f8c75a58332e7d02c5af2b83",
         "658a9b29c476e51e541ca44b9ffd1304a6faa3c8df2d1299fb60153420bbf9bb",
-        "855882432edd9a65fabc8e1f5e524c0b641179ac8613e0c299fd2bb700f2d314",
-        "9bbc450d0e7c37d1e2b18aef7e45a42b76b60fe36ceef28f2eb76a342d53a05b",
-        "aaa3efc4a1db4a06a818fdd0ad9ae03895220b75611b7786968ab3c75b70be3f",
+        "6af0557427f37f9e07b5e941d88ad092751375ba7b781da69563e583fd9798d9",
+        "a0b181f747e6c36234f682e760b4cfde7f76ccf4b1fc9e9c44ffb2a2956ab8d1",
         "b355daa0b3619fde1351607961aa4b581fe88f4da3f75bc6f3e5e49b9b60e509",
         "bc3c8aba7ab328e17ac68e9b7056431a153bc5236806daeb797da4648c601d79",
+        "be8e709bf185d49dd0709ccdc38ad4501e12c7f51bfea9b072049e9e6e0f551b",
+        "c40f6792559ea29536bc58fc0601afc7eed677cf16757fcfa02f8345eb28836f",
+        "cb647849b9ba962adb4df574b14391dac01afbd81a3173c6834add6f0a9a19e3",
         "d622a18aa6db839ae3a811a3767ca7172276bf6da111a4a8cde4dacb7208f85f",
         "dbd3aad8df90920d112128d018a00bf17a420fb9ab0299bf9b2247cd7bb6fa90",
-        "ee04895ce21864e263feb9427a6ed982dd78902de90931a2b83df364714dbb40",
-        "f6e670e4653cbbb0070c0a279b6ca32237b944a27e0919574ec180bedf9056df",
-        "fdd8f45dc52a3688155ace03dd0b512564f5f81d06d99f8182307c87651b115f",
-        "fefaae06178ff368b6844aee921a38ef445f172268851e5e481aa10076a7136e"
-      ]
+        "fdd8f45dc52a3688155ace03dd0b512564f5f81d06d99f8182307c87651b115f"
+      ],
+      "approvedChange": {
+        "checkpoint": "v1.1.1",
+        "baseCommit": "2c32ebce3a5b8b86e3c22d1095645249a4202cfd",
+        "authority": "Developer approval of implementation plan, 2026-10-16; docs/RPG_CORE_V1.1.1_ROOT_SNAPSHOT.md",
+        "previousDeclarations": [
+          "4b408fe43fe9f7c655ace34ef7acee452b09c46434703959dbc4ea9206446497",
+          "658a9b29c476e51e541ca44b9ffd1304a6faa3c8df2d1299fb60153420bbf9bb",
+          "855882432edd9a65fabc8e1f5e524c0b641179ac8613e0c299fd2bb700f2d314",
+          "9bbc450d0e7c37d1e2b18aef7e45a42b76b60fe36ceef28f2eb76a342d53a05b",
+          "aaa3efc4a1db4a06a818fdd0ad9ae03895220b75611b7786968ab3c75b70be3f",
+          "ee04895ce21864e263feb9427a6ed982dd78902de90931a2b83df364714dbb40",
+          "f6e670e4653cbbb0070c0a279b6ca32237b944a27e0919574ec180bedf9056df",
+          "fefaae06178ff368b6844aee921a38ef445f172268851e5e481aa10076a7136e"
+        ],
+        "removedDeclarations": [
+          "createSkillEffectRuntime",
+          "clearSkillEffects",
+          "snapshot",
+          "hit",
+          "launch",
+          "aoe",
+          "dispatchSkillEffects",
+          "advanceSkillEffects"
+        ],
+        "addedDeclarations": [
+          "createSkillEffectRuntime",
+          "clearSkillEffects",
+          "snapshot",
+          "hit",
+          "launch",
+          "aoe",
+          "dispatchSkillEffects",
+          "advanceSkillEffects"
+        ],
+        "reviewCorrection": {
+          "authority": "Developer PR #3 review remediation request, 2026-10-16",
+          "baseCommit": "d2d7534c8d91753efa9b85049d8976a4472588e4",
+          "reason": "Canonical LF fingerprints for CRLF checkout mismatch; dispatch source-presence validation follows authenticated duplicate guard. See docs/RPG_CORE_V1.1.1_ROOT_SNAPSHOT.md.",
+          "declarations": [
+            {
+              "name": "launch",
+              "previousFingerprint": "8baf81c9f60854a48093f1ea4e9c3f0417969db5e3e0488de0f7995da774276d",
+              "fingerprint": "cb647849b9ba962adb4df574b14391dac01afbd81a3173c6834add6f0a9a19e3"
+            },
+            {
+              "name": "dispatchSkillEffects",
+              "previousFingerprint": "71ce46e16a6c53f9145f18427ff6d8e21008c1b6e88daa6ef763f630618183e9",
+              "fingerprint": "6af0557427f37f9e07b5e941d88ad092751375ba7b781da69563e583fd9798d9"
+            },
+            {
+              "name": "advanceSkillEffects",
+              "previousFingerprint": "f249b1f9ab5ca3af083638ba34b79f6f59b3dcdbdcfcf622aa09d7659b763e15",
+              "fingerprint": "658a9b29c476e51e541ca44b9ffd1304a6faa3c8df2d1299fb60153420bbf9bb"
+            }
+          ]
+        }
+      }
     },
     {
       "originalFile": "src/shared/game/effect-system.ts",

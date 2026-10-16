@@ -5,6 +5,10 @@ import ts from 'typescript';
 // ignoring only comments, whitespace and import/re-export paths. This detects
 // accidental formula, literal, validation or signature changes during the move.
 export function behaviorFingerprint(source) {
+  // ECMAScript normalizes physical CRLF in template literals to LF. Git's
+  // checkout line endings must not change declaration identity; keep escaped
+  // characters and all other literal/token content significant.
+  source = source.replace(/\r\n/g, '\n');
   const ast = ts.createSourceFile('core.ts', source, ts.ScriptTarget.Latest, true);
   return ast.statements.filter(node => !ts.isImportDeclaration(node) && !ts.isExportDeclaration(node)).map(node => {
     const text = node.getText(ast), scanner = ts.createScanner(ts.ScriptTarget.Latest, true, ts.LanguageVariant.Standard, text);

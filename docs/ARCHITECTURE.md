@@ -48,7 +48,8 @@ Every domain may import itself. The table lists **other allowed domains**, match
 `scripts/check-architecture.mjs`; permission is not a requirement to use all edges.
 All dependency syntaxes are checked, including type imports and dynamic imports.
 Runtime cycles are forbidden; three existing contract-only type cycles are reported
-and retained. No canonical Core import may load external packages, Node built-ins,
+and retained. v1.1.1 adds two type-only Skills provenance/runtime links (five total).
+No canonical Core import may load external packages, Node built-ins,
 legacy paths or application modules. The root barrel only assembles public exports.
 
 | Domain | Responsibility / principal public APIs | Other allowed domains | Evidence |
@@ -166,5 +167,13 @@ hash must likewise change only with explicit expected-result evidence.
 
 Unknown external repository-relative consumers prevent declaring legacy deletion safe.
 The archive check verifies all 27 generated legacy JS/declaration paths as well as
-root/domain ESM exports and blocked package deep imports. This phase changes no
-runtime source, public schemas, exports, dependency versions, license or release state.
+root/domain ESM exports and blocked package deep imports. Phase 2 changed no
+runtime behavior, public schemas, dependency versions, license or release state.
+
+The v1.1.1 root-offense addition is recorded in the
+[checkpoint contract/evidence](RPG_CORE_V1.1.1_ROOT_SNAPSHOT.md): successful-start
+capture is explicit opt-in; all default mechanic-owned capture times above remain
+unchanged. Weak execution/session trust records belong to Skills; component-independent
+offense extraction and the existing calculator belong to Damage. The preservation
+file records only the three approved affected historical entries, with original
+removed hashes retained; all forwarder/namespace checks still apply.

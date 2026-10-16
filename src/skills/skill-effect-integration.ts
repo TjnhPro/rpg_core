@@ -1,3 +1,4 @@
+import {initializeRootOffense,clearRootOffense,validateRootActivation,rootDamageSnapshot} from './root-offense.js';
 import type { DamageContext } from '../contracts/damage-contracts.js';
 import type { ProjectileConfig,TimedAOESequence,TimedObjectConfig } from '../contracts/mechanic-contracts.js';
 import type { SkillDamageComponent,SkillGameplayEffect } from './skill-effects.js';
@@ -46,12 +47,16 @@ export interface SkillEffectRuntime {
  dotPolicies:Map<DotGroup<string>,Delivery>;
  readonly effects:EffectLifecycle;
 }
-export function createSkillEffectRuntime(now=0,effects=new EffectLifecycle(now)):SkillEffectRuntime {
+export function createSkillEffectRuntime(now=0,effects=new EffectLifecycle(now),options:{offenseMode?:'legacy'|'root'}={}):SkillEffectRuntime {
  if(!Number.isFinite(now)||now<0)throw Error('Invalid simulation time');
+ if(options.offenseMode!==undefined&&options.offenseMode!=='legacy'&&options.offenseMode!=='root')throw Error('invalid_root_offense');
  if(!effects.active||effects.now!==now)throw Error('Reuse the active session effect owner at the same simulation time');
- return {now,active:true,lastActivation:new Map(),bullets:[],objects:[],sequences:[],dots:{groups:[]},dotPolicies:new Map(),effects};
+ const runtime:SkillEffectRuntime={now,active:true,lastActivation:new Map(),bullets:[],objects:[],sequences:[],dots:{groups:[]},dotPolicies:new Map(),effects};
+ if(options.offenseMode==='root')initializeRootOffense(runtime);
+ return runtime;
 }
 export function clearSkillEffects(r:SkillEffectRuntime,env?:SkillEffectEnvironment):void {
+ clearRootOffense(r);
  r.active=false;r.bullets=[];r.objects=[];r.sequences=[];r.dots.groups=[];r.dotPolicies.clear();r.lastActivation.clear();
  const result=r.effects.dispose(r.now);if(result.success)for(const event of result.events)env?.emit(event);
 }
@@ -71,8 +76,12 @@ function eligible(d:Delivery,targetId:string,env:SkillEffectEnvironment){
  return validateCombatHit({casterId:d.activation.casterId,targetId,allowedRelations:d.relations,requiresLivingTarget:true},env.combat);
 }
 function component(d:Delivery):SkillDamageComponent {return d.effect.type==='timed_object'?d.effect.projectile.damage:d.effect.damage;}
-function snapshot(d:Delivery,env:SkillEffectEnvironment,c=component(d)):DamageSnapshot|undefined {
- const caster=env.combat.findEntity(d.activation.casterId);if(!caster)return;
+function snapshot(r:SkillEffectRuntime,d:Delivery,env:SkillEffectEnvironment,c=component(d)):DamageSnapshot|undefined {
+ const caster=env.combat.findEntity(d.activation.casterId);if(!caster){
+  if(d.activation.snapshot.rootOffense)env.emit({type:'effect-rejected',atMs:r.now,instanceId:d.id,targetId:d.activation.casterId,reason:'entity_not_found'});
+  return;
+ }
+ if(d.activation.snapshot.rootOffense)return rootDamageSnapshot(r,d.activation.snapshot,c);
  return structuredClone({...env.snapshotDamage(caster,c,d.activation.snapshot.configVersion),definition:c.definition,rank:c.rank,
   attacker:{entityId:caster.entityId,entityType:caster.entityType,level:caster.level,targetTags:[...caster.targetTags]}});
 }
@@ -98,14 +107,14 @@ function hit(r:SkillEffectRuntime,d:Delivery,targetId:string,offense:DamageSnaps
  if(!r.active||!breakdown.defense.hit.hit||target.currentHp<=0)return;
  for(const dot of d.effect.onHit??[]){
   if(!eligible(d,targetId,env).allowed)break;
-  applyDotSnapshot(r.dots,targetId,d.activation.casterId,d.activation.skillId,dot.config,()=>snapshot(d,env,dot.damage)!);
+  applyDotSnapshot(r.dots,targetId,d.activation.casterId,d.activation.skillId,dot.config,()=>snapshot(r,d,env,dot.damage)!);
   const group=r.dots.groups.find(g=>g.targetId===targetId&&g.sourcePlayerId===d.activation.casterId&&g.effectId===dot.config.effectId);
   if(group&&!r.dotPolicies.has(group))r.dotPolicies.set(group,d);
  }
 }
 function launch(r:SkillEffectRuntime,d:Delivery,config:ProjectileConfig,origin:MapPoint,direction:MapPoint,env:SkillEffectEnvironment):void {
  if(!r.active||!config.enabled)return;
- const offense=snapshot(d,env);if(!offense)return;
+ const offense=snapshot(r,d,env);if(!offense)return;
  for(const [index,heading]of projectileDirections(direction,config.spreadAngles).entries()){
   if(!r.active)break;
   const position={x:origin.x+heading.x*config.spawnOffset,y:origin.y+heading.y*config.spawnOffset};
@@ -115,17 +124,20 @@ function launch(r:SkillEffectRuntime,d:Delivery,config:ProjectileConfig,origin:M
  }
 }
 function aoe(r:SkillEffectRuntime,d:Delivery,center:MapPoint,radius:number,env:SkillEffectEnvironment,config=strikeAOE(radius),mechanic:'instant_aoe'|'timed_aoe_sequence'='instant_aoe'):void {
- const offense=snapshot(d,env);if(!offense)return;
+ const offense=snapshot(r,d,env);if(!offense)return;
  for(const id of detectInstantAOE(config,center,targets(env).filter(t=>eligible(d,t.id,env).allowed),env.grid))hit(r,d,id,offense,env,mechanic);
 }
 /** Call at the activation boundary on the same simulation clock. Never apply a
  * historical activation using present-day stats; callers partition before it. */
 export function dispatchSkillEffects(r:SkillEffectRuntime,event:SkillActivatedEvent,env:SkillEffectEnvironment):boolean {
  if(!r.active)return false;
+ if(!validateRootActivation(r,event.snapshot))throw Error('invalid_root_offense');
+ if(event.snapshot.rootOffense&&(event.atMs!==event.snapshot.activationTime||event.target!==event.snapshot.target))throw Error('invalid_root_offense');
  if(Math.abs(r.now-event.atMs)>1e-6)throw Error('Advance to SkillActivated boundary before dispatch');
  const prefix=event.casterId+'#',serial=Number(event.actionInstanceId.slice(prefix.length));
  if(!event.actionInstanceId.startsWith(prefix)||!Number.isSafeInteger(serial)||serial<1||event.snapshot.actionInstanceId!==event.actionInstanceId||event.snapshot.casterId!==event.casterId||event.snapshot.skillId!==event.skillId||event.snapshot.definition.skillId!==event.skillId)throw Error('Invalid trusted activation identity');
  if(serial<=(r.lastActivation.get(event.casterId)??0))return false;
+ if(event.snapshot.rootOffense&&!env.combat.findEntity(event.casterId))throw Error('invalid_root_offense');
  r.lastActivation.set(event.casterId,serial);
  for(const [index,effect]of (event.snapshot.definition.effects??[]).entries()){
   if(!r.active)break;
@@ -145,11 +157,11 @@ export function dispatchSkillEffects(r:SkillEffectRuntime,event:SkillActivatedEv
     if(event.target.mode==='ground')break;
     const id=event.target.mode==='self'?event.casterId:event.target.targetId,target=env.position(id);
     if(event.target.mode!=='self'&&(!source||!target||!inRange(env.grid,source,target,s.definition.castRange))){env.emit({type:'effect-rejected',atMs:r.now,instanceId:d.id,targetId:id,reason:'out_of_range'});break;}
-    const offense=snapshot(d,env);if(offense)hit(r,d,id,offense,env,'direct_hit');break;
+    const offense=snapshot(r,d,env);if(offense)hit(r,d,id,offense,env,'direct_hit');break;
    }
    case 'melee_hitbox':{
     if(!source||!facing)break;
-    const offense=snapshot(d,env);if(!offense)break;
+    const offense=snapshot(r,d,env);if(!offense)break;
     for(const id of detectMeleeHitbox(effect.config,source,facing,targets(env),env.grid))hit(r,d,id,offense,env,'melee_hitbox');break;
    }
    case 'projectile':if(source&&aim&&facing){const delta={x:aim.x-source.x,y:aim.y-source.y};launch(r,d,effect.config,source,effect.config.direction==='facing'?facing:Math.hypot(delta.x,delta.y)?delta:facing,env);}break;

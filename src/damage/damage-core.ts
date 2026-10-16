@@ -1,5 +1,6 @@
+import {validateDefenseSettings} from '../contracts/defense-settings.js';
 import type { CombatModifier } from '../contracts/combat-modifiers.js';
-import { DAMAGE_SOURCES,type DamageContext,type DamageDefinition,type DamageSettings,type DamageSource } from '../contracts/damage-contracts.js';
+import { DAMAGE_SOURCES,DAMAGE_TAGS,DAMAGE_TARGETS,DAMAGE_STATUSES,type DamageContext,type DamageDefinition,type DamageSettings,type DamageSource } from '../contracts/damage-contracts.js';
 import type { CombatEntityIdentity } from '../combat/combat-entity.js';
 import { mitigateDefense,resolveDefenseHit,type DefenseConfigSnapshot } from './defense-engine.js';
 import { damageBonusReason,prepareModifierResolver,resolveModifiers } from '../modifiers/modifier-core.js';
@@ -53,10 +54,58 @@ export function calculateDamage(input:{definition:DamageDefinition;sources:Recor
 
 // Shared offense adapter for any resolved actor. Equipment/options and base
 // stat acquisition remain actor-owned; B0/B1/Defense never branch on actor type.
-export function snapshotActorDamage(definition:DamageDefinition,sources:Record<DamageSource,number>,modifiers:CombatModifier[],settings:DamageSettings,criticalChance:number,criticalBonus:number){
+function actorOffense(sources:Record<DamageSource,number>,modifiers:CombatModifier[],settings:DamageSettings,criticalChance:number,criticalBonus:number){
  const flat=resolveModifiers(0,'damage.flat',modifiers).value;
  const tagModifiers=modifiers.filter(m=>m.target.startsWith('damage.tag.')).map(m=>({id:JSON.stringify([m.source,m.sourceInstanceId,m.id]),source:'setting' as const,option:'',value:m.value,enabled:true,types:[],tags:[m.target.slice(11) as typeof settings.modifiers[number]['tags'][number]],targets:[],statuses:[]}));
- return {definition,flat,flatModifiers:structuredClone(modifiers.filter(m=>m.target==='flat_damage')),bonusModifiers:structuredClone(modifiers.filter(m=>m.target==='damage_bonus')),sources,settings:{skills:{},modifiers:[...settings.modifiers,...tagModifiers]},criticalChance,criticalBonus};
+ return {flat,flatModifiers:structuredClone(modifiers.filter(m=>m.target==='flat_damage')),bonusModifiers:structuredClone(modifiers.filter(m=>m.target==='damage_bonus')),sources,settings:{skills:{},modifiers:[...settings.modifiers,...tagModifiers]},criticalChance,criticalBonus};
+}
+
+export function snapshotActorDamage(definition:DamageDefinition,sources:Record<DamageSource,number>,modifiers:CombatModifier[],settings:DamageSettings,criticalChance:number,criticalBonus:number){
+ return {definition,...actorOffense(sources,modifiers,settings,criticalChance,criticalBonus)};
 }
 
 export type DamageSnapshot=ReturnType<typeof snapshotActorDamage> & {rank:number;attacker:CombatEntityIdentity;defenseConfig:DefenseConfigSnapshot|undefined;options:{id:string;value:number;source?:string}[]};
+
+/** Trusted resolved actor inputs, independent of any damage component. */
+export interface ActorOffenseInput {
+ sources:DamageSnapshot['sources']; modifiers:CombatModifier[]; settings:DamageSnapshot['settings'];
+ criticalChance:number; criticalBonus:number; attacker:DamageSnapshot['attacker'];
+ defenseConfig:DamageSnapshot['defenseConfig']; options:DamageSnapshot['options'];
+}
+type DeepReadonly<T>=T extends object?{readonly [K in keyof T]:DeepReadonly<T[K]>}:T;
+export type ActorOffenseSnapshot=DeepReadonly<Omit<DamageSnapshot,'definition'|'rank'>>;
+
+/** Capture only inputs. No target, RNG, component or computed damage is retained. */
+export function snapshotActorOffense(input:ActorOffenseInput):ActorOffenseSnapshot {
+ try {
+ const fail=():never=>{throw Error('invalid_root_offense');};
+ if(!input||!input.sources||Object.keys(input.sources).sort().join()!==[...DAMAGE_SOURCES].sort().join()
+  ||DAMAGE_SOURCES.some(k=>!Number.isFinite(input.sources[k]))
+  ||![input.criticalChance,input.criticalBonus].every(n=>Number.isFinite(n)&&n>=0))fail();
+ // Canonical validation includes the 256-entry registry budget and predicates.
+ if(!Array.isArray(input.modifiers)||input.modifiers.length>256)fail();
+ prepareModifierResolver(input.modifiers);
+ const a=input.attacker;
+ if(!a||typeof a.entityId!=='string'||!a.entityId.trim()||a.entityId.length>200
+  ||!['player','monster'].includes(a.entityType)||!Number.isSafeInteger(a.level)||a.level<1
+  ||!Array.isArray(a.targetTags)||a.targetTags.some(t=>!['boss','elite'].includes(t))||new Set(a.targetTags).size!==a.targetTags.length)fail();
+ const settings=input.settings;
+ if(!settings||!Array.isArray(settings.modifiers)||settings.modifiers.length>100)fail();
+ for(const m of settings.modifiers){
+  if(!m||Object.keys(m).sort().join()!=='enabled,id,option,source,statuses,tags,targets,types,value'||typeof m.id!=='string'||typeof m.option!=='string'||typeof m.enabled!=='boolean'
+   ||!Number.isFinite(m.value)||!['setting','item'].includes(m.source)
+   ||!Array.isArray(m.types)||m.types.some(t=>!['Physical','Magic'].includes(t))
+   ||!Array.isArray(m.tags)||m.tags.some(t=>!DAMAGE_TAGS.includes(t as never))
+   ||!Array.isArray(m.targets)||m.targets.some(t=>!DAMAGE_TARGETS.includes(t as never))
+   ||!Array.isArray(m.statuses)||m.statuses.some(t=>!DAMAGE_STATUSES.includes(t as never)))fail();
+ }
+ if(!Array.isArray(input.options)||input.options.some(o=>!o||Object.keys(o).sort().join()!==(Object.hasOwn(o,'source')?'id,source,value':'id,value')||typeof o.id!=='string'||!Number.isFinite(o.value)||(o.source!==undefined&&typeof o.source!=='string')))fail();
+ if(input.defenseConfig!==undefined&&(!input.defenseConfig||Object.keys(input.defenseConfig).sort().join()!=='revision,settings'||!Number.isSafeInteger(input.defenseConfig.revision)||input.defenseConfig.revision<0||validateDefenseSettings(input.defenseConfig.settings).length))fail();
+ // Reuse the component-independent part of the canonical legacy adapter.
+ const offense=actorOffense(input.sources,input.modifiers,settings,input.criticalChance,input.criticalBonus);
+ if(!Number.isFinite(offense.flat)||offense.settings.modifiers.length+offense.bonusModifiers.length>MAX_DAMAGE_SNAPSHOT_MODIFIERS)fail();
+ const copy=structuredClone({...offense,attacker:{entityId:a.entityId,entityType:a.entityType,level:a.level,targetTags:a.targetTags},defenseConfig:input.defenseConfig,options:input.options});
+ const freeze=(v:unknown):void=>{if(v&&typeof v==='object'){Object.values(v).forEach(freeze);Object.freeze(v);}};
+ freeze(copy);return copy;
+ }catch {throw Error('invalid_root_offense');}
+}

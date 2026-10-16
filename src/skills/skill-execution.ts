@@ -1,3 +1,4 @@
+import {activateRootOffense,prepareRootOffense,bindRootOffense,type SkillRootOffenseCapture,type RootOffensiveSnapshot} from './root-offense.js';
 import {skillActionAdmission,skillAvailability,startSkillAction,defineSkill,type SkillEngineDefinition,type SkillExecutionContext,type SkillCooldownState,type SkillResult,type SkillAvailability} from './skill-engine.js';
 import {completeCombatAction,cancelCombatAction,reconcileCombatRestrictions,type CombatActionSlot,type EntityCombatEvent,type CombatValidationContext,type ActiveCombatAction} from '../combat/combat-state.js';
 import {distance,inRange} from '../spatial/range.js';
@@ -6,12 +7,14 @@ import type {CombatEntity} from '../combat/combat-entity.js';
 
 /** Trusted game adapter, not request-body stats or player-only state. */
 export interface SkillExecutionEnvironment {
+ readonly rootOffense?:SkillRootOffenseCapture;
  readonly grid:Walkability;
  position(entityId:string):Readonly<MapPoint>|undefined;
  resolveStats(entity:CombatEntity):{attackSpeed:number;cooldownReduction:number};
  facing?(entityId:string):Readonly<MapPoint>|undefined;
 }
 export interface SkillExecutionSnapshot {
+ readonly rootOffense?:RootOffensiveSnapshot;
  readonly actionInstanceId:string;
  readonly casterId:string;
  readonly skillId:string;
@@ -76,12 +79,20 @@ export function executeSkill(definition:SkillEngineDefinition,context:SkillExecu
  if(spatial&&!pointValid(facing))return {success:false,reason:'invalid_target_position'};
  const length=Math.hypot(facing.x,facing.y)||1;
  const target=context.target.mode==='ground'?Object.freeze({...context.target,position:Object.freeze({...context.target.position})}):Object.freeze({...context.target});
+ let rootOffense:RootOffensiveSnapshot|undefined;
+ if(env.rootOffense){
+  // Reject stale admission before calling the trusted offense adapter.
+  if(!Number.isSafeInteger(request.expectedSerial)||request.expectedSerial!==(slot.actionSerial??0)+1)return {success:false,reason:'stale_action'};
+  try {rootOffense=prepareRootOffense(env.rootOffense,context.combat.findEntity(context.casterId)!,request.configVersion,request.now,request.expectedSerial);}
+  catch {return {success:false,reason:'invalid_context',errors:['invalid_root_offense']};}
+ }
  const events:EntityCombatEvent[]=[];
  const result=startSkillAction(pinned.definition,context,slot,cooldowns,{now:request.now,expectedSerial:request.expectedSerial,speedMultiplier:rates.attackSpeed,effectiveCdr:rates.cooldownReduction,activationDelayMs:offset},events);
  if(!result.success)return result;
  const action=slot.activeAction!;
- slot.skillExecution={snapshot:Object.freeze({actionInstanceId:action.actionInstanceId,casterId:context.casterId,skillId:definition.skillId,configVersion:request.configVersion,definition:pinned.definition,target,startedAt:action.startedAt,durationMs:action.durationMs,activationTime:action.startedAt+offset,
+ slot.skillExecution={snapshot:Object.freeze({...(rootOffense?{rootOffense}:{}),actionInstanceId:action.actionInstanceId,casterId:context.casterId,skillId:definition.skillId,configVersion:request.configVersion,definition:pinned.definition,target,startedAt:action.startedAt,durationMs:action.durationMs,activationTime:action.startedAt+offset,
   ...(spatial?{casterPosition:Object.freeze({...casterPosition!}),aimPosition:Object.freeze({...aimPosition!}),facing:Object.freeze(length===1&&facing.x===0&&facing.y===0?{x:1,y:0}:{x:facing.x/length,y:facing.y/length})}:{})}),activated:false};
+ if(rootOffense)bindRootOffense(env.rootOffense!.runtime,slot.skillExecution.snapshot);
  const emitted:SkillExecutionEvent[]=[...events];
  // Zero-percent activation is part of successful start, after MP/deadline commit.
  advanceSkillExecution(slot,context.combat,request.now,emitted);
@@ -115,7 +126,7 @@ export function advanceSkillExecution(slot:SkillExecutionSlot,combat:CombatValid
  if(!caster||caster.currentHp<=0){cancelSkillExecution(slot,now,caster?'defeated':'session_end',out);return;}
  const s=execution.snapshot;
  if(!execution.activated&&now+1e-6>=s.activationTime){
-  execution.activated=true;
+  execution.activated=true;activateRootOffense(s);
   out?.push({type:'skill-activated',status:'activated',atMs:s.activationTime,actionInstanceId:s.actionInstanceId,skillId:s.skillId,casterId:s.casterId,target:s.target,snapshot:s});
  }
  const events:EntityCombatEvent[]=[];
