@@ -37,7 +37,7 @@ existing authenticated queue identity checks and pins dispatch participants
 before ordered effects, including across callbacks. The helper is not exported
 from package barrels; no registry, resource ledger or public snapshot field is added.
 
-H1–H8 remain exactly the approved policies: Combat HP ownership; finite flat
+H1â€“H8 remain exactly the approved policies: Combat HP ownership; finite flat
 amounts (primitive nonnegative/Skill positive); live Max HP cap; no defeated-target
 healing; self/ally only; positive-recovery events; synchronous opt-in Root/Child;
 no Crit/Dodge/scaling/random formula.
