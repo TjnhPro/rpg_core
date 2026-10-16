@@ -57,4 +57,5 @@ export type EntityCombatEvent=
  | (ActiveCombatAction & {type:'action-started'|'action-completed';atMs:number})
  | (ActiveCombatAction & {type:'action-cancelled';atMs:number;reason:'defeated'|'interrupted'|'session_end'})
  | {type:'damage-applied';entityId:string;atMs:number;before:number;after:number;appliedDamage:number}
+ | {type:'healing-applied';entityId:string;atMs:number;before:number;after:number;appliedHealing:number}
  | {type:'entity-defeated';entityId:string;atMs:number};

@@ -57,7 +57,7 @@ legacy paths or application modules. The root barrel only assembles public expor
 | `contracts` | Shared shapes, default configs and validators: `CombatEntity`, `CombatModifier`, `DamageContext`, `EffectDefinition`, `Walkability`, `validateCombatModifiers`, `validateDefenseSettings` | None | Domain validation tests and integration fixtures |
 | `stats` | Resolved attributes → derived bases → modifiers/transform/caps, absolute resources, cooldown duration: `resolveCharacterStats`, `calculateEffectiveStat`, `updateCurrentResources`, `cooldownDurationMs` | contracts, modifiers | `tests/stats`, `tests/skills`, `tests/integration` |
 | `modifiers` | Live source filtering, identity deduplication, stable prepared resolution: `collectActiveModifiers`, `prepareModifierResolver`, `resolveModifiers` | contracts | `tests/modifiers`, `tests/effects/effect-modifiers.test.ts` |
-| `combat` | Entity state, relations, target/action admission, hit revalidation, restriction cancellation, HP transition: `combatState`, `validateCombatAction`, `validateCombatHit`, `startCombatAction`, `cancelCombatAction`, `applyEntityDamage` | contracts, spatial | `tests/combat`, skill and restriction tests |
+| `combat` | Entity state, relations, target/action admission, hit revalidation, restriction cancellation, HP transition: `combatState`, `validateCombatAction`, `validateCombatHit`, `startCombatAction`, `cancelCombatAction`, `applyEntityDamage`, `applyEntityHealing` | contracts, spatial | `tests/combat`, skill and restriction tests |
 | `damage` | B0/B1 offense, Crit, Dodge, armor/MR: `calculateDamage`, `snapshotActorDamage`, `mitigateDefense`, `resolveDefenseHit` | contracts, combat, modifiers | `tests/damage`, delivery integration tests |
 | `skills` | Immutable definition, availability, MP/cooldown commit, activation and effect dispatch: `defineSkill`, `executeSkill`, `advanceSkillExecution`, `cancelSkillExecution`, `dispatchSkillEffects`, `advanceSkillEffects`, `clearSkillEffects` | contracts, combat, stats, effects, damage, mechanics, spatial | `tests/skills`, `tests/integration` |
 | `effects` | Immutable effect definitions, apply/refresh/stack/expire/restrictions and on-hit DoT: `defineEffect`, `EffectLifecycle`, `applyDotSnapshot`, `tickDotRuntime` | contracts, combat, modifiers, damage | `tests/effects`, effect and status integrations |
@@ -182,3 +182,15 @@ unchanged. Weak execution/session trust records belong to Skills; component-inde
 offense extraction and the existing calculator belong to Damage. The preservation
 file records only the three approved affected historical entries, with original
 removed hashes retained; all forwarder/namespace checks still apply.
+
+
+## v1.2.0 Healing ownership
+
+Combat owns the pure flat HP recovery transition; Skills owns ordered Root/Child
+execution and emits the additive `healing-applied` event after authoritative HP
+commit, only for positive recovery. It reads live Max HP through the existing
+Skill environment, validates identity/liveness/self-or-ally/range, and never calls
+Damage or synthesizes hit/kill occurrences. Stats retains resource normalization,
+regeneration and Max HP formulas. No new domain, dependency edge, scheduler or
+resource store is added. Public exhaustive effect/event switches need the new
+cases; see [contract and narrow preservation amendment](RPG_CORE_V1.2.0_HEALING_FOUNDATION.md).

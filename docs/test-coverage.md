@@ -91,3 +91,10 @@ v1.1.8 final acceptance: [closure matrix and evidence](RPG_CORE_V1.1.8_ACCEPTANC
 reuses checkpoint suites and the installed consumer. One added upgrade-suite case
 connects upgraded Apply, threshold, exact-N consume and Child landed/Dodge/empty
 outcomes, including no refund, replay and disposal; no production source changes.
+
+
+v1.2.0 Healing: `tests/combat/healing.test.ts` covers canonical math/validation;
+`tests/integration/healing.test.ts` covers actual Root/Child HP/events, live caps,
+identity/relation/range rejection, replay, ordered callbacks and zero heal RNG.
+`examples/healing.ts` runs in the existing strict external installed consumer.
+See [Healing contract and preservation amendment](RPG_CORE_V1.2.0_HEALING_FOUNDATION.md).

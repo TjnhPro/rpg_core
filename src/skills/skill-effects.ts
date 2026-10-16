@@ -13,6 +13,7 @@ export interface SkillStackConsumption {
  outcome:{type:'instant_aoe';config:InstantAOE;damage:SkillDamageComponent};
 }
 export type SkillGameplayEffect=EffectBase & (
+ | {type:'heal';target:'self'|'selected';amount:number}
  | SkillStackConsumption
  | {type:'modifier_effect';definition:EffectDefinition;target:'self'|'selected'}
  | {type:'direct_hit';damage:SkillDamageComponent}
@@ -38,7 +39,14 @@ export function validateSkillEffects(value:unknown):string[]{
  if(!Array.isArray(value)||value.length>32)return ['effects: ordered list, max32 required'];
  const errors:string[]=[];
  for(const e of value){
-  if(!object(e)||!['consume_stacks','direct_hit','melee_hitbox','projectile','instant_aoe','timed_aoe_sequence','timed_object','modifier_effect'].includes(String(e.type))){errors.push('effects: unsupported type');continue;}
+  if(!object(e)||!['heal','consume_stacks','direct_hit','melee_hitbox','projectile','instant_aoe','timed_aoe_sequence','timed_object','modifier_effect'].includes(String(e.type))){errors.push('effects: unsupported type');continue;}
+  if(e.type==='heal'){
+   if(!exact(e,['type','target','amount',...(Object.hasOwn(e,'allowedTargetRelations')?['allowedTargetRelations']:[])]))errors.push('effects: unknown/missing heal fields');
+   if(e.target!=='self'&&e.target!=='selected')errors.push('effects: invalid heal recipient');
+   if(typeof e.amount!=='number'||!Number.isFinite(e.amount)||e.amount<=0||e.amount>1000000)errors.push('effects: invalid heal amount');
+   if(Object.hasOwn(e,'allowedTargetRelations')&&(!validAllowedRelations(e.allowedTargetRelations)||(e.allowedTargetRelations as unknown[]).some(r=>r!=='self'&&r!=='ally')))errors.push('effects: invalid healing relations');
+   continue;
+  }
   if(e.type==='consume_stacks'){
    if(!exact(e,['type','effectId','requiredStacks','flatPerStack','outcome'])||typeof e.effectId!=='string'||!e.effectId.trim()
     ||!Number.isSafeInteger(e.requiredStacks)||Number(e.requiredStacks)<=0||typeof e.flatPerStack!=='number'||!Number.isFinite(e.flatPerStack)||e.flatPerStack<0

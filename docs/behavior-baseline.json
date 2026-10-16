@@ -142,13 +142,13 @@
         "src/skills/skill-effects.ts"
       ],
       "declarations": [
-        "0b5a8e1ed742bc9e95c489ae2c309f45c4a5d29ed7f9e2bec8657fbc754bbb47",
         "16aafaa346f15c2a4825ea958fff9ea75841c038c8a1bbddb0609a7e96c48ce4",
         "4e388f20cd2d26d288b1040b1a09455d039dfc89aa440faaeeb2d085dcc31ef3",
+        "58049a4183d94ec929531eaff795fac3cf7dcc9dd089a941f27092209c914d50",
         "60e77d443a4e3f87d8220e8b3714e735ddabec061ee7d58a3b0818a60cefa372",
         "70b1ddf3744afb53b0c4a230561da455e937ee19bf7e3faf848c29e88befb75f",
         "73e15f18e3c6b773569de2d8e5c6a5c8c5830bdf6bc9505800dbcca5d3642574",
-        "830bfbc0ccadaa9df7042ede07b1c55e83a809c9be391b12247fdbde82cfb190",
+        "c7ae617dd31d76934d5b798c2503e80cfc1f9cb1cdd488b613b6096034fc76ce",
         "f7c6d55e0602a7f03c77af1991713f8c0c152ee0d18c1cc074020e3b7966ecf6",
         "f955e9100f21f1f4bda570ff22103009415f148ff7e1831cc2321fe61cf3c898",
         "f9ab77658c46dd844dbfb9d2c0c94528aa2387272f9cf6c0cfe9201c99c0ab2b"
@@ -172,6 +172,25 @@
             "before": "e0cb7e273308af6699a96ca5007059d2a475cb92b272ed7e60d3da9cc6555c28",
             "after": "830bfbc0ccadaa9df7042ede07b1c55e83a809c9be391b12247fdbde82cfb190"
           }
+        ],
+        "followUpChanges": [
+          {
+            "checkpoint": "v1.2.0",
+            "baseCommit": "263b4069e84cd9ca9456ef944b41778d08823f7f",
+            "authority": "Developer approval of Healing Foundation delta plan and H1-H8, 2026-10-16; docs/RPG_CORE_V1.2.0_HEALING_FOUNDATION.md",
+            "declarations": [
+              {
+                "name": "SkillGameplayEffect",
+                "before": "0b5a8e1ed742bc9e95c489ae2c309f45c4a5d29ed7f9e2bec8657fbc754bbb47",
+                "after": "58049a4183d94ec929531eaff795fac3cf7dcc9dd089a941f27092209c914d50"
+              },
+              {
+                "name": "validateSkillEffects",
+                "before": "830bfbc0ccadaa9df7042ede07b1c55e83a809c9be391b12247fdbde82cfb190",
+                "after": "c7ae617dd31d76934d5b798c2503e80cfc1f9cb1cdd488b613b6096034fc76ce"
+              }
+            ]
+          }
         ]
       }
     },
@@ -188,8 +207,20 @@
         "7aff977e081bf68ea749b64fc94e9f0a40161253890213603874b2bc4363ed97",
         "88756ee1e67a256b2d643a94d184f0b0b84a4e2375f388a1eb333070174607ff",
         "9059acdd8b260a40f6ed7e78dccc58bb2a64893f35f7c48281c3170232fc3599",
+        "da42591b1f2165fe87221f91e2171c7fa4ffd418f92f52bffb934b9c442abc60",
         "fc0307af95a9302f2eaa6e3ca91b702c757b36aee0c89f3f6ae86aad337d659e"
-      ]
+      ],
+      "approvedChange": {
+        "checkpoint": "v1.2.0",
+        "baseCommit": "263b4069e84cd9ca9456ef944b41778d08823f7f",
+        "authority": "Developer approval of Healing Foundation delta plan and H1-H8, 2026-10-16; docs/RPG_CORE_V1.2.0_HEALING_FOUNDATION.md",
+        "declarations": [
+          {
+            "name": "applyEntityHealing",
+            "after": "da42591b1f2165fe87221f91e2171c7fa4ffd418f92f52bffb934b9c442abc60"
+          }
+        ]
+      }
     },
     {
       "originalFile": "src/shared/game/combat-state.ts",
@@ -216,18 +247,30 @@
         "864482bd7b69fb9b3c0f0373a552bb0ae7146645370a228fe7b7e9601ea06497",
         "8841c31bf59002bcfdf634e5bf5118aa0622d0eb76f16e908b4333dabd4d8b92",
         "8fc76f7e9d25343f5e83ae822e0dcc7f150403110bbcb99ce8a6207e39189936",
-        "9003fe0daf93d3d309816cad9c96f92c8defa7610580d3cffdf56eb3e74d7def",
         "9b7a5aa889b2c9ef91c209ad0b8b564d1775fec5e7241c4ed071472bc13a48fa",
         "bef1f85415ca9090fb00320271edbe58f9c56382286859a557c6f8692aa5115b",
         "c5caf17443daa7baed4d2b10d6145bcc48291d4b27a1603e3de96342d283f1cf",
         "c8b52918cdbd88c877f52bcfb0427242df60d9a72710910d45a5cd54799594e9",
         "cfbe8e639cdea9c5f552f0eb5a604e025ac73590e81e9106d230bf21debe91ce",
+        "d7b8300d0225d9cb83ed427e65b9c6cc1c107105d9aafc77f7f49201a51c3c8e",
         "e1b9219ec03d4da88dfa411c17d9ee35c3805ca92d7407d945415882e1b2e7dd",
         "e6b6ea01cc1d20d9a1937073ac884408456944c73846e612882fae1a030e86b4",
         "e6b95a51710cb08da2fc51a57631c31ffac851e3b40ab555bad7368e0fd71b55",
         "ef44634f069d67a217d5dd301b30e10e92f793a546497ad4e28361f4c4d5f8e3",
         "fc2972ad8a2265f9237024255bc0d8178a04aed6e57f2e9c702a4cfc457e5e7c"
-      ]
+      ],
+      "approvedChange": {
+        "checkpoint": "v1.2.0",
+        "baseCommit": "263b4069e84cd9ca9456ef944b41778d08823f7f",
+        "authority": "Developer approval of Healing Foundation delta plan and H1-H8, 2026-10-16; docs/RPG_CORE_V1.2.0_HEALING_FOUNDATION.md",
+        "declarations": [
+          {
+            "name": "EntityCombatEvent",
+            "before": "9003fe0daf93d3d309816cad9c96f92c8defa7610580d3cffdf56eb3e74d7def",
+            "after": "d7b8300d0225d9cb83ed427e65b9c6cc1c107105d9aafc77f7f49201a51c3c8e"
+          }
+        ]
+      }
     },
     {
       "originalFile": "src/shared/game/damage-core.ts",
@@ -343,10 +386,12 @@
         "14dc8184162b1623978cb5454b973292e79a836434f15be90f939d4f2a74a27a",
         "25fe3a7378eb5eded618e3ea4240f30c982312dcd8dfaba24285c0b6269eabff",
         "2b3ca040833cbe062b4487a3a39e7dcc5f919b1c987654f16ce1f9fb282b8c7d",
+        "72bccbcdf6d964d59ab8460b5efbe3ef0ae07b68a7a5ad0fce32d7d6582fce0f",
+        "7c976bdac9c6975fc18ead4a754298250f8f406a28ac4349110d076ac9e9b692",
         "85f6ed045ece55e5467915879fa9583b95a6f1ab4cb2975ee474b19330b989ef",
-        "8740ec796abfecd303afef2dc1ee0872fc5ceb1a17c04017c1a86fbfd9c7e4db",
         "8ee20dedcc2767c8e2dc8bca02387947a14cf1722f7076832c703eda19c0fad2",
         "8f24dc4e63f1cf24249c1e1d0d14f1d0ae19a98859fabf9d747871a1a7caac77",
+        "94c8d99f04684d780ca93f9c120cd4078e60e3378144f7374c68da07a4729eb2",
         "9bed3d12152decf7e88b8a9ff3e80385d5464ee5f0034fd0b10a6b7d06306fee",
         "ad77085d05f68c7d4422389adb783ac77e226527266d26dc310fbe9a30777a1a",
         "c91ad0abdc811f37e937b9ba05970a7cfda5d1fa1da8d32f6ba46c93fa87a455",
@@ -435,6 +480,26 @@
                 "after": "8740ec796abfecd303afef2dc1ee0872fc5ceb1a17c04017c1a86fbfd9c7e4db"
               }
             ]
+          },
+          {
+            "checkpoint": "v1.2.0",
+            "baseCommit": "263b4069e84cd9ca9456ef944b41778d08823f7f",
+            "authority": "Developer approval of Healing Foundation delta plan and H1-H8, 2026-10-16; docs/RPG_CORE_V1.2.0_HEALING_FOUNDATION.md",
+            "declarations": [
+              {
+                "name": "healingEntities",
+                "after": "94c8d99f04684d780ca93f9c120cd4078e60e3378144f7374c68da07a4729eb2"
+              },
+              {
+                "name": "skillHealingEntities",
+                "after": "72bccbcdf6d964d59ab8460b5efbe3ef0ae07b68a7a5ad0fce32d7d6582fce0f"
+              },
+              {
+                "name": "executeSkill",
+                "before": "8740ec796abfecd303afef2dc1ee0872fc5ceb1a17c04017c1a86fbfd9c7e4db",
+                "after": "7c976bdac9c6975fc18ead4a754298250f8f406a28ac4349110d076ac9e9b692"
+              }
+            ]
           }
         ]
       }
@@ -445,6 +510,7 @@
         "src/skills/skill-effect-integration.ts"
       ],
       "declarations": [
+        "0360b1d17ba059e0b6c4c833f37c2fee70d6afbd56634773dd4f1c5aa2a508bf",
         "07920f2e4d65f242aaf56d80fb615addee300236dcf23d7bc48c50d123eb91de",
         "0c9121311616b98729f64070ec98fae2dba2c5f700f51414346c9136840bde2c",
         "0cc12c85178a38cbcfe3f7ae4dee46e3ed4fe1ed8e9aa61989cf8eae3946eb07",
@@ -459,17 +525,17 @@
         "64ddb796bd4744f5b947a0515d05726cbc26a6114cf40a68e100b1887c07657e",
         "69eeb0f21dcbe1b7625a0cf96ec7f46ff9ca370c21cedcd7dbf629d01733878e",
         "72d6b60800c26218b41401ca01925e39dace813fde1a65fb716c1e60ff363f72",
-        "75401b32628dc80d7b734618e9f7b92ee0997a111f6fb73fc52429a4f19f0609",
+        "7ab4b27591492b83cc20c31413569ccbd99facfe60e9e994cac3cf35fb67eedc",
         "820ba13db287bf25e3f1c8208f0248719212ad6a9a39119dd4d5fd36bfdd89f2",
-        "8a9b9cb1a3bc302bd487330831eb2da28e4ebf6cf079a88c95867f70c57c8b92",
+        "849ff0eef18fbe8b7d7b0c5f2b7c6e77ba7a76f00cd02e6fce9066a9865cb115",
+        "872719983bb624859cf8ca887fa97f9c24e5c389f201bce8dff6982544102920",
         "8e3831d1ce1f0af61e793e4290d6a21e429d5f7029327e3785538e05f968708a",
-        "a60661ade14b13dc21cf7d8e36ed154d2b2f5b6b2c5137f5e33b07271aa35912",
         "b355daa0b3619fde1351607961aa4b581fe88f4da3f75bc6f3e5e49b9b60e509",
-        "b8c5beb50aa94023a4dfad989100de5d667ff824311784391213ca73a67ca2fb",
         "bc3c8aba7ab328e17ac68e9b7056431a153bc5236806daeb797da4648c601d79",
         "be896081bc4d9fff540eec4918856a5be37e903ec13746692e7750acbace9515",
         "ca1b36f9e34eafc6a90affa8b6c933885f314e2ce206c0c242f46a472d8aeff0",
         "d622a18aa6db839ae3a811a3767ca7172276bf6da111a4a8cde4dacb7208f85f",
+        "d7506978662d6ab44555f935331a6d149c51a36651dd18de56b386d6fc8307d1",
         "f3e21a4b409028b2d6172b7f2d7040e3f7e27b528408fa49837fdc21d04f9df2",
         "fdd8f45dc52a3688155ace03dd0b512564f5f81d06d99f8182307c87651b115f",
         "fe5354ce6a3752ea6914246a6e519c3195adbd937a3ff798ae77c5f2acea6422"
@@ -707,6 +773,37 @@
                 "name": "advanceSkillEffects",
                 "before": "9892495e0a644f6dd0b3e5f8182a65259b223d97b35ab870c6d0c0276d9a41c0",
                 "after": "ca1b36f9e34eafc6a90affa8b6c933885f314e2ce206c0c242f46a472d8aeff0"
+              }
+            ]
+          },
+          {
+            "checkpoint": "v1.2.0",
+            "baseCommit": "263b4069e84cd9ca9456ef944b41778d08823f7f",
+            "authority": "Developer approval of Healing Foundation delta plan and H1-H8, 2026-10-16; docs/RPG_CORE_V1.2.0_HEALING_FOUNDATION.md",
+            "declarations": [
+              {
+                "name": "GameplayActivation",
+                "before": "75401b32628dc80d7b734618e9f7b92ee0997a111f6fb73fc52429a4f19f0609",
+                "after": "0360b1d17ba059e0b6c4c833f37c2fee70d6afbd56634773dd4f1c5aa2a508bf"
+              },
+              {
+                "name": "Delivery",
+                "before": "b8c5beb50aa94023a4dfad989100de5d667ff824311784391213ca73a67ca2fb",
+                "after": "7ab4b27591492b83cc20c31413569ccbd99facfe60e9e994cac3cf35fb67eedc"
+              },
+              {
+                "name": "heal",
+                "after": "872719983bb624859cf8ca887fa97f9c24e5c389f201bce8dff6982544102920"
+              },
+              {
+                "name": "dispatchGameplayEffects",
+                "before": "a60661ade14b13dc21cf7d8e36ed154d2b2f5b6b2c5137f5e33b07271aa35912",
+                "after": "849ff0eef18fbe8b7d7b0c5f2b7c6e77ba7a76f00cd02e6fce9066a9865cb115"
+              },
+              {
+                "name": "childDispatcher",
+                "before": "8a9b9cb1a3bc302bd487330831eb2da28e4ebf6cf079a88c95867f70c57c8b92",
+                "after": "d7506978662d6ab44555f935331a6d149c51a36651dd18de56b386d6fc8307d1"
               }
             ]
           }
