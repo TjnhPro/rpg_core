@@ -47,6 +47,7 @@ try {
   writeFileSync(path.join(consumer, 'skill-upgrades.ts'), readFileSync(path.join(root, 'examples/skill-upgrades.ts'), 'utf8'));
   writeFileSync(path.join(consumer, 'healing.ts'), readFileSync(path.join(root, 'examples/healing.ts'), 'utf8'));
   writeFileSync(path.join(consumer, 'lifesteal.ts'), readFileSync(path.join(root, 'examples/lifesteal.ts'), 'utf8'));
+  writeFileSync(path.join(consumer, 'mana-on-hit.ts'), readFileSync(path.join(root, 'examples/mana-on-hit.ts'), 'utf8'));
   // Repository-relative compatibility paths are deliberately not package exports.
   // Check their declarations and runtime identities in the installed archive too.
   const legacyImports = Object.keys(moduleMap).map((file, i) =>
@@ -87,6 +88,10 @@ import {conditionalTriggersExample} from './build/conditional-triggers.js';
 import {skillUpgradesExample} from './build/skill-upgrades.js';
 import {healingExample} from './build/healing.js';
 import {lifestealExample} from './build/lifesteal.js';
+import {manaOnHitExample} from './build/mana-on-hit.js';
+const manaOnHit=manaOnHitExample();
+assert.deepEqual(manaOnHit,{primitive:{before:95,after:100,appliedMana:5},sourceHp:55,targetHp:80,appliedDamage:20,healing:[{type:'healing-applied',entityId:'source',atMs:0,before:50,after:55,appliedHealing:5}],mana:[{type:'mana-gained',entityId:'source',atMs:0,before:55,after:65,appliedMana:10}],captures:1,mp:65,actionSerial:1,replay:false});
+console.log(JSON.stringify({status:'MANA_ON_HIT_VERIFIED',...manaOnHit}));
 const lifesteal=lifestealExample();
 assert.deepEqual(lifesteal,{sourceHp:55,targetHp:80,appliedDamage:20,healing:[{type:'healing-applied',entityId:'source',atMs:0,before:50,after:55,appliedHealing:5}],captures:1,mp:95,actionSerial:1,replay:false});
 console.log(JSON.stringify({status:'LIFESTEAL_VERIFIED',...lifesteal}));
@@ -130,7 +135,7 @@ for (const [legacy, canonical] of Object.entries(moduleMap)) {
 for (const internal of ['@rpg/core/skills/skill-execution.js', '@rpg/core/dist/index.js', '@rpg/core/shared/game/skill-execution.js']) {
   await assert.rejects(import(internal), {code: 'ERR_PACKAGE_PATH_NOT_EXPORTED'});
 }
-for (const helper of ['lifesteal', 'skillHealingEntities', 'heal', 'isPinnedSkillTriggerBundle', 'observesSkillConditionalHit', 'observesSkillStackApply', 'captureSkillHit', 'captureSkillStackApply', 'skillStackCount', 'skillEffectWork', 'consumeStackEffect', 'registerTriggeredSkillChildren', 'childInstanceDamage', 'assembleRootDamage', 'admitSkillProjectiles', 'recordSkillProjectile', 'pendingSkillTriggerPayload', 'childDispatcher', 'initializeSkillTriggerSession', 'captureSkillExpiry', 'captureSkillImpact', 'drainSkillTriggers', 'bindRootSkillTriggers', 'trustSkillInstanceDefinition', 'initializeSkillInstances', 'bindRootSkillInstance', 'advanceSkillInstances', 'disposeSkillInstances', 'prepareRootOffense', 'bindRootOffense', 'rootDamageSnapshot', 'actorOffense', 'freezeGameplayData', 'random', 'damageBonusReason', 'tickProjectileBodies', 'debugProjectile']) assert(!(helper in core));
+for (const helper of ['manaOnHit', 'lifesteal', 'skillHealingEntities', 'heal', 'isPinnedSkillTriggerBundle', 'observesSkillConditionalHit', 'observesSkillStackApply', 'captureSkillHit', 'captureSkillStackApply', 'skillStackCount', 'skillEffectWork', 'consumeStackEffect', 'registerTriggeredSkillChildren', 'childInstanceDamage', 'assembleRootDamage', 'admitSkillProjectiles', 'recordSkillProjectile', 'pendingSkillTriggerPayload', 'childDispatcher', 'initializeSkillTriggerSession', 'captureSkillExpiry', 'captureSkillImpact', 'drainSkillTriggers', 'bindRootSkillTriggers', 'trustSkillInstanceDefinition', 'initializeSkillInstances', 'bindRootSkillInstance', 'advanceSkillInstances', 'disposeSkillInstances', 'prepareRootOffense', 'bindRootOffense', 'rootDamageSnapshot', 'actorOffense', 'freezeGameplayData', 'random', 'damageBonusReason', 'tickProjectileBodies', 'debugProjectile']) assert(!(helper in core));
 console.log(JSON.stringify({status: 'PASS', targetHp: a.entities[1].currentHp, deterministic: true, types: true, publicDomains: domains.length, legacyPaths: Object.keys(moduleMap).length, deepImportsBlocked: true}));
 `);
   const result = execFileSync(process.execPath, ['run.mjs'], {cwd: consumer, encoding: 'utf8'});

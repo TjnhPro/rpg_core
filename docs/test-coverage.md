@@ -105,3 +105,15 @@ HP damage/recovery, six deliveries, original-source identity, fatal OnKill,
 Root/Child S0/costs, replay/budgets/disposal and coarse/fine determinism.
 `examples/lifesteal.ts` runs LS07 in the existing installed strict TS/ESM consumer.
 See [contract and preservation evidence](RPG_CORE_V1.2.1_LIFESTEAL.md).
+
+### v1.2.2 Mana on Hit
+
+`tests/combat/mana-gain.test.ts` covers MH01 normal/capped/full/zero/fractional,
+large finite inputs and rejected invalid bounds. `tests/integration/mana-on-hit.test.ts`
+covers MH02-MH07 real landed/zero/dodge/fatal/missed/DoT contacts, live modified
+Max Mana, paid cost, six damage deliveries, deduplication, immutable closed schema,
+Lifesteal event/HP/MP ordering and unchanged RNG, Root/Child S0 and amounts,
+identity/liveness, activation/receipt replay, session disposal, budgets and
+coarse/fine timelines. `examples/mana-on-hit.ts` runs MH08 in the existing strict
+TS/ESM installed consumer, including real damage + HP + MP and public exports.
+See [checkpoint evidence](RPG_CORE_V1.2.2_MANA_ON_HIT.md).

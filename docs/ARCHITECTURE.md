@@ -204,3 +204,15 @@ source authentication; no new resource state or engine is introduced. Positive
 recovery emits the existing event after damage/defeat and before effect-hit.
 DoT and stack-consumption outcomes remain excluded. See the
 [contract and preservation amendment](RPG_CORE_V1.2.1_LIFESTEAL.md).
+
+## v1.2.2 Mana on Hit ownership
+
+Combat owns pure explicit MP gain; Stats retains normalization, elapsed regeneration
+and Max Mana formulas. Skills couples opted-in canonical landed enemy contacts to
+that transition, reading live effective Max Mana through optional trusted
+`resourceStats`. Existing admission identities authenticate Root/Child sources.
+Damage HP, Lifesteal HP and MP commit before notifications and trigger intake;
+positive `mana-gained` follows existing damage/defeat/healing notifications and
+precedes effect-hit. No new store, ledger, scheduler or domain edge is introduced.
+Public exhaustive Combat event switches need the new event case. See
+[contract and preservation amendment](RPG_CORE_V1.2.2_MANA_ON_HIT.md).

@@ -1,5 +1,9 @@
 # RPG Core
 
+v1.2.2 adds opt-in fixed Mana on Hit, including zero-damage landed enemy hits,
+through canonical Combat MP gain. See the [contract](docs/RPG_CORE_V1.2.2_MANA_ON_HIT.md)
+and [installed-package example](examples/mana-on-hit.ts).
+
 v1.2.1 adds opt-in Lifesteal from actual applied enemy damage through canonical
 Healing; see [contract and evidence](docs/RPG_CORE_V1.2.1_LIFESTEAL.md) and the
 [installed-package example](examples/lifesteal.ts).

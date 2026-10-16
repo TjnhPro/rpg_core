@@ -143,13 +143,14 @@
       ],
       "declarations": [
         "16aafaa346f15c2a4825ea958fff9ea75841c038c8a1bbddb0609a7e96c48ce4",
-        "3da765a5e2727dca86ed1dca224248a68e160410eb7a3cad13c536fb19c627a3",
+        "22a430a0c560717837a6c0b0c424995c4f339756e535c84c22811ca549a7c50b",
         "4e388f20cd2d26d288b1040b1a09455d039dfc89aa440faaeeb2d085dcc31ef3",
         "60e77d443a4e3f87d8220e8b3714e735ddabec061ee7d58a3b0818a60cefa372",
         "6e5a0c70a347576bf952decaa1fe0b37bcecc55444afb0a194f7b73dddaaebab",
         "70b1ddf3744afb53b0c4a230561da455e937ee19bf7e3faf848c29e88befb75f",
         "73e15f18e3c6b773569de2d8e5c6a5c8c5830bdf6bc9505800dbcca5d3642574",
-        "bbdd7e5b8d56e776ccfa4ab1eb817de9b5ee3ceb86fbb7e0567a63855ccb4f86",
+        "870256bb359174b088512a10174ec762f4a16e62ed1a06b34553381747c4366d",
+        "e2612a4fc27c329a792c115d90e9b400d3fc45cec0132979565604968ab2ecc2",
         "f7c6d55e0602a7f03c77af1991713f8c0c152ee0d18c1cc074020e3b7966ecf6",
         "f955e9100f21f1f4bda570ff22103009415f148ff7e1831cc2321fe61cf3c898",
         "f9ab77658c46dd844dbfb9d2c0c94528aa2387272f9cf6c0cfe9201c99c0ab2b"
@@ -212,6 +213,27 @@
                 "after": "3da765a5e2727dca86ed1dca224248a68e160410eb7a3cad13c536fb19c627a3"
               }
             ]
+          },
+          {
+            "checkpoint": "v1.2.2",
+            "baseCommit": "2a8e1eff7d7e2164d1b8a6e7c7ab21cecbe0d801",
+            "authority": "Developer approval of Mana on Hit Foundation delta plan and continuation on existing PR, M1-M8; docs/RPG_CORE_V1.2.2_MANA_ON_HIT.md",
+            "declarations": [
+              {
+                "name": "SkillManaOnHit",
+                "after": "e2612a4fc27c329a792c115d90e9b400d3fc45cec0132979565604968ab2ecc2"
+              },
+              {
+                "name": "SkillGameplayEffect",
+                "before": "bbdd7e5b8d56e776ccfa4ab1eb817de9b5ee3ceb86fbb7e0567a63855ccb4f86",
+                "after": "870256bb359174b088512a10174ec762f4a16e62ed1a06b34553381747c4366d"
+              },
+              {
+                "name": "validateSkillEffects",
+                "before": "3da765a5e2727dca86ed1dca224248a68e160410eb7a3cad13c536fb19c627a3",
+                "after": "22a430a0c560717837a6c0b0c424995c4f339756e535c84c22811ca549a7c50b"
+              }
+            ]
           }
         ]
       }
@@ -229,6 +251,7 @@
         "7aff977e081bf68ea749b64fc94e9f0a40161253890213603874b2bc4363ed97",
         "88756ee1e67a256b2d643a94d184f0b0b84a4e2375f388a1eb333070174607ff",
         "9059acdd8b260a40f6ed7e78dccc58bb2a64893f35f7c48281c3170232fc3599",
+        "9e9c639ea27feada194d941e88ae124d3af35aa9ccb0996817a182a528c78cb2",
         "da42591b1f2165fe87221f91e2171c7fa4ffd418f92f52bffb934b9c442abc60",
         "fc0307af95a9302f2eaa6e3ca91b702c757b36aee0c89f3f6ae86aad337d659e"
       ],
@@ -240,6 +263,19 @@
           {
             "name": "applyEntityHealing",
             "after": "da42591b1f2165fe87221f91e2171c7fa4ffd418f92f52bffb934b9c442abc60"
+          }
+        ],
+        "followUpChanges": [
+          {
+            "checkpoint": "v1.2.2",
+            "baseCommit": "2a8e1eff7d7e2164d1b8a6e7c7ab21cecbe0d801",
+            "authority": "Developer approval of Mana on Hit Foundation delta plan and continuation on existing PR, M1-M8; docs/RPG_CORE_V1.2.2_MANA_ON_HIT.md",
+            "declarations": [
+              {
+                "name": "applyEntityManaGain",
+                "after": "9e9c639ea27feada194d941e88ae124d3af35aa9ccb0996817a182a528c78cb2"
+              }
+            ]
           }
         ]
       }
@@ -271,10 +307,10 @@
         "8fc76f7e9d25343f5e83ae822e0dcc7f150403110bbcb99ce8a6207e39189936",
         "9b7a5aa889b2c9ef91c209ad0b8b564d1775fec5e7241c4ed071472bc13a48fa",
         "bef1f85415ca9090fb00320271edbe58f9c56382286859a557c6f8692aa5115b",
+        "c3d1c98d9e730b31110b159745d3fb92fccc998a15194fbf86e99d4ec1946dfd",
         "c5caf17443daa7baed4d2b10d6145bcc48291d4b27a1603e3de96342d283f1cf",
         "c8b52918cdbd88c877f52bcfb0427242df60d9a72710910d45a5cd54799594e9",
         "cfbe8e639cdea9c5f552f0eb5a604e025ac73590e81e9106d230bf21debe91ce",
-        "d7b8300d0225d9cb83ed427e65b9c6cc1c107105d9aafc77f7f49201a51c3c8e",
         "e1b9219ec03d4da88dfa411c17d9ee35c3805ca92d7407d945415882e1b2e7dd",
         "e6b6ea01cc1d20d9a1937073ac884408456944c73846e612882fae1a030e86b4",
         "e6b95a51710cb08da2fc51a57631c31ffac851e3b40ab555bad7368e0fd71b55",
@@ -290,6 +326,20 @@
             "name": "EntityCombatEvent",
             "before": "9003fe0daf93d3d309816cad9c96f92c8defa7610580d3cffdf56eb3e74d7def",
             "after": "d7b8300d0225d9cb83ed427e65b9c6cc1c107105d9aafc77f7f49201a51c3c8e"
+          }
+        ],
+        "followUpChanges": [
+          {
+            "checkpoint": "v1.2.2",
+            "baseCommit": "2a8e1eff7d7e2164d1b8a6e7c7ab21cecbe0d801",
+            "authority": "Developer approval of Mana on Hit Foundation delta plan and continuation on existing PR, M1-M8; docs/RPG_CORE_V1.2.2_MANA_ON_HIT.md",
+            "declarations": [
+              {
+                "name": "EntityCombatEvent",
+                "before": "d7b8300d0225d9cb83ed427e65b9c6cc1c107105d9aafc77f7f49201a51c3c8e",
+                "after": "c3d1c98d9e730b31110b159745d3fb92fccc998a15194fbf86e99d4ec1946dfd"
+              }
+            ]
           }
         ]
       }
@@ -404,12 +454,12 @@
       "declarations": [
         "00471c9abdc83dc07b35ac21f45e78d21e4f628a3789cc2bf8d7749d9f6a12a0",
         "0559c0fcd1c66ddb8139a66e0c877ababc3a4493e7a57a6236e46e15cf6e35f0",
+        "0e604dda6f2c163621958c071488b4cd2b40911a4140a0e692be21caac1e0af0",
         "1316a9f087386717f5e9d5f4080dc312e8823e44b72075b4507da77ec8502a70",
         "14dc8184162b1623978cb5454b973292e79a836434f15be90f939d4f2a74a27a",
         "25fe3a7378eb5eded618e3ea4240f30c982312dcd8dfaba24285c0b6269eabff",
         "2b3ca040833cbe062b4487a3a39e7dcc5f919b1c987654f16ce1f9fb282b8c7d",
         "324a6ce6804e9cd9dcfc7b527e9d8988f0f7880e27554a6dc02aa8b54333e16e",
-        "4e18d33915dc9ac31eb94d304fc4e761d98d5b8b96cb157ff0928fd36eec2e70",
         "85f6ed045ece55e5467915879fa9583b95a6f1ab4cb2975ee474b19330b989ef",
         "8ee20dedcc2767c8e2dc8bca02387947a14cf1722f7076832c703eda19c0fad2",
         "8f24dc4e63f1cf24249c1e1d0d14f1d0ae19a98859fabf9d747871a1a7caac77",
@@ -544,6 +594,18 @@
                 "after": "4e18d33915dc9ac31eb94d304fc4e761d98d5b8b96cb157ff0928fd36eec2e70"
               }
             ]
+          },
+          {
+            "checkpoint": "v1.2.2",
+            "baseCommit": "2a8e1eff7d7e2164d1b8a6e7c7ab21cecbe0d801",
+            "authority": "Developer approval of Mana on Hit Foundation delta plan and continuation on existing PR, M1-M8; docs/RPG_CORE_V1.2.2_MANA_ON_HIT.md",
+            "declarations": [
+              {
+                "name": "executeSkill",
+                "before": "4e18d33915dc9ac31eb94d304fc4e761d98d5b8b96cb157ff0928fd36eec2e70",
+                "after": "0e604dda6f2c163621958c071488b4cd2b40911a4140a0e692be21caac1e0af0"
+              }
+            ]
           }
         ]
       }
@@ -557,13 +619,16 @@
         "0360b1d17ba059e0b6c4c833f37c2fee70d6afbd56634773dd4f1c5aa2a508bf",
         "07920f2e4d65f242aaf56d80fb615addee300236dcf23d7bc48c50d123eb91de",
         "0c9121311616b98729f64070ec98fae2dba2c5f700f51414346c9136840bde2c",
+        "125abba20252d311d7e042e7f0ff8675bf9ba89c0e5abdcc70d9d28f947b18cb",
         "166b106d11a9ba04f116bc1669ab4672a731518a9f05112b555ff5884012f726",
         "17067d856e4d37eac0e402c670e8e6ec0d1d099da13670b8db8af286d6395764",
         "1c135c498e1ff8aa3126689c014cbae95fe5f3b3430f8d7a89b62cf9ad3339b0",
+        "27cd9a7915a859b356e3ab75a601086204a8a7763188548e8b8c15790e5deef7",
+        "2c5c7e4a8442f59b34816af6a42c3bcb365609dba7bbf5c6301ca2a937b10d36",
         "3f1945742cd70e5529fbb61fc965dcfff016459f325ec1bf2684c63a0fce4985",
         "497e66b613ccfc0ccfdef8c8a5a5453967a4a3982b3b85bfaeb594ab7680ee73",
         "4d26efb7c5890b33ce0848a3cb7116043fa542b177dd77704c676a3ce9897b23",
-        "5da942bec4128915da5871cf48708e436e5b3bc96e649630d801cfccfb305e23",
+        "5fce1c2777bc558d43697fb78972c22e2ff708828bb01c50733f96e0f6578d0c",
         "60186253213fbd14e294cbbb21f8375e20fd5b40f8c75a58332e7d02c5af2b83",
         "64ddb796bd4744f5b947a0515d05726cbc26a6114cf40a68e100b1887c07657e",
         "69eeb0f21dcbe1b7625a0cf96ec7f46ff9ca370c21cedcd7dbf629d01733878e",
@@ -574,9 +639,7 @@
         "872719983bb624859cf8ca887fa97f9c24e5c389f201bce8dff6982544102920",
         "8e3831d1ce1f0af61e793e4290d6a21e429d5f7029327e3785538e05f968708a",
         "b355daa0b3619fde1351607961aa4b581fe88f4da3f75bc6f3e5e49b9b60e509",
-        "bc3c8aba7ab328e17ac68e9b7056431a153bc5236806daeb797da4648c601d79",
         "be896081bc4d9fff540eec4918856a5be37e903ec13746692e7750acbace9515",
-        "c453aa707ef3d8144fa9dafc5ab20d1241eb33e2398f44cafab3ac30bae10679",
         "ca1b36f9e34eafc6a90affa8b6c933885f314e2ce206c0c242f46a472d8aeff0",
         "d622a18aa6db839ae3a811a3767ca7172276bf6da111a4a8cde4dacb7208f85f",
         "d7506978662d6ab44555f935331a6d149c51a36651dd18de56b386d6fc8307d1",
@@ -870,6 +933,32 @@
                 "name": "hit",
                 "before": "3f1e3bfc371ce4d2fc643cb27b09a92ecad95343899ebee967895d8c0c418d06",
                 "after": "c453aa707ef3d8144fa9dafc5ab20d1241eb33e2398f44cafab3ac30bae10679"
+              }
+            ]
+          },
+          {
+            "checkpoint": "v1.2.2",
+            "baseCommit": "2a8e1eff7d7e2164d1b8a6e7c7ab21cecbe0d801",
+            "authority": "Developer approval of Mana on Hit Foundation delta plan and continuation on existing PR, M1-M8; docs/RPG_CORE_V1.2.2_MANA_ON_HIT.md",
+            "declarations": [
+              {
+                "name": "SkillEffectEnvironment",
+                "before": "bc3c8aba7ab328e17ac68e9b7056431a153bc5236806daeb797da4648c601d79",
+                "after": "125abba20252d311d7e042e7f0ff8675bf9ba89c0e5abdcc70d9d28f947b18cb"
+              },
+              {
+                "name": "applyDamage",
+                "before": "5da942bec4128915da5871cf48708e436e5b3bc96e649630d801cfccfb305e23",
+                "after": "5fce1c2777bc558d43697fb78972c22e2ff708828bb01c50733f96e0f6578d0c"
+              },
+              {
+                "name": "manaOnHit",
+                "after": "2c5c7e4a8442f59b34816af6a42c3bcb365609dba7bbf5c6301ca2a937b10d36"
+              },
+              {
+                "name": "hit",
+                "before": "c453aa707ef3d8144fa9dafc5ab20d1241eb33e2398f44cafab3ac30bae10679",
+                "after": "27cd9a7915a859b356e3ab75a601086204a8a7763188548e8b8c15790e5deef7"
               }
             ]
           }

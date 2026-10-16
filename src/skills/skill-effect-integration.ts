@@ -6,7 +6,7 @@ import type { ProjectileConfig,TimedAOESequence,TimedObjectConfig } from '../con
 import {validateSkillEffects,type SkillStackConsumption,type SkillDamageComponent,type SkillGameplayEffect } from './skill-effects.js';
 import { strikeAOE,tickAOESequenceRuntime } from '../mechanics/aoe-sequence-core.js';
 import { canTraverse,type MapPoint,type Walkability } from '../spatial/grid-geometry.js';
-import { applyEntityHealing,applyEntityDamage,type CombatEntity } from '../combat/combat-entity.js';
+import { applyEntityManaGain,applyEntityHealing,applyEntityDamage,type CombatEntity } from '../combat/combat-entity.js';
 import { validateCombatHit,type CombatValidationContext,type EntityCombatEvent,type FactionRelation } from '../combat/combat-state.js';
 import { calculateDamage,type DamageSnapshot } from '../damage/damage-core.js';
 import { applyDotSnapshot,dotDamage,tickDotRuntime,type DotGroup,type DotRuntime } from '../effects/dot-core.js';
@@ -29,6 +29,8 @@ export interface SkillEffectEnvironment {
  position(id:string):Readonly<MapPoint>|undefined;
  snapshotDamage(caster:CombatEntity,component:SkillDamageComponent,configVersion:string):DamageSnapshot;
  defenseStats(target:CombatEntity):{maxHp:number;armor:number;magicResistance:number;dodgeChance:number};
+ /** Live effective resource stats, required only for opted-in Mana on Hit. */
+ resourceStats?(source:CombatEntity):{maxMana:number};
  statuses(targetId:string):readonly string[];
  criticalRoll():number;dodgeRoll():number;positionRoll():number;
  emit(event:SkillEffectEvent):void;
@@ -110,13 +112,13 @@ function damageContext(d:Delivery,target:CombatEntity,env:SkillEffectEnvironment
  return {type:c.damageType,tags:c.tags,eventTags:c.tags,target:'Normal',statuses:env.statuses(target.entityId),
   entities:{attacker:source,defender:target,defenderStats:stats},defender:{source:{id:source.entityId,level:source.level},target:{id:target.entityId,level:target.level},mechanic}};
 }
-function applyDamage(r:SkillEffectRuntime,target:CombatEntity,damage:number,env:SkillEffectEnvironment,resolved?:(hp:ReturnType<typeof applyEntityDamage>)=>Extract<EntityCombatEvent,{type:'healing-applied'}>|undefined):void {
+function applyDamage(r:SkillEffectRuntime,target:CombatEntity,damage:number,env:SkillEffectEnvironment,resolved?:(hp:ReturnType<typeof applyEntityDamage>)=>readonly Extract<EntityCombatEvent,{type:'healing-applied'|'mana-gained'}>[]):void {
  if(!r.active)return;
  const hp=applyEntityDamage(target.currentHp,damage,env.defenseStats(target).maxHp);target.currentHp=hp.after;
- const healing=resolved?.(hp);
+ const recovery=resolved?.(hp);
  if(hp.appliedDamage>0)env.emit({type:'damage-applied',entityId:target.entityId,atMs:r.now,...hp});
  if(hp.defeated){r.dots.groups=r.dots.groups.filter(g=>g.targetId!==target.entityId);if(r.effects.active)effectEvents(r.effects.targetDefeated(target.entityId,{combat:env.combat,now:r.now}),env);env.emit({type:'entity-defeated',entityId:target.entityId,atMs:r.now});}
- if(healing)env.emit(healing);
+ for(const event of recovery??[])env.emit(event);
 }
 /** Only canonical direct delivery applications enter here; DoT/consume never do. */
 function lifesteal(r:SkillEffectRuntime,d:Delivery,target:CombatEntity,appliedDamage:number,env:SkillEffectEnvironment):Extract<EntityCombatEvent,{type:'healing-applied'}>|undefined {
@@ -130,6 +132,18 @@ function lifesteal(r:SkillEffectRuntime,d:Delivery,target:CombatEntity,appliedDa
  source.currentHp=hp.after;
  if(hp.appliedHealing>0)return {type:'healing-applied',entityId:source.entityId,atMs:r.now,...hp};
 }
+/** Uses the same admitted source identity as Lifesteal; no contact/event ledger. */
+function manaOnHit(r:SkillEffectRuntime,d:Delivery,target:CombatEntity,env:SkillEffectEnvironment):Extract<EntityCombatEvent,{type:'mana-gained'}>|undefined {
+ const amount=d.effect.manaOnHit?.amount;if(!amount||!env.resourceStats)return;
+ const key=d.activation.rootExecution??d.activation.snapshot.rootOffense;
+ const pinned=key&&skillHealingEntities(key),source=env.combat.findEntity(d.activation.casterId);
+ if(!pinned||!source||source!==pinned.source||!Number.isFinite(source.currentHp)||source.currentHp<=0)return;
+ if(!validateCombatHit({casterId:d.activation.casterId,targetId:target.entityId,allowedRelations:['enemy'],requiresLivingTarget:false},env.combat).allowed)return;
+ let mp:ReturnType<typeof applyEntityManaGain>;
+ try{mp=applyEntityManaGain(source.currentMp,amount,env.resourceStats(source).maxMana);}catch{return;}
+ source.currentMp=mp.after;
+ if(mp.appliedMana>0)return {type:'mana-gained',entityId:source.entityId,atMs:r.now,...mp};
+}
 function hit(r:SkillEffectRuntime,d:Delivery,targetId:string,offense:DamageSnapshot,env:SkillEffectEnvironment,mechanic:NonNullable<DamageContext['defender']>['mechanic']):void {
  if(!r.active)return;
  const validation=eligible(d,targetId,env);
@@ -138,10 +152,11 @@ function hit(r:SkillEffectRuntime,d:Delivery,targetId:string,offense:DamageSnaps
  const breakdown=calculateDamage({...offense,context:damageContext(d,target,env,mechanic),roll:env.criticalRoll,dodgeRoll:env.dodgeRoll});
  const origin=observesSkillConditionalHit(r,d)?env.position(targetId):undefined;
  applyDamage(r,target,breakdown.finalDamage,env,hp=>{
-  // Commit both HP transitions before any application event/trigger observer.
+  // Commit damage and opted-in HP/MP recovery before event/trigger observers.
   const healing=breakdown.defense.hit.hit?lifesteal(r,d,target,hp.appliedDamage,env):undefined;
+  const mana=breakdown.defense.hit.hit?manaOnHit(r,d,target,env):undefined;
   if(breakdown.defense.hit.hit&&origin)captureSkillHit(r,d,d.id,target,origin,hp.before>0&&hp.after===0);
-  return healing;
+  return [...(healing?[healing]:[]),...(mana?[mana]:[])];
  });
  env.emit({type:'effect-hit',atMs:r.now,instanceId:d.id,targetId,mechanic,breakdown});
  if(!r.active||!breakdown.defense.hit.hit||target.currentHp<=0)return;
