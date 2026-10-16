@@ -1,5 +1,11 @@
 # RPG Core architecture
 
+v1.2.5 adds acceptance evidence for canonical OnHit/OnKill -> self Child recovery,
+including lethal target handling, authenticated sources and existing budgets.
+It changes no production source, contracts or preservation baseline. See the
+[phase closure review](RPG_CORE_V1.2.5_RECOVERY_ACCEPTANCE_CLOSURE.md);
+Developer acceptance of phase closure remains pending.
+
 This is the current architecture reference. [README](../README.md) covers package
 installation and commands; [architecture-audit.md](architecture-audit.md) records
 the historical Phase 1 refactor. [The coverage matrix](test-coverage.md) and
@@ -57,7 +63,7 @@ legacy paths or application modules. The root barrel only assembles public expor
 | `contracts` | Shared shapes, default configs and validators: `CombatEntity`, `CombatModifier`, `DamageContext`, `EffectDefinition`, `Walkability`, `validateCombatModifiers`, `validateDefenseSettings` | None | Domain validation tests and integration fixtures |
 | `stats` | Resolved attributes → derived bases → modifiers/transform/caps, absolute resources, cooldown duration: `resolveCharacterStats`, `calculateEffectiveStat`, `updateCurrentResources`, `cooldownDurationMs` | contracts, modifiers | `tests/stats`, `tests/skills`, `tests/integration` |
 | `modifiers` | Live source filtering, identity deduplication, stable prepared resolution: `collectActiveModifiers`, `prepareModifierResolver`, `resolveModifiers` | contracts | `tests/modifiers`, `tests/effects/effect-modifiers.test.ts` |
-| `combat` | Entity state, relations, target/action admission, hit revalidation, restriction cancellation, HP transition: `combatState`, `validateCombatAction`, `validateCombatHit`, `startCombatAction`, `cancelCombatAction`, `applyEntityDamage` | contracts, spatial | `tests/combat`, skill and restriction tests |
+| `combat` | Entity state, relations, target/action admission, hit revalidation, restriction cancellation, HP transition: `combatState`, `validateCombatAction`, `validateCombatHit`, `startCombatAction`, `cancelCombatAction`, `applyEntityDamage`, `applyEntityHealing` | contracts, spatial | `tests/combat`, skill and restriction tests |
 | `damage` | B0/B1 offense, Crit, Dodge, armor/MR: `calculateDamage`, `snapshotActorDamage`, `mitigateDefense`, `resolveDefenseHit` | contracts, combat, modifiers | `tests/damage`, delivery integration tests |
 | `skills` | Immutable definition, availability, MP/cooldown commit, activation and effect dispatch: `defineSkill`, `executeSkill`, `advanceSkillExecution`, `cancelSkillExecution`, `dispatchSkillEffects`, `advanceSkillEffects`, `clearSkillEffects` | contracts, combat, stats, effects, damage, mechanics, spatial | `tests/skills`, `tests/integration` |
 | `effects` | Immutable effect definitions, apply/refresh/stack/expire/restrictions and on-hit DoT: `defineEffect`, `EffectLifecycle`, `applyDotSnapshot`, `tickDotRuntime` | contracts, combat, modifiers, damage | `tests/effects`, effect and status integrations |
@@ -182,3 +188,56 @@ unchanged. Weak execution/session trust records belong to Skills; component-inde
 offense extraction and the existing calculator belong to Damage. The preservation
 file records only the three approved affected historical entries, with original
 removed hashes retained; all forwarder/namespace checks still apply.
+
+
+## v1.2.0 Healing ownership
+
+Combat owns the pure flat HP recovery transition; Skills owns ordered Root/Child
+execution and emits the additive `healing-applied` event after authoritative HP
+commit, only for positive recovery. It reads live Max HP through the existing
+Skill environment, validates identity/liveness/self-or-ally/range, and never calls
+Damage or synthesizes hit/kill occurrences. Stats retains resource normalization,
+regeneration and Max HP formulas. No new domain, dependency edge, scheduler or
+resource store is added. Public exhaustive effect/event switches need the new
+cases; see [contract and narrow preservation amendment](RPG_CORE_V1.2.0_HEALING_FOUNDATION.md).
+
+## v1.2.1 Lifesteal ownership
+
+Skills optionally couples its existing canonical damage application with Combat
+Healing using actual applied damage and the effect's pinned rate. Both HP writes
+precede notifications. Root admission identity is reused through Root S0 for Child
+source authentication; no new resource state or engine is introduced. Positive
+recovery emits the existing event after damage/defeat and before effect-hit.
+DoT and stack-consumption outcomes remain excluded. See the
+[contract and preservation amendment](RPG_CORE_V1.2.1_LIFESTEAL.md).
+
+## v1.2.2 Mana on Hit ownership
+
+Combat owns pure explicit MP gain; Stats retains normalization, elapsed regeneration
+and Max Mana formulas. Skills couples opted-in canonical landed enemy contacts to
+that transition, reading live effective Max Mana through optional trusted
+`resourceStats`. Existing admission identities authenticate Root/Child sources.
+Damage HP, Lifesteal HP and MP commit before notifications and trigger intake;
+positive `mana-gained` follows existing damage/defeat/healing notifications and
+precedes effect-hit. No new store, ledger, scheduler or domain edge is introduced.
+Public exhaustive Combat event switches need the new event case. See
+[contract and preservation amendment](RPG_CORE_V1.2.2_MANA_ON_HIT.md).
+
+## v1.2.3 Explicit Restore ownership
+
+Skills adds one ordered restore_mana operation and reuses the existing Combat
+MP-gain primitive/event. Healing recipient validation is shared with HP behavior
+preserved. Restore-only Root/Child uses existing admission identity pins; the live
+resource resolver receives the actual recipient, including a selected ally.
+No Combat, Stats, Effects, Damage formula or scheduling change. Consumers with
+exhaustive Skill effect switches need the new discriminant. See
+[contract and preservation amendment](RPG_CORE_V1.2.3_EXPLICIT_RESTORE.md).
+
+## v1.2.4 Percent Recovery ownership
+
+Skills resolves percent requests from live recipient effective maxima and delegates
+to the unchanged canonical Combat transitions/events. Shared original-source
+validation covers percent-HP-only Child bundles without a new identity store.
+Existing ordered effects, lifecycle boundaries, budgets and resource caps remain.
+The approved public amount union widening requires numeric-read narrowing;
+see [contract and preservation amendment](RPG_CORE_V1.2.4_PERCENT_RECOVERY.md).

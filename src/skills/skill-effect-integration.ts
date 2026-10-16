@@ -6,7 +6,7 @@ import type { ProjectileConfig,TimedAOESequence,TimedObjectConfig } from '../con
 import {validateSkillEffects,type SkillStackConsumption,type SkillDamageComponent,type SkillGameplayEffect } from './skill-effects.js';
 import { strikeAOE,tickAOESequenceRuntime } from '../mechanics/aoe-sequence-core.js';
 import { canTraverse,type MapPoint,type Walkability } from '../spatial/grid-geometry.js';
-import { applyEntityDamage,type CombatEntity } from '../combat/combat-entity.js';
+import { applyEntityManaGain,applyEntityHealing,applyEntityDamage,type CombatEntity } from '../combat/combat-entity.js';
 import { validateCombatHit,type CombatValidationContext,type EntityCombatEvent,type FactionRelation } from '../combat/combat-state.js';
 import { calculateDamage,type DamageSnapshot } from '../damage/damage-core.js';
 import { applyDotSnapshot,dotDamage,tickDotRuntime,type DotGroup,type DotRuntime } from '../effects/dot-core.js';
@@ -16,7 +16,7 @@ import { detectInstantAOE,lockAOEPosition } from '../mechanics/instant-aoe.js';
 import { detectMeleeHitbox } from '../mechanics/melee-hitbox.js';
 import { nextProjectileBodyBoundary,projectileDirections,tickProjectileBodies,type ProjectileBody } from '../mechanics/projectile.js';
 import { inRange } from '../spatial/range.js';
-import { reconcileSkillRestrictions,type SkillActivatedEvent,type SkillExecutionSlot,type SkillExecutionSnapshot } from './skill-execution.js';
+import { skillHealingEntities,reconcileSkillRestrictions,type SkillActivatedEvent,type SkillExecutionSlot,type SkillExecutionSnapshot } from './skill-execution.js';
 import type {SkillEngineDefinition} from './skill-engine.js';
 import type {TargetContext} from '../combat/combat-state.js';
 import {validateCombatModifiers} from '../contracts/combat-modifiers.js';
@@ -29,6 +29,8 @@ export interface SkillEffectEnvironment {
  position(id:string):Readonly<MapPoint>|undefined;
  snapshotDamage(caster:CombatEntity,component:SkillDamageComponent,configVersion:string):DamageSnapshot;
  defenseStats(target:CombatEntity):{maxHp:number;armor:number;magicResistance:number;dodgeChance:number};
+ /** Live effective resource stats, for the actual recipient of opted-in MP gain. */
+ resourceStats?(recipient:CombatEntity):{maxMana:number};
  statuses(targetId:string):readonly string[];
  criticalRoll():number;dodgeRoll():number;positionRoll():number;
  emit(event:SkillEffectEvent):void;
@@ -41,8 +43,9 @@ interface GameplayActivation {
  actionInstanceId:string;skillId:string;casterId:string;target:Readonly<TargetContext>;
  snapshot:Pick<SkillExecutionSnapshot,'configVersion'|'rootOffense'|'casterPosition'|'aimPosition'|'facing'> & {readonly definition:SkillEngineDefinition};
  rootExecution?:SkillExecutionSnapshot;child?:SkillInstanceView;
+ healingEntities?:{source:CombatEntity;target:CombatEntity|undefined};
 }
-interface Delivery {id:string;activation:GameplayActivation;effect:Exclude<SkillGameplayEffect,{type:'modifier_effect'|'consume_stacks'}>;relations:readonly FactionRelation[]}
+interface Delivery {id:string;activation:GameplayActivation;effect:Exclude<SkillGameplayEffect,{type:'heal'|'restore_mana'|'modifier_effect'|'consume_stacks'}>;relations:readonly FactionRelation[]}
 interface Bullet extends Delivery,ProjectileBody {config:ProjectileConfig;snapshot:DamageSnapshot}
 interface Emitter extends Delivery {position:MapPoint;remainingMs:number;config:TimedObjectConfig}
 interface Sequence extends Delivery {center:MapPoint;nextStrike:number;remainingMs:number;config:TimedAOESequence}
@@ -109,12 +112,37 @@ function damageContext(d:Delivery,target:CombatEntity,env:SkillEffectEnvironment
  return {type:c.damageType,tags:c.tags,eventTags:c.tags,target:'Normal',statuses:env.statuses(target.entityId),
   entities:{attacker:source,defender:target,defenderStats:stats},defender:{source:{id:source.entityId,level:source.level},target:{id:target.entityId,level:target.level},mechanic}};
 }
-function applyDamage(r:SkillEffectRuntime,target:CombatEntity,damage:number,env:SkillEffectEnvironment,resolved?:(killed:boolean)=>void):void {
+function applyDamage(r:SkillEffectRuntime,target:CombatEntity,damage:number,env:SkillEffectEnvironment,resolved?:(hp:ReturnType<typeof applyEntityDamage>)=>readonly Extract<EntityCombatEvent,{type:'healing-applied'|'mana-gained'}>[]):void {
  if(!r.active)return;
  const hp=applyEntityDamage(target.currentHp,damage,env.defenseStats(target).maxHp);target.currentHp=hp.after;
- resolved?.(hp.before>0&&hp.after===0);
+ const recovery=resolved?.(hp);
  if(hp.appliedDamage>0)env.emit({type:'damage-applied',entityId:target.entityId,atMs:r.now,...hp});
  if(hp.defeated){r.dots.groups=r.dots.groups.filter(g=>g.targetId!==target.entityId);if(r.effects.active)effectEvents(r.effects.targetDefeated(target.entityId,{combat:env.combat,now:r.now}),env);env.emit({type:'entity-defeated',entityId:target.entityId,atMs:r.now});}
+ for(const event of recovery??[])env.emit(event);
+}
+/** Only canonical direct delivery applications enter here; DoT/consume never do. */
+function lifesteal(r:SkillEffectRuntime,d:Delivery,target:CombatEntity,appliedDamage:number,env:SkillEffectEnvironment):Extract<EntityCombatEvent,{type:'healing-applied'}>|undefined {
+ const rate=d.effect.lifesteal?.rate;if(!rate||appliedDamage<=0)return;
+ const key=d.activation.rootExecution??d.activation.snapshot.rootOffense;
+ const pinned=key&&skillHealingEntities(key),source=env.combat.findEntity(d.activation.casterId);
+ if(!pinned||!source||source!==pinned.source||!Number.isFinite(source.currentHp)||source.currentHp<=0)return;
+ if(!validateCombatHit({casterId:d.activation.casterId,targetId:target.entityId,allowedRelations:['enemy'],requiresLivingTarget:false},env.combat).allowed)return;
+ let hp:ReturnType<typeof applyEntityHealing>;
+ try{hp=applyEntityHealing(source.currentHp,appliedDamage*rate,env.defenseStats(source).maxHp);}catch{return;}
+ source.currentHp=hp.after;
+ if(hp.appliedHealing>0)return {type:'healing-applied',entityId:source.entityId,atMs:r.now,...hp};
+}
+/** Uses the same admitted source identity as Lifesteal; no contact/event ledger. */
+function manaOnHit(r:SkillEffectRuntime,d:Delivery,target:CombatEntity,env:SkillEffectEnvironment):Extract<EntityCombatEvent,{type:'mana-gained'}>|undefined {
+ const amount=d.effect.manaOnHit?.amount;if(!amount||!env.resourceStats)return;
+ const key=d.activation.rootExecution??d.activation.snapshot.rootOffense;
+ const pinned=key&&skillHealingEntities(key),source=env.combat.findEntity(d.activation.casterId);
+ if(!pinned||!source||source!==pinned.source||!Number.isFinite(source.currentHp)||source.currentHp<=0)return;
+ if(!validateCombatHit({casterId:d.activation.casterId,targetId:target.entityId,allowedRelations:['enemy'],requiresLivingTarget:false},env.combat).allowed)return;
+ let mp:ReturnType<typeof applyEntityManaGain>;
+ try{mp=applyEntityManaGain(source.currentMp,amount,env.resourceStats(source).maxMana);}catch{return;}
+ source.currentMp=mp.after;
+ if(mp.appliedMana>0)return {type:'mana-gained',entityId:source.entityId,atMs:r.now,...mp};
 }
 function hit(r:SkillEffectRuntime,d:Delivery,targetId:string,offense:DamageSnapshot,env:SkillEffectEnvironment,mechanic:NonNullable<DamageContext['defender']>['mechanic']):void {
  if(!r.active)return;
@@ -123,7 +151,13 @@ function hit(r:SkillEffectRuntime,d:Delivery,targetId:string,offense:DamageSnaps
  const target=env.combat.findEntity(targetId)!;
  const breakdown=calculateDamage({...offense,context:damageContext(d,target,env,mechanic),roll:env.criticalRoll,dodgeRoll:env.dodgeRoll});
  const origin=observesSkillConditionalHit(r,d)?env.position(targetId):undefined;
- applyDamage(r,target,breakdown.finalDamage,env,killed=>{if(breakdown.defense.hit.hit&&origin)captureSkillHit(r,d,d.id,target,origin,killed);});
+ applyDamage(r,target,breakdown.finalDamage,env,hp=>{
+  // Commit damage and opted-in HP/MP recovery before event/trigger observers.
+  const healing=breakdown.defense.hit.hit?lifesteal(r,d,target,hp.appliedDamage,env):undefined;
+  const mana=breakdown.defense.hit.hit?manaOnHit(r,d,target,env):undefined;
+  if(breakdown.defense.hit.hit&&origin)captureSkillHit(r,d,d.id,target,origin,hp.before>0&&hp.after===0);
+  return [...(healing?[healing]:[]),...(mana?[mana]:[])];
+ });
  env.emit({type:'effect-hit',atMs:r.now,instanceId:d.id,targetId,mechanic,breakdown});
  if(!r.active||!breakdown.defense.hit.hit||target.currentHp<=0)return;
  for(const dot of d.effect.onHit??[]){
@@ -169,9 +203,52 @@ export function dispatchSkillEffects(r:SkillEffectRuntime,event:SkillActivatedEv
  dispatchGameplayEffects(r,{...event,rootExecution:event.snapshot},env,event.actionInstanceId);
  return true;
 }
+function resourceRecipient(r:SkillEffectRuntime,event:GameplayActivation,effect:Extract<SkillGameplayEffect,{type:'heal'|'restore_mana'}>,env:SkillEffectEnvironment,id:string):CombatEntity|undefined {
+ const targetId=effect.target==='self'?event.casterId:event.target.mode==='self'?event.casterId:event.target.mode==='entity'?event.target.targetId:undefined;
+ const reject=(reason:string)=>env.emit({type:'effect-rejected',atMs:r.now,instanceId:id,targetId:targetId??event.casterId,reason});
+ if(!targetId){reject('invalid_target_mode');return;}
+ const pinned=event.rootExecution?skillHealingEntities(event.rootExecution):event.healingEntities;
+ const source=env.combat.findEntity(event.casterId),target=env.combat.findEntity(targetId);
+ if(!pinned||!source||source!==pinned.source){reject('entity_not_found');return;}
+ if(!target||target!==(effect.target==='self'?pinned.source:pinned.target)){reject(effect.type==='heal'?'invalid_healing_target':'invalid_mana_target');return;}
+ const valid=validateCombatHit({casterId:event.casterId,targetId,allowedRelations:effect.allowedTargetRelations??['self','ally'],requiresLivingTarget:true},env.combat);
+ if(!valid.allowed){reject(valid.reason);return;}
+ if(effect.target==='selected'&&event.target.mode==='entity'){
+  const origin=event.child?event.snapshot.casterPosition:env.position(event.casterId),position=env.position(targetId);
+  if(!origin||!position||![origin.x,origin.y,position.x,position.y].every(Number.isFinite)||!inRange(env.grid,origin,position,event.snapshot.definition.castRange)){reject('out_of_range');return;}
+ }
+ return target;
+}
+/** The original Root identity is also required for percent HP and restore-only Children. */
+function resourceSource(event:GameplayActivation,env:SkillEffectEnvironment):boolean {
+ const key=event.rootExecution??event.snapshot.rootOffense,pinned=key&&skillHealingEntities(key),source=env.combat.findEntity(event.casterId);
+ return !!pinned&&!!source&&source===pinned.source&&Number.isFinite(source.currentHp)&&source.currentHp>0;
+}
+function heal(r:SkillEffectRuntime,event:GameplayActivation,effect:Extract<SkillGameplayEffect,{type:'heal'}>,env:SkillEffectEnvironment,id:string):void {
+ const target=resourceRecipient(r,event,effect,env,id);if(!target)return;
+ const reject=(reason:string)=>env.emit({type:'effect-rejected',atMs:r.now,instanceId:id,targetId:target.entityId,reason});
+ if(typeof effect.amount!=='number'&&!resourceSource(event,env)){reject('invalid_healing_target');return;}
+ let hp:ReturnType<typeof applyEntityHealing>;
+ try{const maxHp=env.defenseStats(target).maxHp;hp=applyEntityHealing(target.currentHp,typeof effect.amount==='number'?effect.amount:maxHp*effect.amount.percentOfMax,maxHp);}catch{reject('invalid_healing_hp');return;}
+ if(!r.active)return;
+ target.currentHp=hp.after;
+ if(hp.appliedHealing>0)env.emit({type:'healing-applied',entityId:target.entityId,atMs:r.now,...hp});
+}
+function restoreMana(r:SkillEffectRuntime,event:GameplayActivation,effect:Extract<SkillGameplayEffect,{type:'restore_mana'}>,env:SkillEffectEnvironment,id:string):void {
+ const target=resourceRecipient(r,event,effect,env,id);if(!target)return;
+ const reject=(reason:string)=>env.emit({type:'effect-rejected',atMs:r.now,instanceId:id,targetId:target.entityId,reason});
+ if(!resourceSource(event,env)||!Number.isFinite(target.currentHp)||target.currentHp<=0){reject('invalid_mana_recipient');return;}
+ let mp:ReturnType<typeof applyEntityManaGain>;
+ try{if(!env.resourceStats)throw Error('Missing resourceStats');const maxMana=env.resourceStats(target).maxMana;mp=applyEntityManaGain(target.currentMp,typeof effect.amount==='number'?effect.amount:maxMana*effect.amount.percentOfMax,maxMana);}catch{reject('invalid_mana_mp');return;}
+ if(!r.active)return;
+ target.currentMp=mp.after;
+ if(mp.appliedMana>0)env.emit({type:'mana-gained',entityId:target.entityId,atMs:r.now,...mp});
+}
 function dispatchGameplayEffects(r:SkillEffectRuntime,event:GameplayActivation,env:SkillEffectEnvironment,instanceId:string):void {
  for(const [index,effect]of (event.snapshot.definition.effects??[]).entries()){
   if(!r.active)break;
+  if(effect.type==='restore_mana'){restoreMana(r,event,effect,env,`${instanceId}/effect${index}`);continue;}
+  if(effect.type==='heal'){heal(r,event,effect,env,`${instanceId}/effect${index}`);continue;}
   if(effect.type==='consume_stacks'){consumeStackEffect(r,event,effect,env,`${instanceId}/effect${index}`);continue;}
   if(effect.type==='modifier_effect'){
    const targetId=effect.target==='self'?event.casterId:event.target.mode==='self'?event.casterId:event.target.mode==='entity'?event.target.targetId:undefined;
@@ -273,7 +350,7 @@ function childDispatcher(r:SkillEffectRuntime,env:SkillEffectEnvironment):Trigge
    const activated=activateSkillInstance(r,child,r.now,env.combat);if(!activated.success||!activated.changed)return false;
    const aim=target.mode==='entity'?env.position(target.targetId):receipt.origin;
    // Each child starts at its authenticated contact/expiry anchor, not root/caster position.
-   dispatchGameplayEffects(r,{actionInstanceId:child.actionInstanceId,skillId:child.skillId,casterId:child.casterId,target,child,
+   dispatchGameplayEffects(r,{actionInstanceId:child.actionInstanceId,skillId:child.skillId,casterId:child.casterId,target,child,...(child.definition!.effects?.some(e=>e.type==='heal'||e.type==='restore_mana')?{healingEntities:{source,target:target.mode==='entity'?env.combat.findEntity(target.targetId):target.mode==='self'?source:undefined}}:{}),
     snapshot:{definition:child.definition as SkillEngineDefinition,configVersion:child.configVersion,rootOffense:child.rootOffense!,casterPosition:receipt.origin,...(aim?{aimPosition:aim}:{}),facing:{x:1,y:0}}},env,child.instanceId);
    return true;
   }

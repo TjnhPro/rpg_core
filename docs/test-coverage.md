@@ -1,5 +1,13 @@
 # Core test coverage matrix
 
+v1.2.5 recovery acceptance: `tests/integration/recovery-acceptance.test.ts` adds
+35 actual-Core RC01-RC08 cases for Life on Hit/Kill and Mana on Kill composition,
+exact fatal HP75/MP58/event order, live caps/modifiers, identity, replay/disposal,
+depth/intents/live-child/queue/work budgets and coarse/fine equality.
+`examples/recovery-acceptance.ts` runs in the existing installed strict TS/ESM
+consumer. RC09 retains full regression and preservation. See the
+[closure matrix](RPG_CORE_V1.2.5_RECOVERY_ACCEPTANCE_CLOSURE.md).
+
 Phase 2 baseline: `8176acb` (144 tests); completed Phase 2: 162 tests in 18 files.
 This is a contract/evidence matrix, not a line-coverage or balance certification.
 All existing cases survive the domain organization; 18 focused cases were added.
@@ -91,3 +99,49 @@ v1.1.8 final acceptance: [closure matrix and evidence](RPG_CORE_V1.1.8_ACCEPTANC
 reuses checkpoint suites and the installed consumer. One added upgrade-suite case
 connects upgraded Apply, threshold, exact-N consume and Child landed/Dodge/empty
 outcomes, including no refund, replay and disposal; no production source changes.
+
+
+v1.2.0 Healing: `tests/combat/healing.test.ts` covers canonical math/validation;
+`tests/integration/healing.test.ts` covers actual Root/Child HP/events, live caps,
+identity/relation/range rejection, replay, ordered callbacks and zero heal RNG.
+`examples/healing.ts` runs in the existing strict external installed consumer.
+See [Healing contract and preservation amendment](RPG_CORE_V1.2.0_HEALING_FOUNDATION.md).
+
+
+v1.2.1 Lifesteal: `tests/integration/lifesteal.test.ts` covers LS01-LS06 actual
+HP damage/recovery, six deliveries, original-source identity, fatal OnKill,
+Root/Child S0/costs, replay/budgets/disposal and coarse/fine determinism.
+`examples/lifesteal.ts` runs LS07 in the existing installed strict TS/ESM consumer.
+See [contract and preservation evidence](RPG_CORE_V1.2.1_LIFESTEAL.md).
+
+### v1.2.2 Mana on Hit
+
+`tests/combat/mana-gain.test.ts` covers MH01 normal/capped/full/zero/fractional,
+large finite inputs and rejected invalid bounds. `tests/integration/mana-on-hit.test.ts`
+covers MH02-MH07 real landed/zero/dodge/fatal/missed/DoT contacts, live modified
+Max Mana, paid cost, six damage deliveries, deduplication, immutable closed schema,
+Lifesteal event/HP/MP ordering and unchanged RNG, Root/Child S0 and amounts,
+identity/liveness, activation/receipt replay, session disposal, budgets and
+coarse/fine timelines. `examples/mana-on-hit.ts` runs MH08 in the existing strict
+TS/ESM installed consumer, including real damage + HP + MP and public exports.
+See [checkpoint evidence](RPG_CORE_V1.2.2_MANA_ON_HIT.md).
+
+### v1.2.3 Explicit HP/MP Restore
+
+`tests/integration/explicit-restore.test.ts` covers ER02-ER06 actual HP/MP/cost/
+events, recipient effective caps, restore-only Root/Child identity pins, target
+validation, rejection before commitment, ordered effects, replay, disposal,
+budgets, combined Lifesteal/Mana on Hit and coarse/fine timelines. ER01 reuses
+`tests/combat/healing.test.ts` and `tests/integration/healing.test.ts`.
+`examples/explicit-restore.ts` covers ER07 through the existing installed consumer.
+See [contract and evidence](RPG_CORE_V1.2.3_EXPLICIT_RESTORE.md).
+
+### v1.2.4 Percent Recovery
+
+`tests/integration/percent-recovery.test.ts` covers PR01-PR07 closed percent schema,
+real HP/MP/caps/events, invalid stats, zero gain, mixed flat/percent ordering,
+Child-only percent HP identity, live recipient modifiers, source/target rejection,
+receipt replay/disposal and coarse/fine shared modifier-expiry boundaries.
+Previous flat tests remain unchanged. `examples/percent-recovery.ts` and the existing
+installed consumer cover PR08 normal/capped recovery and public TypeScript narrowing.
+See [contract/evidence](RPG_CORE_V1.2.4_PERCENT_RECOVERY.md).

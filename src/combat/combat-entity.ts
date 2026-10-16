@@ -8,6 +8,19 @@ export function applyEntityDamage(currentHp:number,finalDamage:number,effectiveM
  const after=Math.max(0,Math.min(effectiveMaxHp,currentHp-finalDamage));
  return {before:currentHp,after,appliedDamage:Math.min(currentHp,finalDamage),defeated:currentHp>0&&after===0};
 }
+/** Pure HP recovery; resource normalization remains the Stats owner's concern. */
+export function applyEntityHealing(currentHp:number,healAmount:number,effectiveMaxHp:number){
+ if(![currentHp,healAmount,effectiveMaxHp].every(n=>Number.isFinite(n)&&n>=0)||currentHp>effectiveMaxHp)throw Error('Validated nonnegative HP/healing and HP bounds required');
+ // Clamp the increment first so finite inputs cannot overflow during addition.
+ const after=currentHp===0?0:Math.min(effectiveMaxHp,currentHp+Math.min(healAmount,effectiveMaxHp-currentHp));
+ return {before:currentHp,after,appliedHealing:after-currentHp};
+}
+/** Pure explicit MP gain; normalization/regeneration remain owned by Stats. */
+export function applyEntityManaGain(currentMp:number,gainAmount:number,effectiveMaxMana:number){
+ if(![currentMp,gainAmount,effectiveMaxMana].every(n=>Number.isFinite(n)&&n>=0)||currentMp>effectiveMaxMana)throw Error('Validated nonnegative MP/gain and MP bounds required');
+ const after=Math.min(effectiveMaxMana,currentMp+Math.min(gainAmount,effectiveMaxMana-currentMp));
+ return {before:currentMp,after,appliedMana:after-currentMp};
+}
 const fields=['entityId','entityType','level','factionId','targetTags','baseStats','currentHp','currentMp'];
 const statIds=new Set<string>([...ATTRIBUTE_IDS,...STAT_IDS]);
 export function validateCombatEntity(input:unknown):string[]{

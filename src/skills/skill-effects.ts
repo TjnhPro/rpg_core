@@ -6,6 +6,10 @@ import {validateEffectDefinition,type EffectDefinition} from '../effects/effect-
 
 /** Inline resolved component: config references are checked, never fetched at hit. */
 export interface SkillDamageComponent {id:string;definition:DamageDefinition;damageType:'Physical'|'Magic';tags:string[];rank:number}
+/** Opt-in fraction of actual HP damage recovered through Combat Healing. */
+export interface SkillLifesteal {readonly rate:number}
+/** Fixed explicit MP recovery for an eligible canonical landed contact. */
+export interface SkillManaOnHit {readonly amount:number}
 export interface SkillOnHitDot {config:DotConfig;damage:SkillDamageComponent}
 interface EffectBase {allowedTargetRelations?:readonly FactionRelation[];onHit?:SkillOnHitDot[]}
 export interface SkillStackConsumption {
@@ -13,14 +17,16 @@ export interface SkillStackConsumption {
  outcome:{type:'instant_aoe';config:InstantAOE;damage:SkillDamageComponent};
 }
 export type SkillGameplayEffect=EffectBase & (
+ | {type:'restore_mana';target:'self'|'selected';amount:number|{readonly percentOfMax:number}}
+ | {type:'heal';target:'self'|'selected';amount:number|{readonly percentOfMax:number}}
  | SkillStackConsumption
  | {type:'modifier_effect';definition:EffectDefinition;target:'self'|'selected'}
- | {type:'direct_hit';damage:SkillDamageComponent}
- | {type:'melee_hitbox';config:MeleeHitbox;damage:SkillDamageComponent}
- | {type:'projectile';config:ProjectileConfig;damage:SkillDamageComponent}
- | {type:'instant_aoe';config:InstantAOE;damage:SkillDamageComponent}
- | {type:'timed_aoe_sequence';config:TimedAOESequence;damage:SkillDamageComponent}
- | {type:'timed_object';config:TimedObjectConfig;projectile:{config:ProjectileConfig;damage:SkillDamageComponent}}
+ | {type:'direct_hit';lifesteal?:SkillLifesteal;manaOnHit?:SkillManaOnHit;damage:SkillDamageComponent}
+ | {type:'melee_hitbox';lifesteal?:SkillLifesteal;manaOnHit?:SkillManaOnHit;config:MeleeHitbox;damage:SkillDamageComponent}
+ | {type:'projectile';lifesteal?:SkillLifesteal;manaOnHit?:SkillManaOnHit;config:ProjectileConfig;damage:SkillDamageComponent}
+ | {type:'instant_aoe';lifesteal?:SkillLifesteal;manaOnHit?:SkillManaOnHit;config:InstantAOE;damage:SkillDamageComponent}
+ | {type:'timed_aoe_sequence';lifesteal?:SkillLifesteal;manaOnHit?:SkillManaOnHit;config:TimedAOESequence;damage:SkillDamageComponent}
+ | {type:'timed_object';lifesteal?:SkillLifesteal;manaOnHit?:SkillManaOnHit;config:TimedObjectConfig;projectile:{config:ProjectileConfig;damage:SkillDamageComponent}}
 );
 const object=(v:unknown):v is Record<string,unknown>=>!!v&&typeof v==='object'&&!Array.isArray(v);
 const exact=(v:Record<string,unknown>,keys:string[])=>Object.keys(v).sort().join()===keys.sort().join();
@@ -38,7 +44,14 @@ export function validateSkillEffects(value:unknown):string[]{
  if(!Array.isArray(value)||value.length>32)return ['effects: ordered list, max32 required'];
  const errors:string[]=[];
  for(const e of value){
-  if(!object(e)||!['consume_stacks','direct_hit','melee_hitbox','projectile','instant_aoe','timed_aoe_sequence','timed_object','modifier_effect'].includes(String(e.type))){errors.push('effects: unsupported type');continue;}
+  if(!object(e)||!['restore_mana','heal','consume_stacks','direct_hit','melee_hitbox','projectile','instant_aoe','timed_aoe_sequence','timed_object','modifier_effect'].includes(String(e.type))){errors.push('effects: unsupported type');continue;}
+  if(e.type==='heal'||e.type==='restore_mana'){
+   if(!exact(e,['type','target','amount',...(Object.hasOwn(e,'allowedTargetRelations')?['allowedTargetRelations']:[])]))errors.push(`effects: unknown/missing ${e.type==='heal'?'heal':'restore_mana'} fields`);
+   if(e.target!=='self'&&e.target!=='selected')errors.push(`effects: invalid ${e.type==='heal'?'heal':'restore_mana'} recipient`);
+   if(typeof e.amount==='number'?(!Number.isFinite(e.amount)||e.amount<=0||e.amount>1000000):(!object(e.amount)||!exact(e.amount,['percentOfMax'])||typeof e.amount.percentOfMax!=='number'||!Number.isFinite(e.amount.percentOfMax)||e.amount.percentOfMax<=0||e.amount.percentOfMax>1))errors.push(`effects: invalid ${e.type==='heal'?'heal':'restore_mana'} amount`);
+   if(Object.hasOwn(e,'allowedTargetRelations')&&(!validAllowedRelations(e.allowedTargetRelations)||(e.allowedTargetRelations as unknown[]).some(r=>r!=='self'&&r!=='ally')))errors.push(`effects: invalid ${e.type==='heal'?'healing':'restore_mana'} relations`);
+   continue;
+  }
   if(e.type==='consume_stacks'){
    if(!exact(e,['type','effectId','requiredStacks','flatPerStack','outcome'])||typeof e.effectId!=='string'||!e.effectId.trim()
     ||!Number.isSafeInteger(e.requiredStacks)||Number(e.requiredStacks)<=0||typeof e.flatPerStack!=='number'||!Number.isFinite(e.flatPerStack)||e.flatPerStack<0
@@ -54,8 +67,10 @@ export function validateSkillEffects(value:unknown):string[]{
    const result=validateEffectDefinition(e.definition);if(!result.success)errors.push('effects: '+result.reason,...(result.errors??[]));
    continue;
   }
-  const keys=['type',...(e.type==='timed_object'?['config','projectile']:['damage',...(e.type==='direct_hit'?[]:['config'])]),...(Object.hasOwn(e,'allowedTargetRelations')?['allowedTargetRelations']:[]),...(Object.hasOwn(e,'onHit')?['onHit']:[])];
+  const keys=['type',...(e.type==='timed_object'?['config','projectile']:['damage',...(e.type==='direct_hit'?[]:['config'])]),...(Object.hasOwn(e,'allowedTargetRelations')?['allowedTargetRelations']:[]),...(Object.hasOwn(e,'onHit')?['onHit']:[]),...(Object.hasOwn(e,'lifesteal')?['lifesteal']:[]),...(Object.hasOwn(e,'manaOnHit')?['manaOnHit']:[])];
   if(!exact(e,keys))errors.push('effects: unknown/missing fields');
+  if(Object.hasOwn(e,'manaOnHit')&&(!object(e.manaOnHit)||!exact(e.manaOnHit,['amount'])||typeof e.manaOnHit.amount!=='number'||!Number.isFinite(e.manaOnHit.amount)||e.manaOnHit.amount<=0||e.manaOnHit.amount>1000000))errors.push('effects: invalid manaOnHit');
+  if(Object.hasOwn(e,'lifesteal')&&(!object(e.lifesteal)||!exact(e.lifesteal,['rate'])||typeof e.lifesteal.rate!=='number'||!Number.isFinite(e.lifesteal.rate)||e.lifesteal.rate<=0||e.lifesteal.rate>1))errors.push('effects: invalid lifesteal');
   if(Object.hasOwn(e,'allowedTargetRelations')&&!validAllowedRelations(e.allowedTargetRelations))errors.push('effects: invalid target relations');
   if(e.type==='timed_object'){
    errors.push(...validateSkillMechanics({timed_object:e.config}));

@@ -1,7 +1,30 @@
 # RPG Core
 
-v1.1.7 adds opt-in immutable Skill Configuration upgrades before cast admission.
-See [Skill Modifier & Upgrade contract and evidence](docs/RPG_CORE_V1.1.7_SKILL_UPGRADES.md).
+v1.2.5 verifies Life on Hit/Kill and Mana on Kill as canonical trigger -> self Child
+recovery compositions, with no new runtime API. See the
+[phase acceptance report](docs/RPG_CORE_V1.2.5_RECOVERY_ACCEPTANCE_CLOSURE.md) and
+[installed example](examples/recovery-acceptance.ts). Phase closure awaits Developer acceptance.
+
+v1.2.4 extends `heal`/`restore_mana` amounts with `{percentOfMax: 0.2}` based on
+live recipient maxima. Numeric amounts keep their behavior; numeric readers need
+TypeScript narrowing. See [contract](docs/RPG_CORE_V1.2.4_PERCENT_RECOVERY.md) and
+[installed-package example](examples/percent-recovery.ts).
+
+v1.2.3 adds explicit flat MP restoration with `restore_mana`, alongside existing
+HP `heal`. See [contract and compatibility](docs/RPG_CORE_V1.2.3_EXPLICIT_RESTORE.md)
+and [installed-package example](examples/explicit-restore.ts).
+
+v1.2.2 adds opt-in fixed Mana on Hit, including zero-damage landed enemy hits,
+through canonical Combat MP gain. See the [contract](docs/RPG_CORE_V1.2.2_MANA_ON_HIT.md)
+and [installed-package example](examples/mana-on-hit.ts).
+
+v1.2.1 adds opt-in Lifesteal from actual applied enemy damage through canonical
+Healing; see [contract and evidence](docs/RPG_CORE_V1.2.1_LIFESTEAL.md) and the
+[installed-package example](examples/lifesteal.ts).
+
+v1.2.0 adds explicit flat HP Healing through canonical Combat and Root/Child Skills.
+See [Healing Foundation contract and evidence](docs/RPG_CORE_V1.2.0_HEALING_FOUNDATION.md)
+and the [installed-package example](examples/healing.ts).
 
 Reusable, headless TypeScript RPG stats, combat, skill and effect execution.
 One canonical implementation, with ESM JavaScript and declarations for package
@@ -140,6 +163,23 @@ execution behavior are preserved. Fallback configuration seeds provide numeric
 compatibility, not a mandatory balance model. Defense rating coefficients must
 be supplied to activate rating formulas. Elemental stats remain disabled under
 the existing version >=2 contract; reserved IDs do not imply mechanics support.
+
+## Explicit Healing
+
+`applyEntityHealing(currentHp, healAmount, effectiveMaxHp)` from `@rpg/core/combat`
+(or the root entrypoint) returns `{before, after, appliedHealing}` without mutation.
+Inputs must be finite/nonnegative and HP must not exceed Max HP. Zero HP stays zero.
+Skill effects opt in with `{type:'heal', target:'self'|'selected', amount:100}`;
+amount must be finite and in `(0, 1000000]`. Only self/ally targets are eligible.
+Optional effect-level relations can restrict that set. Self heals the caster even
+when the Root selects an enemy; selected requires an entity/self target and existing
+range/LOS validation. Live Max HP comes from the caller's existing stat resolver.
+The dispatcher commits HP before emitting `healing-applied`, only for actual recovery.
+Healing uses no Damage/Crit/Dodge/RNG, causes no OnHit/OnKill, and adds no cast cost.
+
+The additive `heal` effect and `healing-applied` event discriminants require new
+cases in consumers that exhaustively switch over those public unions. Lifesteal,
+Mana-on-Hit, HoT, resurrection, percent/scaled/area healing remain outside v1.2.0.
 
 ## Compatibility and provenance
 

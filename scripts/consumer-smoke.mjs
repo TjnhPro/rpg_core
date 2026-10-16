@@ -45,6 +45,12 @@ try {
   writeFileSync(path.join(consumer, 'stack-consumption.ts'), readFileSync(path.join(root, 'examples/stack-consumption.ts'), 'utf8'));
   writeFileSync(path.join(consumer, 'conditional-triggers.ts'), readFileSync(path.join(root, 'examples/conditional-triggers.ts'), 'utf8'));
   writeFileSync(path.join(consumer, 'skill-upgrades.ts'), readFileSync(path.join(root, 'examples/skill-upgrades.ts'), 'utf8'));
+  writeFileSync(path.join(consumer, 'healing.ts'), readFileSync(path.join(root, 'examples/healing.ts'), 'utf8'));
+  writeFileSync(path.join(consumer, 'lifesteal.ts'), readFileSync(path.join(root, 'examples/lifesteal.ts'), 'utf8'));
+  writeFileSync(path.join(consumer, 'mana-on-hit.ts'), readFileSync(path.join(root, 'examples/mana-on-hit.ts'), 'utf8'));
+  writeFileSync(path.join(consumer, 'explicit-restore.ts'), readFileSync(path.join(root, 'examples/explicit-restore.ts'), 'utf8'));
+  writeFileSync(path.join(consumer, 'percent-recovery.ts'), readFileSync(path.join(root, 'examples/percent-recovery.ts'), 'utf8'));
+  writeFileSync(path.join(consumer, 'recovery-acceptance.ts'), readFileSync(path.join(root, 'examples/recovery-acceptance.ts'), 'utf8'));
   // Repository-relative compatibility paths are deliberately not package exports.
   // Check their declarations and runtime identities in the installed archive too.
   const legacyImports = Object.keys(moduleMap).map((file, i) =>
@@ -54,6 +60,15 @@ try {
 import type {CombatEntity, PlayerStatsConfig, DamageContext, MapPoint} from '@rpg/core/contracts';
 import {resolveCharacterStats} from '@rpg/core/stats';
 import {executeSkill} from '@rpg/core/skills';
+import type {SkillGameplayEffect} from '@rpg/core/skills';
+export function flatAmount(effect:Extract<SkillGameplayEffect,{type:'heal'|'restore_mana'}>):number|undefined {
+ // @ts-expect-error amount is intentionally widened and requires narrowing
+ const assumedNumber:number=effect.amount;
+ void assumedNumber;
+ return typeof effect.amount==='number'?effect.amount:undefined;
+}
+export const numericRecovery:SkillGameplayEffect={type:'heal',target:'self',amount:25};
+export const percentRecovery:SkillGameplayEffect={type:'restore_mana',target:'self',amount:{percentOfMax:.3}};
 import {EffectLifecycle} from '@rpg/core/effects';
 import {calculateDamage} from '@rpg/core/damage';
 import {validateCombatAction} from '@rpg/core/combat';
@@ -83,6 +98,36 @@ import {nestedCompositionExample} from './build/nested-composition.js';
 import {stackConsumptionExample} from './build/stack-consumption.js';
 import {conditionalTriggersExample} from './build/conditional-triggers.js';
 import {skillUpgradesExample} from './build/skill-upgrades.js';
+import {healingExample} from './build/healing.js';
+import {lifestealExample} from './build/lifesteal.js';
+import {manaOnHitExample} from './build/mana-on-hit.js';
+import {explicitRestoreExample} from './build/explicit-restore.js';
+import {percentRecoveryExample} from './build/percent-recovery.js';
+import {recoveryAcceptanceExample} from './build/recovery-acceptance.js';
+const recovery=recoveryAcceptanceExample();
+assert.equal(recovery.hp,75);assert.equal(recovery.mp,58);assert.equal(recovery.targetHp,0);
+assert.deepEqual(recovery.afterCost,[50,45,10]);assert.deepEqual(recovery.afterHit,[50,48,0]);
+assert.deepEqual(recovery.triggers,['OnHit','OnKill']);assert.equal(recovery.sharedS0,true);
+assert.equal(recovery.captures,1);assert.equal(recovery.rolls,1);assert.equal(recovery.actionSerial,1);assert.equal(recovery.cooldown,1000);assert.equal(recovery.replay,false);
+assert.deepEqual(recovery.order,['damage-applied','entity-defeated','mana-gained','effect-hit','healing-applied','healing-applied','mana-gained']);
+assert.deepEqual(recovery.events,[{type:'damage-applied',entityId:'target',atMs:0,before:10,after:0,appliedDamage:10,defeated:true},{type:'entity-defeated',entityId:'target',atMs:0},{type:'mana-gained',entityId:'source',atMs:0,before:45,after:48,appliedMana:3},{type:'healing-applied',entityId:'source',atMs:0,before:50,after:55,appliedHealing:5},{type:'healing-applied',entityId:'source',atMs:0,before:55,after:75,appliedHealing:20},{type:'mana-gained',entityId:'source',atMs:0,before:48,after:58,appliedMana:10}]);
+console.log(JSON.stringify({status:'RECOVERY_ACCEPTANCE_VERIFIED',...recovery}));
+const percent=percentRecoveryExample(),cappedPercent=percentRecoveryExample(true);
+assert.deepEqual(percent,{hp:600,mp:240,events:[{type:'healing-applied',entityId:'source',atMs:0,before:400,after:600,appliedHealing:200},{type:'mana-gained',entityId:'source',atMs:0,before:90,after:240,appliedMana:150}],resources:[[600,90],[600,240]],recipients:['source'],captures:1,rolls:0,actionSerial:1,cooldown:1000,replay:false});
+assert.deepEqual(cappedPercent,{hp:1000,mp:500,events:[{type:'healing-applied',entityId:'source',atMs:0,before:950,after:1000,appliedHealing:50},{type:'mana-gained',entityId:'source',atMs:0,before:440,after:500,appliedMana:60}],resources:[[1000,440],[1000,500]],recipients:['source'],captures:1,rolls:0,actionSerial:1,cooldown:1000,replay:false});
+console.log(JSON.stringify({status:'PERCENT_RECOVERY_VERIFIED',percent,cappedPercent}));
+const restore=explicitRestoreExample();
+assert.deepEqual(restore,{hp:100,mp:55,events:[{type:'healing-applied',entityId:'source',atMs:0,before:80,after:100,appliedHealing:20},{type:'mana-gained',entityId:'source',atMs:0,before:35,after:55,appliedMana:20}],resources:[[100,35],[100,55]],recipients:['source'],captures:1,rolls:0,actionSerial:1,cooldown:1000,replay:false});
+console.log(JSON.stringify({status:'EXPLICIT_RESTORE_VERIFIED',...restore}));
+const manaOnHit=manaOnHitExample();
+assert.deepEqual(manaOnHit,{primitive:{before:95,after:100,appliedMana:5},sourceHp:55,targetHp:80,appliedDamage:20,healing:[{type:'healing-applied',entityId:'source',atMs:0,before:50,after:55,appliedHealing:5}],mana:[{type:'mana-gained',entityId:'source',atMs:0,before:55,after:65,appliedMana:10}],captures:1,mp:65,actionSerial:1,replay:false});
+console.log(JSON.stringify({status:'MANA_ON_HIT_VERIFIED',...manaOnHit}));
+const lifesteal=lifestealExample();
+assert.deepEqual(lifesteal,{sourceHp:55,targetHp:80,appliedDamage:20,healing:[{type:'healing-applied',entityId:'source',atMs:0,before:50,after:55,appliedHealing:5}],captures:1,mp:95,actionSerial:1,replay:false});
+console.log(JSON.stringify({status:'LIFESTEAL_VERIFIED',...lifesteal}));
+const healing=healingExample();
+assert.deepEqual(healing,{primitive:{before:90,after:100,appliedHealing:10},targetHp:100,sourceHp:100,events:[{type:'healing-applied',entityId:'ally',atMs:0,before:90,after:100,appliedHealing:10},{type:'healing-applied',entityId:'source',atMs:100,before:50,after:100,appliedHealing:50}],captures:1,rolls:0,mp:95,actionSerial:1,cooldown:1000,children:1,sharedS0:true,duplicate:false});
+console.log(JSON.stringify({status:'HEALING_VERIFIED',...healing}));
 const upgrades=skillUpgradesExample();
 assert.deepEqual(upgrades.old,{revision:'v1',projectiles:1,hp:980,captures:1,mp:95});
 assert.deepEqual(upgrades.upgraded,{revision:'v2',projectiles:3,hp:940,captures:1,mp:95});
@@ -120,7 +165,7 @@ for (const [legacy, canonical] of Object.entries(moduleMap)) {
 for (const internal of ['@rpg/core/skills/skill-execution.js', '@rpg/core/dist/index.js', '@rpg/core/shared/game/skill-execution.js']) {
   await assert.rejects(import(internal), {code: 'ERR_PACKAGE_PATH_NOT_EXPORTED'});
 }
-for (const helper of ['isPinnedSkillTriggerBundle', 'observesSkillConditionalHit', 'observesSkillStackApply', 'captureSkillHit', 'captureSkillStackApply', 'skillStackCount', 'skillEffectWork', 'consumeStackEffect', 'registerTriggeredSkillChildren', 'childInstanceDamage', 'assembleRootDamage', 'admitSkillProjectiles', 'recordSkillProjectile', 'pendingSkillTriggerPayload', 'childDispatcher', 'initializeSkillTriggerSession', 'captureSkillExpiry', 'captureSkillImpact', 'drainSkillTriggers', 'bindRootSkillTriggers', 'trustSkillInstanceDefinition', 'initializeSkillInstances', 'bindRootSkillInstance', 'advanceSkillInstances', 'disposeSkillInstances', 'prepareRootOffense', 'bindRootOffense', 'rootDamageSnapshot', 'actorOffense', 'freezeGameplayData', 'random', 'damageBonusReason', 'tickProjectileBodies', 'debugProjectile']) assert(!(helper in core));
+for (const helper of ['resourceSource', 'resourceRecipient', 'restoreMana', 'manaOnHit', 'lifesteal', 'skillHealingEntities', 'heal', 'isPinnedSkillTriggerBundle', 'observesSkillConditionalHit', 'observesSkillStackApply', 'captureSkillHit', 'captureSkillStackApply', 'skillStackCount', 'skillEffectWork', 'consumeStackEffect', 'registerTriggeredSkillChildren', 'childInstanceDamage', 'assembleRootDamage', 'admitSkillProjectiles', 'recordSkillProjectile', 'pendingSkillTriggerPayload', 'childDispatcher', 'initializeSkillTriggerSession', 'captureSkillExpiry', 'captureSkillImpact', 'drainSkillTriggers', 'bindRootSkillTriggers', 'trustSkillInstanceDefinition', 'initializeSkillInstances', 'bindRootSkillInstance', 'advanceSkillInstances', 'disposeSkillInstances', 'prepareRootOffense', 'bindRootOffense', 'rootDamageSnapshot', 'actorOffense', 'freezeGameplayData', 'random', 'damageBonusReason', 'tickProjectileBodies', 'debugProjectile']) assert(!(helper in core));
 console.log(JSON.stringify({status: 'PASS', targetHp: a.entities[1].currentHp, deterministic: true, types: true, publicDomains: domains.length, legacyPaths: Object.keys(moduleMap).length, deepImportsBlocked: true}));
 `);
   const result = execFileSync(process.execPath, ['run.mjs'], {cwd: consumer, encoding: 'utf8'});
