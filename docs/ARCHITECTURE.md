@@ -1,5 +1,11 @@
 # RPG Core architecture
 
+v1.2.5 adds acceptance evidence for canonical OnHit/OnKill -> self Child recovery,
+including lethal target handling, authenticated sources and existing budgets.
+It changes no production source, contracts or preservation baseline. See the
+[phase closure review](RPG_CORE_V1.2.5_RECOVERY_ACCEPTANCE_CLOSURE.md);
+Developer acceptance of phase closure remains pending.
+
 This is the current architecture reference. [README](../README.md) covers package
 installation and commands; [architecture-audit.md](architecture-audit.md) records
 the historical Phase 1 refactor. [The coverage matrix](test-coverage.md) and

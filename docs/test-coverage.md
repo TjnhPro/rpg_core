@@ -1,5 +1,13 @@
 # Core test coverage matrix
 
+v1.2.5 recovery acceptance: `tests/integration/recovery-acceptance.test.ts` adds
+35 actual-Core RC01-RC08 cases for Life on Hit/Kill and Mana on Kill composition,
+exact fatal HP75/MP58/event order, live caps/modifiers, identity, replay/disposal,
+depth/intents/live-child/queue/work budgets and coarse/fine equality.
+`examples/recovery-acceptance.ts` runs in the existing installed strict TS/ESM
+consumer. RC09 retains full regression and preservation. See the
+[closure matrix](RPG_CORE_V1.2.5_RECOVERY_ACCEPTANCE_CLOSURE.md).
+
 Phase 2 baseline: `8176acb` (144 tests); completed Phase 2: 162 tests in 18 files.
 This is a contract/evidence matrix, not a line-coverage or balance certification.
 All existing cases survive the domain organization; 18 focused cases were added.

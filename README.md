@@ -1,5 +1,10 @@
 # RPG Core
 
+v1.2.5 verifies Life on Hit/Kill and Mana on Kill as canonical trigger -> self Child
+recovery compositions, with no new runtime API. See the
+[phase acceptance report](docs/RPG_CORE_V1.2.5_RECOVERY_ACCEPTANCE_CLOSURE.md) and
+[installed example](examples/recovery-acceptance.ts). Phase closure awaits Developer acceptance.
+
 v1.2.4 extends `heal`/`restore_mana` amounts with `{percentOfMax: 0.2}` based on
 live recipient maxima. Numeric amounts keep their behavior; numeric readers need
 TypeScript narrowing. See [contract](docs/RPG_CORE_V1.2.4_PERCENT_RECOVERY.md) and

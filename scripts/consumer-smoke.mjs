@@ -50,6 +50,7 @@ try {
   writeFileSync(path.join(consumer, 'mana-on-hit.ts'), readFileSync(path.join(root, 'examples/mana-on-hit.ts'), 'utf8'));
   writeFileSync(path.join(consumer, 'explicit-restore.ts'), readFileSync(path.join(root, 'examples/explicit-restore.ts'), 'utf8'));
   writeFileSync(path.join(consumer, 'percent-recovery.ts'), readFileSync(path.join(root, 'examples/percent-recovery.ts'), 'utf8'));
+  writeFileSync(path.join(consumer, 'recovery-acceptance.ts'), readFileSync(path.join(root, 'examples/recovery-acceptance.ts'), 'utf8'));
   // Repository-relative compatibility paths are deliberately not package exports.
   // Check their declarations and runtime identities in the installed archive too.
   const legacyImports = Object.keys(moduleMap).map((file, i) =>
@@ -102,6 +103,15 @@ import {lifestealExample} from './build/lifesteal.js';
 import {manaOnHitExample} from './build/mana-on-hit.js';
 import {explicitRestoreExample} from './build/explicit-restore.js';
 import {percentRecoveryExample} from './build/percent-recovery.js';
+import {recoveryAcceptanceExample} from './build/recovery-acceptance.js';
+const recovery=recoveryAcceptanceExample();
+assert.equal(recovery.hp,75);assert.equal(recovery.mp,58);assert.equal(recovery.targetHp,0);
+assert.deepEqual(recovery.afterCost,[50,45,10]);assert.deepEqual(recovery.afterHit,[50,48,0]);
+assert.deepEqual(recovery.triggers,['OnHit','OnKill']);assert.equal(recovery.sharedS0,true);
+assert.equal(recovery.captures,1);assert.equal(recovery.rolls,1);assert.equal(recovery.actionSerial,1);assert.equal(recovery.cooldown,1000);assert.equal(recovery.replay,false);
+assert.deepEqual(recovery.order,['damage-applied','entity-defeated','mana-gained','effect-hit','healing-applied','healing-applied','mana-gained']);
+assert.deepEqual(recovery.events,[{type:'damage-applied',entityId:'target',atMs:0,before:10,after:0,appliedDamage:10,defeated:true},{type:'entity-defeated',entityId:'target',atMs:0},{type:'mana-gained',entityId:'source',atMs:0,before:45,after:48,appliedMana:3},{type:'healing-applied',entityId:'source',atMs:0,before:50,after:55,appliedHealing:5},{type:'healing-applied',entityId:'source',atMs:0,before:55,after:75,appliedHealing:20},{type:'mana-gained',entityId:'source',atMs:0,before:48,after:58,appliedMana:10}]);
+console.log(JSON.stringify({status:'RECOVERY_ACCEPTANCE_VERIFIED',...recovery}));
 const percent=percentRecoveryExample(),cappedPercent=percentRecoveryExample(true);
 assert.deepEqual(percent,{hp:600,mp:240,events:[{type:'healing-applied',entityId:'source',atMs:0,before:400,after:600,appliedHealing:200},{type:'mana-gained',entityId:'source',atMs:0,before:90,after:240,appliedMana:150}],resources:[[600,90],[600,240]],recipients:['source'],captures:1,rolls:0,actionSerial:1,cooldown:1000,replay:false});
 assert.deepEqual(cappedPercent,{hp:1000,mp:500,events:[{type:'healing-applied',entityId:'source',atMs:0,before:950,after:1000,appliedHealing:50},{type:'mana-gained',entityId:'source',atMs:0,before:440,after:500,appliedMana:60}],resources:[[1000,440],[1000,500]],recipients:['source'],captures:1,rolls:0,actionSerial:1,cooldown:1000,replay:false});
