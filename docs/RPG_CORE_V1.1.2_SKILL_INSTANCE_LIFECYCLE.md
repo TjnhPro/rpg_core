@@ -1,6 +1,6 @@
 # v1.1.2 — Skill Instance & Lifecycle
 
-Status: implementation complete; verification recorded below. No child gameplay dispatch.
+Status: **READY** — implementation and full local verification complete; remote CI is linked from PR #4. No child gameplay dispatch.
 
 ## Authority and baseline
 
@@ -160,10 +160,26 @@ it under strict Node-less ESM, checks readonly types, then asserts Root finished
 B active, C pending, one capture and MP=95. Also checks root/domain export identity,
 legacy archive paths, blocked deep imports and private lifecycle helpers.
 
-Verification results: pending final full verification.
+Verification on Node 24.18.0:
+
+- `npm run typecheck`: PASS.
+- Focused skills + root offense + delivery integration: 88 tests PASS before
+  two additional edge cases; final lifecycle-only suite: 12 tests PASS.
+- Independent clean LF checkout of implementation commit
+  `2874c6edaa0e8a3b1d40861e2c1ab09a276bf1de`:
+  `npm ci --ignore-scripts` then full `npm run verify`: **PASS**,
+  **195 tests / 21 files**; `git status --porcelain` empty afterward.
+- Architecture: 43 modules, no runtime cycles. Preservation: 27 modules PASS.
+  Existing type-only dependency cycles are reported and permitted.
+- Example: deterministic, target HP 70. External installed strict Node-less ESM
+  consumer: PASS, nine public domains, 27 legacy paths, deep imports blocked,
+  lifecycle recipe and unchanged legacy SHA-256 verified.
+- Separate [PR #4](https://github.com/TjnhPro/rpg_core/pull/4) is stacked on PR #3
+  while that dependency remains open. CI uses Node 22.13.0 and 24; inspect PR checks
+  for final-head results. No PR is automatically merged.
 
 Only `SKILL_INSTANCE_LIFECYCLE_VERIFIED` and
-`ROOT_SNAPSHOT_PROPAGATION_VERIFIED` are applicable after verification passes.
+`ROOT_SNAPSHOT_PROPAGATION_VERIFIED` are established by the actual-Core suite and installed consumer.
 No automatic triggers, child effect dispatch, nested damage, trigger budgets,
 stack consumption, conditional triggers or skill upgrades are implemented here.
 No new capability beyond the approved checkpoint was required.
