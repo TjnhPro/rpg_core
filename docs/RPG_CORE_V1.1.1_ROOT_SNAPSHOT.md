@@ -101,7 +101,7 @@ capture inputs. No mock damage resolver, child engine or clock is introduced.
 
 Targeted command: `npm test -- tests/integration/root-offense.test.ts tests/damage tests/skills tests/integration/skill-effect-integration.test.ts`
 — PASS, 83 tests / 6 files. Core and test typecheck PASS.
-Final `npm run verify` on Node `v24.18.0`: **PASS** � build, Core/test types,
+Final `npm run verify` on Node `v24.18.0`: **PASS** — build, Core/test types,
 architecture, preservation, **181 tests / 19 files**, example and installed external
 consumer. The example retains target HP 70 and its pinned hash; the new consumer
 recipe returns B=20, C=60, one capture, MP=95. `git diff --check` and 78 local
@@ -148,3 +148,59 @@ Child instances/lifecycle, replay/trigger queue/DAG and actual A→B→C dispatc
 remain v1.1.2–v1.1.4. Stack Consumption, Conditional Triggers and Skill Upgrade
 remain separate v1.1.5–v1.1.7 checkpoints; sustain remains D11-deferred. No claim
 of `NESTED_SKILL_EXECUTION_VERIFIED`, release, publication or automatic merge.
+
+## PR #3 review remediation — 2026-10-16
+
+Developer review found the main implementation aligned with v1.1.1 but did not
+accept it for merge. This scoped correction follows that review request;
+v1.1.2 remains outside implementation scope.
+
+The failed [GitHub Actions run](https://github.com/TjnhPro/rpg_core/actions/runs/38832565517)
+compared LF checkout source against three fingerprints computed on Windows CRLF.
+`behaviorFingerprint` scans TypeScript token text; template literal segments can
+contain physical newlines, including newlines following `${...}` expressions.
+Their raw CRLF token text differed despite identical ECMAScript runtime strings.
+Thus previous working-tree verification did not establish clean-checkout success.
+
+The fingerprint helper now normalizes physical CRLF to LF before scanning, as
+ECMAScript does for template literals. It retains escaped characters, literal
+content, operators, validation and declaration/signature tokens. No declaration
+or legacy identity check is skipped. The other 26 baseline module entries are
+unchanged, and this entry retains the replaced hashes in `reviewCorrection`.
+
+Exactly three declarations in canonical `src/skills/skill-effect-integration.ts`
+(historical key `src/shared/game/skill-effect-integration.ts`) required review:
+
+| Declaration | Previous CRLF fingerprint | Committed LF fingerprint at reviewed HEAD `d2d7534` | Corrected fingerprint |
+| --- | --- | --- | --- |
+| `launch` | `8baf81c9f60854a48093f1ea4e9c3f0417969db5e3e0488de0f7995da774276d` | `cb647849b9ba962adb4df574b14391dac01afbd81a3173c6834add6f0a9a19e3` | Same as LF |
+| `dispatchSkillEffects` | `71ce46e16a6c53f9145f18427ff6d8e21008c1b6e88daa6ef763f630618183e9` | `f2e997d6accfbd32a3c801ac2807d43eccb3ebaf304d8f2fd1374b010e985f51` | `6af0557427f37f9e07b5e941d88ad092751375ba7b781da69563e583fd9798d9` |
+| `advanceSkillEffects` | `f249b1f9ab5ca3af083638ba34b79f6f59b3dcdbdcfcf622aa09d7659b763e15` | `658a9b29c476e51e541ca44b9ffd1304a6faa3c8df2d1299fb60153420bbf9bb` | Same as LF |
+
+Contract comparison: `launch` and `advanceSkillEffects` retain their exact
+implementation, root/legacy offense routing, geometry, timing and RNG order;
+only their platform-dependent hashes change. `dispatchSkillEffects` retains exact
+root/session activation authenticity, timestamp, target and identity validation
+before checking its existing duplicate frontier. Source registration validation
+now follows that frontier and still precedes any new activation mutation.
+
+An authenticated already accepted duplicate at the same timestamp therefore
+returns false after source removal, without damage, RNG, events, frontier changes
+or other runtime/resource mutation. Forged/mismatched duplicates still reject;
+a fresh activation with missing source still rejects before frontier mutation.
+No new receipt store, lifecycle, public API or compatibility mode is introduced.
+
+Targeted evidence: `npm test -- tests/integration/root-offense.test.ts
+tests/tooling/behavior-fingerprint.test.ts tests/integration/skill-effect-integration.test.ts`
+passes **48 tests / 3 files**. The new actual-Core replay case compares full
+runtime/entity/resource/action/event/RNG observations before and after replay and
+rejection. The tooling case checks LF/CRLF identity while proving changes to
+literal text, escaped CRLF/LF, formulas and guards remain detectable.
+
+Changed files: this report (also correcting one pre-existing non-UTF-8 dash);
+the three-hash baseline correction with retained provenance;
+`scripts/behavior-fingerprint.mjs` and its focused tooling test;
+the dispatch source-check ordering and its root integration regression test.
+Final delivery must additionally report full `npm run verify` on an independent
+clean checkout of the correction commit and GitHub Actions Node 22.13.0 / 24
+results for that exact commit. No merge acceptance is inferred from green checks.

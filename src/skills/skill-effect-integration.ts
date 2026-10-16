@@ -132,11 +132,12 @@ function aoe(r:SkillEffectRuntime,d:Delivery,center:MapPoint,radius:number,env:S
 export function dispatchSkillEffects(r:SkillEffectRuntime,event:SkillActivatedEvent,env:SkillEffectEnvironment):boolean {
  if(!r.active)return false;
  if(!validateRootActivation(r,event.snapshot))throw Error('invalid_root_offense');
- if(event.snapshot.rootOffense&&(event.atMs!==event.snapshot.activationTime||event.target!==event.snapshot.target||!env.combat.findEntity(event.casterId)))throw Error('invalid_root_offense');
+ if(event.snapshot.rootOffense&&(event.atMs!==event.snapshot.activationTime||event.target!==event.snapshot.target))throw Error('invalid_root_offense');
  if(Math.abs(r.now-event.atMs)>1e-6)throw Error('Advance to SkillActivated boundary before dispatch');
  const prefix=event.casterId+'#',serial=Number(event.actionInstanceId.slice(prefix.length));
  if(!event.actionInstanceId.startsWith(prefix)||!Number.isSafeInteger(serial)||serial<1||event.snapshot.actionInstanceId!==event.actionInstanceId||event.snapshot.casterId!==event.casterId||event.snapshot.skillId!==event.skillId||event.snapshot.definition.skillId!==event.skillId)throw Error('Invalid trusted activation identity');
  if(serial<=(r.lastActivation.get(event.casterId)??0))return false;
+ if(event.snapshot.rootOffense&&!env.combat.findEntity(event.casterId))throw Error('invalid_root_offense');
  r.lastActivation.set(event.casterId,serial);
  for(const [index,effect]of (event.snapshot.definition.effects??[]).entries()){
   if(!r.active)break;

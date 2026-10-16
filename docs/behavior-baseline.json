@@ -371,16 +371,16 @@
         "4d26efb7c5890b33ce0848a3cb7116043fa542b177dd77704c676a3ce9897b23",
         "53f4e65be46af73aa708a7fbb14108a6cd263f08c8e79abf1531a51d85d9b78f",
         "60186253213fbd14e294cbbb21f8375e20fd5b40f8c75a58332e7d02c5af2b83",
-        "71ce46e16a6c53f9145f18427ff6d8e21008c1b6e88daa6ef763f630618183e9",
-        "8baf81c9f60854a48093f1ea4e9c3f0417969db5e3e0488de0f7995da774276d",
+        "658a9b29c476e51e541ca44b9ffd1304a6faa3c8df2d1299fb60153420bbf9bb",
+        "6af0557427f37f9e07b5e941d88ad092751375ba7b781da69563e583fd9798d9",
         "a0b181f747e6c36234f682e760b4cfde7f76ccf4b1fc9e9c44ffb2a2956ab8d1",
         "b355daa0b3619fde1351607961aa4b581fe88f4da3f75bc6f3e5e49b9b60e509",
         "bc3c8aba7ab328e17ac68e9b7056431a153bc5236806daeb797da4648c601d79",
         "be8e709bf185d49dd0709ccdc38ad4501e12c7f51bfea9b072049e9e6e0f551b",
         "c40f6792559ea29536bc58fc0601afc7eed677cf16757fcfa02f8345eb28836f",
+        "cb647849b9ba962adb4df574b14391dac01afbd81a3173c6834add6f0a9a19e3",
         "d622a18aa6db839ae3a811a3767ca7172276bf6da111a4a8cde4dacb7208f85f",
         "dbd3aad8df90920d112128d018a00bf17a420fb9ab0299bf9b2247cd7bb6fa90",
-        "f249b1f9ab5ca3af083638ba34b79f6f59b3dcdbdcfcf622aa09d7659b763e15",
         "fdd8f45dc52a3688155ace03dd0b512564f5f81d06d99f8182307c87651b115f"
       ],
       "approvedChange": {
@@ -416,7 +416,29 @@
           "aoe",
           "dispatchSkillEffects",
           "advanceSkillEffects"
-        ]
+        ],
+        "reviewCorrection": {
+          "authority": "Developer PR #3 review remediation request, 2026-10-16",
+          "baseCommit": "d2d7534c8d91753efa9b85049d8976a4472588e4",
+          "reason": "Canonical LF fingerprints for CRLF checkout mismatch; dispatch source-presence validation follows authenticated duplicate guard. See docs/RPG_CORE_V1.1.1_ROOT_SNAPSHOT.md.",
+          "declarations": [
+            {
+              "name": "launch",
+              "previousFingerprint": "8baf81c9f60854a48093f1ea4e9c3f0417969db5e3e0488de0f7995da774276d",
+              "fingerprint": "cb647849b9ba962adb4df574b14391dac01afbd81a3173c6834add6f0a9a19e3"
+            },
+            {
+              "name": "dispatchSkillEffects",
+              "previousFingerprint": "71ce46e16a6c53f9145f18427ff6d8e21008c1b6e88daa6ef763f630618183e9",
+              "fingerprint": "6af0557427f37f9e07b5e941d88ad092751375ba7b781da69563e583fd9798d9"
+            },
+            {
+              "name": "advanceSkillEffects",
+              "previousFingerprint": "f249b1f9ab5ca3af083638ba34b79f6f59b3dcdbdcfcf622aa09d7659b763e15",
+              "fingerprint": "658a9b29c476e51e541ca44b9ffd1304a6faa3c8df2d1299fb60153420bbf9bb"
+            }
+          ]
+        }
       }
     },
     {

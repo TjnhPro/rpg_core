@@ -21,6 +21,25 @@ it.each([0,50,100])('S1: captures once at successful start, before %s%% activati
  const g=fixture([direct()],0,true);g.entities[0]!.currentMp=0;expect(g.start().success).toBe(false);expect(g.captures()).toBe(0);expect(g.slot.skillExecution).toBeUndefined();
  const h=fixture([direct()],0,true);expect(executeSkill(h.definition,h.context,h.slot,h.cooldowns,h.executionEnv,{now:0,expectedSerial:2,configVersion:'v1'})).toMatchObject({success:false,reason:'stale_action'});expect(h.captures()).toBe(0);
 });
+it('S1/S8: accepted ROOT duplicate after source removal is inert; new invalid activation still rejects',()=>{
+ const state=(f:ReturnType<typeof fixture>)=>structuredClone({runtime:f.runtime,entities:f.entities,cooldowns:f.cooldowns,slot:f.slot,
+  actions:f.actions,events:f.events,rolls:f.rolls(),captures:f.captures()});
+ const f=fixture([direct()],0,true),event=f.activate();
+ f.entities.splice(0,1);const before=state(f);
+ expect(dispatchSkillEffects(f.runtime,event,f.env)).toBe(false);
+ expect(state(f)).toEqual(before);
+ // The duplicate frontier must not bypass exact provenance/identity guards.
+ for(const invalid of [{...event,snapshot:{...event.snapshot}},{...event,target:{...event.target}},
+  {...event,casterId:'other'},{...event,actionInstanceId:'actor0#2'},{...event,atMs:51}]){
+  expect(()=>dispatchSkillEffects(f.runtime,invalid,f.env)).toThrow();expect(state(f)).toEqual(before);
+ }
+ const g=fixture([direct()],0,true);g.start();advanceSkillEffects(g.runtime,50,g.env);advanceSkillExecution(g.slot,g.context.combat,50,g.actions);
+ const fresh=g.actions.find((e):e is SkillActivatedEvent=>e.type==='skill-activated')!;
+ g.entities.splice(0,1);const untouched=state(g);
+ expect(()=>dispatchSkillEffects(g.runtime,fresh,g.env)).toThrow('invalid_root_offense');
+ expect(state(g)).toEqual(untouched);expect(g.runtime.lastActivation.size).toBe(0);
+ expect(g.hits()).toHaveLength(0);expect(g.rolls()).toEqual({critCalls:0,dodgeCalls:0,positionCalls:0});
+});
 it('S2/S3/S4: SNAPSHOT_INHERITANCE_VERIFIED_ONLY; independent B/C definitions/ranks, same immutable root',()=>{
  const f=fixture([direct()],0,true),input=f.offenseInput(f.entities[0]!);
  f.executionEnv.rootOffense!.capture=()=>input;f.start();const s=f.slot.skillExecution!.snapshot;
