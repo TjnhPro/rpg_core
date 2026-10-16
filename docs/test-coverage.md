@@ -117,3 +117,13 @@ identity/liveness, activation/receipt replay, session disposal, budgets and
 coarse/fine timelines. `examples/mana-on-hit.ts` runs MH08 in the existing strict
 TS/ESM installed consumer, including real damage + HP + MP and public exports.
 See [checkpoint evidence](RPG_CORE_V1.2.2_MANA_ON_HIT.md).
+
+### v1.2.3 Explicit HP/MP Restore
+
+`tests/integration/explicit-restore.test.ts` covers ER02-ER06 actual HP/MP/cost/
+events, recipient effective caps, restore-only Root/Child identity pins, target
+validation, rejection before commitment, ordered effects, replay, disposal,
+budgets, combined Lifesteal/Mana on Hit and coarse/fine timelines. ER01 reuses
+`tests/combat/healing.test.ts` and `tests/integration/healing.test.ts`.
+`examples/explicit-restore.ts` covers ER07 through the existing installed consumer.
+See [contract and evidence](RPG_CORE_V1.2.3_EXPLICIT_RESTORE.md).

@@ -1,5 +1,9 @@
 # RPG Core
 
+v1.2.3 adds explicit flat MP restoration with `restore_mana`, alongside existing
+HP `heal`. See [contract and compatibility](docs/RPG_CORE_V1.2.3_EXPLICIT_RESTORE.md)
+and [installed-package example](examples/explicit-restore.ts).
+
 v1.2.2 adds opt-in fixed Mana on Hit, including zero-damage landed enemy hits,
 through canonical Combat MP gain. See the [contract](docs/RPG_CORE_V1.2.2_MANA_ON_HIT.md)
 and [installed-package example](examples/mana-on-hit.ts).

@@ -143,14 +143,14 @@
       ],
       "declarations": [
         "16aafaa346f15c2a4825ea958fff9ea75841c038c8a1bbddb0609a7e96c48ce4",
-        "22a430a0c560717837a6c0b0c424995c4f339756e535c84c22811ca549a7c50b",
         "4e388f20cd2d26d288b1040b1a09455d039dfc89aa440faaeeb2d085dcc31ef3",
         "60e77d443a4e3f87d8220e8b3714e735ddabec061ee7d58a3b0818a60cefa372",
         "6e5a0c70a347576bf952decaa1fe0b37bcecc55444afb0a194f7b73dddaaebab",
         "70b1ddf3744afb53b0c4a230561da455e937ee19bf7e3faf848c29e88befb75f",
         "73e15f18e3c6b773569de2d8e5c6a5c8c5830bdf6bc9505800dbcca5d3642574",
-        "870256bb359174b088512a10174ec762f4a16e62ed1a06b34553381747c4366d",
+        "dd9a1470782d2cd40e0bd1e3fd381f3dfa9723b8a4a850d6942b7f85fbaa6c63",
         "e2612a4fc27c329a792c115d90e9b400d3fc45cec0132979565604968ab2ecc2",
+        "eb386f25e459c074ec9fc76008045223827886e28cf7122ac2e7ac8ddfecaed7",
         "f7c6d55e0602a7f03c77af1991713f8c0c152ee0d18c1cc074020e3b7966ecf6",
         "f955e9100f21f1f4bda570ff22103009415f148ff7e1831cc2321fe61cf3c898",
         "f9ab77658c46dd844dbfb9d2c0c94528aa2387272f9cf6c0cfe9201c99c0ab2b"
@@ -232,6 +232,23 @@
                 "name": "validateSkillEffects",
                 "before": "3da765a5e2727dca86ed1dca224248a68e160410eb7a3cad13c536fb19c627a3",
                 "after": "22a430a0c560717837a6c0b0c424995c4f339756e535c84c22811ca549a7c50b"
+              }
+            ]
+          },
+          {
+            "checkpoint": "v1.2.3",
+            "baseCommit": "7e1b214ad40bc5ca4c4a9a27c82fdbcba32b20a9",
+            "authority": "Developer approval of Explicit Restore delta plan R1-R8, restore-only identity and recipient live caps; docs/RPG_CORE_V1.2.3_EXPLICIT_RESTORE.md",
+            "declarations": [
+              {
+                "name": "SkillGameplayEffect",
+                "before": "870256bb359174b088512a10174ec762f4a16e62ed1a06b34553381747c4366d",
+                "after": "eb386f25e459c074ec9fc76008045223827886e28cf7122ac2e7ac8ddfecaed7"
+              },
+              {
+                "name": "validateSkillEffects",
+                "before": "22a430a0c560717837a6c0b0c424995c4f339756e535c84c22811ca549a7c50b",
+                "after": "dd9a1470782d2cd40e0bd1e3fd381f3dfa9723b8a4a850d6942b7f85fbaa6c63"
               }
             ]
           }
@@ -454,12 +471,12 @@
       "declarations": [
         "00471c9abdc83dc07b35ac21f45e78d21e4f628a3789cc2bf8d7749d9f6a12a0",
         "0559c0fcd1c66ddb8139a66e0c877ababc3a4493e7a57a6236e46e15cf6e35f0",
-        "0e604dda6f2c163621958c071488b4cd2b40911a4140a0e692be21caac1e0af0",
         "1316a9f087386717f5e9d5f4080dc312e8823e44b72075b4507da77ec8502a70",
         "14dc8184162b1623978cb5454b973292e79a836434f15be90f939d4f2a74a27a",
         "25fe3a7378eb5eded618e3ea4240f30c982312dcd8dfaba24285c0b6269eabff",
         "2b3ca040833cbe062b4487a3a39e7dcc5f919b1c987654f16ce1f9fb282b8c7d",
         "324a6ce6804e9cd9dcfc7b527e9d8988f0f7880e27554a6dc02aa8b54333e16e",
+        "4b2380347eb858395cc2d274bbce95697e00af997455583155eee2510b7a991b",
         "85f6ed045ece55e5467915879fa9583b95a6f1ab4cb2975ee474b19330b989ef",
         "8ee20dedcc2767c8e2dc8bca02387947a14cf1722f7076832c703eda19c0fad2",
         "8f24dc4e63f1cf24249c1e1d0d14f1d0ae19a98859fabf9d747871a1a7caac77",
@@ -606,6 +623,18 @@
                 "after": "0e604dda6f2c163621958c071488b4cd2b40911a4140a0e692be21caac1e0af0"
               }
             ]
+          },
+          {
+            "checkpoint": "v1.2.3",
+            "baseCommit": "7e1b214ad40bc5ca4c4a9a27c82fdbcba32b20a9",
+            "authority": "Developer approval of Explicit Restore delta plan R1-R8, restore-only identity and recipient live caps; docs/RPG_CORE_V1.2.3_EXPLICIT_RESTORE.md",
+            "declarations": [
+              {
+                "name": "executeSkill",
+                "before": "0e604dda6f2c163621958c071488b4cd2b40911a4140a0e692be21caac1e0af0",
+                "after": "4b2380347eb858395cc2d274bbce95697e00af997455583155eee2510b7a991b"
+              }
+            ]
           }
         ]
       }
@@ -617,32 +646,34 @@
       ],
       "declarations": [
         "0360b1d17ba059e0b6c4c833f37c2fee70d6afbd56634773dd4f1c5aa2a508bf",
+        "05ec00295aaf7f30deaeb47a9ec380f3b13c1ec468776c653e56775afd6dc266",
         "07920f2e4d65f242aaf56d80fb615addee300236dcf23d7bc48c50d123eb91de",
         "0c9121311616b98729f64070ec98fae2dba2c5f700f51414346c9136840bde2c",
-        "125abba20252d311d7e042e7f0ff8675bf9ba89c0e5abdcc70d9d28f947b18cb",
         "166b106d11a9ba04f116bc1669ab4672a731518a9f05112b555ff5884012f726",
         "17067d856e4d37eac0e402c670e8e6ec0d1d099da13670b8db8af286d6395764",
+        "1c0a40af2089c4fe7e2e7c274f84db1847286f0199f04295eb45ff7b8b8401da",
         "1c135c498e1ff8aa3126689c014cbae95fe5f3b3430f8d7a89b62cf9ad3339b0",
         "27cd9a7915a859b356e3ab75a601086204a8a7763188548e8b8c15790e5deef7",
+        "2848cdabb3cb390c823372d00ab033d34ccbb1956dde4f96c03ff007ac1d0ff7",
+        "2b3805f5121884356b031daa1cf40e2dfa00999730c98e74ddd7c39b287e4e1f",
         "2c5c7e4a8442f59b34816af6a42c3bcb365609dba7bbf5c6301ca2a937b10d36",
+        "31fe2fb936203a3018652f93f1c29e86ec6df0da6906f1d9e00c9165ce905e5d",
         "3f1945742cd70e5529fbb61fc965dcfff016459f325ec1bf2684c63a0fce4985",
         "497e66b613ccfc0ccfdef8c8a5a5453967a4a3982b3b85bfaeb594ab7680ee73",
         "4d26efb7c5890b33ce0848a3cb7116043fa542b177dd77704c676a3ce9897b23",
         "5fce1c2777bc558d43697fb78972c22e2ff708828bb01c50733f96e0f6578d0c",
         "60186253213fbd14e294cbbb21f8375e20fd5b40f8c75a58332e7d02c5af2b83",
+        "6217f75d58ce4afa114fd3b8d392b2a1cb233b3f6650ad9e125b27becc6edf3c",
         "64ddb796bd4744f5b947a0515d05726cbc26a6114cf40a68e100b1887c07657e",
         "69eeb0f21dcbe1b7625a0cf96ec7f46ff9ca370c21cedcd7dbf629d01733878e",
         "72d6b60800c26218b41401ca01925e39dace813fde1a65fb716c1e60ff363f72",
-        "7ab4b27591492b83cc20c31413569ccbd99facfe60e9e994cac3cf35fb67eedc",
         "820ba13db287bf25e3f1c8208f0248719212ad6a9a39119dd4d5fd36bfdd89f2",
-        "849ff0eef18fbe8b7d7b0c5f2b7c6e77ba7a76f00cd02e6fce9066a9865cb115",
-        "872719983bb624859cf8ca887fa97f9c24e5c389f201bce8dff6982544102920",
         "8e3831d1ce1f0af61e793e4290d6a21e429d5f7029327e3785538e05f968708a",
+        "b19ccdd3bc14cd9480870c59d61dfb19327002558d2c4108b2e1519c71716c70",
         "b355daa0b3619fde1351607961aa4b581fe88f4da3f75bc6f3e5e49b9b60e509",
         "be896081bc4d9fff540eec4918856a5be37e903ec13746692e7750acbace9515",
         "ca1b36f9e34eafc6a90affa8b6c933885f314e2ce206c0c242f46a472d8aeff0",
         "d622a18aa6db839ae3a811a3767ca7172276bf6da111a4a8cde4dacb7208f85f",
-        "d7506978662d6ab44555f935331a6d149c51a36651dd18de56b386d6fc8307d1",
         "f3e21a4b409028b2d6172b7f2d7040e3f7e27b528408fa49837fdc21d04f9df2",
         "fad5ec3400cc18a44d3fe3f8bebe498efba17e00b611b8b465a9017645162380",
         "fdd8f45dc52a3688155ace03dd0b512564f5f81d06d99f8182307c87651b115f",
@@ -959,6 +990,46 @@
                 "name": "hit",
                 "before": "c453aa707ef3d8144fa9dafc5ab20d1241eb33e2398f44cafab3ac30bae10679",
                 "after": "27cd9a7915a859b356e3ab75a601086204a8a7763188548e8b8c15790e5deef7"
+              }
+            ]
+          },
+          {
+            "checkpoint": "v1.2.3",
+            "baseCommit": "7e1b214ad40bc5ca4c4a9a27c82fdbcba32b20a9",
+            "authority": "Developer approval of Explicit Restore delta plan R1-R8, restore-only identity and recipient live caps; docs/RPG_CORE_V1.2.3_EXPLICIT_RESTORE.md",
+            "declarations": [
+              {
+                "name": "SkillEffectEnvironment",
+                "before": "125abba20252d311d7e042e7f0ff8675bf9ba89c0e5abdcc70d9d28f947b18cb",
+                "after": "6217f75d58ce4afa114fd3b8d392b2a1cb233b3f6650ad9e125b27becc6edf3c"
+              },
+              {
+                "name": "Delivery",
+                "before": "7ab4b27591492b83cc20c31413569ccbd99facfe60e9e994cac3cf35fb67eedc",
+                "after": "1c0a40af2089c4fe7e2e7c274f84db1847286f0199f04295eb45ff7b8b8401da"
+              },
+              {
+                "name": "resourceRecipient",
+                "after": "2848cdabb3cb390c823372d00ab033d34ccbb1956dde4f96c03ff007ac1d0ff7"
+              },
+              {
+                "name": "heal",
+                "before": "872719983bb624859cf8ca887fa97f9c24e5c389f201bce8dff6982544102920",
+                "after": "05ec00295aaf7f30deaeb47a9ec380f3b13c1ec468776c653e56775afd6dc266"
+              },
+              {
+                "name": "restoreMana",
+                "after": "2b3805f5121884356b031daa1cf40e2dfa00999730c98e74ddd7c39b287e4e1f"
+              },
+              {
+                "name": "dispatchGameplayEffects",
+                "before": "849ff0eef18fbe8b7d7b0c5f2b7c6e77ba7a76f00cd02e6fce9066a9865cb115",
+                "after": "31fe2fb936203a3018652f93f1c29e86ec6df0da6906f1d9e00c9165ce905e5d"
+              },
+              {
+                "name": "childDispatcher",
+                "before": "d7506978662d6ab44555f935331a6d149c51a36651dd18de56b386d6fc8307d1",
+                "after": "b19ccdd3bc14cd9480870c59d61dfb19327002558d2c4108b2e1519c71716c70"
               }
             ]
           }

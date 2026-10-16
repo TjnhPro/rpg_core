@@ -216,3 +216,13 @@ positive `mana-gained` follows existing damage/defeat/healing notifications and
 precedes effect-hit. No new store, ledger, scheduler or domain edge is introduced.
 Public exhaustive Combat event switches need the new event case. See
 [contract and preservation amendment](RPG_CORE_V1.2.2_MANA_ON_HIT.md).
+
+## v1.2.3 Explicit Restore ownership
+
+Skills adds one ordered restore_mana operation and reuses the existing Combat
+MP-gain primitive/event. Healing recipient validation is shared with HP behavior
+preserved. Restore-only Root/Child uses existing admission identity pins; the live
+resource resolver receives the actual recipient, including a selected ally.
+No Combat, Stats, Effects, Damage formula or scheduling change. Consumers with
+exhaustive Skill effect switches need the new discriminant. See
+[contract and preservation amendment](RPG_CORE_V1.2.3_EXPLICIT_RESTORE.md).
