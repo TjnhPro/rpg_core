@@ -1,5 +1,9 @@
 # RPG Core
 
+v1.2.1 adds opt-in Lifesteal from actual applied enemy damage through canonical
+Healing; see [contract and evidence](docs/RPG_CORE_V1.2.1_LIFESTEAL.md) and the
+[installed-package example](examples/lifesteal.ts).
+
 v1.2.0 adds explicit flat HP Healing through canonical Combat and Root/Child Skills.
 See [Healing Foundation contract and evidence](docs/RPG_CORE_V1.2.0_HEALING_FOUNDATION.md)
 and the [installed-package example](examples/healing.ts).

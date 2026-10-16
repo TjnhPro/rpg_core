@@ -194,3 +194,13 @@ Damage or synthesizes hit/kill occurrences. Stats retains resource normalization
 regeneration and Max HP formulas. No new domain, dependency edge, scheduler or
 resource store is added. Public exhaustive effect/event switches need the new
 cases; see [contract and narrow preservation amendment](RPG_CORE_V1.2.0_HEALING_FOUNDATION.md).
+
+## v1.2.1 Lifesteal ownership
+
+Skills optionally couples its existing canonical damage application with Combat
+Healing using actual applied damage and the effect's pinned rate. Both HP writes
+precede notifications. Root admission identity is reused through Root S0 for Child
+source authentication; no new resource state or engine is introduced. Positive
+recovery emits the existing event after damage/defeat and before effect-hit.
+DoT and stack-consumption outcomes remain excluded. See the
+[contract and preservation amendment](RPG_CORE_V1.2.1_LIFESTEAL.md).

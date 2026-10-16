@@ -46,9 +46,9 @@ export interface SkillActivatedEvent {
 }
 export type SkillExecutionEvent=EntityCombatEvent|SkillActivatedEvent;
 export type SkillExecutionResult=Extract<SkillResult,{success:false}>|{success:true;action:Readonly<ActiveCombatAction>;events:readonly SkillExecutionEvent[]};
-// Private admission identities for opt-in Healing only; no entity/resource registry.
-const healingEntities=new WeakMap<SkillExecutionSnapshot,{source:CombatEntity;target:CombatEntity|undefined}>();
-export function skillHealingEntities(snapshot:SkillExecutionSnapshot){return healingEntities.get(snapshot);}
+// Private admission identities for opt-in Healing/Lifesteal; no entity/resource registry.
+const healingEntities=new WeakMap<SkillExecutionSnapshot|RootOffensiveSnapshot,{source:CombatEntity;target:CombatEntity|undefined}>();
+export function skillHealingEntities(snapshot:SkillExecutionSnapshot|RootOffensiveSnapshot){return healingEntities.get(snapshot);}
 const pointValid=(p:Readonly<MapPoint>|undefined):p is Readonly<MapPoint>=>!!p&&Number.isFinite(p.x)&&Number.isFinite(p.y);
 
 export function skillRangeAvailability(definition:SkillEngineDefinition,context:SkillExecutionContext,env:SkillExecutionEnvironment):SkillAvailability {
@@ -102,7 +102,11 @@ export function executeSkill(definition:SkillEngineDefinition,context:SkillExecu
  const action=slot.activeAction!;
  slot.skillExecution={snapshot:Object.freeze({...(rootOffense?{rootOffense}:{}),actionInstanceId:action.actionInstanceId,casterId:context.casterId,skillId:definition.skillId,configVersion:request.configVersion,definition:pinned.definition,target,startedAt:action.startedAt,durationMs:action.durationMs,activationTime:action.startedAt+offset,
   ...(spatial?{casterPosition:Object.freeze({...casterPosition!}),aimPosition:Object.freeze({...aimPosition!}),facing:Object.freeze(length===1&&facing.x===0&&facing.y===0?{x:1,y:0}:{x:facing.x/length,y:facing.y/length})}:{})}),activated:false};
- if(pinned.definition.effects?.some(e=>e.type==='heal'))healingEntities.set(slot.skillExecution.snapshot,{source:context.combat.findEntity(context.casterId)!,target:target.mode==='entity'?context.combat.findEntity(target.targetId):target.mode==='self'?context.combat.findEntity(context.casterId):undefined});
+ if(pinned.definition.effects?.some(e=>e.type==='heal'||'lifesteal' in e)||env.triggers?.bundle.definitions.some(p=>p.definition.effects?.some(e=>'lifesteal' in e))){
+  const identities={source:context.combat.findEntity(context.casterId)!,target:target.mode==='entity'?context.combat.findEntity(target.targetId):target.mode==='self'?context.combat.findEntity(context.casterId):undefined};
+  healingEntities.set(slot.skillExecution.snapshot,identities);
+  if(rootOffense)healingEntities.set(rootOffense,identities);
+ }
  if(rootOffense){bindRootOffense(env.rootOffense!.runtime,slot.skillExecution.snapshot);bindRootSkillInstance(env.rootOffense!.runtime,slot.skillExecution.snapshot,env.skillInstanceLifetimeMs);
   bindRootSkillTriggers(env.rootOffense!.runtime,rootSkillInstance(env.rootOffense!.runtime,slot.skillExecution.snapshot)!,aimPosition??casterPosition,env.triggers,context.target.mode==='entity'?context.combat.findEntity(context.target.targetId):context.target.mode==='self'?context.combat.findEntity(context.casterId):undefined,context.combat.findEntity(context.casterId));}
  const emitted:SkillExecutionEvent[]=[...events];

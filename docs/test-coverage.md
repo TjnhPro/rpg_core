@@ -98,3 +98,10 @@ v1.2.0 Healing: `tests/combat/healing.test.ts` covers canonical math/validation;
 identity/relation/range rejection, replay, ordered callbacks and zero heal RNG.
 `examples/healing.ts` runs in the existing strict external installed consumer.
 See [Healing contract and preservation amendment](RPG_CORE_V1.2.0_HEALING_FOUNDATION.md).
+
+
+v1.2.1 Lifesteal: `tests/integration/lifesteal.test.ts` covers LS01-LS06 actual
+HP damage/recovery, six deliveries, original-source identity, fatal OnKill,
+Root/Child S0/costs, replay/budgets/disposal and coarse/fine determinism.
+`examples/lifesteal.ts` runs LS07 in the existing installed strict TS/ESM consumer.
+See [contract and preservation evidence](RPG_CORE_V1.2.1_LIFESTEAL.md).

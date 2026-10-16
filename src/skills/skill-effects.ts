@@ -6,6 +6,8 @@ import {validateEffectDefinition,type EffectDefinition} from '../effects/effect-
 
 /** Inline resolved component: config references are checked, never fetched at hit. */
 export interface SkillDamageComponent {id:string;definition:DamageDefinition;damageType:'Physical'|'Magic';tags:string[];rank:number}
+/** Opt-in fraction of actual HP damage recovered through Combat Healing. */
+export interface SkillLifesteal {readonly rate:number}
 export interface SkillOnHitDot {config:DotConfig;damage:SkillDamageComponent}
 interface EffectBase {allowedTargetRelations?:readonly FactionRelation[];onHit?:SkillOnHitDot[]}
 export interface SkillStackConsumption {
@@ -16,12 +18,12 @@ export type SkillGameplayEffect=EffectBase & (
  | {type:'heal';target:'self'|'selected';amount:number}
  | SkillStackConsumption
  | {type:'modifier_effect';definition:EffectDefinition;target:'self'|'selected'}
- | {type:'direct_hit';damage:SkillDamageComponent}
- | {type:'melee_hitbox';config:MeleeHitbox;damage:SkillDamageComponent}
- | {type:'projectile';config:ProjectileConfig;damage:SkillDamageComponent}
- | {type:'instant_aoe';config:InstantAOE;damage:SkillDamageComponent}
- | {type:'timed_aoe_sequence';config:TimedAOESequence;damage:SkillDamageComponent}
- | {type:'timed_object';config:TimedObjectConfig;projectile:{config:ProjectileConfig;damage:SkillDamageComponent}}
+ | {type:'direct_hit';lifesteal?:SkillLifesteal;damage:SkillDamageComponent}
+ | {type:'melee_hitbox';lifesteal?:SkillLifesteal;config:MeleeHitbox;damage:SkillDamageComponent}
+ | {type:'projectile';lifesteal?:SkillLifesteal;config:ProjectileConfig;damage:SkillDamageComponent}
+ | {type:'instant_aoe';lifesteal?:SkillLifesteal;config:InstantAOE;damage:SkillDamageComponent}
+ | {type:'timed_aoe_sequence';lifesteal?:SkillLifesteal;config:TimedAOESequence;damage:SkillDamageComponent}
+ | {type:'timed_object';lifesteal?:SkillLifesteal;config:TimedObjectConfig;projectile:{config:ProjectileConfig;damage:SkillDamageComponent}}
 );
 const object=(v:unknown):v is Record<string,unknown>=>!!v&&typeof v==='object'&&!Array.isArray(v);
 const exact=(v:Record<string,unknown>,keys:string[])=>Object.keys(v).sort().join()===keys.sort().join();
@@ -62,8 +64,9 @@ export function validateSkillEffects(value:unknown):string[]{
    const result=validateEffectDefinition(e.definition);if(!result.success)errors.push('effects: '+result.reason,...(result.errors??[]));
    continue;
   }
-  const keys=['type',...(e.type==='timed_object'?['config','projectile']:['damage',...(e.type==='direct_hit'?[]:['config'])]),...(Object.hasOwn(e,'allowedTargetRelations')?['allowedTargetRelations']:[]),...(Object.hasOwn(e,'onHit')?['onHit']:[])];
+  const keys=['type',...(e.type==='timed_object'?['config','projectile']:['damage',...(e.type==='direct_hit'?[]:['config'])]),...(Object.hasOwn(e,'allowedTargetRelations')?['allowedTargetRelations']:[]),...(Object.hasOwn(e,'onHit')?['onHit']:[]),...(Object.hasOwn(e,'lifesteal')?['lifesteal']:[])];
   if(!exact(e,keys))errors.push('effects: unknown/missing fields');
+  if(Object.hasOwn(e,'lifesteal')&&(!object(e.lifesteal)||!exact(e.lifesteal,['rate'])||typeof e.lifesteal.rate!=='number'||!Number.isFinite(e.lifesteal.rate)||e.lifesteal.rate<=0||e.lifesteal.rate>1))errors.push('effects: invalid lifesteal');
   if(Object.hasOwn(e,'allowedTargetRelations')&&!validAllowedRelations(e.allowedTargetRelations))errors.push('effects: invalid target relations');
   if(e.type==='timed_object'){
    errors.push(...validateSkillMechanics({timed_object:e.config}));
