@@ -85,3 +85,9 @@ resolution, actual projectile/radial/AoE/slow/Child gameplay, atomic rejection,
 revision isolation, exact limits, conditional consume/replay and determinism.
 `examples/skill-upgrades.ts` runs old/new revisions in the installed consumer.
 See [contract and evidence](RPG_CORE_V1.1.7_SKILL_UPGRADES.md).
+
+
+v1.1.8 final acceptance: [closure matrix and evidence](RPG_CORE_V1.1.8_ACCEPTANCE_CLOSURE.md)
+reuses checkpoint suites and the installed consumer. One added upgrade-suite case
+connects upgraded Apply, threshold, exact-N consume and Child landed/Dodge/empty
+outcomes, including no refund, replay and disposal; no production source changes.

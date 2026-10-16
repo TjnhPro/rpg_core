@@ -2,7 +2,7 @@ import {expect,it} from 'vitest';
 import {fixture,projectile,timed,direct,damage} from '../fixtures/skill-core.js';
 import {nestedFixture} from '../fixtures/nested-skill.js';
 import {DEFAULT_INSTANT_AOE} from '../../src/contracts/mechanic-contracts.js';
-import {defineSkill,resolveSkillUpgrades,pinSkillInstanceDefinition,pinSkillTriggerBundle,executeSkill,advanceSkillExecution,dispatchSkillEffects,advanceSkillEffects,inspectSkillInstance,validateSkillTriggerReceipt,type SkillUpgrade,type SkillTriggerBundle,type SkillGameplayEffect,type SkillTriggerResult} from '../../src/skills/index.js';
+import {defineSkill,resolveSkillUpgrades,pinSkillInstanceDefinition,pinSkillTriggerBundle,executeSkill,advanceSkillExecution,dispatchSkillEffects,advanceSkillEffects,clearSkillEffects,inspectSkillInstance,validateSkillTriggerReceipt,type SkillUpgrade,type SkillTriggerBundle,type SkillGameplayEffect,type SkillTriggerResult} from '../../src/skills/index.js';
 
 const pattern:SkillUpgrade={upgradeId:'pattern',skillId:'test',type:'projectile_pattern',effectIndex:0,expectedType:'projectile',expectedComponentId:'component',bulletCount:3,spreadAngles:[0,0,0]};
 const mark:Extract<SkillGameplayEffect,{type:'modifier_effect'}>={type:'modifier_effect',target:'selected',definition:{effectId:'mark',durationMs:2000,stackingPolicy:'stack',maxStacks:3}};
@@ -86,4 +86,31 @@ it('UG10/11/12: resolved conditional exact-N, replay, live-child budget failure 
   expect(accepted).toHaveLength(count>32?0:count);expect(state.stacks).toBe(count>32?3:0);expect(state.hp[2]).toBe(count>32?1000:1000-count*20);if(count>32)expect(results).toContainEqual(expect.objectContaining({dimension:'maxLiveChildren'}));return state;
  };
  expect(run(false)).toEqual(run(true));run(false,32);run(false,33);
+});
+it('E2E-02/03: upgraded Apply crosses threshold; committed Child Dodge/empty AoE never refunds stacks',()=>{
+ for(const outcome of ['landed','dodge','empty'] as const)for(const upgraded of [false,true]){
+  const f=base([mark,mark]);
+  const child=pinSkillInstanceDefinition({...f.definition,skillId:'child',targetMode:'ground',effects:[{type:'instant_aoe',damage:damage(),config:{...DEFAULT_INSTANT_AOE,origin:'ground',radius:10}}]},'child',100);
+  const bundle=pinSkillTriggerBundle({...f.bundle,definitions:[...f.bundle.definitions,child],links:[{linkId:'spend',sourceSkillId:'test',childSkillId:'child',trigger:'OnStackThreshold',stackThreshold:{effectId:'mark',threshold:3},requiresStacks:{effectId:'mark',minStacks:3,sourceScope:'currentSource'},consumeExactly:3,delayMs:0,maxOccurrences:1}]});
+  const selected=upgraded?resolve(bundle,[{upgradeId:'third-mark',skillId:'test',type:'append_modifier',effect:mark}]).resolved:bundle;
+  if(outcome==='dodge')f.entities[1]!.baseStats.dodgeChance=.5;
+  if(outcome==='empty')f.env.entityIds=()=>[];
+  const results:SkillTriggerResult[]=[],activation=cast(f,selected,0,results);advanceSkillEffects(f.runtime,50,f.env);
+  expect(results).toHaveLength(upgraded?1:0);expect(f.runtime.effects.groups('actor1')[0]?.currentStacks??0).toBe(upgraded?0:2);
+  expect(f.events.filter(e=>e.type==='effect-removed'&&e.reason==='consumed')).toHaveLength(upgraded?3:0);
+  expect(f.entities[1]!.currentHp).toBe(upgraded&&outcome==='landed'?980:1000);
+  expect(f.hits()).toHaveLength(upgraded&&outcome!=='empty'?1:0);
+  if(upgraded){
+   const receipt=results[0]!.receipt!;expect(receipt).toMatchObject({beforeStacks:2,afterStacks:3});
+   expect(inspectSkillInstance(f.runtime,receipt.receiptId)!.rootOffense).toBe(activation.snapshot.rootOffense);
+   if(outcome==='dodge')expect(f.hits()[0]!.breakdown.defense.hit.hit).toBe(false);
+   expect(validateSkillTriggerReceipt(f.runtime,receipt)).toEqual({success:true,changed:false});
+  }
+  const state=JSON.stringify({events:f.events,results,hp:f.entities,rolls:f.rolls(),groups:f.runtime.effects.groups()});
+  expect(dispatchSkillEffects(f.runtime,activation,f.env)).toBe(false);advanceSkillEffects(f.runtime,50,f.env);
+  expect(JSON.stringify({events:f.events,results,hp:f.entities,rolls:f.rolls(),groups:f.runtime.effects.groups()})).toBe(state);
+  expect(f.captures()).toBe(1);expect(f.entities[0]!.currentMp).toBe(95);expect(f.slot.actionSerial).toBe(1);
+  clearSkillEffects(f.runtime);const eventCount=f.events.length;advanceSkillEffects(f.runtime,3000,f.env);
+  expect(f.events).toHaveLength(eventCount);if(upgraded)expect(validateSkillTriggerReceipt(f.runtime,results[0]!.receipt!).success).toBe(false);
+ }
 });
