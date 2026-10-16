@@ -1,5 +1,10 @@
 # RPG Core
 
+v1.2.4 extends `heal`/`restore_mana` amounts with `{percentOfMax: 0.2}` based on
+live recipient maxima. Numeric amounts keep their behavior; numeric readers need
+TypeScript narrowing. See [contract](docs/RPG_CORE_V1.2.4_PERCENT_RECOVERY.md) and
+[installed-package example](examples/percent-recovery.ts).
+
 v1.2.3 adds explicit flat MP restoration with `restore_mana`, alongside existing
 HP `heal`. See [contract and compatibility](docs/RPG_CORE_V1.2.3_EXPLICIT_RESTORE.md)
 and [installed-package example](examples/explicit-restore.ts).

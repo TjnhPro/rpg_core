@@ -127,3 +127,13 @@ budgets, combined Lifesteal/Mana on Hit and coarse/fine timelines. ER01 reuses
 `tests/combat/healing.test.ts` and `tests/integration/healing.test.ts`.
 `examples/explicit-restore.ts` covers ER07 through the existing installed consumer.
 See [contract and evidence](RPG_CORE_V1.2.3_EXPLICIT_RESTORE.md).
+
+### v1.2.4 Percent Recovery
+
+`tests/integration/percent-recovery.test.ts` covers PR01-PR07 closed percent schema,
+real HP/MP/caps/events, invalid stats, zero gain, mixed flat/percent ordering,
+Child-only percent HP identity, live recipient modifiers, source/target rejection,
+receipt replay/disposal and coarse/fine shared modifier-expiry boundaries.
+Previous flat tests remain unchanged. `examples/percent-recovery.ts` and the existing
+installed consumer cover PR08 normal/capped recovery and public TypeScript narrowing.
+See [contract/evidence](RPG_CORE_V1.2.4_PERCENT_RECOVERY.md).

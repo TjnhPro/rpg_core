@@ -226,3 +226,12 @@ resource resolver receives the actual recipient, including a selected ally.
 No Combat, Stats, Effects, Damage formula or scheduling change. Consumers with
 exhaustive Skill effect switches need the new discriminant. See
 [contract and preservation amendment](RPG_CORE_V1.2.3_EXPLICIT_RESTORE.md).
+
+## v1.2.4 Percent Recovery ownership
+
+Skills resolves percent requests from live recipient effective maxima and delegates
+to the unchanged canonical Combat transitions/events. Shared original-source
+validation covers percent-HP-only Child bundles without a new identity store.
+Existing ordered effects, lifecycle boundaries, budgets and resource caps remain.
+The approved public amount union widening requires numeric-read narrowing;
+see [contract and preservation amendment](RPG_CORE_V1.2.4_PERCENT_RECOVERY.md).

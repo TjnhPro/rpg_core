@@ -102,7 +102,7 @@ export function executeSkill(definition:SkillEngineDefinition,context:SkillExecu
  const action=slot.activeAction!;
  slot.skillExecution={snapshot:Object.freeze({...(rootOffense?{rootOffense}:{}),actionInstanceId:action.actionInstanceId,casterId:context.casterId,skillId:definition.skillId,configVersion:request.configVersion,definition:pinned.definition,target,startedAt:action.startedAt,durationMs:action.durationMs,activationTime:action.startedAt+offset,
   ...(spatial?{casterPosition:Object.freeze({...casterPosition!}),aimPosition:Object.freeze({...aimPosition!}),facing:Object.freeze(length===1&&facing.x===0&&facing.y===0?{x:1,y:0}:{x:facing.x/length,y:facing.y/length})}:{})}),activated:false};
- if(pinned.definition.effects?.some(e=>e.type==='heal'||e.type==='restore_mana'||'lifesteal' in e||'manaOnHit' in e)||env.triggers?.bundle.definitions.some(p=>p.definition.effects?.some(e=>e.type==='restore_mana'||'lifesteal' in e||'manaOnHit' in e))){
+ if(pinned.definition.effects?.some(e=>e.type==='heal'||e.type==='restore_mana'||'lifesteal' in e||'manaOnHit' in e)||env.triggers?.bundle.definitions.some(p=>p.definition.effects?.some(e=>e.type==='restore_mana'||e.type==='heal'&&typeof e.amount!=='number'||'lifesteal' in e||'manaOnHit' in e))){
   const identities={source:context.combat.findEntity(context.casterId)!,target:target.mode==='entity'?context.combat.findEntity(target.targetId):target.mode==='self'?context.combat.findEntity(context.casterId):undefined};
   healingEntities.set(slot.skillExecution.snapshot,identities);
   if(rootOffense)healingEntities.set(rootOffense,identities);

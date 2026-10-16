@@ -17,8 +17,8 @@ export interface SkillStackConsumption {
  outcome:{type:'instant_aoe';config:InstantAOE;damage:SkillDamageComponent};
 }
 export type SkillGameplayEffect=EffectBase & (
- | {type:'restore_mana';target:'self'|'selected';amount:number}
- | {type:'heal';target:'self'|'selected';amount:number}
+ | {type:'restore_mana';target:'self'|'selected';amount:number|{readonly percentOfMax:number}}
+ | {type:'heal';target:'self'|'selected';amount:number|{readonly percentOfMax:number}}
  | SkillStackConsumption
  | {type:'modifier_effect';definition:EffectDefinition;target:'self'|'selected'}
  | {type:'direct_hit';lifesteal?:SkillLifesteal;manaOnHit?:SkillManaOnHit;damage:SkillDamageComponent}
@@ -48,7 +48,7 @@ export function validateSkillEffects(value:unknown):string[]{
   if(e.type==='heal'||e.type==='restore_mana'){
    if(!exact(e,['type','target','amount',...(Object.hasOwn(e,'allowedTargetRelations')?['allowedTargetRelations']:[])]))errors.push(`effects: unknown/missing ${e.type==='heal'?'heal':'restore_mana'} fields`);
    if(e.target!=='self'&&e.target!=='selected')errors.push(`effects: invalid ${e.type==='heal'?'heal':'restore_mana'} recipient`);
-   if(typeof e.amount!=='number'||!Number.isFinite(e.amount)||e.amount<=0||e.amount>1000000)errors.push(`effects: invalid ${e.type==='heal'?'heal':'restore_mana'} amount`);
+   if(typeof e.amount==='number'?(!Number.isFinite(e.amount)||e.amount<=0||e.amount>1000000):(!object(e.amount)||!exact(e.amount,['percentOfMax'])||typeof e.amount.percentOfMax!=='number'||!Number.isFinite(e.amount.percentOfMax)||e.amount.percentOfMax<=0||e.amount.percentOfMax>1))errors.push(`effects: invalid ${e.type==='heal'?'heal':'restore_mana'} amount`);
    if(Object.hasOwn(e,'allowedTargetRelations')&&(!validAllowedRelations(e.allowedTargetRelations)||(e.allowedTargetRelations as unknown[]).some(r=>r!=='self'&&r!=='ally')))errors.push(`effects: invalid ${e.type==='heal'?'healing':'restore_mana'} relations`);
    continue;
   }

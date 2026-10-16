@@ -219,12 +219,17 @@ function resourceRecipient(r:SkillEffectRuntime,event:GameplayActivation,effect:
  }
  return target;
 }
+/** The original Root identity is also required for percent HP and restore-only Children. */
+function resourceSource(event:GameplayActivation,env:SkillEffectEnvironment):boolean {
+ const key=event.rootExecution??event.snapshot.rootOffense,pinned=key&&skillHealingEntities(key),source=env.combat.findEntity(event.casterId);
+ return !!pinned&&!!source&&source===pinned.source&&Number.isFinite(source.currentHp)&&source.currentHp>0;
+}
 function heal(r:SkillEffectRuntime,event:GameplayActivation,effect:Extract<SkillGameplayEffect,{type:'heal'}>,env:SkillEffectEnvironment,id:string):void {
  const target=resourceRecipient(r,event,effect,env,id);if(!target)return;
  const reject=(reason:string)=>env.emit({type:'effect-rejected',atMs:r.now,instanceId:id,targetId:target.entityId,reason});
- const maxHp=env.defenseStats(target).maxHp;
+ if(typeof effect.amount!=='number'&&!resourceSource(event,env)){reject('invalid_healing_target');return;}
  let hp:ReturnType<typeof applyEntityHealing>;
- try{hp=applyEntityHealing(target.currentHp,effect.amount,maxHp);}catch{reject('invalid_healing_hp');return;}
+ try{const maxHp=env.defenseStats(target).maxHp;hp=applyEntityHealing(target.currentHp,typeof effect.amount==='number'?effect.amount:maxHp*effect.amount.percentOfMax,maxHp);}catch{reject('invalid_healing_hp');return;}
  if(!r.active)return;
  target.currentHp=hp.after;
  if(hp.appliedHealing>0)env.emit({type:'healing-applied',entityId:target.entityId,atMs:r.now,...hp});
@@ -232,12 +237,9 @@ function heal(r:SkillEffectRuntime,event:GameplayActivation,effect:Extract<Skill
 function restoreMana(r:SkillEffectRuntime,event:GameplayActivation,effect:Extract<SkillGameplayEffect,{type:'restore_mana'}>,env:SkillEffectEnvironment,id:string):void {
  const target=resourceRecipient(r,event,effect,env,id);if(!target)return;
  const reject=(reason:string)=>env.emit({type:'effect-rejected',atMs:r.now,instanceId:id,targetId:target.entityId,reason});
- // Child admission may bind a current entity; MP restoration also requires the
- // original Root source reference, even in a restore-only bundle.
- const key=event.rootExecution??event.snapshot.rootOffense,pinned=key&&skillHealingEntities(key),source=env.combat.findEntity(event.casterId);
- if(!pinned||!source||source!==pinned.source||!Number.isFinite(source.currentHp)||source.currentHp<=0||!Number.isFinite(target.currentHp)||target.currentHp<=0){reject('invalid_mana_recipient');return;}
+ if(!resourceSource(event,env)||!Number.isFinite(target.currentHp)||target.currentHp<=0){reject('invalid_mana_recipient');return;}
  let mp:ReturnType<typeof applyEntityManaGain>;
- try{if(!env.resourceStats)throw Error('Missing resourceStats');mp=applyEntityManaGain(target.currentMp,effect.amount,env.resourceStats(target).maxMana);}catch{reject('invalid_mana_mp');return;}
+ try{if(!env.resourceStats)throw Error('Missing resourceStats');const maxMana=env.resourceStats(target).maxMana;mp=applyEntityManaGain(target.currentMp,typeof effect.amount==='number'?effect.amount:maxMana*effect.amount.percentOfMax,maxMana);}catch{reject('invalid_mana_mp');return;}
  if(!r.active)return;
  target.currentMp=mp.after;
  if(mp.appliedMana>0)env.emit({type:'mana-gained',entityId:target.entityId,atMs:r.now,...mp});

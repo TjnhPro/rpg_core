@@ -144,13 +144,13 @@
       "declarations": [
         "16aafaa346f15c2a4825ea958fff9ea75841c038c8a1bbddb0609a7e96c48ce4",
         "4e388f20cd2d26d288b1040b1a09455d039dfc89aa440faaeeb2d085dcc31ef3",
+        "56190d7972277632f89a2838993eae35c4a47ba02657b582c3f0c3aa44fd9a9b",
         "60e77d443a4e3f87d8220e8b3714e735ddabec061ee7d58a3b0818a60cefa372",
         "6e5a0c70a347576bf952decaa1fe0b37bcecc55444afb0a194f7b73dddaaebab",
         "70b1ddf3744afb53b0c4a230561da455e937ee19bf7e3faf848c29e88befb75f",
         "73e15f18e3c6b773569de2d8e5c6a5c8c5830bdf6bc9505800dbcca5d3642574",
-        "dd9a1470782d2cd40e0bd1e3fd381f3dfa9723b8a4a850d6942b7f85fbaa6c63",
         "e2612a4fc27c329a792c115d90e9b400d3fc45cec0132979565604968ab2ecc2",
-        "eb386f25e459c074ec9fc76008045223827886e28cf7122ac2e7ac8ddfecaed7",
+        "f159948abd80f7ccbe6411233589c4539d4d3ccf4f4fb983a95db0b93eb374b2",
         "f7c6d55e0602a7f03c77af1991713f8c0c152ee0d18c1cc074020e3b7966ecf6",
         "f955e9100f21f1f4bda570ff22103009415f148ff7e1831cc2321fe61cf3c898",
         "f9ab77658c46dd844dbfb9d2c0c94528aa2387272f9cf6c0cfe9201c99c0ab2b"
@@ -249,6 +249,23 @@
                 "name": "validateSkillEffects",
                 "before": "22a430a0c560717837a6c0b0c424995c4f339756e535c84c22811ca549a7c50b",
                 "after": "dd9a1470782d2cd40e0bd1e3fd381f3dfa9723b8a4a850d6942b7f85fbaa6c63"
+              }
+            ]
+          },
+          {
+            "checkpoint": "v1.2.4",
+            "baseCommit": "880a60683006a14dc2228b95a2e8095659b7bcf7",
+            "authority": "Developer approval of Percent Recovery P1-P8, public amount widening and percent-HP-only Child pinning; docs/RPG_CORE_V1.2.4_PERCENT_RECOVERY.md",
+            "declarations": [
+              {
+                "name": "SkillGameplayEffect",
+                "before": "eb386f25e459c074ec9fc76008045223827886e28cf7122ac2e7ac8ddfecaed7",
+                "after": "56190d7972277632f89a2838993eae35c4a47ba02657b582c3f0c3aa44fd9a9b"
+              },
+              {
+                "name": "validateSkillEffects",
+                "before": "dd9a1470782d2cd40e0bd1e3fd381f3dfa9723b8a4a850d6942b7f85fbaa6c63",
+                "after": "f159948abd80f7ccbe6411233589c4539d4d3ccf4f4fb983a95db0b93eb374b2"
               }
             ]
           }
@@ -476,7 +493,7 @@
         "25fe3a7378eb5eded618e3ea4240f30c982312dcd8dfaba24285c0b6269eabff",
         "2b3ca040833cbe062b4487a3a39e7dcc5f919b1c987654f16ce1f9fb282b8c7d",
         "324a6ce6804e9cd9dcfc7b527e9d8988f0f7880e27554a6dc02aa8b54333e16e",
-        "4b2380347eb858395cc2d274bbce95697e00af997455583155eee2510b7a991b",
+        "52a91aaacfbd91f9154d5337b5a2375112b99594aca7f07fe19465a3d7745d6b",
         "85f6ed045ece55e5467915879fa9583b95a6f1ab4cb2975ee474b19330b989ef",
         "8ee20dedcc2767c8e2dc8bca02387947a14cf1722f7076832c703eda19c0fad2",
         "8f24dc4e63f1cf24249c1e1d0d14f1d0ae19a98859fabf9d747871a1a7caac77",
@@ -635,6 +652,18 @@
                 "after": "4b2380347eb858395cc2d274bbce95697e00af997455583155eee2510b7a991b"
               }
             ]
+          },
+          {
+            "checkpoint": "v1.2.4",
+            "baseCommit": "880a60683006a14dc2228b95a2e8095659b7bcf7",
+            "authority": "Developer approval of Percent Recovery P1-P8, public amount widening and percent-HP-only Child pinning; docs/RPG_CORE_V1.2.4_PERCENT_RECOVERY.md",
+            "declarations": [
+              {
+                "name": "executeSkill",
+                "before": "4b2380347eb858395cc2d274bbce95697e00af997455583155eee2510b7a991b",
+                "after": "52a91aaacfbd91f9154d5337b5a2375112b99594aca7f07fe19465a3d7745d6b"
+              }
+            ]
           }
         ]
       }
@@ -646,21 +675,21 @@
       ],
       "declarations": [
         "0360b1d17ba059e0b6c4c833f37c2fee70d6afbd56634773dd4f1c5aa2a508bf",
-        "05ec00295aaf7f30deaeb47a9ec380f3b13c1ec468776c653e56775afd6dc266",
         "07920f2e4d65f242aaf56d80fb615addee300236dcf23d7bc48c50d123eb91de",
         "0c9121311616b98729f64070ec98fae2dba2c5f700f51414346c9136840bde2c",
+        "11a22ed4886f1b41b47734afc4b798f082ebafd34e08a1531797b804843f7c0c",
         "166b106d11a9ba04f116bc1669ab4672a731518a9f05112b555ff5884012f726",
         "17067d856e4d37eac0e402c670e8e6ec0d1d099da13670b8db8af286d6395764",
         "1c0a40af2089c4fe7e2e7c274f84db1847286f0199f04295eb45ff7b8b8401da",
         "1c135c498e1ff8aa3126689c014cbae95fe5f3b3430f8d7a89b62cf9ad3339b0",
         "27cd9a7915a859b356e3ab75a601086204a8a7763188548e8b8c15790e5deef7",
         "2848cdabb3cb390c823372d00ab033d34ccbb1956dde4f96c03ff007ac1d0ff7",
-        "2b3805f5121884356b031daa1cf40e2dfa00999730c98e74ddd7c39b287e4e1f",
         "2c5c7e4a8442f59b34816af6a42c3bcb365609dba7bbf5c6301ca2a937b10d36",
         "31fe2fb936203a3018652f93f1c29e86ec6df0da6906f1d9e00c9165ce905e5d",
         "3f1945742cd70e5529fbb61fc965dcfff016459f325ec1bf2684c63a0fce4985",
         "497e66b613ccfc0ccfdef8c8a5a5453967a4a3982b3b85bfaeb594ab7680ee73",
         "4d26efb7c5890b33ce0848a3cb7116043fa542b177dd77704c676a3ce9897b23",
+        "51528b2bd6198a5f7907b22759d5ba7516bf67e48c57684c391a4517832c36c5",
         "5fce1c2777bc558d43697fb78972c22e2ff708828bb01c50733f96e0f6578d0c",
         "60186253213fbd14e294cbbb21f8375e20fd5b40f8c75a58332e7d02c5af2b83",
         "6217f75d58ce4afa114fd3b8d392b2a1cb233b3f6650ad9e125b27becc6edf3c",
@@ -671,6 +700,7 @@
         "8e3831d1ce1f0af61e793e4290d6a21e429d5f7029327e3785538e05f968708a",
         "b19ccdd3bc14cd9480870c59d61dfb19327002558d2c4108b2e1519c71716c70",
         "b355daa0b3619fde1351607961aa4b581fe88f4da3f75bc6f3e5e49b9b60e509",
+        "baca8731edd2771713a549b398a4b5ac09e2884f9360536612b5409ad58af998",
         "be896081bc4d9fff540eec4918856a5be37e903ec13746692e7750acbace9515",
         "ca1b36f9e34eafc6a90affa8b6c933885f314e2ce206c0c242f46a472d8aeff0",
         "d622a18aa6db839ae3a811a3767ca7172276bf6da111a4a8cde4dacb7208f85f",
@@ -1030,6 +1060,27 @@
                 "name": "childDispatcher",
                 "before": "d7506978662d6ab44555f935331a6d149c51a36651dd18de56b386d6fc8307d1",
                 "after": "b19ccdd3bc14cd9480870c59d61dfb19327002558d2c4108b2e1519c71716c70"
+              }
+            ]
+          },
+          {
+            "checkpoint": "v1.2.4",
+            "baseCommit": "880a60683006a14dc2228b95a2e8095659b7bcf7",
+            "authority": "Developer approval of Percent Recovery P1-P8, public amount widening and percent-HP-only Child pinning; docs/RPG_CORE_V1.2.4_PERCENT_RECOVERY.md",
+            "declarations": [
+              {
+                "name": "resourceSource",
+                "after": "baca8731edd2771713a549b398a4b5ac09e2884f9360536612b5409ad58af998"
+              },
+              {
+                "name": "heal",
+                "before": "05ec00295aaf7f30deaeb47a9ec380f3b13c1ec468776c653e56775afd6dc266",
+                "after": "51528b2bd6198a5f7907b22759d5ba7516bf67e48c57684c391a4517832c36c5"
+              },
+              {
+                "name": "restoreMana",
+                "before": "2b3805f5121884356b031daa1cf40e2dfa00999730c98e74ddd7c39b287e4e1f",
+                "after": "11a22ed4886f1b41b47734afc4b798f082ebafd34e08a1531797b804843f7c0c"
               }
             ]
           }
