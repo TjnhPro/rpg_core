@@ -142,16 +142,38 @@
         "src/skills/skill-effects.ts"
       ],
       "declarations": [
+        "0b5a8e1ed742bc9e95c489ae2c309f45c4a5d29ed7f9e2bec8657fbc754bbb47",
         "16aafaa346f15c2a4825ea958fff9ea75841c038c8a1bbddb0609a7e96c48ce4",
         "4e388f20cd2d26d288b1040b1a09455d039dfc89aa440faaeeb2d085dcc31ef3",
         "60e77d443a4e3f87d8220e8b3714e735ddabec061ee7d58a3b0818a60cefa372",
         "70b1ddf3744afb53b0c4a230561da455e937ee19bf7e3faf848c29e88befb75f",
-        "a2cf978d57fcdb62f8eea18c164c142d5114cdd11086f95c00c0ee249af3a82f",
-        "e0cb7e273308af6699a96ca5007059d2a475cb92b272ed7e60d3da9cc6555c28",
+        "73e15f18e3c6b773569de2d8e5c6a5c8c5830bdf6bc9505800dbcca5d3642574",
+        "830bfbc0ccadaa9df7042ede07b1c55e83a809c9be391b12247fdbde82cfb190",
         "f7c6d55e0602a7f03c77af1991713f8c0c152ee0d18c1cc074020e3b7966ecf6",
         "f955e9100f21f1f4bda570ff22103009415f148ff7e1831cc2321fe61cf3c898",
         "f9ab77658c46dd844dbfb9d2c0c94528aa2387272f9cf6c0cfe9201c99c0ab2b"
-      ]
+      ],
+      "approvedChange": {
+        "checkpoint": "v1.1.5",
+        "baseCommit": "f8d75751917f441907925e756e24c7c617211015",
+        "authority": "Developer acceptance of v1.1.4 and v1.1.5 delta-plan approval S1-S6 A/A/A/A/A/A; docs/RPG_CORE_V1.1.5_STACK_CONSUMPTION.md",
+        "declarations": [
+          {
+            "name": "SkillStackConsumption",
+            "after": "73e15f18e3c6b773569de2d8e5c6a5c8c5830bdf6bc9505800dbcca5d3642574"
+          },
+          {
+            "name": "SkillGameplayEffect",
+            "before": "a2cf978d57fcdb62f8eea18c164c142d5114cdd11086f95c00c0ee249af3a82f",
+            "after": "0b5a8e1ed742bc9e95c489ae2c309f45c4a5d29ed7f9e2bec8657fbc754bbb47"
+          },
+          {
+            "name": "validateSkillEffects",
+            "before": "e0cb7e273308af6699a96ca5007059d2a475cb92b272ed7e60d3da9cc6555c28",
+            "after": "830bfbc0ccadaa9df7042ede07b1c55e83a809c9be391b12247fdbde82cfb190"
+          }
+        ]
+      }
     },
     {
       "originalFile": "src/shared/game/combat-entity.ts",
@@ -415,9 +437,8 @@
         "0c9121311616b98729f64070ec98fae2dba2c5f700f51414346c9136840bde2c",
         "166b106d11a9ba04f116bc1669ab4672a731518a9f05112b555ff5884012f726",
         "17067d856e4d37eac0e402c670e8e6ec0d1d099da13670b8db8af286d6395764",
+        "1c135c498e1ff8aa3126689c014cbae95fe5f3b3430f8d7a89b62cf9ad3339b0",
         "1f9467fea19975a8ea5c7aa323cab8890b036ce67e0340c3a2bf3d832e7bbf79",
-        "3b8ae2d990f3d2d071bec3d49e9999391daae3091580e8ed58d14c3f0657010e",
-        "3bfa396fba9b390152c01842da482944509dedff79d98b418bb14e5355ae318d",
         "3f1945742cd70e5529fbb61fc965dcfff016459f325ec1bf2684c63a0fce4985",
         "497e66b613ccfc0ccfdef8c8a5a5453967a4a3982b3b85bfaeb594ab7680ee73",
         "4d26efb7c5890b33ce0848a3cb7116043fa542b177dd77704c676a3ce9897b23",
@@ -432,9 +453,11 @@
         "8e3831d1ce1f0af61e793e4290d6a21e429d5f7029327e3785538e05f968708a",
         "9892495e0a644f6dd0b3e5f8182a65259b223d97b35ab870c6d0c0276d9a41c0",
         "b355daa0b3619fde1351607961aa4b581fe88f4da3f75bc6f3e5e49b9b60e509",
+        "b8c5beb50aa94023a4dfad989100de5d667ff824311784391213ca73a67ca2fb",
         "bc3c8aba7ab328e17ac68e9b7056431a153bc5236806daeb797da4648c601d79",
+        "be896081bc4d9fff540eec4918856a5be37e903ec13746692e7750acbace9515",
         "d622a18aa6db839ae3a811a3767ca7172276bf6da111a4a8cde4dacb7208f85f",
-        "e1618416e3c2208f1cc372e059a70669c37a68e96570e71be42a2fc42ed62e37",
+        "d6b3bcd47bc56a408f32f82d41abd44a7cb3aaf3ef8347e24adcd45354835d96",
         "eaf21d3e6ae0f1be28bce6cb91b17b0b7acbf1f56d0d6a4bba3b07a35f41b769",
         "f3e21a4b409028b2d6172b7f2d7040e3f7e27b528408fa49837fdc21d04f9df2",
         "fdd8f45dc52a3688155ace03dd0b512564f5f81d06d99f8182307c87651b115f"
@@ -611,6 +634,32 @@
                 "after": "eaf21d3e6ae0f1be28bce6cb91b17b0b7acbf1f56d0d6a4bba3b07a35f41b769"
               }
             ]
+          },
+          {
+            "checkpoint": "v1.1.5",
+            "baseCommit": "f8d75751917f441907925e756e24c7c617211015",
+            "authority": "Developer acceptance of v1.1.4 and v1.1.5 delta-plan approval S1-S6 A/A/A/A/A/A; docs/RPG_CORE_V1.1.5_STACK_CONSUMPTION.md",
+            "declarations": [
+              {
+                "name": "Delivery",
+                "before": "3b8ae2d990f3d2d071bec3d49e9999391daae3091580e8ed58d14c3f0657010e",
+                "after": "b8c5beb50aa94023a4dfad989100de5d667ff824311784391213ca73a67ca2fb"
+              },
+              {
+                "name": "aoe",
+                "before": "3bfa396fba9b390152c01842da482944509dedff79d98b418bb14e5355ae318d",
+                "after": "1c135c498e1ff8aa3126689c014cbae95fe5f3b3430f8d7a89b62cf9ad3339b0"
+              },
+              {
+                "name": "dispatchGameplayEffects",
+                "before": "e1618416e3c2208f1cc372e059a70669c37a68e96570e71be42a2fc42ed62e37",
+                "after": "d6b3bcd47bc56a408f32f82d41abd44a7cb3aaf3ef8347e24adcd45354835d96"
+              },
+              {
+                "name": "consumeStackEffect",
+                "after": "be896081bc4d9fff540eec4918856a5be37e903ec13746692e7750acbace9515"
+              }
+            ]
           }
         ]
       }
@@ -654,18 +703,55 @@
       ],
       "declarations": [
         "11349f29a2855606853e1933e27aa1b5d5772eac1161a8615992e0dac3b451bc",
-        "148c0706b6edda3afbbae78d21c88ccfaa6a73ab10b862153d4e5baa96444caa",
+        "143438d1e880cc6d945af99abf2be62f560624d4c9b52fc66f81e6f27c991f55",
         "18d265773e9f96dd7fb285109d22ede5a5e9d84739af2a4bfff56b55a679c776",
         "1bec87b4ff3ac6a76d1ba751f6553a3d278b868ce09cb28222c6bb926657df9b",
+        "1fbd03351355b839db728aa148d27b02ff9e10a533cf955dfb90aaa52d882fd4",
         "23dab305335cf91424e29a6ffc4f63dd49a076e9b77850158cc46f473b977432",
         "3a3e6fe5295d5159444dc8a35ab46d195cc717398848c195080de46392dd615b",
+        "4306e77d52cc0d37d5968cd6b805399f2643d85b0f857802832b298ad150fdad",
         "667baa991342ff876d798c18a82a0b53c60027b3144400f281b910a514da0f9a",
+        "6ead5513687d8a6ad9d357199dc0277a89bb065f96a2423baeddbaa3c74a5d41",
         "826e73190924ec41261053112a23f777578a20dc3758f1e41ef2379badd2fac5",
         "9092a8c2dd90d544801629f9e53c643ad9d1eb4e84e25ab755a0e64245d975f7",
         "9ce1caa30359b55aefb1cf82c719b3c3ca7d26971abb8eac7ff228701a260cb8",
         "c88fc9a49cf2e8de6f9d72889ad578c4ec1e91598d84d09860cbac470f8f2468",
-        "dde8220c9efcead8dd6b8cd3a1d4216a0f25e3f2d815e9e0a3abd11f970ebe3a"
-      ]
+        "ccd15562a6cff465c01b1220801206eebfd70afef390f5f09fe5cc1824e2677a",
+        "fc160387c1944f192d2795485061769228447a945168e18d13772471eeb61af1"
+      ],
+      "approvedChange": {
+        "checkpoint": "v1.1.5",
+        "baseCommit": "f8d75751917f441907925e756e24c7c617211015",
+        "authority": "Developer acceptance of v1.1.4 and v1.1.5 delta-plan approval S1-S6 A/A/A/A/A/A; docs/RPG_CORE_V1.1.5_STACK_CONSUMPTION.md",
+        "declarations": [
+          {
+            "name": "EffectRemovalReason",
+            "before": "dde8220c9efcead8dd6b8cd3a1d4216a0f25e3f2d815e9e0a3abd11f970ebe3a",
+            "after": "6ead5513687d8a6ad9d357199dc0277a89bb065f96a2423baeddbaa3c74a5d41"
+          },
+          {
+            "name": "EffectStackConsumeRequest",
+            "after": "143438d1e880cc6d945af99abf2be62f560624d4c9b52fc66f81e6f27c991f55"
+          },
+          {
+            "name": "EffectStackConsumePlan",
+            "after": "1fbd03351355b839db728aa148d27b02ff9e10a533cf955dfb90aaa52d882fd4"
+          },
+          {
+            "name": "EffectStackConsumeRejection",
+            "after": "4306e77d52cc0d37d5968cd6b805399f2643d85b0f857802832b298ad150fdad"
+          },
+          {
+            "name": "EffectStackConsumeResult",
+            "after": "fc160387c1944f192d2795485061769228447a945168e18d13772471eeb61af1"
+          },
+          {
+            "name": "EffectLifecycle",
+            "before": "148c0706b6edda3afbbae78d21c88ccfaa6a73ab10b862153d4e5baa96444caa",
+            "after": "ccd15562a6cff465c01b1220801206eebfd70afef390f5f09fe5cc1824e2677a"
+          }
+        ]
+      }
     },
     {
       "originalFile": "src/shared/game/dot-core.ts",

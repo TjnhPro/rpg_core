@@ -64,3 +64,12 @@ Existing suites retain N12 legacy coverage and the unchanged headless digest.
 `examples/nested-composition.ts` runs from an installed archive for N13, including
 strict public types, real child damage/HP and single cost/cooldown/action serial.
 See [v1.1.4 contract and evidence](RPG_CORE_V1.1.4_NESTED_COMPOSITION.md).
+
+
+v1.1.5 stack consumption: `tests/effects/stack-consumption.test.ts` and
+`tests/integration/stack-consumption.test.ts` cover authoritative exact-N removal,
+owner capability/replay, expiry/isolation, atomic failure, actual Root/Child AoE
+damage, B0 flat contributions and coarse/fine determinism.
+`examples/stack-consumption.ts` runs through the strict installed consumer.
+See [contract and evidence](RPG_CORE_V1.1.5_STACK_CONSUMPTION.md).
+Conditional Triggers (v1.1.6) are not implemented.

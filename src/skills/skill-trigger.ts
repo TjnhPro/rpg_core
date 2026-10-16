@@ -301,6 +301,14 @@ export function recordSkillProjectile(runtime:SkillEffectRuntime,instanceId:stri
  const s=sessions.get(runtime),c=s?.contexts.get(instanceId);
  if(s&&c?.binding.executeChildren){c.root.projectiles++;s.work++;}
 }
+/** Stack operations reuse the session boundary budget; no independent counter. */
+export function skillEffectWork(runtime:SkillEffectRuntime,commit=false):boolean {
+ const s=sessions.get(runtime);if(!s||!runtime.active)return false;
+ boundary(s,runtime.now);
+ if(s.work>=SKILL_TRIGGER_LIMITS.maxWorkPerBoundary)return false;
+ if(commit)s.work++;
+ return true;
+}
 /** Validation/replay is read-only: no requeue, observer call, RNG or resource work. */
 export function validateSkillTriggerReceipt(runtime:SkillEffectRuntime,receipt:SkillTriggerReceipt):SkillTriggerReceiptResult {
  const s=sessions.get(runtime);if(!s||!runtime.active)return {success:false,reason:'invalid_session'};

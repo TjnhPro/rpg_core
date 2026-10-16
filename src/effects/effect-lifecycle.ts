@@ -1,9 +1,9 @@
 import {defineEffect,validateEffectApplyRequest,type EffectApplyRequest,type EffectApplyContext,type EffectDefinition,
  type EffectInstance,type EffectRejection} from './effect-system.js';
-import {validateCombatHit,type CombatRejection,type CombatValidationContext,type CombatRestriction} from '../combat/combat-state.js';
+import {validateCombatHit,validAllowedRelations,type CombatRejection,type CombatValidationContext,type CombatRestriction} from '../combat/combat-state.js';
 import type {CombatModifier} from '../contracts/combat-modifiers.js';
 
-export type EffectRemovalReason='explicit'|'target_defeated'|'session_cleanup';
+export type EffectRemovalReason='explicit'|'target_defeated'|'session_cleanup'|'consumed';
 export type EffectLifecycleEvent=
  | {type:'effect-applied'|'effect-refreshed'|'effect-stack-refreshed'|'effect-expired';instance:EffectInstance;atMs:number}
  | {type:'effect-removed';instance:EffectInstance;atMs:number;reason:EffectRemovalReason};
@@ -12,6 +12,15 @@ export type EffectOperationResult=
  | {success:false;reason:Rejection}
  | {success:true;events:readonly EffectLifecycleEvent[];instance?:EffectInstance;duplicate?:boolean};
 interface ActiveEffect {instance:EffectInstance;definition:EffectDefinition;modifiers:readonly CombatModifier[];restrictions:readonly CombatRestriction[]}
+export interface EffectStackConsumeRequest extends EffectApplyRequest {readonly requiredStacks:number}
+/** Owner-issued capability, not a writable selection or caller-allocated receipt. */
+export interface EffectStackConsumePlan {
+ readonly consumedInstanceIds:readonly string[];readonly consumedCount:number;readonly remainingStacks:number;
+}
+export type EffectStackConsumeRejection=Rejection|'invalid_consume_request'|'invalid_consume_plan'|'stale_consume_plan'|'insufficient_stacks'|'not_stack_policy'|'pending_expiry';
+export type EffectStackConsumeResult=
+ | {readonly success:false;readonly reason:EffectStackConsumeRejection}
+ | ({readonly success:true;readonly duplicate:boolean;readonly events:readonly EffectLifecycleEvent[]}&EffectStackConsumePlan);
 export interface EffectGroupView {
  readonly effectId:string;readonly targetEntityId:string;readonly sourceEntityId:string;
  readonly stackingPolicy:'refresh'|'stack';readonly currentStacks:number;readonly maxStacks:number;
@@ -36,6 +45,8 @@ export class EffectLifecycle {
  private frontiers=new Map<string,{serial:number;fingerprint:string;instanceId:string}>();
  private clock:number;
  private ended=false;
+ // Weak owner capabilities retain no session-wide operation history or stack cache.
+ #consumePlans=new WeakMap<EffectStackConsumePlan,{request:EffectStackConsumeRequest;atMs:number;group:readonly EffectInstance[];source:unknown;target:unknown;result?:EffectStackConsumeResult}>();
  constructor(now=0){if(!validTime(now))throw Error('Invalid simulation time');this.clock=now;}
  get now():number{return this.clock;}
  get active():boolean{return !this.ended;}
@@ -134,6 +145,40 @@ export class EffectLifecycle {
   const effect=this.effects.get(effectInstanceId);if(!effect)return failure('effect_not_active');
   return {success:true,events:[this.removeActive(effect,'explicit')]};
  }
+ /** Pure preflight on the authoritative store, at an already-advanced boundary. */
+ prepareConsumeStacks(request:EffectStackConsumeRequest,context:EffectApplyContext):{readonly success:true;readonly plan:EffectStackConsumePlan}|{readonly success:false;readonly reason:EffectStackConsumeRejection} {
+  const fail=(reason:EffectStackConsumeRejection)=>Object.freeze({success:false as const,reason});
+  if(this.ended)return fail('session_ended');
+  if(!context||context.now!==this.clock||!validTime(context.now))return fail('invalid_timeline');
+  if(!request||Object.keys(request).sort().join()!=='allowedTargetRelations,effectId,requiredStacks,sourceEntityId,targetEntityId'
+   ||![request.effectId,request.sourceEntityId,request.targetEntityId].every(id=>typeof id==='string'&&id.trim().length>0)
+   ||!Number.isSafeInteger(request.requiredStacks)||request.requiredStacks<=0||!validAllowedRelations(request.allowedTargetRelations))return fail('invalid_consume_request');
+  if(!context.combat||typeof context.combat.findEntity!=='function'||typeof context.combat.relation!=='function')return fail('invalid_entity_context');
+  const hit=validateCombatHit({casterId:request.sourceEntityId,targetId:request.targetEntityId,allowedRelations:request.allowedTargetRelations,requiresLivingTarget:true},context.combat);
+  if(!hit.allowed)return fail(hit.reason);
+  const group=sorted(this.effects.values()).filter(e=>e.instance.sourceEntityId===request.sourceEntityId&&e.instance.targetEntityId===request.targetEntityId&&e.instance.effectId===request.effectId);
+  if(group.some(e=>e.instance.expiresAt<=this.clock))return fail('pending_expiry');
+  if(group.some(e=>policy(e.definition)!=='stack'))return fail('not_stack_policy');
+  if(group.length<request.requiredStacks)return fail('insufficient_stacks');
+  const plan=Object.freeze({consumedInstanceIds:Object.freeze(group.slice(0,request.requiredStacks).map(e=>e.instance.effectInstanceId)),consumedCount:request.requiredStacks,remainingStacks:group.length-request.requiredStacks});
+  this.#consumePlans.set(plan,{request:Object.freeze({...request,allowedTargetRelations:Object.freeze([...request.allowedTargetRelations])}),atMs:this.clock,group:group.map(e=>e.instance),source:context.combat.findEntity(request.sourceEntityId),target:context.combat.findEntity(request.targetEntityId)});
+  return Object.freeze({success:true,plan});
+ }
+ /** Exact-N commit has no callbacks. A stale selection cannot partially remove. */
+ consumeStacks(plan:EffectStackConsumePlan,context:EffectApplyContext):EffectStackConsumeResult {
+  const fail=(reason:EffectStackConsumeRejection):EffectStackConsumeResult=>Object.freeze({success:false,reason});
+  if(this.ended)return fail('session_ended');
+  const data=this.#consumePlans.get(plan);if(!data)return fail('invalid_consume_plan');
+  if(!context||context.now!==this.clock||context.now!==data.atMs)return fail('invalid_timeline');
+  if(data.result)return Object.freeze({...data.result,duplicate:true,events:Object.freeze([])}) as EffectStackConsumeResult;
+  const check=this.prepareConsumeStacks(data.request,context);if(!check.success)return check;
+  if(context.combat.findEntity(data.request.sourceEntityId)!==data.source||context.combat.findEntity(data.request.targetEntityId)!==data.target)return fail('stale_consume_plan');
+  const group=sorted(this.effects.values()).filter(e=>e.instance.sourceEntityId===data.request.sourceEntityId&&e.instance.targetEntityId===data.request.targetEntityId&&e.instance.effectId===data.request.effectId);
+  if(group.length!==data.group.length||group.some((e,i)=>e.instance!==data.group[i]))return fail('stale_consume_plan');
+  const events=Object.freeze(group.slice(0,plan.consumedCount).map(e=>Object.freeze(this.removeActive(e,'consumed'))));
+  const result=Object.freeze({success:true as const,...plan,duplicate:false,events});data.result=result;data.group=[];
+  return result;
+ }
  /** Forward the existing EntityDefeated after its HP write, not a second death
  * emitter. Expiration precedes removal at equal time. Missing/dead sources are
  * not queried; their effects retain duration. */
@@ -153,7 +198,7 @@ export class EffectLifecycle {
   if(!validTime(now)||now<this.clock)return failure('invalid_timeline');
   this.clock=now;const events=this.expire();
   for(const effect of sorted(this.effects.values()))events.push(this.removeActive(effect,'session_cleanup'));
-  this.effects.clear();this.frontiers.clear();this.ended=true;
+  this.effects.clear();this.frontiers.clear();this.#consumePlans=new WeakMap();this.ended=true;
   return {success:true,events};
  }
  private expire():EffectLifecycleEvent[]{
