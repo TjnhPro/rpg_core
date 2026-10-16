@@ -47,3 +47,10 @@ L1–L14 matrix together with `examples/skill-instance.ts` in the installed strict
 consumer. See [contract and results](RPG_CORE_V1.1.2_SKILL_INSTANCE_LIFECYCLE.md).
 Identity, shared S0, detached lifecycle and expiry are covered; automatic triggers
 and child gameplay dispatch remain outside this checkpoint.
+
+v1.1.3 trigger safety: `tests/skills/skill-trigger.test.ts` covers T1–T10 through
+real projectile/lifecycle paths, pinned DAG/replay/session validation, ordered
+bounded batch reservation and callback cleanup. Existing integration tests cover
+T11 opt-out mechanics; `examples/skill-trigger.ts` is compiled and executed in the
+strict installed consumer for T12. See [checkpoint evidence](RPG_CORE_V1.1.3_TRIGGER_SAFETY.md).
+Nested Child Skill execution remains unimplemented (v1.1.4).

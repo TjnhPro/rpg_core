@@ -169,3 +169,9 @@ locally implemented with behavior informed by earlier research; this is not a
 claim that all pre-existing code has clean-room legal provenance. Build dependency
 licenses remain their own: TypeScript Apache-2.0, Vitest MIT, @types/node MIT;
 transitive packages are restored by npm, not vendored.
+
+Trigger intents are opt-in through `SkillExecutionEnvironment.triggers`, using a
+`pinSkillTriggerBundle` of existing immutable instance definition pins. v1.1.3
+supports projectile entity-contact OnImpact and natural Skill lifetime OnExpire;
+accepted intents do not execute children. See the [contract and evidence](docs/RPG_CORE_V1.1.3_TRIGGER_SAFETY.md)
+and [installed-package example](examples/skill-trigger.ts).

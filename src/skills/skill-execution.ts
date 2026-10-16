@@ -1,4 +1,5 @@
-import {prepareRootSkillInstance,bindRootSkillInstance,validateRootInstanceTime,activateRootSkillInstance,cancelRootSkillInstance} from './skill-instance.js';
+import {prepareSkillTriggers,bindRootSkillTriggers,type SkillTriggerBinding} from './skill-trigger.js';
+import {prepareRootSkillInstance,bindRootSkillInstance,rootSkillInstance,validateRootInstanceTime,activateRootSkillInstance,cancelRootSkillInstance} from './skill-instance.js';
 import {activateRootOffense,prepareRootOffense,bindRootOffense,type SkillRootOffenseCapture,type RootOffensiveSnapshot} from './root-offense.js';
 import {skillActionAdmission,skillAvailability,startSkillAction,defineSkill,type SkillEngineDefinition,type SkillExecutionContext,type SkillCooldownState,type SkillResult,type SkillAvailability} from './skill-engine.js';
 import {completeCombatAction,cancelCombatAction,reconcileCombatRestrictions,type CombatActionSlot,type EntityCombatEvent,type CombatValidationContext,type ActiveCombatAction} from '../combat/combat-state.js';
@@ -9,6 +10,7 @@ import type {CombatEntity} from '../combat/combat-entity.js';
 /** Trusted game adapter, not request-body stats or player-only state. */
 export interface SkillExecutionEnvironment {
  readonly rootOffense?:SkillRootOffenseCapture;
+ readonly triggers?:SkillTriggerBinding;
  /** Explicit gameplay lifetime from activation; requires opt-in instance session. */
  readonly skillInstanceLifetimeMs?:number;
  readonly grid:Walkability;
@@ -83,6 +85,7 @@ export function executeSkill(definition:SkillEngineDefinition,context:SkillExecu
  const length=Math.hypot(facing.x,facing.y)||1;
  const target=context.target.mode==='ground'?Object.freeze({...context.target,position:Object.freeze({...context.target.position})}):Object.freeze({...context.target});
  if(!prepareRootSkillInstance(env.rootOffense?.runtime,`${context.casterId}#${request.expectedSerial}`,request.now,request.now+offset,env.skillInstanceLifetimeMs))return {success:false,reason:'invalid_context'};
+ if(!prepareSkillTriggers(env.rootOffense?.runtime,pinned.definition,request.configVersion,env.skillInstanceLifetimeMs,aimPosition??casterPosition,env.triggers))return {success:false,reason:'invalid_context'};
  let rootOffense:RootOffensiveSnapshot|undefined;
  if(env.rootOffense){
   // Reject stale admission before calling the trusted offense adapter.
@@ -96,7 +99,8 @@ export function executeSkill(definition:SkillEngineDefinition,context:SkillExecu
  const action=slot.activeAction!;
  slot.skillExecution={snapshot:Object.freeze({...(rootOffense?{rootOffense}:{}),actionInstanceId:action.actionInstanceId,casterId:context.casterId,skillId:definition.skillId,configVersion:request.configVersion,definition:pinned.definition,target,startedAt:action.startedAt,durationMs:action.durationMs,activationTime:action.startedAt+offset,
   ...(spatial?{casterPosition:Object.freeze({...casterPosition!}),aimPosition:Object.freeze({...aimPosition!}),facing:Object.freeze(length===1&&facing.x===0&&facing.y===0?{x:1,y:0}:{x:facing.x/length,y:facing.y/length})}:{})}),activated:false};
- if(rootOffense){bindRootOffense(env.rootOffense!.runtime,slot.skillExecution.snapshot);bindRootSkillInstance(env.rootOffense!.runtime,slot.skillExecution.snapshot,env.skillInstanceLifetimeMs);}
+ if(rootOffense){bindRootOffense(env.rootOffense!.runtime,slot.skillExecution.snapshot);bindRootSkillInstance(env.rootOffense!.runtime,slot.skillExecution.snapshot,env.skillInstanceLifetimeMs);
+  bindRootSkillTriggers(env.rootOffense!.runtime,rootSkillInstance(env.rootOffense!.runtime,slot.skillExecution.snapshot)!,aimPosition??casterPosition,env.triggers);}
  const emitted:SkillExecutionEvent[]=[...events];
  // Zero-percent activation is part of successful start, after MP/deadline commit.
  advanceSkillExecution(slot,context.combat,request.now,emitted);

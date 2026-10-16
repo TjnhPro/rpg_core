@@ -320,14 +320,14 @@
         "1316a9f087386717f5e9d5f4080dc312e8823e44b72075b4507da77ec8502a70",
         "14dc8184162b1623978cb5454b973292e79a836434f15be90f939d4f2a74a27a",
         "25fe3a7378eb5eded618e3ea4240f30c982312dcd8dfaba24285c0b6269eabff",
-        "299ecde1c546582fa6a24000b3de7548f5565584136dd2ff0b461cbeeec2c2bd",
         "2b3ca040833cbe062b4487a3a39e7dcc5f919b1c987654f16ce1f9fb282b8c7d",
         "85f6ed045ece55e5467915879fa9583b95a6f1ab4cb2975ee474b19330b989ef",
         "8ee20dedcc2767c8e2dc8bca02387947a14cf1722f7076832c703eda19c0fad2",
         "8f24dc4e63f1cf24249c1e1d0d14f1d0ae19a98859fabf9d747871a1a7caac77",
-        "971ff44e9bd06fd7977db5aef63f2a5c743fe2d7e79c00c47dbedfd6ce1de25c",
         "9bed3d12152decf7e88b8a9ff3e80385d5464ee5f0034fd0b10a6b7d06306fee",
+        "ad77085d05f68c7d4422389adb783ac77e226527266d26dc310fbe9a30777a1a",
         "c91ad0abdc811f37e937b9ba05970a7cfda5d1fa1da8d32f6ba46c93fa87a455",
+        "d4491827c53972a6863995831ff2a62fb5dfae56a0635033039ef846085305d5",
         "f035ce048b6ab59861d11e46ccefbdaa95794733557f87dbd1ed771d83916f71"
       ],
       "approvedChange": {
@@ -384,6 +384,23 @@
                 "after": "14dc8184162b1623978cb5454b973292e79a836434f15be90f939d4f2a74a27a"
               }
             ]
+          },
+          {
+            "checkpoint": "v1.1.3",
+            "baseCommit": "263c9c08dce96e80716c435ed35de42be409e0c7",
+            "authority": "Developer v1.1.3 delta-plan approval A/A/A with terminal delivery policy and fixed caps; docs/RPG_CORE_V1.1.3_TRIGGER_SAFETY.md",
+            "declarations": [
+              {
+                "name": "SkillExecutionEnvironment",
+                "before": "971ff44e9bd06fd7977db5aef63f2a5c743fe2d7e79c00c47dbedfd6ce1de25c",
+                "after": "ad77085d05f68c7d4422389adb783ac77e226527266d26dc310fbe9a30777a1a"
+              },
+              {
+                "name": "executeSkill",
+                "before": "299ecde1c546582fa6a24000b3de7548f5565584136dd2ff0b461cbeeec2c2bd",
+                "after": "d4491827c53972a6863995831ff2a62fb5dfae56a0635033039ef846085305d5"
+              }
+            ]
           }
         ]
       }
@@ -397,24 +414,25 @@
         "07920f2e4d65f242aaf56d80fb615addee300236dcf23d7bc48c50d123eb91de",
         "0c9121311616b98729f64070ec98fae2dba2c5f700f51414346c9136840bde2c",
         "166b106d11a9ba04f116bc1669ab4672a731518a9f05112b555ff5884012f726",
+        "17067d856e4d37eac0e402c670e8e6ec0d1d099da13670b8db8af286d6395764",
+        "1b26d3d544c53c1ea31f140fa73b5628f91cc8d43c567bb96c43bdf3618b0d5d",
+        "1c5e5697191ecf5329162e9b0a1a0ef6f6fcba12fd134809fb8b006fa340a21c",
         "1f9467fea19975a8ea5c7aa323cab8890b036ce67e0340c3a2bf3d832e7bbf79",
         "3bfa396fba9b390152c01842da482944509dedff79d98b418bb14e5355ae318d",
         "3f1945742cd70e5529fbb61fc965dcfff016459f325ec1bf2684c63a0fce4985",
         "4806f6d8f75600f37c1fc17ac6041ab178436e356555458aff4b7831b9d14c54",
         "497e66b613ccfc0ccfdef8c8a5a5453967a4a3982b3b85bfaeb594ab7680ee73",
-        "4c25defad4f715797896b318c715e975d14960ad284ff12b1d83b5548c429194",
         "4d26efb7c5890b33ce0848a3cb7116043fa542b177dd77704c676a3ce9897b23",
         "53f4e65be46af73aa708a7fbb14108a6cd263f08c8e79abf1531a51d85d9b78f",
         "60186253213fbd14e294cbbb21f8375e20fd5b40f8c75a58332e7d02c5af2b83",
-        "6af0557427f37f9e07b5e941d88ad092751375ba7b781da69563e583fd9798d9",
+        "69eeb0f21dcbe1b7625a0cf96ec7f46ff9ca370c21cedcd7dbf629d01733878e",
         "77164522131768622897681870b87be0644700807a095c7fa2335b1cfb3bc666",
+        "8e3831d1ce1f0af61e793e4290d6a21e429d5f7029327e3785538e05f968708a",
         "b355daa0b3619fde1351607961aa4b581fe88f4da3f75bc6f3e5e49b9b60e509",
         "bc3c8aba7ab328e17ac68e9b7056431a153bc5236806daeb797da4648c601d79",
         "c40f6792559ea29536bc58fc0601afc7eed677cf16757fcfa02f8345eb28836f",
-        "cb647849b9ba962adb4df574b14391dac01afbd81a3173c6834add6f0a9a19e3",
+        "d0213a0bef999e6719a8fed9dc4bd6800e5817e6da44fa5178e602a44594e06c",
         "d622a18aa6db839ae3a811a3767ca7172276bf6da111a4a8cde4dacb7208f85f",
-        "e310101cd6660fa730fcfa712952edaf7fed505486b41f6449149c02e889f3fd",
-        "e480cbbcf269ea1b83ad037c9a96f8f2b3eb83f5c87df9ada4b87e3272f16a9b",
         "fdd8f45dc52a3688155ace03dd0b512564f5f81d06d99f8182307c87651b115f"
       ],
       "approvedChange": {
@@ -498,6 +516,42 @@
                 "name": "advanceSkillEffects",
                 "before": "658a9b29c476e51e541ca44b9ffd1304a6faa3c8df2d1299fb60153420bbf9bb",
                 "after": "e480cbbcf269ea1b83ad037c9a96f8f2b3eb83f5c87df9ada4b87e3272f16a9b"
+              }
+            ]
+          },
+          {
+            "checkpoint": "v1.1.3",
+            "baseCommit": "263c9c08dce96e80716c435ed35de42be409e0c7",
+            "authority": "Developer v1.1.3 delta-plan approval A/A/A with terminal delivery policy and fixed caps; docs/RPG_CORE_V1.1.3_TRIGGER_SAFETY.md",
+            "declarations": [
+              {
+                "name": "createSkillEffectRuntime",
+                "before": "4c25defad4f715797896b318c715e975d14960ad284ff12b1d83b5548c429194",
+                "after": "8e3831d1ce1f0af61e793e4290d6a21e429d5f7029327e3785538e05f968708a"
+              },
+              {
+                "name": "clearSkillEffects",
+                "before": "e310101cd6660fa730fcfa712952edaf7fed505486b41f6449149c02e889f3fd",
+                "after": "69eeb0f21dcbe1b7625a0cf96ec7f46ff9ca370c21cedcd7dbf629d01733878e"
+              },
+              {
+                "name": "launch",
+                "before": "cb647849b9ba962adb4df574b14391dac01afbd81a3173c6834add6f0a9a19e3",
+                "after": "1c5e5697191ecf5329162e9b0a1a0ef6f6fcba12fd134809fb8b006fa340a21c"
+              },
+              {
+                "name": "dispatchSkillEffects",
+                "before": "6af0557427f37f9e07b5e941d88ad092751375ba7b781da69563e583fd9798d9",
+                "after": "d0213a0bef999e6719a8fed9dc4bd6800e5817e6da44fa5178e602a44594e06c"
+              },
+              {
+                "name": "advanceSkillEffects",
+                "before": "e480cbbcf269ea1b83ad037c9a96f8f2b3eb83f5c87df9ada4b87e3272f16a9b",
+                "after": "1b26d3d544c53c1ea31f140fa73b5628f91cc8d43c567bb96c43bdf3618b0d5d"
+              },
+              {
+                "name": "guardedEnvironment",
+                "after": "17067d856e4d37eac0e402c670e8e6ec0d1d099da13670b8db8af286d6395764"
               }
             ]
           }
@@ -624,14 +678,26 @@
       ],
       "declarations": [
         "1b459352576f5a1d5988aa0b9b2c2aa52c26d9abc51440fcb3abd40dfba58174",
-        "2308851ce0b7581a0536025108f3f0035d495eca5f3eb1887b4c800576219a8f",
         "2422ffefa4aa4d2c1383a063b5b58378c11c9062501c671cfebe9d22e2072fd6",
         "2d21820b4d78af9ba58ad2e0523ded6e846f435c676f56bad6fcd5bf86000152",
         "41c3feee43456d21fd9250bf9960c3250800e1b9657fa509d40f3922a01fda85",
         "68480065d15138d7b9020a881f34e5ab34b9917141b1497472fa31ab20a31317",
+        "adcb4f7b2305cad46a5f28f7c8ad2df746ddbea53acbffc9865ac97645f45668",
         "bdd85d50f0f193790fe4944ac89eff73274934e7640361a8bcb4dd8172d88697",
         "f1d70cbba0ef1173e2e5c6eba8d336b1e0899df50d46dbf5f9f0302158e1ea35"
-      ]
+      ],
+      "approvedChange": {
+        "checkpoint": "v1.1.3",
+        "baseCommit": "263c9c08dce96e80716c435ed35de42be409e0c7",
+        "authority": "Developer v1.1.3 delta-plan approval A/A/A with terminal delivery policy and fixed caps; docs/RPG_CORE_V1.1.3_TRIGGER_SAFETY.md",
+        "declarations": [
+          {
+            "name": "tickProjectileBodies",
+            "before": "2308851ce0b7581a0536025108f3f0035d495eca5f3eb1887b4c800576219a8f",
+            "after": "adcb4f7b2305cad46a5f28f7c8ad2df746ddbea53acbffc9865ac97645f45668"
+          }
+        ]
+      }
     },
     {
       "originalFile": "src/shared/game/grid-geometry.ts",

@@ -1,3 +1,4 @@
+import {trustSkillInstanceDefinition,skillInstanceDefinitionToken,captureSkillExpiry,skillTriggerMutationAllowed,bindChildSkillTriggers} from './skill-trigger.js';
 import {defineSkill,type SkillEngineDefinition} from './skill-engine.js';
 import type {SkillEffectRuntime} from './skill-effect-integration.js';
 import type {SkillExecutionSnapshot} from './skill-execution.js';
@@ -28,7 +29,6 @@ interface InstanceSession {
 // Weak trust associations, no global ID allocation or retained instance registry.
 const instanceSessions=new WeakMap<SkillEffectRuntime,InstanceSession>();
 const executionInstances=new WeakMap<SkillExecutionSnapshot,{session:InstanceSession;id:string}>();
-const definitionTokens=new WeakMap<SkillInstanceDefinition,object>();
 const instanceIdPart=(v:unknown):v is string=>typeof v==='string'&&v.length>0&&v.trim()===v;
 const validLifetime=(v:unknown):v is number|undefined=>v===undefined||typeof v==='number'&&Number.isFinite(v)&&v>0;
 const validDeadline=(at:number,lifetime:number|undefined)=>lifetime===undefined||Number.isFinite(at+lifetime)&&at+lifetime>at;
@@ -42,7 +42,7 @@ export function pinSkillInstanceDefinition(definition:SkillEngineDefinition,conf
  if(!instanceIdPart(configVersion)||!validLifetime(lifetimeMs))throw Error('invalid_instance_definition');
  const pinned=defineSkill(definition);if(!pinned.success)throw Error('invalid_instance_definition');
  const pin=Object.freeze({definition:pinned.definition,configVersion,...(lifetimeMs===undefined?{}:{lifetimeMs})});
- definitionTokens.set(pin,{});return pin;
+ trustSkillInstanceDefinition(pin);return pin;
 }
 export function initializeSkillInstances(runtime:SkillEffectRuntime,namespace:string):void {
  if(!instanceIdPart(namespace))throw Error('invalid_instance_session');
@@ -55,6 +55,7 @@ function observe(s:InstanceSession,r:RecordEntry,view:SkillInstanceView):void {
  r.view=Object.freeze(view);s.handles.add(r.view);
 }
 function terminal(s:InstanceSession,r:RecordEntry,status:'finished'|'expired'|'cancelled',at:number,reason:string):void {
+ if(status==='expired')captureSkillExpiry(s.runtime,r.view,at);
  const {definition:_,rootOffense:__,...metadata}=r.view;
  observe(s,r,{...metadata,status,endedAt:at,reason});
 }
@@ -97,6 +98,7 @@ export function bindRootSkillInstance(runtime:SkillEffectRuntime,snapshot:SkillE
 }
 export function validateRootInstanceTime(snapshot:SkillExecutionSnapshot|undefined,now:number):void {
  const link=snapshot&&executionInstances.get(snapshot);
+ if(link&&!skillTriggerMutationAllowed(link.session.runtime))throw Error('trigger_reentrancy');
  if(link&&(!link.session.runtime.active||!instanceSessions.has(link.session.runtime)||timeError(link.session,now)))throw Error('invalid_instance_time');
 }
 function activate(s:InstanceSession,r:RecordEntry,at:number):void {
@@ -124,6 +126,7 @@ export function inspectSkillInstance(runtime:SkillEffectRuntime,instanceId:strin
 }
 function owner(runtime:SkillEffectRuntime,handle:SkillInstanceView,now:number):InstanceSession|SkillInstanceRejection {
  const s=instanceSessions.get(runtime);if(!s||!runtime.active)return 'invalid_session';
+ if(!skillTriggerMutationAllowed(runtime))return 'invalid_transition';
  if(timeError(s,now))return 'invalid_time';
  if(!handle||!s.handles.has(handle)||!s.records.has(handle.instanceId))return 'invalid_instance';
  return s;
@@ -133,10 +136,10 @@ function owner(runtime:SkillEffectRuntime,handle:SkillInstanceView,now:number):I
 export function registerChildSkillInstance(runtime:SkillEffectRuntime,parent:SkillInstanceView,pin:SkillInstanceDefinition,
  receipt:string,now:number,combat:CombatValidationContext):SkillInstanceResult {
  const s=owner(runtime,parent,now);if(typeof s==='string')return fail(s);
- if(!pin||!definitionTokens.has(pin))return fail('invalid_definition');
+ if(!pin||!skillInstanceDefinitionToken(pin))return fail('invalid_definition');
  if(!instanceIdPart(receipt))return fail('invalid_receipt');
  const id=JSON.stringify([...JSON.parse(parent.instanceId) as string[],receipt]);
- const existing=s.records.get(id),token=definitionTokens.get(pin)!;
+ const existing=s.records.get(id),token=skillInstanceDefinitionToken(pin)!;
  if(existing)return existing.pinToken===token?ok(existing,false):fail('conflicting_replay');
  const p=s.records.get(parent.instanceId)!;
  if(!isLive(p.view))return fail('parent_terminal');
@@ -146,7 +149,7 @@ export function registerChildSkillInstance(runtime:SkillEffectRuntime,parent:Ski
  observe(s,r,{instanceId:id,skillId:pin.definition.skillId,rootInstanceId:p.view.rootInstanceId,parentInstanceId:p.view.instanceId,
   actionInstanceId:p.view.actionInstanceId,casterId:p.view.casterId,createdAt:now,configVersion:pin.configVersion,status:'pending',
   definition:pin.definition,rootOffense:p.view.rootOffense!});
- s.records.set(id,r);s.now=now;return ok(r,true);
+ s.records.set(id,r);bindChildSkillTriggers(runtime,p.view.instanceId,r.view,pin);s.now=now;return ok(r,true);
 }
 export function activateSkillInstance(runtime:SkillEffectRuntime,handle:SkillInstanceView,now:number,combat:CombatValidationContext):SkillInstanceResult {
  const s=owner(runtime,handle,now);if(typeof s==='string')return fail(s);

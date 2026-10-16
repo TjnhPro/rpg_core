@@ -1,4 +1,5 @@
-import {initializeSkillInstances,disposeSkillInstances,advanceSkillInstances,nextSkillInstanceExpiration,type SkillInstanceView} from './skill-instance.js';
+import {initializeSkillTriggerSession,disposeSkillTriggers,bindSkillTriggerDelivery,captureSkillImpact,drainSkillTriggers,skillTriggerMutationAllowed,observeSkillTriggerBoundary,beginSkillTriggerAdvance,endSkillTriggerAdvance} from './skill-trigger.js';
+import {rootSkillInstance,initializeSkillInstances,disposeSkillInstances,advanceSkillInstances,nextSkillInstanceExpiration,type SkillInstanceView} from './skill-instance.js';
 import {initializeRootOffense,clearRootOffense,validateRootActivation,rootDamageSnapshot} from './root-offense.js';
 import type { DamageContext } from '../contracts/damage-contracts.js';
 import type { ProjectileConfig,TimedAOESequence,TimedObjectConfig } from '../contracts/mechanic-contracts.js';
@@ -55,10 +56,11 @@ export function createSkillEffectRuntime(now=0,effects=new EffectLifecycle(now),
  if(options.instanceSession!==undefined&&options.offenseMode!=='root')throw Error('invalid_instance_session');
  const runtime:SkillEffectRuntime={now,active:true,lastActivation:new Map(),bullets:[],objects:[],sequences:[],dots:{groups:[]},dotPolicies:new Map(),effects};
  if(options.offenseMode==='root')initializeRootOffense(runtime);
- if(options.instanceSession!==undefined)initializeSkillInstances(runtime,options.instanceSession);
+ if(options.instanceSession!==undefined){initializeSkillInstances(runtime,options.instanceSession);initializeSkillTriggerSession(runtime,options.instanceSession);}
  return runtime;
 }
 export function clearSkillEffects(r:SkillEffectRuntime,env?:SkillEffectEnvironment):readonly SkillInstanceView[]|undefined {
+ disposeSkillTriggers(r);
  const instances=disposeSkillInstances(r);
  clearRootOffense(r);
  r.active=false;r.bullets=[];r.objects=[];r.sequences=[];r.dots.groups=[];r.dotPolicies.clear();r.lastActivation.clear();
@@ -125,6 +127,8 @@ function launch(r:SkillEffectRuntime,d:Delivery,config:ProjectileConfig,origin:M
   const position={x:origin.x+heading.x*config.spawnOffset,y:origin.y+heading.y*config.spawnOffset};
   if(!canTraverse(env.grid,origin,position))continue;
   const bullet:Bullet={...d,id:`${d.id}/bullet${index}`,config,position,direction:heading,travelled:0,remainingMs:config.lifetime,hitTargets:[],snapshot:offense};
+  const instance=rootSkillInstance(r,d.activation.snapshot);
+  if(instance)bindSkillTriggerDelivery(r,bullet,instance.instanceId,d.activation.snapshot.rootOffense);
   r.bullets.push(bullet);env.emit({type:'effect-created',atMs:r.now,instanceId:bullet.id,actionInstanceId:d.activation.actionInstanceId,mechanic:'projectile'});
  }
 }
@@ -135,7 +139,8 @@ function aoe(r:SkillEffectRuntime,d:Delivery,center:MapPoint,radius:number,env:S
 /** Call at the activation boundary on the same simulation clock. Never apply a
  * historical activation using present-day stats; callers partition before it. */
 export function dispatchSkillEffects(r:SkillEffectRuntime,event:SkillActivatedEvent,env:SkillEffectEnvironment):boolean {
- if(!r.active)return false;
+ if(!r.active||!skillTriggerMutationAllowed(r))return false;
+ env=guardedEnvironment(r,env);
  if(!validateRootActivation(r,event.snapshot))throw Error('invalid_root_offense');
  if(event.snapshot.rootOffense&&(event.atMs!==event.snapshot.activationTime||event.target!==event.snapshot.target))throw Error('invalid_root_offense');
  if(Math.abs(r.now-event.atMs)>1e-6)throw Error('Advance to SkillActivated boundary before dispatch');
@@ -185,6 +190,9 @@ export function nextSkillEffectBoundary(r:SkillEffectRuntime,env:SkillEffectEnvi
 /** Existing simulation loop supplies elapsed time. Partitioning preserves live
  * per-wave/strike stats and lets on-hit stacks start at the actual contact time. */
 export function advanceSkillEffects(r:SkillEffectRuntime,now:number,env:SkillEffectEnvironment):void {
+ beginSkillTriggerAdvance(r);
+ env=guardedEnvironment(r,env);
+ try{
  if(!Number.isFinite(now)||now<r.now)throw Error('Invalid simulation time');
  while(r.active){
   const horizon=now-r.now,boundary=nextSkillEffectBoundary(r,env,horizon),step=Math.min(horizon,boundary);
@@ -199,12 +207,18 @@ export function advanceSkillEffects(r:SkillEffectRuntime,now:number,env:SkillEff
    for(const breakdown of result.breakdowns)env.emit({type:'effect-hit',atMs:r.now,instanceId:d.id+'/dot/'+g.effectId,targetId:g.targetId,mechanic:'dot',breakdown});
   },()=>r.active);
   if(!r.active)break;
-  tickProjectileBodies(r,step,b=>targets(env).filter(t=>eligible(b,t.id,env).allowed),env.grid,(b,id)=>hit(r,b,id,b.snapshot,env,'projectile'),()=>r.active);
+  tickProjectileBodies(r,step,b=>targets(env).filter(t=>eligible(b,t.id,env).allowed),env.grid,(b,id,_elapsed,point)=>{if(eligible(b,id,env).allowed)captureSkillImpact(r,b,b.id,id,point);hit(r,b,id,b.snapshot,env,'projectile');},()=>r.active);
   if(!r.active)break;
   tickEmitterRuntime(r,step,o=>{if(o.effect.type==='timed_object')launch(r,o,emitterProjectileConfig(o.effect.projectile.config,o.config),o.position,{x:1,y:0},env);},()=>r.active);
   if(!r.active)break;
   tickAOESequenceRuntime(r,step,env.positionRoll,(s,center,index)=>aoe(r,{...s,id:`${s.id}/strike${index}`},center,s.config.aoeRadius,env,undefined,'timed_aoe_sequence'),()=>r.active);
   for(const group of r.dotPolicies.keys())if(!r.dots.groups.includes(group))r.dotPolicies.delete(group);
+  drainSkillTriggers(r,env.combat);
   if(r.now>=now&&nextSkillEffectBoundary(r,env,0)>1e-6)break;
  }
+ }finally{endSkillTriggerAdvance(r);}
+}
+
+function guardedEnvironment(r:SkillEffectRuntime,env:SkillEffectEnvironment):SkillEffectEnvironment {
+ return {...env,emit:event=>observeSkillTriggerBoundary(r,()=>env.emit(event))};
 }

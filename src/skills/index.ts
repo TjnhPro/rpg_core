@@ -11,3 +11,6 @@ export type {RootOffensiveSnapshot,SkillRootOffenseCapture} from './root-offense
 
 export {pinSkillInstanceDefinition,rootSkillInstance,inspectSkillInstance,registerChildSkillInstance,activateSkillInstance,finishSkillInstance,cancelSkillInstance} from './skill-instance.js';
 export type {SkillInstanceDefinition,SkillInstanceStatus,SkillInstanceView,SkillInstanceRejection,SkillInstanceResult} from './skill-instance.js';
+
+export {SKILL_TRIGGER_LIMITS,pinSkillTriggerBundle,validateSkillTriggerReceipt} from './skill-trigger.js';
+export type {SkillTrigger,SkillTriggerLink,SkillTriggerBundle,SkillTriggerReceipt,SkillTriggerDimension,SkillTriggerResult,SkillTriggerBinding,SkillTriggerReceiptResult} from './skill-trigger.js';
