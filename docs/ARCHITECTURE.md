@@ -13,6 +13,17 @@ the historical Phase 1 refactor. [The coverage matrix](test-coverage.md) and
 
 ## Responsibility and ownership
 
+Gameplay contract isolation is verified at source, emitted declaration and
+installed-package boundaries. `SkillMechanics` and delivery configurations stay
+in Contracts with Mechanics/Skills behavior; `DamageDelivery` and defense context
+stay in Contracts/Damage; `MapPoint` stays in Contracts/Spatial; `CombatEntity`
+and entity-dependent targeting/effect contracts stay in Contracts/Combat and
+their existing gameplay domains. No relocation is needed for correctly owned
+contracts. Kernel receives resolved scalars, selected rules and numerical data,
+with no Skill Engine requirement for consumers. Generic strings (including
+gameplay-looking labels) carry no built-in gameplay meaning. See the
+[v2.0.9 Gate B evidence](v2/2.0.9-gameplay-contract-decoupling.md).
+
 v2 migration boundary: [Kernel Foundation](v2/2.0.1-kernel-foundation.md) established
 `src/kernel/` and `@rpg/core/kernel`. Kernel imports only Kernel modules. v2.0.3
 moved canonical stat calculations inward; the approved v2.0.4 cut also delegates

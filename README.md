@@ -1,5 +1,10 @@
 # RPG Core
 
+The v2.0.9 [gameplay boundary review](docs/v2/2.0.9-gameplay-contract-decoupling.md)
+adds contract isolation evidence without production API changes. Numerical
+consumers can use `@rpg/core/kernel` independently; gameplay delivery, entity and
+spatial contracts retain their Legacy owners. Developer approved Gate B with zero preservation delta on 2026-10-18.
+
 v1.2.5 verifies Life on Hit/Kill and Mana on Kill as canonical trigger -> self Child
 recovery compositions, with no new runtime API. See the
 [phase acceptance report](docs/RPG_CORE_V1.2.5_RECOVERY_ACCEPTANCE_CLOSURE.md) and

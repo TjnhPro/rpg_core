@@ -50,6 +50,13 @@ must never turn `BLOCKED` into `READY`.
 
 ## Kernel migration boundary
 
+- Gameplay contracts keep their current Legacy owners: SkillMechanics/Delivery
+  in Contracts/Mechanics/Skills, DamageDelivery in Contracts/Damage, MapPoint in
+  Contracts/Spatial, and CombatEntity in Contracts/Combat. Resolve eligibility,
+  delivery and entity policy before calling numerical Kernel APIs. Caller labels
+  such as `magic`, `projectile` or `player` are ordinary identifiers. See the
+  [v2.0.9 boundary review](docs/v2/2.0.9-gameplay-contract-decoupling.md).
+
 - `src/kernel/**` owns reusable RPG calculations only. v2.0.3 moves canonical
   attribute/stat/cooldown calculations here with a prepared numerical resolver
   callback. The approved v2.0.4 cut moves modifier identity/dedup/order/grouping

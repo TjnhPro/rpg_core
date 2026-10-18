@@ -176,3 +176,17 @@ recovery recipes and real reference identity. Existing delivery/RNG/lifecycle
 suites remain unchanged. `tests/fixtures/kernel-snapshots-consumer.ts` runs three
 independent numerical vocabularies in the installed strict NodeNext/ESM consumer.
 Developer approved the exact module 10 preservation amendment on 2026-10-18.
+
+
+### v2.0.9 Gameplay contract isolation
+
+`tests/tooling/gameplay-boundary.test.ts` checks real direct/transitive gameplay
+contracts in source and emitted declarations, plus deep Kernel CLI edge guards.
+Each negative has a valid control and requires a forbidden dependency/declaration
+diagnostic. The installed consumer repeats the closure cases against archived
+declarations with strict NodeNext compilation. `gameplay-contract-compatibility.ts`
+keeps public Legacy unions/imports and missing Kernel gameplay exports explicit.
+`tests/kernel/gameplay-boundary-consumer.test.ts` and the installed smoke test
+run Text RPG, Vo Lam and ARPG numerical recipes without gameplay engines.
+`node scripts/review-gameplay-boundary.mjs` emits read-only zero-delta evidence.
+See [Gate B report](v2/2.0.9-gameplay-contract-decoupling.md); final review pending.

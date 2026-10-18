@@ -6,6 +6,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import ts from 'typescript';
 import {checkDeclarationClosure} from './check-architecture.mjs';
+import {cases as gameplayCases, withBoundaryTree, rejectCase} from '../tests/fixtures/gameplay-boundary-audit.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const npmCli = process.env.npm_execpath;
@@ -44,6 +45,8 @@ try {
   writeFileSync(path.join(consumer, 'kernel-defense.ts'), readFileSync(path.join(root, 'tests/fixtures/kernel-defense-consumer.ts'), 'utf8').replaceAll('../../src/kernel/index.js', '@rpg/core/kernel'));
   writeFileSync(path.join(consumer, 'kernel-resources.ts'), readFileSync(path.join(root, 'tests/fixtures/kernel-resources-consumer.ts'), 'utf8').replaceAll('../../src/kernel/index.js', '@rpg/core/kernel'));
   writeFileSync(path.join(consumer, 'kernel-snapshots.ts'), readFileSync(path.join(root, 'tests/fixtures/kernel-snapshots-consumer.ts'), 'utf8').replaceAll('../../src/kernel/index.js', '@rpg/core/kernel'));
+  writeFileSync(path.join(consumer, 'kernel-gameplay-boundary.ts'), readFileSync(path.join(root, 'tests/fixtures/kernel-gameplay-boundary-consumer.ts'), 'utf8').replaceAll('../../src/kernel/index.js', '@rpg/core/kernel'));
+  writeFileSync(path.join(consumer, 'gameplay-compatibility.ts'), readFileSync(path.join(root, 'tests/fixtures/gameplay-contract-compatibility.ts'), 'utf8').replaceAll('../../src/contracts/index.js', '@rpg/core/contracts').replaceAll('../../src/mechanics/index.js', '@rpg/core/mechanics').replaceAll('../../src/spatial/index.js', '@rpg/core/spatial').replaceAll('../../src/kernel/index.js', '@rpg/core/kernel'));
   const installedEntry = path.join(consumer, 'node_modules/@rpg/core/dist/kernel/index.d.ts');
   const declarationProgram = ts.createProgram([installedEntry], {
     target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.NodeNext,
@@ -52,6 +55,9 @@ try {
   const installedClosure = checkDeclarationClosure(declarationProgram, installedEntry, path.dirname(installedEntry), 'installed');
   assert.equal(installedClosure.exports, 63);
   assert.equal(installedClosure.files.length, 16);
+  const gameplayResults = [];
+  for (const fixture of gameplayCases) withBoundaryTree(path.dirname(path.dirname(installedEntry)), 'installed', tree => gameplayResults.push(rejectCase(tree, fixture)));
+  console.log(JSON.stringify({status: 'INSTALLED_GAMEPLAY_BOUNDARY_VERIFIED', controls: gameplayResults.length, rejected: gameplayResults.length, cases: gameplayResults}));
   const expectedSymbols = {'.': 243, './contracts': 102, './stats': 17, './modifiers': 8,
     './combat': 33, './damage': 27, './skills': 76, './effects': 34, './mechanics': 20, './spatial': 6, './kernel': 63};
   const installedEntries = Object.entries(pkg.exports).map(([name, entry]) =>
@@ -153,6 +159,13 @@ assert.equal(defenseExamples.textHit.hit,true);
 assert.deepEqual(defenseExamples.voLam, {ruleKey:'hộ-thể',status:'applied',missing:[],levelGap:4,levelScalingEnabled:true,effectiveK:200,rawReduction:1/3,reduction:1/3,inputDamage:120,preventedDamage:39.999999999999986,finalDamage:80.00000000000001});
 assert.deepEqual(defenseExamples.arpg.map(v=>[v.ruleKey,v.reduction,v.finalDamage,v.preventedDamage]), [['plate',.75,10,30],['aether',.5,20,20]]);
 console.log(JSON.stringify({status:'KERNEL_DEFENSE_ESM_NODENEXT_VERIFIED',scenarios:3}));
+import {numericalBoundaryConsumers} from './build/kernel-gameplay-boundary.js';
+assert.deepEqual(numericalBoundaryConsumers(), [
+ {label:'Text RPG',raw:50,final:37.5,after:62.5,callerId:'Text RPG'},
+ {label:'Võ Lâm',raw:100,final:80,after:20,callerId:'Võ Lâm'},
+ {label:'ARPG',raw:30,final:30,after:70,callerId:'ARPG'}
+]);
+console.log('INDEPENDENT_NUMERICAL_CONSUMERS_PASS: Text RPG, Võ Lâm, ARPG');
 import {kernelSnapshotExamples} from './build/kernel-snapshots.js';
 assert.deepEqual(kernelSnapshotExamples(),{text:20,voLam:[24,34],arpg:50,draws:['critical'],shared:true,frozen:true});
 assert(!('cloneSnapshotData' in kernel));assert(!('freezeSnapshotData' in kernel));
