@@ -27,6 +27,7 @@ try {
     for (const extension of ['.js', '.d.ts']) assert(members.includes(`dist/${legacy.replace(/\.ts$/, extension)}`), `Missing archived legacy path: ${legacy}${extension}`);
   }
   assert(members.includes('dist/index.js') && members.includes('dist/index.d.ts'));
+  assert(members.includes('dist/kernel/index.js') && members.includes('dist/kernel/index.d.ts'), 'Missing archived Kernel entrypoint');
   assert(!members.some(f => /^(src|tests|examples|node_modules|\.example-dist)\//.test(f)));
   const consumer = path.join(scratch, 'consumer');
   mkdirSync(consumer);
@@ -57,6 +58,12 @@ try {
     `import * as legacy${i} from './node_modules/@rpg/core/dist/${file.replace(/\.ts$/, '.js')}';`);
   writeFileSync(path.join(consumer, 'legacy.ts'), `${legacyImports.join('\n')}\nexport const legacyApis = [${legacyImports.map((_, i) => `legacy${i}`).join(',')}];\n`);
   writeFileSync(path.join(consumer, 'types.ts'), `
+import * as kernel from '@rpg/core/kernel';
+export const kernelNamespace: typeof kernel = kernel;
+// @ts-expect-error Kernel has no calculations in v2.0.1
+kernel.calculateDamage;
+// @ts-expect-error Kernel internals are not package exports
+import * as internalKernel from '@rpg/core/kernel/index.js';
 import type {CombatEntity, PlayerStatsConfig, DamageContext, MapPoint} from '@rpg/core/contracts';
 import {resolveCharacterStats} from '@rpg/core/stats';
 import {executeSkill} from '@rpg/core/skills';
@@ -90,6 +97,8 @@ import {executeSkill as internal} from '@rpg/core/skills/skill-execution.js';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import * as core from '@rpg/core';
+import * as kernel from '@rpg/core/kernel';
+assert.deepEqual(Object.keys(kernel), [], 'Kernel must remain empty in v2.0.1');
 import {headlessCombat} from './build/headless.js';
 import {rootSnapshotExample} from './build/root-snapshot.js';
 import {skillInstanceExample} from './build/skill-instance.js';
@@ -162,11 +171,11 @@ for (const [legacy, canonical] of Object.entries(moduleMap)) {
   const b = await import('./node_modules/@rpg/core/' + canonical.replace(/^src\\//, 'dist/').replace(/\\.ts$/, '.js'));
   assert.deepEqual(a, b);
 }
-for (const internal of ['@rpg/core/skills/skill-execution.js', '@rpg/core/dist/index.js', '@rpg/core/shared/game/skill-execution.js']) {
+for (const internal of ['@rpg/core/skills/skill-execution.js', '@rpg/core/dist/index.js', '@rpg/core/shared/game/skill-execution.js', '@rpg/core/kernel/index.js', '@rpg/core/dist/kernel/index.js']) {
   await assert.rejects(import(internal), {code: 'ERR_PACKAGE_PATH_NOT_EXPORTED'});
 }
 for (const helper of ['resourceSource', 'resourceRecipient', 'restoreMana', 'manaOnHit', 'lifesteal', 'skillHealingEntities', 'heal', 'isPinnedSkillTriggerBundle', 'observesSkillConditionalHit', 'observesSkillStackApply', 'captureSkillHit', 'captureSkillStackApply', 'skillStackCount', 'skillEffectWork', 'consumeStackEffect', 'registerTriggeredSkillChildren', 'childInstanceDamage', 'assembleRootDamage', 'admitSkillProjectiles', 'recordSkillProjectile', 'pendingSkillTriggerPayload', 'childDispatcher', 'initializeSkillTriggerSession', 'captureSkillExpiry', 'captureSkillImpact', 'drainSkillTriggers', 'bindRootSkillTriggers', 'trustSkillInstanceDefinition', 'initializeSkillInstances', 'bindRootSkillInstance', 'advanceSkillInstances', 'disposeSkillInstances', 'prepareRootOffense', 'bindRootOffense', 'rootDamageSnapshot', 'actorOffense', 'freezeGameplayData', 'random', 'damageBonusReason', 'tickProjectileBodies', 'debugProjectile']) assert(!(helper in core));
-console.log(JSON.stringify({status: 'PASS', targetHp: a.entities[1].currentHp, deterministic: true, types: true, publicDomains: domains.length, legacyPaths: Object.keys(moduleMap).length, deepImportsBlocked: true}));
+console.log(JSON.stringify({status: 'PASS', targetHp: a.entities[1].currentHp, deterministic: true, types: true, publicDomains: domains.length, legacyPaths: Object.keys(moduleMap).length, deepImportsBlocked: true, kernel: 'EMPTY_ESM_AND_NODENEXT_VERIFIED'}));
 `);
   const result = execFileSync(process.execPath, ['run.mjs'], {cwd: consumer, encoding: 'utf8'});
   console.log(result.trim());

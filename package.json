@@ -16,7 +16,8 @@
     "./skills": { "types": "./dist/skills/index.d.ts", "import": "./dist/skills/index.js" },
     "./effects": { "types": "./dist/effects/index.d.ts", "import": "./dist/effects/index.js" },
     "./mechanics": { "types": "./dist/mechanics/index.d.ts", "import": "./dist/mechanics/index.js" },
-    "./spatial": { "types": "./dist/spatial/index.d.ts", "import": "./dist/spatial/index.js" }
+    "./spatial": { "types": "./dist/spatial/index.d.ts", "import": "./dist/spatial/index.js" },
+    "./kernel": { "types": "./dist/kernel/index.d.ts", "import": "./dist/kernel/index.js" }
   },
   "files": ["dist", "README.md", "EXPORT-MANIFEST.json", "VERSION"],
   "engines": {

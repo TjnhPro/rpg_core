@@ -123,6 +123,13 @@ allow only these imports; application code does not need internal source paths.
 | `@rpg/core/effects` | Definitions, lifecycle, stack/refresh/expire and DoT |
 | `@rpg/core/mechanics` | Melee/projectile/AoE geometry and configuration |
 | `@rpg/core/spatial` | Coordinate/grid contracts, range and wall traversal |
+| `@rpg/core/kernel` | Empty calculation ownership boundary in v2.0.1; no public symbols yet |
+
+v2.0.1 establishes an independently importable Kernel and enforces
+`Legacy / Gameplay → Kernel` dependencies. Kernel imports only Kernel files;
+existing contracts, runtime ownership and the ten old entrypoints are preserved.
+No calculation has moved and the root does not re-export Kernel. See the
+[Kernel Foundation contract and verification](docs/v2/2.0.1-kernel-foundation.md).
 
 Delivery scheduling kernels, freeze helpers and debug wrappers remain internal.
 The inherited `SkillEffectRuntime` container shape is preserved; applications

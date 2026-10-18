@@ -48,6 +48,22 @@ must never turn `BLOCKED` into `READY`.
 - Keep historical provenance intact. For approved future behavior changes, follow
   the preservation-baseline policy in ARCHITECTURE; do not bypass the check.
 
+## Kernel migration boundary
+
+- `src/kernel/**` owns reusable RPG calculations only. In v2.0.1 its public
+  module is empty; calculation contracts and extraction require later approved plans.
+- Kernel may depend only on other Kernel files, never Legacy contracts, root/domain
+  barrels, Skills, Mechanics, Spatial, gameplay runtimes, external packages or Node APIs.
+  This applies to runtime and type dependencies, re-exports and dynamic loading.
+- Gameplay-only features are not automatically Kernel capability gaps. Propose a
+  Kernel upgrade only for a genuinely missing calculation primitive or numerical rule;
+  new gameplay/skill systems remain independent of the Legacy Skill Engine.
+- Legacy retains its public API, canonical implementations and runtime behavior until
+  an approved Extract & Delegate step moves a calculation once into Kernel. Do not
+  introduce alternative calculation implementations outside Kernel or duplicate engines.
+- Existing v1 policies continue to govern Legacy. See the
+  [Kernel Foundation contract](docs/v2/2.0.1-kernel-foundation.md).
+
 ## Verification
 
 Use Node >=22.13.0; install with `npm ci --ignore-scripts`.

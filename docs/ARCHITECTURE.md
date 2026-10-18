@@ -13,6 +13,15 @@ the historical Phase 1 refactor. [The coverage matrix](test-coverage.md) and
 
 ## Responsibility and ownership
 
+v2 migration boundary: [Kernel Foundation](v2/2.0.1-kernel-foundation.md) adds
+`src/kernel/` and the empty `@rpg/core/kernel` entrypoint. Kernel owns only future
+reusable calculations and imports only Kernel modules. All existing calculation
+implementations and gameplay runtimes described below remain canonical Legacy
+code; no extraction is complete. Legacy may delegate inward under later approved
+plans. Kernel cannot reference Legacy, including the current Contracts or root
+barrel, through runtime imports, type imports, re-exports or dynamic loading.
+In-repository isolation does not require separate packages or repositories.
+
 Core owns stat/modifier resolution, damage/defense, entity/target/action validation,
 skill admission/execution, effect lifecycle, delivery geometry and deterministic
 simulation primitives. The implementation lives once under `src/<domain>`.
@@ -69,6 +78,16 @@ legacy paths or application modules. The root barrel only assembles public expor
 | `effects` | Immutable effect definitions, apply/refresh/stack/expire/restrictions and on-hit DoT: `defineEffect`, `EffectLifecycle`, `applyDotSnapshot`, `tickDotRuntime` | contracts, combat, modifiers, damage | `tests/effects`, effect and status integrations |
 | `mechanics` | Melee hitboxes, projectile movement, AoE geometry; internal sequence/emitter kernels: `detectMeleeHitbox`, `moveProjectile`, `detectInstantAOE`, `lockAOEPosition`, `validateSkillMechanics` | contracts, spatial | `tests/integration/skill-effect-integration.test.ts` and skill/RPG integrations |
 | `spatial` | Supplied-grid walkability, exact cell traversal and range: `isWalkable`, `canTraverse`, `distance`, `inRange` | contracts | `tests/spatial`, skill range tests |
+| `kernel` | Empty reusable calculation ownership boundary; no APIs yet | None (Kernel-internal imports only) | `tests/tooling/architecture.test.ts`, installed consumer |
+
+The eight non-Contracts Legacy domains above additionally may import `kernel`;
+all other Legacy allowances are unchanged. Contracts keeps its existing policy.
+The source-level gate applies to every file under `src/kernel/**`, including
+nested files and aliases through Kernel barrels. External dependencies remain
+forbidden. Full transitive emitted-declaration and generic-contract isolation is
+future v2.0.2 work, not a completed v2.0.1 claim. Historical cycle counts in the
+v1 prose above do not replace current checker output; the v2.0.0 baseline records
+ten combined/type-containing cycle paths and zero runtime cycles.
 
 Supported delivery is direct hit, melee, projectile, instant AoE, timed AoE sequence,
 timed projectile emitter and on-hit DoT. Effect payloads support modifiers, stun and

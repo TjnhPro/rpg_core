@@ -20,6 +20,7 @@ for (const [legacy, canonical] of Object.entries(moduleMap)) {
 const graph = new Map(), runtime = new Map();
 const implementations = new Map();
 const allowed = {
+  kernel: ['kernel'],
   contracts: ['contracts'], spatial: ['contracts', 'spatial'],
   modifiers: ['contracts', 'modifiers'], stats: ['contracts', 'stats', 'modifiers'],
   combat: ['contracts', 'combat', 'spatial'],
@@ -28,6 +29,11 @@ const allowed = {
   mechanics: ['contracts', 'mechanics', 'spatial'],
   skills: ['contracts', 'skills', 'combat', 'stats', 'effects', 'damage', 'mechanics', 'spatial'],
 };
+// Legacy consumers may delegate inward; Kernel never reaches Legacy contracts,
+// implementations or the root barrel, including through type-only syntax.
+for (const domain of ['stats', 'modifiers', 'damage', 'combat', 'effects', 'skills', 'mechanics', 'spatial']) {
+  allowed[domain].push('kernel');
+}
 for (const file of files) {
   const source = readFileSync(path.join(root, file), 'utf8');
   const fingerprint = behaviorFingerprint(source);
