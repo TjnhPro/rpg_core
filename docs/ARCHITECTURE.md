@@ -33,6 +33,18 @@ orchestration. They supply entities, source identities, grid/positions, clock,
 RNG, config versions, event callbacks and advancement order. Core contains no
 application scheduler, wall clock or second resource ledger.
 
+v2.0.7's approved extraction moves scalar resource transitions, normalization and
+regeneration into `kernel/resources/resource-calculation.ts`. Combat and Stats
+retain validation, resource policy mapping and result projection. Stats forwards
+live maximum/rate accessors so validation, normalization and HP-before-MP regen
+retain their accepted reads. Kernel has no entities, resource store or writes.
+Skills keeps percent/lifesteal requested amounts, cost commitment and event/lifecycle
+ordering. Allowed above-max increase uses signed `after - before`; damage decrease
+retains authoritative magnitude rather than net change. Regen uses caller precision,
+the existing toFixed expression and fraction-preserving guard. Stable inputs are
+caller-validated; readonly is not a clone/freeze guarantee. The separate modules 8/12
+preservation amendment was approved on 2026-10-18; [review evidence](v2/2.0.7-resource-calculation-extraction.md).
+
 ## Change governance and capability gaps
 
 Every task changing source, mechanics, contracts or architecture must have a plan

@@ -1,5 +1,6 @@
 import { ATTRIBUTE_IDS,DEFAULT_CORE_STATS,ELEMENTAL_STATS,STAT_IDS,type CharacterBaseStats,type CoreAttribute,type PlayerStat,type PlayerStatsConfig } from '../contracts/stat-contracts.js';
 import {calculateEffectiveValue,calculateStats,calculateCooldownDurationMs} from '../kernel/stats/stat-calculation.js';
+import {normalizeResource,calculateResourceRegeneration} from '../kernel/resources/resource-calculation.js';
 import type {NumericRule} from '../kernel/contracts/common.js';
 import type {DerivedStatRule} from '../kernel/contracts/stats.js';
 import type { prepareModifierResolver } from '../modifiers/modifier-core.js';
@@ -41,11 +42,11 @@ export function resolveCharacterStats(bases:CharacterBaseStats,config:PlayerStat
 // Undefined initializes full; zero/absolute resources survive recalculation.
 export function updateCurrentResources(hp:number|undefined,mp:number|undefined,stats:{maxHp:number;maxMana:number;hpRegen:number;manaRegen:number},elapsedMs=0,alive=true){
  if(![stats.maxHp,stats.maxMana,stats.hpRegen,stats.manaRegen,elapsedMs].every(v=>Number.isFinite(v)&&v>=0)||[hp,mp].some(v=>v!==undefined&&!Number.isFinite(v)))throw Error('Invalid resource input');
- let currentHp=Math.max(0,Math.min(stats.maxHp,hp??stats.maxHp)),currentMp=Math.max(0,Math.min(stats.maxMana,mp??stats.maxMana));
+ let currentHp=normalizeResource({resource:'hp',...(hp===undefined?{}:{current:hp}),minimum:0,get maximum(){return stats.maxHp;}}).after,
+     currentMp=normalizeResource({resource:'mp',...(mp===undefined?{}:{current:mp}),minimum:0,get maximum(){return stats.maxMana;}}).after;
  if(alive&&currentHp>0){const seconds=elapsedMs/1000;
-  // Precision normalization must never remove a living fraction or spend MP.
-  currentHp=Math.min(stats.maxHp,Math.max(currentHp,Number((currentHp+stats.hpRegen*seconds).toFixed(12))));
-  currentMp=Math.min(stats.maxMana,Math.max(currentMp,Number((currentMp+stats.manaRegen*seconds).toFixed(12))));
+  currentHp=calculateResourceRegeneration({resource:'hp',current:currentHp,minimum:0,get maximum(){return stats.maxHp;},get ratePerSecond(){return stats.hpRegen;},elapsedSeconds:seconds,eligible:true,precision:{decimalPlaces:12}}).after;
+  currentMp=calculateResourceRegeneration({resource:'mp',current:currentMp,minimum:0,get maximum(){return stats.maxMana;},get ratePerSecond(){return stats.manaRegen;},elapsedSeconds:seconds,eligible:true,precision:{decimalPlaces:12}}).after;
  }
  return {currentHp,currentMp};
 }

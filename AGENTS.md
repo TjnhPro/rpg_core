@@ -63,8 +63,11 @@ must never turn `BLOCKED` into `READY`.
   retains eligibility, validation, rule selection, RNG provision, diagnostics and
   snapshots. Live accessors preserve captured coefficients and late actor reads;
   Dodge callbacks are unbound, while Legacy Critical preserves its input receiver.
-  Resource calculation stays Legacy until v2.0.7. Further extraction
-  requires approved plans.
+  The approved v2.0.7 cut delegates resource transitions, normalization and regen
+  to Kernel; the exact modules 8/12 preservation amendment was approved on 2026-10-18.
+  Legacy keeps validation, policy mapping and lazy accessors. Skills keeps percentage/lifesteal
+  amounts, MP costs, resource writes and events; do not move those in this cut.
+  Further extraction requires approved plans.
   Transform callbacks are caller-owned synchronous pure numeric functions;
   snapshots contain no callbacks. TypeScript readonly is neither detached copy
   nor runtime freeze; v2.0.8 owns implementation of those guarantees.

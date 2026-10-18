@@ -1,0 +1,3150 @@
+{
+  "revision": "7b43bc5046ada04ce600ad714bfa34172dc5e160",
+  "sources": {
+    "src/combat/combat-entity.ts": "625ab159067234b1b403f8094483f357cb2d4c1aefcc105394f2c11ec0e3f698",
+    "src/combat/combat-state.ts": "f512984309eafc0940819480def149ced9b96f258dd2a2d630c9dfc917cfb584",
+    "src/combat/index.ts": "29086e4c6b97777f54fc8b2c492204df6b3310cf57b86b8d1277106a51366e7e",
+    "src/contracts/combat-entity.ts": "4229973e5f082dc91f4612000590b8c58b11799ee797889d3293c1563c85e5f1",
+    "src/contracts/combat-modifiers.ts": "be14006363965dd84de7a84195adb9afa11b78af52adcdcf4b114cbc68df5ac1",
+    "src/contracts/combat-state.ts": "6ec183b1f751b5843467e5e931f8adb8eadde575ce5a16a5ba145dfa075c7ab1",
+    "src/contracts/damage-contracts.ts": "d13e3652742f0e62b738c22a45e8bf0b6b03cf1e8541b0ccff43fd055ad904f5",
+    "src/contracts/defense-settings.ts": "e5b5fdee2f2b16cda2b0c61e9b071dbf48a2438e3facfd37438e2fe56d7a9cd9",
+    "src/contracts/dot-contracts.ts": "d44f279bac2470397e0c0494fe40d6890613dc41f70d745c67689d635bbd332c",
+    "src/contracts/effects.ts": "312035727167e66ab560a969fd4a2e4ddfc05fdd3218299e5efbf612995a5f25",
+    "src/contracts/index.ts": "24d7e899d9050764af89dbf4d2539eb6548f60cb7c29cc8230a3d6aaf6ab284a",
+    "src/contracts/mechanic-contracts.ts": "bee6b43600dacf730ce84c8695b3cce72e929e47d83ab0f33f87f0fd93fd7b1d",
+    "src/contracts/spatial.ts": "764c38f83b81ce7d37ee53173c42cc9f62a81e1e33974a7cfcbccdd70786f8d8",
+    "src/contracts/stat-contracts.ts": "11a87612c1717bb3bf99149ab8970bc3c5e019a5a49c7320e8535d0faabe59b5",
+    "src/contracts/targeting-contracts.ts": "a1c7a42cd55b66ef1a425819aeb5f2513571a18c629ff7974874d510ed263216",
+    "src/damage/damage-core.ts": "3ee0086b90d77e9be13da42334ce95ea2b83b84c6506fc2900b88a7ce5d8345e",
+    "src/damage/defense-engine.ts": "d18c577a9e56eee3deecb226fd68385bcac71b10151685fa7653022c81366cf3",
+    "src/damage/index.ts": "dd6d43efd53cf44be0fa73660d4e00f0905998027ee8cfde7ee6ddc205b8a7a2",
+    "src/effects/dot-core.ts": "3be57c0c47492c6beffe50b984ae74903c996ac58586027409e9b41527e9cd02",
+    "src/effects/effect-lifecycle.ts": "1fac5bba79e7fe21a5f970064cb0fcec58cc67ddb1ab187d6657486369289bb1",
+    "src/effects/effect-system.ts": "13ee6f3a13c361d59543ed02824586fa2be2e1bc755ff80b1e4fd706ecc1d8f4",
+    "src/effects/index.ts": "c1126afe393965f4bf3b5249b466934da91b85f1af5a2be22fdbb07084ff49ad",
+    "src/index.ts": "f4b7a1257cbcd98e91f6d6dfcc39826bfb339dd582c1af56f8eec7beb81dca1d",
+    "src/kernel/contracts/common.ts": "8fced5a9366ea7691d8aeb652a61b23e40d67226e2cec474e4be9178f5c2be07",
+    "src/kernel/contracts/damage-stages.ts": "4d3fc2a218097e887d3076058b636dcef6343be228e5687bb62867c76e210113",
+    "src/kernel/contracts/damage.ts": "44be45b2a116f6996335e3d91b6fc7624e22ba301c177c66f144b253c8ff94d5",
+    "src/kernel/contracts/defense.ts": "6a53ffc2a2e77a119cfecf6d46291f3f17379fc6e94e990c24b959ddfc365ae3",
+    "src/kernel/contracts/modifier-resolution.ts": "8c5ab655a90c06656bdcf3ecf3ad2799e2c6156d709982de8fcc32b69f10fe0d",
+    "src/kernel/contracts/modifiers.ts": "acb433b3bab33f601d216964f24f679036b2a8338c4ac60005acbe42057ed420",
+    "src/kernel/contracts/resources.ts": "d2192e1a1b2c2295d0f826004d01d36441b591e973620dd746cb062198fac297",
+    "src/kernel/contracts/snapshots.ts": "ea20fdb0500ca090a5c01394ab81442117de78de5386fcbb6ca7279b3a7341e7",
+    "src/kernel/contracts/stats.ts": "76cd41174ca951ffd0733b1d41af140f606236ce9afedc2185cd573bb44dc4c9",
+    "src/kernel/damage/damage-calculation.ts": "3b925e26d813e771b4bf3a37e8f29932a0e195b30bceb716f5cc29ddfc146f0b",
+    "src/kernel/defense/defense-calculation.ts": "99d812d878e108f0cb32428552807aa710d89fad9ae690f0a816e83fe3f83fe2",
+    "src/kernel/index.ts": "0eaa518fda4a5b6883cf58708f864a5adbe548e70e1d9d3ba133eb408ab6ad6a",
+    "src/kernel/modifiers/modifier-resolution.ts": "7f452a00b2eab5905fcca4b11b1546c8a7b1b599819f7a54ed678950fb4cb91d",
+    "src/kernel/stats/stat-calculation.ts": "9a63ca1887ab8fb91d125c903dc055f86d24765cf43fd97eba4a32dc22f352e4",
+    "src/mechanics/aoe-sequence-core.ts": "89b0e6dc14c40aabe12343a99f78efcedeb82b7ac833a7efe25cc1a55e72d36c",
+    "src/mechanics/emitter-core.ts": "40b4a0655ee8e1c6d7afab68ff4b568c70dea7e17af452810fe5498849134de9",
+    "src/mechanics/index.ts": "911c29946302ac1a1dd70b179029f661b4fff0e05c126abd5b03389544cc39a3",
+    "src/mechanics/instant-aoe.ts": "a0499298042d8cfc808e137ab64a2afb64a498eef95a32aaf11f4b1e571b8116",
+    "src/mechanics/melee-hitbox.ts": "338e03f3903afbe1b382c3272dccb4799fd1cc2a47f2fa18d78255f17ee8b8a7",
+    "src/mechanics/projectile.ts": "8e18168251905fe5b6918a0362bdb3e64cdb48eefdcaab20099908f9d9aad2df",
+    "src/modifiers/index.ts": "301ab1ec0b2021d2de5220cf381909973fc1c6b40458ce26ec601cc69245aea0",
+    "src/modifiers/modifier-core.ts": "52ac9034905e002d3cfae811c6b603f236f3decbcc6084023ed386c23efba286",
+    "src/shared/data/combat-modifiers.ts": "4d3a0fd922f0491bda66c483ae3ca282d053d720152639704f3b6edd1476df74",
+    "src/shared/data/damage-contracts.ts": "ad9f25da0c2364f1e25c5bc191a6d88cc416a66115696090924c25f9217bd0b0",
+    "src/shared/data/defense-settings.ts": "7cad4578c01082dcd619d6e392b9db37e55be6a2d24f1e013e96d4f619b6faff",
+    "src/shared/data/dot-contracts.ts": "a01ab2e04e59450e680d514a2c4b3342f9098b483e21782d5612cd5c5098350d",
+    "src/shared/data/mechanic-contracts.ts": "056a6fec314be8ae834b086274e2402d355cf6fe7c27012bffa46003bfe2895f",
+    "src/shared/data/skill-effects.ts": "216fdc469d95fe25f72731c126864270422b9f4fa9a959caee86c2b3d4c68eb0",
+    "src/shared/data/stat-contracts.ts": "ae7904105bd1bcb8838ce8c40abcfe8c96d65b0b071cafe5cf5782229a864d88",
+    "src/shared/data/targeting-contracts.ts": "cab1f246c81d1ec20ae81eb94ca8ebb920d83ad001fc8f74a2b5747e2ead5d31",
+    "src/shared/game/aoe-sequence-core.ts": "b641ad3af3cf70cf692be14395d08d8d1d92db1ccaee4725ddf70e7d9d0b3eef",
+    "src/shared/game/combat-entity.ts": "aa13316cf1e5b086696612467028fb477af92d1d7dde6d51799155a01d43a8ec",
+    "src/shared/game/combat-state.ts": "324a73118e74a17e4078a7a7d3d30214b94f77d15940263f0f53b88a2f9b5afc",
+    "src/shared/game/damage-core.ts": "57bcbf17be8e6387314633e9ca02807e52128a78df51be639f0c1e67b6f23301",
+    "src/shared/game/defense-engine.ts": "32be41dbe7303edd19979345d59e183dfafd6576d9809544e59ae52133ffa8e3",
+    "src/shared/game/dot-core.ts": "c5d7f39e7e1968a8f93b32c8eba2066450007dd515dd6240668e28310fbe68e9",
+    "src/shared/game/effect-lifecycle.ts": "d6c7a4eef0deb9a462e9566f18ad4cd90a553fa935f288b3dbae49271703dfa4",
+    "src/shared/game/effect-system.ts": "ed91426ae5a62ca1fe55a73dbea11038345a27e0b6503312cada7e38e4d5f471",
+    "src/shared/game/emitter-core.ts": "e3628d27afac9f6cc51409b509261dbef85141e16d69c97b9c625b89860ac5e7",
+    "src/shared/game/grid-geometry.ts": "b82ce32cdea181db7eec7c17daaf9034d9dba5cfe971c60ea204baecb922058e",
+    "src/shared/game/instant-aoe.ts": "b0ec2d72d0d8e2cc6dee933dfdfbc72cc33328d5f615c27b0078aae4efe2aebf",
+    "src/shared/game/melee-hitbox.ts": "ff3c70ce05ba3e4368e00ca3c624219c40de6ddb3ad445425032e7a799eb0fa9",
+    "src/shared/game/modifier-core.ts": "f49bf3490fd3b92756de4f7754c5a64d951ff11dd40802c9052c6286b701d634",
+    "src/shared/game/projectile.ts": "e67be6123f4d49a7fc6b651054a01f9620712a68e93c9406348b915ef112155a",
+    "src/shared/game/range.ts": "cc8702024f1e0096c388162044e01ebceecfba5abbde30e9d76b3085b19244dd",
+    "src/shared/game/skill-effect-integration.ts": "e27c7e5dbbdd5c3879d6dca86d2386f2451d682744d315c0f23ed5231e61ce2a",
+    "src/shared/game/skill-engine.ts": "dd8e4e6b1c25a332900b9b8dd350724ce6862343433fcab4e2b3c138694f4026",
+    "src/shared/game/skill-execution.ts": "3d5dd130987347a5f5d5aac03739807253c85f9574b22bfb4f0c6126313f6ae8",
+    "src/shared/game/stat-calculation.ts": "1e2590aa6aa02b6c93e1d9514397219f208492f76b7ba369ec073422ca79b998",
+    "src/skills/index.ts": "b94a0976855befd4ca057b77a3a012b00080a7090c939dec7bcdc84a8af36319",
+    "src/skills/root-offense.ts": "0852d31218144a5602d8f8e6a3c7e4070c2d57188fa9efe7af74512ab86bbdec",
+    "src/skills/skill-effect-integration.ts": "ae6de31372f8e49e09ed95335aee207696d9ba08d45cf8d5936d1a62a18c4a22",
+    "src/skills/skill-effects.ts": "65bcb416768e87abe107a92cdc53ab56b7b283db40e905be4d4fca20ff113dca",
+    "src/skills/skill-engine.ts": "28e1e22ed23cbce7b71bed41cae218bc520ac80b24b2a624a595601ba21830dd",
+    "src/skills/skill-execution.ts": "740a861a6663af13bd87105eb954f080e5929b8e19c91a7d43b96cab0630bc94",
+    "src/skills/skill-instance.ts": "620e45a1342defe5347d37bac1cda12df4bcfa24b9f5625a1a142b9ccab0085c",
+    "src/skills/skill-trigger.ts": "5e0d06bdcfc3a09dab8127e362d30f4aa28b71973a3df99dfd371e5e5c6b81b8",
+    "src/skills/skill-upgrade.ts": "e7cc2f52dbcdc24675252ecc383b64bb19b62dceefbca70cfb33c0889ec991b3",
+    "src/spatial/grid-geometry.ts": "943596b6c9d01d9c1fabf877aa4b966141386c1c2a98d134646f79c850640198",
+    "src/spatial/index.ts": "7cf6bc9d07184ab04d2515b8068089d26df91e639b1c8bc00cdc405a607a4fa3",
+    "src/spatial/range.ts": "7cf87fb0c732e81d59f244f77bdbd4806f7a0e5e7ec05787d2ce4ab304f6657f",
+    "src/stats/index.ts": "049ea077365f68137fe19372a51ffb8667430b8f4957f6d026e4cff8a0629ae3",
+    "src/stats/stat-calculation.ts": "7bbe0d8bc5c8b281d0a40ffaa33de60e6dd8ac3546fc57db7a3a373bce275d96"
+  },
+  "scenarios": [
+    {
+      "name": "applyEntityDamage:valid:0",
+      "result": {
+        "before": 10,
+        "after": 10,
+        "appliedDamage": 0,
+        "defeated": false
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedDamage",
+        "defeated"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:valid:1",
+      "result": {
+        "before": 10,
+        "after": 0,
+        "appliedDamage": 10,
+        "defeated": true
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedDamage",
+        "defeated"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:valid:2",
+      "result": {
+        "before": 10,
+        "after": 0,
+        "appliedDamage": 10,
+        "defeated": true
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedDamage",
+        "defeated"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:valid:3",
+      "result": {
+        "before": 120,
+        "after": 100,
+        "appliedDamage": 10,
+        "defeated": false
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedDamage",
+        "defeated"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:valid:4",
+      "result": {
+        "before": 0,
+        "after": 0,
+        "appliedDamage": 0,
+        "defeated": false
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedDamage",
+        "defeated"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:valid:5",
+      "result": {
+        "before": 0,
+        "after": 0,
+        "appliedDamage": 0,
+        "defeated": false
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedDamage",
+        "defeated"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:valid:6",
+      "result": {
+        "before": 10,
+        "after": 0,
+        "appliedDamage": 0,
+        "defeated": true
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedDamage",
+        "defeated"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:valid:7",
+      "result": {
+        "before": 95,
+        "after": 75,
+        "appliedDamage": 20,
+        "defeated": false
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedDamage",
+        "defeated"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:valid:8",
+      "result": {
+        "before": 100,
+        "after": 95,
+        "appliedDamage": 5,
+        "defeated": false
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedDamage",
+        "defeated"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:valid:9",
+      "result": {
+        "before": 0.3,
+        "after": 0.09999999999999998,
+        "appliedDamage": 0.2,
+        "defeated": false
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedDamage",
+        "defeated"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:valid:10",
+      "result": {
+        "before": 1e-14,
+        "after": 1e-14,
+        "appliedDamage": 0,
+        "defeated": false
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedDamage",
+        "defeated"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:valid:11",
+      "result": {
+        "before": {
+          "$number": "-0"
+        },
+        "after": 0,
+        "appliedDamage": {
+          "$number": "-0"
+        },
+        "defeated": false
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedDamage",
+        "defeated"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:valid:12",
+      "result": {
+        "before": 8.988465674311579e+307,
+        "after": 0,
+        "appliedDamage": 8.988465674311579e+307,
+        "defeated": true
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedDamage",
+        "defeated"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:valid:13",
+      "result": {
+        "before": 1.7976931348623157e+308,
+        "after": 0,
+        "appliedDamage": 1.7976931348623157e+308,
+        "defeated": true
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedDamage",
+        "defeated"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:invalid:0:-1",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/damage required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:invalid:0:NaN",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/damage required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:invalid:0:Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/damage required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:invalid:0:-Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/damage required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:invalid:0:undefined",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/damage required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:invalid:0:null",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/damage required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:invalid:1:-1",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/damage required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:invalid:1:NaN",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/damage required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:invalid:1:Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/damage required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:invalid:1:-Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/damage required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:invalid:1:undefined",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/damage required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:invalid:1:null",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/damage required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:invalid:2:-1",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/damage required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:invalid:2:NaN",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/damage required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:invalid:2:Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/damage required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:invalid:2:-Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/damage required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:invalid:2:undefined",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/damage required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityDamage:invalid:2:null",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/damage required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:valid:0",
+      "result": {
+        "before": 10,
+        "after": 10,
+        "appliedHealing": 0
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedHealing"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:valid:1",
+      "result": {
+        "before": 10,
+        "after": 20,
+        "appliedHealing": 10
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedHealing"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:valid:2",
+      "result": {
+        "before": 10,
+        "after": 30,
+        "appliedHealing": 20
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedHealing"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:valid:3",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/healing and HP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:valid:4",
+      "result": {
+        "before": 0,
+        "after": 0,
+        "appliedHealing": 0
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedHealing"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:valid:5",
+      "result": {
+        "before": 0,
+        "after": 0,
+        "appliedHealing": 0
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedHealing"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:valid:6",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/healing and HP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:valid:7",
+      "result": {
+        "before": 95,
+        "after": 100,
+        "appliedHealing": 5
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedHealing"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:valid:8",
+      "result": {
+        "before": 100,
+        "after": 100,
+        "appliedHealing": 0
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedHealing"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:valid:9",
+      "result": {
+        "before": 0.3,
+        "after": 0.5,
+        "appliedHealing": 0.2
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedHealing"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:valid:10",
+      "result": {
+        "before": 1e-14,
+        "after": 1e-14,
+        "appliedHealing": 0
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedHealing"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:valid:11",
+      "result": {
+        "before": {
+          "$number": "-0"
+        },
+        "after": 0,
+        "appliedHealing": 0
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedHealing"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:valid:12",
+      "result": {
+        "before": 8.988465674311579e+307,
+        "after": 1.7976931348623157e+308,
+        "appliedHealing": 8.988465674311579e+307
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedHealing"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:valid:13",
+      "result": {
+        "before": 1.7976931348623157e+308,
+        "after": 1.7976931348623157e+308,
+        "appliedHealing": 0
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedHealing"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:invalid:0:-1",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/healing and HP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:invalid:0:NaN",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/healing and HP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:invalid:0:Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/healing and HP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:invalid:0:-Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/healing and HP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:invalid:0:undefined",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/healing and HP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:invalid:0:null",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/healing and HP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:invalid:1:-1",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/healing and HP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:invalid:1:NaN",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/healing and HP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:invalid:1:Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/healing and HP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:invalid:1:-Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/healing and HP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:invalid:1:undefined",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/healing and HP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:invalid:1:null",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/healing and HP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:invalid:2:-1",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/healing and HP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:invalid:2:NaN",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/healing and HP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:invalid:2:Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/healing and HP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:invalid:2:-Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/healing and HP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:invalid:2:undefined",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/healing and HP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityHealing:invalid:2:null",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative HP/healing and HP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:valid:0",
+      "result": {
+        "before": 10,
+        "after": 10,
+        "appliedMana": 0
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedMana"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:valid:1",
+      "result": {
+        "before": 10,
+        "after": 20,
+        "appliedMana": 10
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedMana"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:valid:2",
+      "result": {
+        "before": 10,
+        "after": 30,
+        "appliedMana": 20
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedMana"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:valid:3",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative MP/gain and MP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:valid:4",
+      "result": {
+        "before": 0,
+        "after": 5,
+        "appliedMana": 5
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedMana"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:valid:5",
+      "result": {
+        "before": 0,
+        "after": 0,
+        "appliedMana": 0
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedMana"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:valid:6",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative MP/gain and MP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:valid:7",
+      "result": {
+        "before": 95,
+        "after": 100,
+        "appliedMana": 5
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedMana"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:valid:8",
+      "result": {
+        "before": 100,
+        "after": 100,
+        "appliedMana": 0
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedMana"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:valid:9",
+      "result": {
+        "before": 0.3,
+        "after": 0.5,
+        "appliedMana": 0.2
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedMana"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:valid:10",
+      "result": {
+        "before": 1e-14,
+        "after": 1e-14,
+        "appliedMana": 0
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedMana"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:valid:11",
+      "result": {
+        "before": {
+          "$number": "-0"
+        },
+        "after": 0,
+        "appliedMana": 0
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedMana"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:valid:12",
+      "result": {
+        "before": 8.988465674311579e+307,
+        "after": 1.7976931348623157e+308,
+        "appliedMana": 8.988465674311579e+307
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedMana"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:valid:13",
+      "result": {
+        "before": 1.7976931348623157e+308,
+        "after": 1.7976931348623157e+308,
+        "appliedMana": 0
+      },
+      "keys": [
+        "before",
+        "after",
+        "appliedMana"
+      ],
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:invalid:0:-1",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative MP/gain and MP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:invalid:0:NaN",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative MP/gain and MP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:invalid:0:Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative MP/gain and MP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:invalid:0:-Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative MP/gain and MP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:invalid:0:undefined",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative MP/gain and MP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:invalid:0:null",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative MP/gain and MP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:invalid:1:-1",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative MP/gain and MP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:invalid:1:NaN",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative MP/gain and MP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:invalid:1:Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative MP/gain and MP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:invalid:1:-Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative MP/gain and MP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:invalid:1:undefined",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative MP/gain and MP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:invalid:1:null",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative MP/gain and MP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:invalid:2:-1",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative MP/gain and MP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:invalid:2:NaN",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative MP/gain and MP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:invalid:2:Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative MP/gain and MP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:invalid:2:-Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative MP/gain and MP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:invalid:2:undefined",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative MP/gain and MP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "applyEntityManaGain:invalid:2:null",
+      "error": {
+        "name": "Error",
+        "message": "Validated nonnegative MP/gain and MP bounds required",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "resources:values:0:true:0",
+      "result": {
+        "currentHp": 20,
+        "currentMp": 10
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:0:true:1000",
+      "result": {
+        "currentHp": 20,
+        "currentMp": 10
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:0:true:1234.5",
+      "result": {
+        "currentHp": 20,
+        "currentMp": 10
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:0:false:0",
+      "result": {
+        "currentHp": 20,
+        "currentMp": 10
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:0:false:1000",
+      "result": {
+        "currentHp": 20,
+        "currentMp": 10
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:0:false:1234.5",
+      "result": {
+        "currentHp": 20,
+        "currentMp": 10
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:1:true:0",
+      "result": {
+        "currentHp": 0,
+        "currentMp": 0
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:1:true:1000",
+      "result": {
+        "currentHp": 0,
+        "currentMp": 0
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:1:true:1234.5",
+      "result": {
+        "currentHp": 0,
+        "currentMp": 0
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:1:false:0",
+      "result": {
+        "currentHp": 0,
+        "currentMp": 0
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:1:false:1000",
+      "result": {
+        "currentHp": 0,
+        "currentMp": 0
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:1:false:1234.5",
+      "result": {
+        "currentHp": 0,
+        "currentMp": 0
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:2:true:0",
+      "result": {
+        "currentHp": 0,
+        "currentMp": 0
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:2:true:1000",
+      "result": {
+        "currentHp": 0,
+        "currentMp": 0
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:2:true:1234.5",
+      "result": {
+        "currentHp": 0,
+        "currentMp": 0
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:2:false:0",
+      "result": {
+        "currentHp": 0,
+        "currentMp": 0
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:2:false:1000",
+      "result": {
+        "currentHp": 0,
+        "currentMp": 0
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:2:false:1234.5",
+      "result": {
+        "currentHp": 0,
+        "currentMp": 0
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:3:true:0",
+      "result": {
+        "currentHp": 20,
+        "currentMp": 10
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:3:true:1000",
+      "result": {
+        "currentHp": 20,
+        "currentMp": 10
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:3:true:1234.5",
+      "result": {
+        "currentHp": 20,
+        "currentMp": 10
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:3:false:0",
+      "result": {
+        "currentHp": 20,
+        "currentMp": 10
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:3:false:1000",
+      "result": {
+        "currentHp": 20,
+        "currentMp": 10
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:3:false:1234.5",
+      "result": {
+        "currentHp": 20,
+        "currentMp": 10
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:4:true:0",
+      "result": {
+        "currentHp": 5,
+        "currentMp": 0
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:4:true:1000",
+      "result": {
+        "currentHp": 7,
+        "currentMp": 3
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:4:true:1234.5",
+      "result": {
+        "currentHp": 7.469,
+        "currentMp": 3.7035
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:4:false:0",
+      "result": {
+        "currentHp": 5,
+        "currentMp": 0
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:4:false:1000",
+      "result": {
+        "currentHp": 5,
+        "currentMp": 0
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:4:false:1234.5",
+      "result": {
+        "currentHp": 5,
+        "currentMp": 0
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:5:true:0",
+      "result": {
+        "currentHp": 0,
+        "currentMp": 5
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:5:true:1000",
+      "result": {
+        "currentHp": 0,
+        "currentMp": 5
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:5:true:1234.5",
+      "result": {
+        "currentHp": 0,
+        "currentMp": 5
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:5:false:0",
+      "result": {
+        "currentHp": 0,
+        "currentMp": 5
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:5:false:1000",
+      "result": {
+        "currentHp": 0,
+        "currentMp": 5
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:5:false:1234.5",
+      "result": {
+        "currentHp": 0,
+        "currentMp": 5
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:6:true:0",
+      "result": {
+        "currentHp": 1e-14,
+        "currentMp": 1e-14
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:6:true:1000",
+      "result": {
+        "currentHp": 2,
+        "currentMp": 3
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:6:true:1234.5",
+      "result": {
+        "currentHp": 2.469,
+        "currentMp": 3.7035
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:6:false:0",
+      "result": {
+        "currentHp": 1e-14,
+        "currentMp": 1e-14
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:6:false:1000",
+      "result": {
+        "currentHp": 1e-14,
+        "currentMp": 1e-14
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:6:false:1234.5",
+      "result": {
+        "currentHp": 1e-14,
+        "currentMp": 1e-14
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:7:true:0",
+      "result": {
+        "currentHp": 0.1234567890125,
+        "currentMp": 1e-12
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:7:true:1000",
+      "result": {
+        "currentHp": 2.123456789012,
+        "currentMp": 3.000000000001
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:7:true:1234.5",
+      "result": {
+        "currentHp": 2.592456789012,
+        "currentMp": 3.703500000001
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:7:false:0",
+      "result": {
+        "currentHp": 0.1234567890125,
+        "currentMp": 6e-13
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:7:false:1000",
+      "result": {
+        "currentHp": 0.1234567890125,
+        "currentMp": 6e-13
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:values:7:false:1234.5",
+      "result": {
+        "currentHp": 0.1234567890125,
+        "currentMp": 6e-13
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:invalid:maxHp:-1",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resource input",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "resources:invalid:maxHp:NaN",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resource input",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "resources:invalid:maxHp:Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resource input",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "resources:invalid:maxHp:-Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resource input",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "resources:invalid:maxMana:-1",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resource input",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "resources:invalid:maxMana:NaN",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resource input",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "resources:invalid:maxMana:Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resource input",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "resources:invalid:maxMana:-Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resource input",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "resources:invalid:hpRegen:-1",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resource input",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "resources:invalid:hpRegen:NaN",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resource input",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "resources:invalid:hpRegen:Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resource input",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "resources:invalid:hpRegen:-Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resource input",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "resources:invalid:manaRegen:-1",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resource input",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "resources:invalid:manaRegen:NaN",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resource input",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "resources:invalid:manaRegen:Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resource input",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "resources:invalid:manaRegen:-Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resource input",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "resources:invalid:time:-1",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resource input",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "resources:invalid:time:NaN",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resource input",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "resources:invalid:time:Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resource input",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "resources:invalid:time:-Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resource input",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "resources:invalid:current:0:NaN",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resource input",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "resources:invalid:current:0:Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resource input",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "resources:invalid:current:0:-Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resource input",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "resources:invalid:current:1:NaN",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resource input",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "resources:invalid:current:1:Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resource input",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "resources:invalid:current:1:-Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resource input",
+        "original": false
+      },
+      "trace": []
+    },
+    {
+      "name": "resources:overflow",
+      "result": {
+        "currentHp": 1.7976931348623157e+308,
+        "currentMp": 1.7976931348623157e+308
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:zero-maxima",
+      "result": {
+        "currentHp": 0,
+        "currentMp": 0
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": []
+    },
+    {
+      "name": "resources:reads:5,2:true",
+      "result": {
+        "currentHp": 7,
+        "currentMp": 5
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2",
+        "maxHp:3",
+        "hpRegen:2",
+        "maxMana:3",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:reads:5,2:false",
+      "result": {
+        "currentHp": 5,
+        "currentMp": 2
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2"
+      ]
+    },
+    {
+      "name": "resources:reads:undefined,undefined:true",
+      "result": {
+        "currentHp": 20,
+        "currentMp": 10
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxHp:3",
+        "maxMana:2",
+        "maxMana:3",
+        "maxHp:4",
+        "hpRegen:2",
+        "maxMana:4",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:reads:undefined,undefined:false",
+      "result": {
+        "currentHp": 20,
+        "currentMp": 10
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxHp:3",
+        "maxMana:2",
+        "maxMana:3"
+      ]
+    },
+    {
+      "name": "resources:reads:0,2:true",
+      "result": {
+        "currentHp": 0,
+        "currentMp": 2
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2"
+      ]
+    },
+    {
+      "name": "resources:reads:0,2:false",
+      "result": {
+        "currentHp": 0,
+        "currentMp": 2
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2"
+      ]
+    },
+    {
+      "name": "resources:throw:maxHp:1",
+      "error": {
+        "name": {
+          "$undefined": true
+        },
+        "message": {
+          "$undefined": true
+        },
+        "original": true
+      },
+      "trace": [
+        "maxHp:1"
+      ]
+    },
+    {
+      "name": "resources:throw:maxHp:2",
+      "error": {
+        "name": {
+          "$undefined": true
+        },
+        "message": {
+          "$undefined": true
+        },
+        "original": true
+      },
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2"
+      ]
+    },
+    {
+      "name": "resources:throw:maxHp:3",
+      "error": {
+        "name": {
+          "$undefined": true
+        },
+        "message": {
+          "$undefined": true
+        },
+        "original": true
+      },
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxHp:3"
+      ]
+    },
+    {
+      "name": "resources:throw:maxHp:4",
+      "error": {
+        "name": {
+          "$undefined": true
+        },
+        "message": {
+          "$undefined": true
+        },
+        "original": true
+      },
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxHp:3",
+        "maxMana:2",
+        "maxMana:3",
+        "maxHp:4"
+      ]
+    },
+    {
+      "name": "resources:throw:maxMana:1",
+      "error": {
+        "name": {
+          "$undefined": true
+        },
+        "message": {
+          "$undefined": true
+        },
+        "original": true
+      },
+      "trace": [
+        "maxHp:1",
+        "maxMana:1"
+      ]
+    },
+    {
+      "name": "resources:throw:maxMana:2",
+      "error": {
+        "name": {
+          "$undefined": true
+        },
+        "message": {
+          "$undefined": true
+        },
+        "original": true
+      },
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxHp:3",
+        "maxMana:2"
+      ]
+    },
+    {
+      "name": "resources:throw:maxMana:3",
+      "error": {
+        "name": {
+          "$undefined": true
+        },
+        "message": {
+          "$undefined": true
+        },
+        "original": true
+      },
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxHp:3",
+        "maxMana:2",
+        "maxMana:3"
+      ]
+    },
+    {
+      "name": "resources:throw:maxMana:4",
+      "error": {
+        "name": {
+          "$undefined": true
+        },
+        "message": {
+          "$undefined": true
+        },
+        "original": true
+      },
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxHp:3",
+        "maxMana:2",
+        "maxMana:3",
+        "maxHp:4",
+        "hpRegen:2",
+        "maxMana:4"
+      ]
+    },
+    {
+      "name": "resources:throw:hpRegen:1",
+      "error": {
+        "name": {
+          "$undefined": true
+        },
+        "message": {
+          "$undefined": true
+        },
+        "original": true
+      },
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1"
+      ]
+    },
+    {
+      "name": "resources:throw:hpRegen:2",
+      "error": {
+        "name": {
+          "$undefined": true
+        },
+        "message": {
+          "$undefined": true
+        },
+        "original": true
+      },
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxHp:3",
+        "maxMana:2",
+        "maxMana:3",
+        "maxHp:4",
+        "hpRegen:2"
+      ]
+    },
+    {
+      "name": "resources:throw:hpRegen:3",
+      "result": {
+        "currentHp": 20,
+        "currentMp": 10
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxHp:3",
+        "maxMana:2",
+        "maxMana:3",
+        "maxHp:4",
+        "hpRegen:2",
+        "maxMana:4",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:throw:hpRegen:4",
+      "result": {
+        "currentHp": 20,
+        "currentMp": 10
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxHp:3",
+        "maxMana:2",
+        "maxMana:3",
+        "maxHp:4",
+        "hpRegen:2",
+        "maxMana:4",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:throw:manaRegen:1",
+      "error": {
+        "name": {
+          "$undefined": true
+        },
+        "message": {
+          "$undefined": true
+        },
+        "original": true
+      },
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1"
+      ]
+    },
+    {
+      "name": "resources:throw:manaRegen:2",
+      "error": {
+        "name": {
+          "$undefined": true
+        },
+        "message": {
+          "$undefined": true
+        },
+        "original": true
+      },
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxHp:3",
+        "maxMana:2",
+        "maxMana:3",
+        "maxHp:4",
+        "hpRegen:2",
+        "maxMana:4",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:throw:manaRegen:3",
+      "result": {
+        "currentHp": 20,
+        "currentMp": 10
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxHp:3",
+        "maxMana:2",
+        "maxMana:3",
+        "maxHp:4",
+        "hpRegen:2",
+        "maxMana:4",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:throw:manaRegen:4",
+      "result": {
+        "currentHp": 20,
+        "currentMp": 10
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxHp:3",
+        "maxMana:2",
+        "maxMana:3",
+        "maxHp:4",
+        "hpRegen:2",
+        "maxMana:4",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:mutate:maxHp:0",
+      "result": {
+        "currentHp": 0,
+        "currentMp": 2
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2"
+      ]
+    },
+    {
+      "name": "resources:mutate:maxHp:1",
+      "result": {
+        "currentHp": 1,
+        "currentMp": 5
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2",
+        "maxHp:3",
+        "hpRegen:2",
+        "maxMana:3",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:mutate:maxHp:40",
+      "result": {
+        "currentHp": 7,
+        "currentMp": 5
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2",
+        "maxHp:3",
+        "hpRegen:2",
+        "maxMana:3",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:mutate:maxHp:NaN",
+      "result": {
+        "currentHp": {
+          "$number": "NaN"
+        },
+        "currentMp": 2
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2"
+      ]
+    },
+    {
+      "name": "resources:mutate:maxHp:Infinity",
+      "result": {
+        "currentHp": 7,
+        "currentMp": 5
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2",
+        "maxHp:3",
+        "hpRegen:2",
+        "maxMana:3",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:mutate:maxHp:-1",
+      "result": {
+        "currentHp": 0,
+        "currentMp": 2
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2"
+      ]
+    },
+    {
+      "name": "resources:mutate:maxMana:0",
+      "result": {
+        "currentHp": 7,
+        "currentMp": 0
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2",
+        "maxHp:3",
+        "hpRegen:2",
+        "maxMana:3",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:mutate:maxMana:1",
+      "result": {
+        "currentHp": 7,
+        "currentMp": 1
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2",
+        "maxHp:3",
+        "hpRegen:2",
+        "maxMana:3",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:mutate:maxMana:40",
+      "result": {
+        "currentHp": 7,
+        "currentMp": 5
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2",
+        "maxHp:3",
+        "hpRegen:2",
+        "maxMana:3",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:mutate:maxMana:NaN",
+      "result": {
+        "currentHp": 7,
+        "currentMp": {
+          "$number": "NaN"
+        }
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2",
+        "maxHp:3",
+        "hpRegen:2",
+        "maxMana:3",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:mutate:maxMana:Infinity",
+      "result": {
+        "currentHp": 7,
+        "currentMp": 5
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2",
+        "maxHp:3",
+        "hpRegen:2",
+        "maxMana:3",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:mutate:maxMana:-1",
+      "result": {
+        "currentHp": 7,
+        "currentMp": -1
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2",
+        "maxHp:3",
+        "hpRegen:2",
+        "maxMana:3",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:mutate:hpRegen:0",
+      "result": {
+        "currentHp": 5,
+        "currentMp": 5
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2",
+        "maxHp:3",
+        "hpRegen:2",
+        "maxMana:3",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:mutate:hpRegen:1",
+      "result": {
+        "currentHp": 6,
+        "currentMp": 5
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2",
+        "maxHp:3",
+        "hpRegen:2",
+        "maxMana:3",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:mutate:hpRegen:40",
+      "result": {
+        "currentHp": 20,
+        "currentMp": 5
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2",
+        "maxHp:3",
+        "hpRegen:2",
+        "maxMana:3",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:mutate:hpRegen:NaN",
+      "result": {
+        "currentHp": {
+          "$number": "NaN"
+        },
+        "currentMp": 5
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2",
+        "maxHp:3",
+        "hpRegen:2",
+        "maxMana:3",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:mutate:hpRegen:Infinity",
+      "result": {
+        "currentHp": 20,
+        "currentMp": 5
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2",
+        "maxHp:3",
+        "hpRegen:2",
+        "maxMana:3",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:mutate:hpRegen:-1",
+      "result": {
+        "currentHp": 5,
+        "currentMp": 5
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2",
+        "maxHp:3",
+        "hpRegen:2",
+        "maxMana:3",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:mutate:manaRegen:0",
+      "result": {
+        "currentHp": 7,
+        "currentMp": 2
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2",
+        "maxHp:3",
+        "hpRegen:2",
+        "maxMana:3",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:mutate:manaRegen:1",
+      "result": {
+        "currentHp": 7,
+        "currentMp": 3
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2",
+        "maxHp:3",
+        "hpRegen:2",
+        "maxMana:3",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:mutate:manaRegen:40",
+      "result": {
+        "currentHp": 7,
+        "currentMp": 10
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2",
+        "maxHp:3",
+        "hpRegen:2",
+        "maxMana:3",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:mutate:manaRegen:NaN",
+      "result": {
+        "currentHp": 7,
+        "currentMp": {
+          "$number": "NaN"
+        }
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2",
+        "maxHp:3",
+        "hpRegen:2",
+        "maxMana:3",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:mutate:manaRegen:Infinity",
+      "result": {
+        "currentHp": 7,
+        "currentMp": 10
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2",
+        "maxHp:3",
+        "hpRegen:2",
+        "maxMana:3",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:mutate:manaRegen:-1",
+      "result": {
+        "currentHp": 7,
+        "currentMp": 2
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2",
+        "maxHp:3",
+        "hpRegen:2",
+        "maxMana:3",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:between-validation-normalization",
+      "result": {
+        "currentHp": 4,
+        "currentMp": 5
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2",
+        "maxHp:3",
+        "hpRegen:2",
+        "maxMana:3",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:between-hp-mp-normalization",
+      "result": {
+        "currentHp": 20,
+        "currentMp": 7
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxHp:3",
+        "maxMana:2",
+        "maxMana:3",
+        "maxHp:4",
+        "hpRegen:2",
+        "maxMana:4",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:between-hp-mp-regen",
+      "result": {
+        "currentHp": 7,
+        "currentMp": 3
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2",
+        "maxHp:3",
+        "hpRegen:2",
+        "maxMana:3",
+        "manaRegen:2"
+      ]
+    },
+    {
+      "name": "resources:validation-eager-reads-and-throw",
+      "error": {
+        "name": {
+          "$undefined": true
+        },
+        "message": {
+          "$undefined": true
+        },
+        "original": true
+      },
+      "trace": [
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1"
+      ]
+    },
+    {
+      "name": "resources:captured-elapsed-holder",
+      "result": {
+        "currentHp": 7,
+        "currentMp": 5
+      },
+      "keys": [
+        "currentHp",
+        "currentMp"
+      ],
+      "trace": [
+        "elapsed",
+        "maxHp:1",
+        "maxMana:1",
+        "hpRegen:1",
+        "manaRegen:1",
+        "maxHp:2",
+        "maxMana:2",
+        "maxHp:3",
+        "hpRegen:2",
+        "maxMana:3",
+        "manaRegen:2"
+      ]
+    }
+  ]
+}

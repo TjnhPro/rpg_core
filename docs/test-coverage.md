@@ -1,5 +1,15 @@
 # Core test coverage matrix
 
+v2.0.7 resource extraction: `tests/stats/resource-parity.test.ts` checks 223
+accepted-source observations (97 error cases, 13 original-thrown-object cases),
+ordered getter traces, exact values/key order and captured elapsed arguments.
+`kernel-resource-calculation.test.ts` covers generic policies, signed above-max
+increase, lazy ineligible inputs, nonzero minima, precision/overflow and three
+independent installed consumer styles. Existing recovery integration scenarios and
+installed gameplay examples retain event/observer ordering, source identity and
+replay semantics. The [resource review](v2/2.0.7-resource-calculation-extraction.md)
+records verification counts and the approved modules 8/12 preservation amendment.
+
 v2.0.6 targeted extraction evidence: `tests/damage/defense-parity.test.ts`
 compares 150 accepted-source observations (25 error cases), complete nested
 results/key order and RNG/getter traces, plus receiver/error/reference identity

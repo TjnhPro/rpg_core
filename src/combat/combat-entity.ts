@@ -1,25 +1,25 @@
 import type {CombatEntity,CombatEntityIdentity} from '../contracts/combat-entity.js';
+import {calculateResourceTransition} from '../kernel/resources/resource-calculation.js';
 export type {CombatEntity,CombatEntityIdentity} from '../contracts/combat-entity.js';
 import {ATTRIBUTE_IDS,STAT_IDS,type CharacterBaseStats} from '../contracts/stat-contracts.js';
 /** Caller owns mechanic-specific contact deduplication and the actual HP field.
  * No ledger, reward, death state or alternate resource store lives in Core. */
 export function applyEntityDamage(currentHp:number,finalDamage:number,effectiveMaxHp:number){
  if(![currentHp,finalDamage,effectiveMaxHp].every(n=>Number.isFinite(n)&&n>=0))throw Error('Validated nonnegative HP/damage required');
- const after=Math.max(0,Math.min(effectiveMaxHp,currentHp-finalDamage));
- return {before:currentHp,after,appliedDamage:Math.min(currentHp,finalDamage),defeated:currentHp>0&&after===0};
+ const result=calculateResourceTransition({resource:'hp',current:currentHp,maximum:effectiveMaxHp,amount:finalDamage,operation:'decrease',rule:{minimum:0,currentAboveMaximum:'allow',allowIncreaseFromMinimum:false}});
+ return {before:currentHp,after:result.after,appliedDamage:result.applied,defeated:result.reachedMinimum};
 }
 /** Pure HP recovery; resource normalization remains the Stats owner's concern. */
 export function applyEntityHealing(currentHp:number,healAmount:number,effectiveMaxHp:number){
  if(![currentHp,healAmount,effectiveMaxHp].every(n=>Number.isFinite(n)&&n>=0)||currentHp>effectiveMaxHp)throw Error('Validated nonnegative HP/healing and HP bounds required');
- // Clamp the increment first so finite inputs cannot overflow during addition.
- const after=currentHp===0?0:Math.min(effectiveMaxHp,currentHp+Math.min(healAmount,effectiveMaxHp-currentHp));
- return {before:currentHp,after,appliedHealing:after-currentHp};
+ const result=calculateResourceTransition({resource:'hp',current:currentHp,maximum:effectiveMaxHp,amount:healAmount,operation:'increase',rule:{minimum:0,currentAboveMaximum:'reject',allowIncreaseFromMinimum:false}});
+ return {before:currentHp,after:result.after,appliedHealing:result.applied};
 }
 /** Pure explicit MP gain; normalization/regeneration remain owned by Stats. */
 export function applyEntityManaGain(currentMp:number,gainAmount:number,effectiveMaxMana:number){
  if(![currentMp,gainAmount,effectiveMaxMana].every(n=>Number.isFinite(n)&&n>=0)||currentMp>effectiveMaxMana)throw Error('Validated nonnegative MP/gain and MP bounds required');
- const after=Math.min(effectiveMaxMana,currentMp+Math.min(gainAmount,effectiveMaxMana-currentMp));
- return {before:currentMp,after,appliedMana:after-currentMp};
+ const result=calculateResourceTransition({resource:'mp',current:currentMp,maximum:effectiveMaxMana,amount:gainAmount,operation:'increase',rule:{minimum:0,currentAboveMaximum:'reject',allowIncreaseFromMinimum:true}});
+ return {before:currentMp,after:result.after,appliedMana:result.applied};
 }
 const fields=['entityId','entityType','level','factionId','targetTags','baseStats','currentHp','currentMp'];
 const statIds=new Set<string>([...ATTRIBUTE_IDS,...STAT_IDS]);

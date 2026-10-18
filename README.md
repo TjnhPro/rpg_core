@@ -175,6 +175,15 @@ The Developer approved the exact preservation amendment for modules 10/11 on
 2026-10-18; see [the review evidence](docs/v2/2.0.6-critical-defense-extraction.md).
 
 Delivery scheduling kernels, freeze helpers and debug wrappers remain internal.
+v2.0.7 implements `calculateResourceTransition`, `normalizeResource` and
+`calculateResourceRegeneration` through `@rpg/core/kernel`, using the existing
+six resource contracts. Legacy Combat/Stats delegate arithmetic and retain their
+validation/results; Skills still owns resource writes, costs and recovery amount
+resolution. Allowed above-max increases can normalize downward with negative
+`applied`; damage applied is not universally net resource change. Regen retains
+precision 12 and living fractions. The Developer approved the exact preservation
+amendment for modules 8/12 on 2026-10-18; see [the resource review](docs/v2/2.0.7-resource-calculation-extraction.md).
+
 The inherited `SkillEffectRuntime` container shape is preserved; applications
 should operate it through lifecycle APIs, rather than mutate its stores.
 
