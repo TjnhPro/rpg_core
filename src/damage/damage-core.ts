@@ -5,6 +5,7 @@ import type { CombatEntityIdentity } from '../combat/combat-entity.js';
 import { mitigateDefense,resolveDefenseHit,type DefenseConfigSnapshot } from './defense-engine.js';
 import { damageBonusReason,prepareModifierResolver,resolveModifiers } from '../modifiers/modifier-core.js';
 import {calculateDamageB0,calculateDamageB1,calculateDamageBonusValue} from '../kernel/damage/damage-calculation.js';
+import {calculateCritical} from '../kernel/defense/defense-calculation.js';
 
 
 // Up to100 legacy damage settings plus256 Foundation registry entries.
@@ -52,9 +53,10 @@ export function calculateDamage(input:{definition:DamageDefinition;sources:Recor
   return {id:m.id,source:m.source,reason:reason==='eligible'&&m.source==='item'&&!sources.length?'no equipped source':reason,value:reason==='eligible'?value:0,sources};
  });
  modifiers.push(...canonicalBonus.map(m=>{const reason=damageBonusReason(m,c);return {id:JSON.stringify([m.source,m.sourceInstanceId,m.id]),source:m.source,reason,value:reason==='eligible'?m.value:0,sources:[{id:m.id,value:m.value,source:m.sourceInstanceId}]};}));
- const criticalRoll=scope==='dot'?1:typeof input.roll==='function'?input.roll():input.roll;
- const chance=scope==='dot'?0:Math.max(0,Math.min(.85,input.criticalChance)),critical=criticalRoll<chance;
- const criticalBonus=critical?Math.max(0,input.criticalBonus):0;
+ const selectedCritical=calculateCritical({eligible:scope!=='dot',rule:{enabled:true,bounds:{min:0,max:.85}},
+  roll:()=>typeof input.roll==='function'?input.roll():input.roll,
+  get chance(){return input.criticalChance;},get bonus(){return input.criticalBonus;}});
+ const criticalRoll=scope==='dot'?1:selectedCritical.roll,chance=selectedCritical.chance,critical=selectedCritical.isCritical,criticalBonus=selectedCritical.bonus;
  const {totalBonus,beforeDefense}=calculateDamageB1(raw,modifiers,criticalBonus);
  const defense={...mitigateDefense(beforeDefense,defenseContext,input.defenseConfig),hit},finalDamage=defense.finalDamage;
  return {entities,event,b0:{base,scaling,flat,flatModifiers:resolvedFlat.contributions,raw},b1:{modifiers,criticalBonus,totalBonus},critical:{chance,roll:criticalRoll as number|null,isCritical:critical},beforeDefense,defense,finalDamage};

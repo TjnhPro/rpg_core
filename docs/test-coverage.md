@@ -1,5 +1,14 @@
 # Core test coverage matrix
 
+v2.0.6 targeted extraction evidence: `tests/damage/defense-parity.test.ts`
+compares 150 accepted-source observations (25 error cases), complete nested
+results/key order and RNG/getter traces, plus receiver/error/reference identity
+checks. `kernel-defense.test.ts` and the installed Kernel-only consumer cover
+independent Text RPG fixed fractional reduction, custom rating/level scaling and
+ARPG policies. Tooling checks declaration closure and Legacy numerical ownership.
+The [review report](v2/2.0.6-critical-defense-extraction.md) records actual counts
+and the separately approved preservation gate, including final verification.
+
 v1.2.5 recovery acceptance: `tests/integration/recovery-acceptance.test.ts` adds
 35 actual-Core RC01-RC08 cases for Life on Hit/Kill and Mana on Kill composition,
 exact fatal HP75/MP58/event order, live caps/modifiers, identity, replay/disposal,

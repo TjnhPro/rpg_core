@@ -41,16 +41,17 @@ try {
   writeFileSync(path.join(consumer, 'kernel-stats.ts'), readFileSync(path.join(root, 'tests/fixtures/kernel-stats-consumer.ts'), 'utf8').replaceAll('../../src/kernel/index.js', '@rpg/core/kernel'));
   writeFileSync(path.join(consumer, 'kernel-modifiers.ts'), readFileSync(path.join(root, 'tests/fixtures/kernel-modifiers-consumer.ts'), 'utf8').replaceAll('../../src/kernel/index.js', '@rpg/core/kernel'));
   writeFileSync(path.join(consumer, 'kernel-damage.ts'), readFileSync(path.join(root, 'tests/fixtures/kernel-damage-consumer.ts'), 'utf8').replaceAll('../../src/kernel/index.js', '@rpg/core/kernel'));
+  writeFileSync(path.join(consumer, 'kernel-defense.ts'), readFileSync(path.join(root, 'tests/fixtures/kernel-defense-consumer.ts'), 'utf8').replaceAll('../../src/kernel/index.js', '@rpg/core/kernel'));
   const installedEntry = path.join(consumer, 'node_modules/@rpg/core/dist/kernel/index.d.ts');
   const declarationProgram = ts.createProgram([installedEntry], {
     target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.NodeNext,
     moduleResolution: ts.ModuleResolutionKind.NodeNext, strict: true, types: [], skipLibCheck: false,
   });
   const installedClosure = checkDeclarationClosure(declarationProgram, installedEntry, path.dirname(installedEntry), 'installed');
-  assert.equal(installedClosure.exports, 55);
-  assert.equal(installedClosure.files.length, 13);
+  assert.equal(installedClosure.exports, 58);
+  assert.equal(installedClosure.files.length, 14);
   const expectedSymbols = {'.': 243, './contracts': 102, './stats': 17, './modifiers': 8,
-    './combat': 33, './damage': 27, './skills': 76, './effects': 34, './mechanics': 20, './spatial': 6, './kernel': 55};
+    './combat': 33, './damage': 27, './skills': 76, './effects': 34, './mechanics': 20, './spatial': 6, './kernel': 58};
   const installedEntries = Object.entries(pkg.exports).map(([name, entry]) =>
     [name, path.join(consumer, 'node_modules/@rpg/core', entry.types)]);
   const apiProgram = ts.createProgram(installedEntries.map(([, file]) => file), declarationProgram.getCompilerOptions());
@@ -63,7 +64,7 @@ try {
       return target.flags & ts.SymbolFlags.Value;
     });
     if (name === '.') assert.equal(values.length, 122, 'Root runtime values');
-    if (name === './kernel') assert.equal(values.length, 9, 'Kernel stat/modifier/damage runtime exports');
+    if (name === './kernel') assert.equal(values.length, 12, 'Kernel stat/modifier/damage/defense runtime exports');
   }
   for (const file of installedClosure.files) {
     const member = path.relative(path.join(consumer, 'node_modules/@rpg/core'), file).replaceAll('\\', '/');
@@ -134,7 +135,7 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import * as core from '@rpg/core';
 import * as kernel from '@rpg/core/kernel';
-assert.deepEqual(Object.keys(kernel).sort(), ['calculateCooldownDurationMs', 'calculateDamageB0', 'calculateDamageB1', 'calculateDamageBonusValue', 'calculateEffectiveValue', 'calculateStats', 'matchesAnyTag', 'prepareNumericalModifiers', 'selectCanonicalModifiers']);
+assert.deepEqual(Object.keys(kernel).sort(), ['calculateCooldownDurationMs', 'calculateCritical', 'calculateDamageB0', 'calculateDamageB1', 'calculateDamageBonusValue', 'calculateEffectiveValue', 'calculateHit', 'calculateMitigation', 'calculateStats', 'matchesAnyTag', 'prepareNumericalModifiers', 'selectCanonicalModifiers']);
 import {kernelStatsConsumer} from './build/kernel-stats.js';
 assert.equal(kernelStatsConsumer(), 10);
 import {kernelModifiersConsumer} from './build/kernel-modifiers.js';
@@ -142,6 +143,14 @@ assert.deepEqual(kernelModifiersConsumer(), {text: 9, voLam: 17, arpg: .30000000
 import {kernelDamageExamples} from './build/kernel-damage.js';
 assert.deepEqual(kernelDamageExamples(), {text: 24, voLam: {b0:{base:15,scaling:[{source:'strength',value:1.5},{source:'weapon',value:12}],flat:6,raw:34.5},bonus:.5,b1:{criticalBonus:.25,totalBonus:.75,beforeDefense:60.375}}, arpg: {criticalBonus:.5,totalBonus:.8,beforeDefense:36}});
 console.log(JSON.stringify({status:'KERNEL_DAMAGE_ESM_NODENEXT_VERIFIED',scenarios:3}));
+import {kernelDefenseExamples} from './build/kernel-defense.js';
+const defenseExamples=kernelDefenseExamples();
+assert.deepEqual(defenseExamples.text, {ruleKey:'fixed-ward',status:'applied',missing:[],levelGap:null,levelScalingEnabled:false,effectiveK:20,rawReduction:1/3,reduction:.25,inputDamage:30,preventedDamage:7.5,finalDamage:22.5});
+assert.deepEqual(defenseExamples.textCrit, {chance:.75,roll:.2,isCritical:true,bonus:.5,multiplier:1.5});
+assert.equal(defenseExamples.textHit.hit,true);
+assert.deepEqual(defenseExamples.voLam, {ruleKey:'hộ-thể',status:'applied',missing:[],levelGap:4,levelScalingEnabled:true,effectiveK:200,rawReduction:1/3,reduction:1/3,inputDamage:120,preventedDamage:39.999999999999986,finalDamage:80.00000000000001});
+assert.deepEqual(defenseExamples.arpg.map(v=>[v.ruleKey,v.reduction,v.finalDamage,v.preventedDamage]), [['plate',.75,10,30],['aether',.5,20,20]]);
+console.log(JSON.stringify({status:'KERNEL_DEFENSE_ESM_NODENEXT_VERIFIED',scenarios:3}));
 import {headlessCombat} from './build/headless.js';
 import {rootSnapshotExample} from './build/root-snapshot.js';
 import {skillInstanceExample} from './build/skill-instance.js';

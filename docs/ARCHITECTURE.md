@@ -141,6 +141,21 @@ Damage contracts and all Legacy declarations remain unchanged. Module 10's
 preservation amendment was separately approved on 2026-10-18; see
 [the extraction review](v2/2.0.5-damage-calculation-extraction.md).
 
+The approved v2.0.6 implementation moves Hit/Critical probability and generic
+rating mitigation, including final/prevented damage, into Kernel. Legacy delegates
+without changing its declarations, validation, rule selection, gameplay eligibility,
+RNG provision or diagnostics. The private Legacy rating calculator is removed.
+Dodge invokes its callback unbound only for positive chance; Critical's Legacy
+adapter preserves the original input receiver and roll getter reads before chance
+and successful bonus reads. DoT still exposes roll `1` without drawing RNG.
+Mitigation captures the selected coefficient container while forwarding live
+numerical fields and late actor levels. Disabled/missing precedence is preserved.
+All nine v2.0.2 Defense contracts are unchanged. Generic callers provide numerical
+policies and stable synchronous accessors; no global RNG, clone/freeze or gameplay
+default is introduced. Text RPG fixed reduction uses fractional min=max bounds.
+Modules 10/11 received separate exact preservation approval on 2026-10-18; see
+[the review evidence](v2/2.0.6-critical-defense-extraction.md).
+
 Supported delivery is direct hit, melee, projectile, instant AoE, timed AoE sequence,
 timed projectile emitter and on-hit DoT. Effect payloads support modifiers, stun and
 silence; slow uses the existing movement multiplier. Config IDs reserved for disabled

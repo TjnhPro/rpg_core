@@ -57,7 +57,12 @@ must never turn `BLOCKED` into `READY`.
   Legacy retains validation, condition support, source activation and damage/tag
   vocabulary. The approved v2.0.5 cut delegates numerical B0/B1 to Kernel, with
   synchronous live numerical accessors; its preservation checkpoint is approved.
-  Legacy retains eligibility, diagnostics, Dodge, Critical, Defense and snapshots.
+  The approved v2.0.6 implementation delegates numerical Hit, Critical and rating
+  mitigation to Kernel; its exact preservation checkpoint was approved on
+  2026-10-18 for modules 10/11. Legacy
+  retains eligibility, validation, rule selection, RNG provision, diagnostics and
+  snapshots. Live accessors preserve captured coefficients and late actor reads;
+  Dodge callbacks are unbound, while Legacy Critical preserves its input receiver.
   Resource calculation stays Legacy until v2.0.7. Further extraction
   requires approved plans.
   Transform callbacks are caller-owned synchronous pure numeric functions;

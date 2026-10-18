@@ -383,13 +383,15 @@
       "currentFiles": [
         "src/damage/damage-core.ts",
         "src/kernel/damage/damage-calculation.ts",
-        "src/kernel/contracts/damage-stages.ts"
+        "src/kernel/contracts/damage-stages.ts",
+        "src/kernel/defense/defense-calculation.ts"
       ],
       "declarations": [
-        "140700dceaae949d095b65e4b02897eac199e0fab6eaa295d3b06ec026b443f1",
         "19fdb48027fd7762cc5f97bdd3aedd94d975470822c2c939d195b6bef748aa02",
         "2323568f897eed1197b64bf9de64e9ed6169550394ed71a1eb964ce846759a61",
+        "3efb06f66722a58ed355fe32b713296ae3874da956a2dac928adcd73600c1676",
         "4d10b1e11de01e2f39e530054fab0a8c4829e696023bc1a3480ae287081c295d",
+        "58f06aac795b721a2d9d3faf7585dcf15693a9df7d1264170d1d60c4597910f9",
         "69ad5533c02e2a878b3b81e651790f90f6d9ebff598fb72ea4a02c54300d74a1",
         "6c4ec42854202b8af767915ab86b3eeea5fa1d525cb318405e4af6ca4871b970",
         "6e0278ede14c43dd44b61c999f99d6090d07db1e63382a7406a25a63501b6bd1",
@@ -398,82 +400,169 @@
         "b1271afd144a20d4a3c938130666c3b83bc58c8dde96a5bae2e8d9a7c67cfe11",
         "bfc6d1e55a0a2ed0c2d53ff344827f4f11b662c9958d9ea2b0a905dfc1031f7a",
         "c1e421ff6bc4de0eb39ead587978cea8189a26d9f9151b2b2e1c0193c44fa649",
+        "d1cb854c7dc3d80f92b81dd585fb4b40da26268de31efd57f9b25e3adb91d022",
         "d222a4d010ebd244f1f97bc29bd7329520d61e56db03682c387b17224b8f019a",
-        "d831b14156848cbc94e5dbdd321e477535cadf8e837f543114c97ae7fad6fee9"
+        "d831b14156848cbc94e5dbdd321e477535cadf8e837f543114c97ae7fad6fee9",
+        "f09a0f79670b6c0e664abca3e5f993a16903fd6268215c591033c64bc8733749"
       ],
       "approvedChange": {
-        "checkpoint": "v2.0.5",
-        "baseCommit": "7443ff8e897ce61a4216d5386ec7e72310d352c3",
-        "authority": "Developer approved exact v2.0.5 preservation delta on 2026-10-18; docs/v2/2.0.5-damage-calculation-extraction.md",
+        "checkpoint": "v2.0.6",
+        "baseCommit": "65334063e7ceac788ff2f73122694a158a10c5a8",
+        "authority": "Developer approved exact v2.0.6 preservation delta for modules 10 and 11 on 2026-10-18; docs/v2/2.0.6-critical-defense-extraction.md",
         "previousApprovedChange": {
-          "checkpoint": "v1.1.1",
-          "baseCommit": "2c32ebce3a5b8b86e3c22d1095645249a4202cfd",
-          "authority": "Developer approval of implementation plan, 2026-10-16; docs/RPG_CORE_V1.1.1_ROOT_SNAPSHOT.md",
-          "previousDeclarations": [
-            "c01ac125fe886154dd2eb618ec0e183b7264e493ba2de9b31cbe89f97272e5bc"
+          "checkpoint": "v2.0.5",
+          "baseCommit": "7443ff8e897ce61a4216d5386ec7e72310d352c3",
+          "authority": "Developer approved exact v2.0.5 preservation delta on 2026-10-18; docs/v2/2.0.5-damage-calculation-extraction.md",
+          "previousApprovedChange": {
+            "checkpoint": "v1.1.1",
+            "baseCommit": "2c32ebce3a5b8b86e3c22d1095645249a4202cfd",
+            "authority": "Developer approval of implementation plan, 2026-10-16; docs/RPG_CORE_V1.1.1_ROOT_SNAPSHOT.md",
+            "previousDeclarations": [
+              "c01ac125fe886154dd2eb618ec0e183b7264e493ba2de9b31cbe89f97272e5bc"
+            ],
+            "removedDeclarations": [
+              "snapshotActorDamage"
+            ],
+            "addedDeclarations": [
+              "actorOffense",
+              "snapshotActorDamage",
+              "ActorOffenseInput",
+              "DeepReadonly",
+              "ActorOffenseSnapshot",
+              "snapshotActorOffense"
+            ]
+          },
+          "originalDeclarations": [
+            "19fdb48027fd7762cc5f97bdd3aedd94d975470822c2c939d195b6bef748aa02",
+            "2323568f897eed1197b64bf9de64e9ed6169550394ed71a1eb964ce846759a61",
+            "69ad5533c02e2a878b3b81e651790f90f6d9ebff598fb72ea4a02c54300d74a1",
+            "96627cf6aa481446a844558db520a0573ffe39ee0c41cb0785584634170bdbfe",
+            "b1271afd144a20d4a3c938130666c3b83bc58c8dde96a5bae2e8d9a7c67cfe11",
+            "bfc6d1e55a0a2ed0c2d53ff344827f4f11b662c9958d9ea2b0a905dfc1031f7a",
+            "c1e421ff6bc4de0eb39ead587978cea8189a26d9f9151b2b2e1c0193c44fa649",
+            "d222a4d010ebd244f1f97bc29bd7329520d61e56db03682c387b17224b8f019a",
+            "dcdffe845c2b01dd4a036a2ebda535df40e9dfc6a42f73cc75e7681e0fa86a4e"
           ],
-          "removedDeclarations": [
-            "snapshotActorDamage"
+          "legacyBefore": [
+            {
+              "name": "MAX_DAMAGE_SNAPSHOT_MODIFIERS",
+              "hash": "69ad5533c02e2a878b3b81e651790f90f6d9ebff598fb72ea4a02c54300d74a1"
+            },
+            {
+              "name": "calculateDamage",
+              "hash": "dcdffe845c2b01dd4a036a2ebda535df40e9dfc6a42f73cc75e7681e0fa86a4e"
+            },
+            {
+              "name": "actorOffense",
+              "hash": "96627cf6aa481446a844558db520a0573ffe39ee0c41cb0785584634170bdbfe"
+            },
+            {
+              "name": "snapshotActorDamage",
+              "hash": "d222a4d010ebd244f1f97bc29bd7329520d61e56db03682c387b17224b8f019a"
+            },
+            {
+              "name": "DamageSnapshot",
+              "hash": "bfc6d1e55a0a2ed0c2d53ff344827f4f11b662c9958d9ea2b0a905dfc1031f7a"
+            },
+            {
+              "name": "ActorOffenseInput",
+              "hash": "2323568f897eed1197b64bf9de64e9ed6169550394ed71a1eb964ce846759a61"
+            },
+            {
+              "name": "DeepReadonly",
+              "hash": "c1e421ff6bc4de0eb39ead587978cea8189a26d9f9151b2b2e1c0193c44fa649"
+            },
+            {
+              "name": "ActorOffenseSnapshot",
+              "hash": "19fdb48027fd7762cc5f97bdd3aedd94d975470822c2c939d195b6bef748aa02"
+            },
+            {
+              "name": "snapshotActorOffense",
+              "hash": "b1271afd144a20d4a3c938130666c3b83bc58c8dde96a5bae2e8d9a7c67cfe11"
+            }
           ],
-          "addedDeclarations": [
-            "actorOffense",
-            "snapshotActorDamage",
-            "ActorOffenseInput",
-            "DeepReadonly",
-            "ActorOffenseSnapshot",
-            "snapshotActorOffense"
-          ]
+          "legacyAfter": [
+            {
+              "name": "MAX_DAMAGE_SNAPSHOT_MODIFIERS",
+              "hash": "69ad5533c02e2a878b3b81e651790f90f6d9ebff598fb72ea4a02c54300d74a1"
+            },
+            {
+              "name": "calculateDamage",
+              "hash": "140700dceaae949d095b65e4b02897eac199e0fab6eaa295d3b06ec026b443f1"
+            },
+            {
+              "name": "actorOffense",
+              "hash": "96627cf6aa481446a844558db520a0573ffe39ee0c41cb0785584634170bdbfe"
+            },
+            {
+              "name": "snapshotActorDamage",
+              "hash": "d222a4d010ebd244f1f97bc29bd7329520d61e56db03682c387b17224b8f019a"
+            },
+            {
+              "name": "DamageSnapshot",
+              "hash": "bfc6d1e55a0a2ed0c2d53ff344827f4f11b662c9958d9ea2b0a905dfc1031f7a"
+            },
+            {
+              "name": "ActorOffenseInput",
+              "hash": "2323568f897eed1197b64bf9de64e9ed6169550394ed71a1eb964ce846759a61"
+            },
+            {
+              "name": "DeepReadonly",
+              "hash": "c1e421ff6bc4de0eb39ead587978cea8189a26d9f9151b2b2e1c0193c44fa649"
+            },
+            {
+              "name": "ActorOffenseSnapshot",
+              "hash": "19fdb48027fd7762cc5f97bdd3aedd94d975470822c2c939d195b6bef748aa02"
+            },
+            {
+              "name": "snapshotActorOffense",
+              "hash": "b1271afd144a20d4a3c938130666c3b83bc58c8dde96a5bae2e8d9a7c67cfe11"
+            }
+          ],
+          "kernel": {
+            "src/kernel/damage/damage-calculation.ts": [
+              {
+                "name": "calculateDamageB0",
+                "hash": "6c4ec42854202b8af767915ab86b3eeea5fa1d525cb318405e4af6ca4871b970"
+              },
+              {
+                "name": "calculateDamageBonusValue",
+                "hash": "d831b14156848cbc94e5dbdd321e477535cadf8e837f543114c97ae7fad6fee9"
+              },
+              {
+                "name": "calculateDamageB1",
+                "hash": "8a660a1a4a2c2c27a19da03452e87256b1cd4f3c8bddace4d3ba3ff09a5d53a3"
+              }
+            ],
+            "src/kernel/contracts/damage-stages.ts": [
+              {
+                "name": "DamageB0Input",
+                "hash": "6e0278ede14c43dd44b61c999f99d6090d07db1e63382a7406a25a63501b6bd1"
+              },
+              {
+                "name": "DamageB0Result",
+                "hash": "4d10b1e11de01e2f39e530054fab0a8c4829e696023bc1a3480ae287081c295d"
+              }
+            ]
+          }
         },
         "originalDeclarations": [
+          "140700dceaae949d095b65e4b02897eac199e0fab6eaa295d3b06ec026b443f1",
           "19fdb48027fd7762cc5f97bdd3aedd94d975470822c2c939d195b6bef748aa02",
           "2323568f897eed1197b64bf9de64e9ed6169550394ed71a1eb964ce846759a61",
+          "4d10b1e11de01e2f39e530054fab0a8c4829e696023bc1a3480ae287081c295d",
           "69ad5533c02e2a878b3b81e651790f90f6d9ebff598fb72ea4a02c54300d74a1",
+          "6c4ec42854202b8af767915ab86b3eeea5fa1d525cb318405e4af6ca4871b970",
+          "6e0278ede14c43dd44b61c999f99d6090d07db1e63382a7406a25a63501b6bd1",
+          "8a660a1a4a2c2c27a19da03452e87256b1cd4f3c8bddace4d3ba3ff09a5d53a3",
           "96627cf6aa481446a844558db520a0573ffe39ee0c41cb0785584634170bdbfe",
           "b1271afd144a20d4a3c938130666c3b83bc58c8dde96a5bae2e8d9a7c67cfe11",
           "bfc6d1e55a0a2ed0c2d53ff344827f4f11b662c9958d9ea2b0a905dfc1031f7a",
           "c1e421ff6bc4de0eb39ead587978cea8189a26d9f9151b2b2e1c0193c44fa649",
           "d222a4d010ebd244f1f97bc29bd7329520d61e56db03682c387b17224b8f019a",
-          "dcdffe845c2b01dd4a036a2ebda535df40e9dfc6a42f73cc75e7681e0fa86a4e"
+          "d831b14156848cbc94e5dbdd321e477535cadf8e837f543114c97ae7fad6fee9"
         ],
         "legacyBefore": [
-          {
-            "name": "MAX_DAMAGE_SNAPSHOT_MODIFIERS",
-            "hash": "69ad5533c02e2a878b3b81e651790f90f6d9ebff598fb72ea4a02c54300d74a1"
-          },
-          {
-            "name": "calculateDamage",
-            "hash": "dcdffe845c2b01dd4a036a2ebda535df40e9dfc6a42f73cc75e7681e0fa86a4e"
-          },
-          {
-            "name": "actorOffense",
-            "hash": "96627cf6aa481446a844558db520a0573ffe39ee0c41cb0785584634170bdbfe"
-          },
-          {
-            "name": "snapshotActorDamage",
-            "hash": "d222a4d010ebd244f1f97bc29bd7329520d61e56db03682c387b17224b8f019a"
-          },
-          {
-            "name": "DamageSnapshot",
-            "hash": "bfc6d1e55a0a2ed0c2d53ff344827f4f11b662c9958d9ea2b0a905dfc1031f7a"
-          },
-          {
-            "name": "ActorOffenseInput",
-            "hash": "2323568f897eed1197b64bf9de64e9ed6169550394ed71a1eb964ce846759a61"
-          },
-          {
-            "name": "DeepReadonly",
-            "hash": "c1e421ff6bc4de0eb39ead587978cea8189a26d9f9151b2b2e1c0193c44fa649"
-          },
-          {
-            "name": "ActorOffenseSnapshot",
-            "hash": "19fdb48027fd7762cc5f97bdd3aedd94d975470822c2c939d195b6bef748aa02"
-          },
-          {
-            "name": "snapshotActorOffense",
-            "hash": "b1271afd144a20d4a3c938130666c3b83bc58c8dde96a5bae2e8d9a7c67cfe11"
-          }
-        ],
-        "legacyAfter": [
           {
             "name": "MAX_DAMAGE_SNAPSHOT_MODIFIERS",
             "hash": "69ad5533c02e2a878b3b81e651790f90f6d9ebff598fb72ea4a02c54300d74a1"
@@ -511,29 +600,57 @@
             "hash": "b1271afd144a20d4a3c938130666c3b83bc58c8dde96a5bae2e8d9a7c67cfe11"
           }
         ],
+        "legacyAfter": [
+          {
+            "name": "MAX_DAMAGE_SNAPSHOT_MODIFIERS",
+            "hash": "69ad5533c02e2a878b3b81e651790f90f6d9ebff598fb72ea4a02c54300d74a1"
+          },
+          {
+            "name": "calculateDamage",
+            "hash": "3efb06f66722a58ed355fe32b713296ae3874da956a2dac928adcd73600c1676"
+          },
+          {
+            "name": "actorOffense",
+            "hash": "96627cf6aa481446a844558db520a0573ffe39ee0c41cb0785584634170bdbfe"
+          },
+          {
+            "name": "snapshotActorDamage",
+            "hash": "d222a4d010ebd244f1f97bc29bd7329520d61e56db03682c387b17224b8f019a"
+          },
+          {
+            "name": "DamageSnapshot",
+            "hash": "bfc6d1e55a0a2ed0c2d53ff344827f4f11b662c9958d9ea2b0a905dfc1031f7a"
+          },
+          {
+            "name": "ActorOffenseInput",
+            "hash": "2323568f897eed1197b64bf9de64e9ed6169550394ed71a1eb964ce846759a61"
+          },
+          {
+            "name": "DeepReadonly",
+            "hash": "c1e421ff6bc4de0eb39ead587978cea8189a26d9f9151b2b2e1c0193c44fa649"
+          },
+          {
+            "name": "ActorOffenseSnapshot",
+            "hash": "19fdb48027fd7762cc5f97bdd3aedd94d975470822c2c939d195b6bef748aa02"
+          },
+          {
+            "name": "snapshotActorOffense",
+            "hash": "b1271afd144a20d4a3c938130666c3b83bc58c8dde96a5bae2e8d9a7c67cfe11"
+          }
+        ],
         "kernel": {
-          "src/kernel/damage/damage-calculation.ts": [
+          "src/kernel/defense/defense-calculation.ts": [
             {
-              "name": "calculateDamageB0",
-              "hash": "6c4ec42854202b8af767915ab86b3eeea5fa1d525cb318405e4af6ca4871b970"
+              "name": "calculateHit",
+              "hash": "f09a0f79670b6c0e664abca3e5f993a16903fd6268215c591033c64bc8733749"
             },
             {
-              "name": "calculateDamageBonusValue",
-              "hash": "d831b14156848cbc94e5dbdd321e477535cadf8e837f543114c97ae7fad6fee9"
+              "name": "calculateCritical",
+              "hash": "d1cb854c7dc3d80f92b81dd585fb4b40da26268de31efd57f9b25e3adb91d022"
             },
             {
-              "name": "calculateDamageB1",
-              "hash": "8a660a1a4a2c2c27a19da03452e87256b1cd4f3c8bddace4d3ba3ff09a5d53a3"
-            }
-          ],
-          "src/kernel/contracts/damage-stages.ts": [
-            {
-              "name": "DamageB0Input",
-              "hash": "6e0278ede14c43dd44b61c999f99d6090d07db1e63382a7406a25a63501b6bd1"
-            },
-            {
-              "name": "DamageB0Result",
-              "hash": "4d10b1e11de01e2f39e530054fab0a8c4829e696023bc1a3480ae287081c295d"
+              "name": "calculateMitigation",
+              "hash": "58f06aac795b721a2d9d3faf7585dcf15693a9df7d1264170d1d60c4597910f9"
             }
           ]
         }
@@ -542,14 +659,76 @@
     {
       "originalFile": "src/shared/game/defense-engine.ts",
       "currentFiles": [
-        "src/damage/defense-engine.ts"
+        "src/damage/defense-engine.ts",
+        "src/kernel/defense/defense-calculation.ts"
       ],
       "declarations": [
-        "8353a6fed8bbdf415e86aaee2e34d359b07e5ef54eeb4fe9a41b575fa6d2aecf",
+        "2ec5d48b66ef2799955c6efb6e5d927717e3c79420b3a6109c3626e4b6551b50",
+        "541b7dc4bd33001fc905497c6139833de639ee182e431f7ef1d8b45888d2eebc",
+        "58f06aac795b721a2d9d3faf7585dcf15693a9df7d1264170d1d60c4597910f9",
         "9db2878270eeb985cddceae380fae16feead980e93f21663f131881d370409ad",
-        "b1464129ca785644d2a48114d4f3067d0b0ecd4d80101a96413cc01d8a76cab2",
-        "b2908df59094942d7875f88f15788fd8945155acca477062ff69c69425a2c37d"
-      ]
+        "d1cb854c7dc3d80f92b81dd585fb4b40da26268de31efd57f9b25e3adb91d022",
+        "f09a0f79670b6c0e664abca3e5f993a16903fd6268215c591033c64bc8733749"
+      ],
+      "approvedChange": {
+        "checkpoint": "v2.0.6",
+        "baseCommit": "65334063e7ceac788ff2f73122694a158a10c5a8",
+        "authority": "Developer approved exact v2.0.6 preservation delta for modules 10 and 11 on 2026-10-18; docs/v2/2.0.6-critical-defense-extraction.md",
+        "originalDeclarations": [
+          "8353a6fed8bbdf415e86aaee2e34d359b07e5ef54eeb4fe9a41b575fa6d2aecf",
+          "9db2878270eeb985cddceae380fae16feead980e93f21663f131881d370409ad",
+          "b1464129ca785644d2a48114d4f3067d0b0ecd4d80101a96413cc01d8a76cab2",
+          "b2908df59094942d7875f88f15788fd8945155acca477062ff69c69425a2c37d"
+        ],
+        "legacyBefore": [
+          {
+            "name": "validateDefenseContext",
+            "hash": "9db2878270eeb985cddceae380fae16feead980e93f21663f131881d370409ad"
+          },
+          {
+            "name": "resolveDefenseHit",
+            "hash": "b1464129ca785644d2a48114d4f3067d0b0ecd4d80101a96413cc01d8a76cab2"
+          },
+          {
+            "name": "ratingReduction",
+            "hash": "8353a6fed8bbdf415e86aaee2e34d359b07e5ef54eeb4fe9a41b575fa6d2aecf"
+          },
+          {
+            "name": "mitigateDefense",
+            "hash": "b2908df59094942d7875f88f15788fd8945155acca477062ff69c69425a2c37d"
+          }
+        ],
+        "legacyAfter": [
+          {
+            "name": "validateDefenseContext",
+            "hash": "9db2878270eeb985cddceae380fae16feead980e93f21663f131881d370409ad"
+          },
+          {
+            "name": "resolveDefenseHit",
+            "hash": "541b7dc4bd33001fc905497c6139833de639ee182e431f7ef1d8b45888d2eebc"
+          },
+          {
+            "name": "mitigateDefense",
+            "hash": "2ec5d48b66ef2799955c6efb6e5d927717e3c79420b3a6109c3626e4b6551b50"
+          }
+        ],
+        "kernel": {
+          "src/kernel/defense/defense-calculation.ts": [
+            {
+              "name": "calculateHit",
+              "hash": "f09a0f79670b6c0e664abca3e5f993a16903fd6268215c591033c64bc8733749"
+            },
+            {
+              "name": "calculateCritical",
+              "hash": "d1cb854c7dc3d80f92b81dd585fb4b40da26268de31efd57f9b25e3adb91d022"
+            },
+            {
+              "name": "calculateMitigation",
+              "hash": "58f06aac795b721a2d9d3faf7585dcf15693a9df7d1264170d1d60c4597910f9"
+            }
+          ]
+        }
+      }
     },
     {
       "originalFile": "src/shared/game/stat-calculation.ts",

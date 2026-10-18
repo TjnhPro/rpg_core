@@ -20,6 +20,9 @@ function fixture(files: Record<string, string>, run: (root: string) => void) {
 }
 
 const leaks = [
+  ['Hit probability policy', "import type {Legacy} from 'TARGET'; export interface Public {readonly rule: {readonly bounds: Legacy}}"],
+  ['Critical lazy roll result', "import type {Legacy} from 'TARGET'; export interface Public {readonly roll: number | (() => Legacy)}"],
+  ['Mitigation numerical diagnostic', "import type {Legacy} from 'TARGET'; export interface Public {readonly effectiveK: Legacy | null}"],
   ['B0 flat callback result', "import type {Legacy} from 'TARGET'; export interface Public {readonly resolveFlat: () => Legacy}"],
   ['B0 source accessor', "import type {Legacy} from 'TARGET'; export interface Public {readonly sourceValue: (source: Legacy) => number}"],
   ['B0 result scaling', "import type {Legacy} from 'TARGET'; export interface Public {scaling: {source: Legacy; value: number}[]}"],
@@ -99,7 +102,27 @@ for (const phase of ['source', 'emitted'] as const) {
       [`${dir}/kernel/nested/damage${ext}`]: 'export interface Input<S extends string = string> {readonly sourceOrder: readonly S[]; readonly sourceValue: (source:S) => number; readonly resolveFlat: () => {readonly definition:number;readonly additional:number;readonly resolved:number}} export interface Result<S extends string = string> {scaling: {source:S;value:number}[]; raw:number}',
     }, root => {expect(check(root).exports).toBe(2); expect(check(root).files).toHaveLength(2);});
   });
+  it(`${phase}: accepts Kernel-only probability and generic rating declarations`, () => {
+    fixture({
+      [`${dir}/kernel/index${ext}`]: "export type {Input, Result} from './nested/defense.js';",
+      [`${dir}/kernel/nested/defense${ext}`]: 'interface Rule {readonly enabled:boolean;readonly bounds:{readonly min?:number;readonly max?:number}} export interface Input<K extends string=string> {readonly ruleKey:K;readonly rule:Rule;readonly roll:number|(()=>number)} export interface Result<K extends string=string> {readonly ruleKey:K;readonly missing:readonly string[];readonly effectiveK:number|null}',
+    }, root => {expect(check(root).exports).toBe(2);expect(check(root).files).toHaveLength(2);});
+  });
 }
+
+it.each(['DamageContext','DefenseSettings','CombatEntity','SkillMechanics'])('rejects deep Defense %s aliases through the actual checker', name => {
+  const base={
+    'src/kernel/index.ts': "export type {Public} from './nested/deep/defense.js';",
+    'src/kernel/nested/deep/defense.ts': 'export interface Public {readonly rule:number}',
+    'src/kernel/support.ts': 'export type Hidden=number;',
+    'src/contracts/legacy.ts': `export interface ${name} {readonly marker:number}`,
+  };
+  const cli=(root:string)=>spawnSync(process.execPath,[path.resolve('scripts/check-architecture.mjs'),root],{encoding:'utf8'});
+  fixture(base,root=>{const r=cli(root);expect(r.status,r.stdout+r.stderr).toBe(0);expect(r.stdout).toContain('"emitted"');});
+  fixture({...base,'src/kernel/nested/deep/defense.ts':"import type {Hidden} from '../../support.js';export interface Public {readonly rule:Hidden}",'src/kernel/support.ts':`export type {${name} as Hidden} from '../contracts/legacy.js';`},root=>{
+    const r=cli(root);expect(r.status).not.toBe(0);expect(r.stdout+r.stderr).toContain('forbidden declaration');expect(r.stdout+r.stderr).not.toContain('Cannot find module');
+  });
+},20_000);
 
 it.each(['Damage', 'Defense', 'Entity', 'Skill'])('rejects deep B0 %s leakage through a valid transitive alias', name => {
   fixture({

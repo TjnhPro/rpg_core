@@ -166,6 +166,14 @@ callers should supply stable/pure accessors. No copy/freeze guarantee is added.
 The Developer approved the exact module-10 preservation amendment on 2026-10-18.
 See [the extraction review](docs/v2/2.0.5-damage-calculation-extraction.md).
 
+v2.0.6 implements `calculateHit`, `calculateCritical` and `calculateMitigation`
+from the existing nine Defense contracts. Kernel owns probability, rating,
+clamping and final/prevented damage arithmetic; Legacy supplies eligibility,
+rules, validation and RNG, and maps its original diagnostics. Dodge remains lazy;
+Critical draws before chance reads and retains the DoT public roll sentinel `1`.
+The Developer approved the exact preservation amendment for modules 10/11 on
+2026-10-18; see [the review evidence](docs/v2/2.0.6-critical-defense-extraction.md).
+
 Delivery scheduling kernels, freeze helpers and debug wrappers remain internal.
 The inherited `SkillEffectRuntime` container shape is preserved; applications
 should operate it through lifecycle APIs, rather than mutate its stores.

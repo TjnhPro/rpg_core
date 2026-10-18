@@ -1,4 +1,5 @@
-/** Universal numerical contracts and canonical stat/modifier/B0/B1 calculations. */
+/** Universal numerical contracts and canonical stat/modifier/damage/defense calculations. */
+export {calculateHit,calculateCritical,calculateMitigation} from './defense/defense-calculation.js';
 export type {DamageB0Input, DamageB0Result} from './contracts/damage-stages.js';
 export {calculateDamageB0, calculateDamageB1, calculateDamageBonusValue} from './damage/damage-calculation.js';
 export type {ModifierAdapter, ModifierSourceSelection, PreparedModifierResult} from './contracts/modifier-resolution.js';
