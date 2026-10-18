@@ -20,6 +20,9 @@ function fixture(files: Record<string, string>, run: (root: string) => void) {
 }
 
 const leaks = [
+  ['B0 flat callback result', "import type {Legacy} from 'TARGET'; export interface Public {readonly resolveFlat: () => Legacy}"],
+  ['B0 source accessor', "import type {Legacy} from 'TARGET'; export interface Public {readonly sourceValue: (source: Legacy) => number}"],
+  ['B0 result scaling', "import type {Legacy} from 'TARGET'; export interface Public {scaling: {source: Legacy; value: number}[]}"],
   ['modifier accessor payload', "import type {Legacy} from 'TARGET'; export interface Public<M = number> {readonly identity: (input: M) => Legacy}"],
   ['prepared contribution generic', "import type {Legacy} from 'TARGET'; export interface Public<M = Legacy> {readonly contributions: M[]}"],
   ['source membership payload', "import type {Legacy} from 'TARGET'; export interface Public {readonly instances: ReadonlyMap<string, ReadonlySet<Legacy>>}"],
@@ -90,7 +93,27 @@ for (const phase of ['source', 'emitted'] as const) {
       [`${dir}/kernel/nested/contracts${ext}`]: 'export interface Adapter<M> {readonly identity: (input: M) => string} export interface Result<M = number> {readonly contributions: M[]} export interface Sources {readonly instances: ReadonlyMap<string, ReadonlySet<string>>}',
     }, root => {expect(check(root).exports).toBe(3); expect(check(root).files).toHaveLength(2);});
   });
+  it(`${phase}: accepts generic B0 callback and mutable breakdown contracts`, () => {
+    fixture({
+      [`${dir}/kernel/index${ext}`]: "export type {Input, Result} from './nested/damage.js';",
+      [`${dir}/kernel/nested/damage${ext}`]: 'export interface Input<S extends string = string> {readonly sourceOrder: readonly S[]; readonly sourceValue: (source:S) => number; readonly resolveFlat: () => {readonly definition:number;readonly additional:number;readonly resolved:number}} export interface Result<S extends string = string> {scaling: {source:S;value:number}[]; raw:number}',
+    }, root => {expect(check(root).exports).toBe(2); expect(check(root).files).toHaveLength(2);});
+  });
 }
+
+it.each(['Damage', 'Defense', 'Entity', 'Skill'])('rejects deep B0 %s leakage through a valid transitive alias', name => {
+  fixture({
+    'src/kernel/index.ts': "export type {Public} from './nested/deep/input.js';",
+    'src/kernel/nested/deep/input.ts': "import type {Hidden} from '../../support.js'; export interface Public {readonly resolveFlat: () => Hidden}",
+    'src/kernel/support.ts': `export type {${name} as Hidden} from '../contracts/legacy.js';`,
+    'src/contracts/legacy.ts': `export interface ${name} {readonly marker:number}`,
+  }, root => {
+    const result = spawnSync(process.execPath, [path.resolve('scripts/check-architecture.mjs'), root], {encoding:'utf8'});
+    expect(result.status).not.toBe(0);
+    expect(result.stdout + result.stderr).toContain('forbidden declaration');
+    expect(result.stdout + result.stderr).not.toContain('Cannot find module');
+  });
+}, 20_000);
 
 it.each(leaks)('CLI source/emit pipeline rejects %s for declaration boundary, with a valid existing target', (_name, code) => {
   const base = {

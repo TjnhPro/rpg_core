@@ -55,7 +55,10 @@ must never turn `BLOCKED` into `READY`.
   callback. The approved v2.0.4 cut moves modifier identity/dedup/order/grouping
   and numerical aggregation into Kernel; its preservation checkpoint is approved.
   Legacy retains validation, condition support, source activation and damage/tag
-  vocabulary. Resource calculation stays Legacy until v2.0.7. Further extraction
+  vocabulary. The approved v2.0.5 cut delegates numerical B0/B1 to Kernel, with
+  synchronous live numerical accessors; its preservation checkpoint is approved.
+  Legacy retains eligibility, diagnostics, Dodge, Critical, Defense and snapshots.
+  Resource calculation stays Legacy until v2.0.7. Further extraction
   requires approved plans.
   Transform callbacks are caller-owned synchronous pure numeric functions;
   snapshots contain no callbacks. TypeScript readonly is neither detached copy

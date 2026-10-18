@@ -1,4 +1,6 @@
-/** Universal numerical contracts and canonical attribute/stat calculations. */
+/** Universal numerical contracts and canonical stat/modifier/B0/B1 calculations. */
+export type {DamageB0Input, DamageB0Result} from './contracts/damage-stages.js';
+export {calculateDamageB0, calculateDamageB1, calculateDamageBonusValue} from './damage/damage-calculation.js';
 export type {ModifierAdapter, ModifierSourceSelection, PreparedModifierResult} from './contracts/modifier-resolution.js';
 export {selectCanonicalModifiers, prepareNumericalModifiers, matchesAnyTag} from './modifiers/modifier-resolution.js';
 export type {Identifier, Scalar, NumericValues, NumericBounds, DecimalPrecision, NumericRule, CalculationIssue} from './contracts/common.js';

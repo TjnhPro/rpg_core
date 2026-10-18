@@ -123,7 +123,7 @@ allow only these imports; application code does not need internal source paths.
 | `@rpg/core/effects` | Definitions, lifecycle, stack/refresh/expire and DoT |
 | `@rpg/core/mechanics` | Melee/projectile/AoE geometry and configuration |
 | `@rpg/core/spatial` | Coordinate/grid contracts, range and wall traversal |
-| `@rpg/core/kernel` | Universal numerical contracts and canonical stat/modifier calculations |
+| `@rpg/core/kernel` | Universal numerical contracts and canonical stat/modifier/B0/B1 calculations |
 
 v2.0.1 establishes an independently importable Kernel and enforces
 `Legacy / Gameplay → Kernel` dependencies. Kernel imports only Kernel files;
@@ -156,6 +156,15 @@ validation, source activation and damage/tag policy. Original contribution
 objects and mutable group arrays remain live; readonly types do not freeze them.
 The separate preservation checkpoint is approved: see the
 [extraction and preservation review](docs/v2/2.0.4-modifier-resolver-extraction.md).
+
+v2.0.5 adds `calculateDamageB0`, `calculateDamageB1` and
+`calculateDamageBonusValue`, with `DamageB0Input`/`DamageB0Result`. Legacy delegates
+numerical B0/B1 while retaining eligibility, diagnostics, Dodge, Critical, Defense
+and snapshots. B0 runs before Critical RNG; B1 consumes its selected additive bonus
+after Critical. Synchronous live accessors preserve Legacy read timing; generic
+callers should supply stable/pure accessors. No copy/freeze guarantee is added.
+The Developer approved the exact module-10 preservation amendment on 2026-10-18.
+See [the extraction review](docs/v2/2.0.5-damage-calculation-extraction.md).
 
 Delivery scheduling kernels, freeze helpers and debug wrappers remain internal.
 The inherited `SkillEffectRuntime` container shape is preserved; applications

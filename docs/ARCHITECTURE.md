@@ -73,12 +73,12 @@ legacy paths or application modules. The root barrel only assembles public expor
 | `stats` | Resolved attributes → derived bases → modifiers/transform/caps, absolute resources, cooldown duration: `resolveCharacterStats`, `calculateEffectiveStat`, `updateCurrentResources`, `cooldownDurationMs` | contracts, modifiers | `tests/stats`, `tests/skills`, `tests/integration` |
 | `modifiers` | Legacy validation/source activation/tag policy and Kernel delegation: `collectActiveModifiers`, `prepareModifierResolver`, `resolveModifiers` | contracts, kernel | `tests/modifiers`, `tests/effects/effect-modifiers.test.ts` |
 | `combat` | Entity state, relations, target/action admission, hit revalidation, restriction cancellation, HP transition: `combatState`, `validateCombatAction`, `validateCombatHit`, `startCombatAction`, `cancelCombatAction`, `applyEntityDamage`, `applyEntityHealing` | contracts, spatial | `tests/combat`, skill and restriction tests |
-| `damage` | B0/B1 offense, Crit, Dodge, armor/MR: `calculateDamage`, `snapshotActorDamage`, `mitigateDefense`, `resolveDefenseHit` | contracts, combat, modifiers | `tests/damage`, delivery integration tests |
+| `damage` | Legacy B0/B1 facade delegating Kernel arithmetic; Crit, Dodge, armor/MR: `calculateDamage`, `snapshotActorDamage`, `mitigateDefense`, `resolveDefenseHit` | contracts, combat, modifiers, kernel | `tests/damage`, delivery integration tests |
 | `skills` | Immutable definition, availability, MP/cooldown commit, activation and effect dispatch: `defineSkill`, `executeSkill`, `advanceSkillExecution`, `cancelSkillExecution`, `dispatchSkillEffects`, `advanceSkillEffects`, `clearSkillEffects` | contracts, combat, stats, effects, damage, mechanics, spatial | `tests/skills`, `tests/integration` |
 | `effects` | Immutable effect definitions, apply/refresh/stack/expire/restrictions and on-hit DoT: `defineEffect`, `EffectLifecycle`, `applyDotSnapshot`, `tickDotRuntime` | contracts, combat, modifiers, damage | `tests/effects`, effect and status integrations |
 | `mechanics` | Melee hitboxes, projectile movement, AoE geometry; internal sequence/emitter kernels: `detectMeleeHitbox`, `moveProjectile`, `detectInstantAOE`, `lockAOEPosition`, `validateSkillMechanics` | contracts, spatial | `tests/integration/skill-effect-integration.test.ts` and skill/RPG integrations |
 | `spatial` | Supplied-grid walkability, exact cell traversal and range: `isWalkable`, `canTraverse`, `distance`, `inRange` | contracts | `tests/spatial`, skill range tests |
-| `kernel` | Numerical contracts, stat/scalar/cooldown arithmetic and modifier selection/aggregation | None (Kernel-internal imports only) | Architecture/declaration fixtures, strict installed consumer, independent numerical fixtures |
+| `kernel` | Numerical contracts, stat/scalar/cooldown/B0/B1 arithmetic and modifier selection/aggregation | None (Kernel-internal imports only) | Architecture/declaration fixtures, strict installed consumer, independent numerical fixtures |
 
 The eight non-Contracts Legacy domains above additionally may import `kernel`;
 all other Legacy allowances are unchanged. Contracts keeps its existing policy.
@@ -126,6 +126,20 @@ Opaque source membership and lazy exact tag matching do not transfer gameplay
 activation or damage vocabulary into Kernel. Negative `damage_bonus` remains
 valid; nonempty conditions remain rejected by the unchanged Legacy validator.
 See the [parity evidence and approved module-13 preservation amendment](v2/2.0.4-modifier-resolver-extraction.md).
+
+v2.0.5 moves B0 rank/base/scaling/flat arithmetic, ordered item-source products and
+B1 additive accumulation/clamps into Kernel. Legacy retains context/eligibility,
+canonical modifier selection policy, diagnostics, Dodge, Critical, Defense and
+snapshots. The existing v2.0.4 resolver remains canonical; no second modifier
+calculator is introduced. B0 runs only after a landed hit and before Critical RNG.
+Its `resolveFlat()` boundary runs once after scaling, followed by definition,
+additional and resolved flat reads. B1 runs after Critical without another RNG or
+eligibility pass. Accessors are synchronous, caller-owned, stable/pure for generic
+determinism; Legacy deliberately adapts live mutable configuration. Readonly types
+do not detach/freeze values and callbacks are not snapshot data. The five v2.0.2
+Damage contracts and all Legacy declarations remain unchanged. Module 10's
+preservation amendment was separately approved on 2026-10-18; see
+[the extraction review](v2/2.0.5-damage-calculation-extraction.md).
 
 Supported delivery is direct hit, melee, projectile, instant AoE, timed AoE sequence,
 timed projectile emitter and on-hit DoT. Effect payloads support modifiers, stun and

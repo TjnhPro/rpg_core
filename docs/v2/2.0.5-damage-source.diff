@@ -1,0 +1,127 @@
+diff --git a/src/damage/damage-core.ts b/src/damage/damage-core.ts
+index c3d0174..c158e0b 100644
+--- a/src/damage/damage-core.ts
++++ b/src/damage/damage-core.ts
+@@ -4,6 +4,7 @@ import { DAMAGE_SOURCES,DAMAGE_TAGS,DAMAGE_TARGETS,DAMAGE_STATUSES,type DamageCo
+ import type { CombatEntityIdentity } from '../combat/combat-entity.js';
+ import { mitigateDefense,resolveDefenseHit,type DefenseConfigSnapshot } from './defense-engine.js';
+ import { damageBonusReason,prepareModifierResolver,resolveModifiers } from '../modifiers/modifier-core.js';
++import {calculateDamageB0,calculateDamageB1,calculateDamageBonusValue} from '../kernel/damage/damage-calculation.js';
+ 
+ 
+ // Up to100 legacy damage settings plus256 Foundation registry entries.
+@@ -31,24 +32,31 @@ export function calculateDamage(input:{definition:DamageDefinition;sources:Recor
+   const defense={...mitigateDefense(0,defenseContext,input.defenseConfig),hit};
+   return {entities,event,b0:{base:0,scaling:[] as {source:DamageSource;value:number}[],flat:0,flatModifiers:[] as CombatModifier[],raw:0},b1:{modifiers:[] as {id:string;source:string;reason:string;value:number;sources:{id:string;value:number;source?:string}[]}[],criticalBonus:0,totalBonus:0},critical:{chance:input.criticalChance,roll:null as number|null,isCritical:false},beforeDefense:0,defense,finalDamage:0};
+  }
+- const {definition:d,context:c}=input,rankFactor=1+d.perRank*Math.max(0,(input.rank??1)-1);
+- const base=d.base*rankFactor,scaling=DAMAGE_SOURCES.map(id=>({source:id,value:input.sources[id]*d.scaling[id]*rankFactor}));
+- const scope=c.defender?.mechanic==='dot'?'dot':'direct';
+- const eligible=canonicalFlat.filter(m=>(m.damageType??'all')==='all'||m.damageType===c.type.toLowerCase()).filter(m=>(m.scope??'direct')==='all'||(m.scope??'direct')===scope);
+- const resolvedFlat=resolveModifiers(0,'flat_damage',eligible);
+- const flat=d.flat+(input.flat??0)+resolvedFlat.value,raw=base+scaling.reduce((sum,s)=>sum+s.value,0)+flat;
++ const {definition:d,context:c}=input;
++ let scope!:'dot'|'direct',resolvedFlat!:ReturnType<typeof resolveModifiers>;
++ const {base,scaling,flat,raw}=calculateDamageB0({
++  get perRank(){return d.perRank;},get rank(){return input.rank??1;},get base(){return d.base;},
++  sourceOrder:DAMAGE_SOURCES,sourceValue:id=>input.sources[id],coefficient:id=>d.scaling[id],
++  resolveFlat:()=>{
++   scope=c.defender?.mechanic==='dot'?'dot':'direct';
++   const eligible=canonicalFlat.filter(m=>(m.damageType??'all')==='all'||m.damageType===c.type.toLowerCase()).filter(m=>(m.scope??'direct')==='all'||(m.scope??'direct')===scope);
++   resolvedFlat=resolveModifiers(0,'flat_damage',eligible);
++   return {get definition(){return d.flat;},get additional(){return input.flat??0;},get resolved(){return resolvedFlat.value;}};
++  },
++ });
+  const modifiers:{id:string;source:string;reason:string;value:number;sources:{id:string;value:number;source?:string}[]}[]=input.settings.modifiers.map(m=>{
+   const targetLabels:string[]=entities?.defender.targetTags.length?entities.defender.targetTags.map(t=>t==='boss'?'Boss':'Elite'):[c.target];
+   const reason=!m.enabled?'disabled':m.types.length&&!m.types.includes(c.type)?'damage type mismatch':m.tags.length&&!m.tags.some(t=>c.tags.includes(t))?'tag mismatch':m.targets.length&&!m.targets.some(t=>targetLabels.includes(t))?'target mismatch':m.statuses.length&&!m.statuses.every(t=>c.statuses.includes(t))?'target status mismatch':'eligible';
+   const sources=m.source==='item'?(input.options??[]).filter(o=>o.id===m.option):[];
+-  const value=m.source==='item'?sources.reduce((n,o)=>n+o.value*m.value,0):m.value;
++  const value=m.source==='item'?calculateDamageBonusValue(sources,o=>o.value,()=>m.value):m.value;
+   return {id:m.id,source:m.source,reason:reason==='eligible'&&m.source==='item'&&!sources.length?'no equipped source':reason,value:reason==='eligible'?value:0,sources};
+  });
+  modifiers.push(...canonicalBonus.map(m=>{const reason=damageBonusReason(m,c);return {id:JSON.stringify([m.source,m.sourceInstanceId,m.id]),source:m.source,reason,value:reason==='eligible'?m.value:0,sources:[{id:m.id,value:m.value,source:m.sourceInstanceId}]};}));
+  const criticalRoll=scope==='dot'?1:typeof input.roll==='function'?input.roll():input.roll;
+  const chance=scope==='dot'?0:Math.max(0,Math.min(.85,input.criticalChance)),critical=criticalRoll<chance;
+- const criticalBonus=critical?Math.max(0,input.criticalBonus):0,totalBonus=modifiers.reduce((sum,m)=>sum+m.value,0)+criticalBonus;
+- const beforeDefense=Math.max(0,Math.max(0,raw)*(1+totalBonus)),defense={...mitigateDefense(beforeDefense,defenseContext,input.defenseConfig),hit},finalDamage=defense.finalDamage;
++ const criticalBonus=critical?Math.max(0,input.criticalBonus):0;
++ const {totalBonus,beforeDefense}=calculateDamageB1(raw,modifiers,criticalBonus);
++ const defense={...mitigateDefense(beforeDefense,defenseContext,input.defenseConfig),hit},finalDamage=defense.finalDamage;
+  return {entities,event,b0:{base,scaling,flat,flatModifiers:resolvedFlat.contributions,raw},b1:{modifiers,criticalBonus,totalBonus},critical:{chance,roll:criticalRoll as number|null,isCritical:critical},beforeDefense,defense,finalDamage};
+ }
+ 
+diff --git a/src/kernel/index.ts b/src/kernel/index.ts
+index 1158f87..e4a69a0 100644
+--- a/src/kernel/index.ts
++++ b/src/kernel/index.ts
+@@ -1,4 +1,6 @@
+-/** Universal numerical contracts and canonical attribute/stat calculations. */
++/** Universal numerical contracts and canonical stat/modifier/B0/B1 calculations. */
++export type {DamageB0Input, DamageB0Result} from './contracts/damage-stages.js';
++export {calculateDamageB0, calculateDamageB1, calculateDamageBonusValue} from './damage/damage-calculation.js';
+ export type {ModifierAdapter, ModifierSourceSelection, PreparedModifierResult} from './contracts/modifier-resolution.js';
+ export {selectCanonicalModifiers, prepareNumericalModifiers, matchesAnyTag} from './modifiers/modifier-resolution.js';
+ export type {Identifier, Scalar, NumericValues, NumericBounds, DecimalPrecision, NumericRule, CalculationIssue} from './contracts/common.js';
+diff --git a/src/kernel/damage/damage-calculation.ts b/src/kernel/damage/damage-calculation.ts
+new file mode 100644
+index 0000000..d01b996
+--- /dev/null
++++ b/src/kernel/damage/damage-calculation.ts
+@@ -0,0 +1,27 @@
++import type {DamageB0Input, DamageB0Result} from '../contracts/damage-stages.js';
++
++/** Landed-hit B0 stage. Source order and live numerical read boundaries are
++ * explicit; validation, eligibility, modifier resolution and RNG are caller-owned. */
++export function calculateDamageB0<Source extends string = string>(input: DamageB0Input<Source>): DamageB0Result<Source> {
++  const rankFactor = 1 + input.perRank * Math.max(0, input.rank - 1);
++  const base = input.base * rankFactor;
++  const scaling = input.sourceOrder.map(source => ({source, value: input.sourceValue(source) * input.coefficient(source) * rankFactor}));
++  const terms = input.resolveFlat();
++  const flat = terms.definition + terms.additional + terms.resolved;
++  const raw = base + scaling.reduce((sum, s) => sum + s.value, 0) + flat;
++  return {base, scaling, flat, raw};
++}
++
++/** Ordered selected-source products. Each value is read before its coefficient;
++ * an empty list reads neither. Selection/eligibility/diagnostics stay with caller. */
++export function calculateDamageBonusValue<Source>(sources: readonly Source[], value: (source: Source) => number, coefficient: () => number): number {
++  return sources.reduce((n, source) => n + value(source) * coefficient(), 0);
++}
++
++/** B1 consumes already effective bonuses and an already selected additive Crit
++ * bonus. No eligibility, RNG, validation, rounding or defense is performed here. */
++export function calculateDamageB1<Bonus extends {readonly value: number}>(raw: number, bonuses: readonly Bonus[], criticalBonus: number): {criticalBonus: number; totalBonus: number; beforeDefense: number} {
++  const totalBonus = bonuses.reduce((sum, bonus) => sum + bonus.value, 0) + criticalBonus;
++  const beforeDefense = Math.max(0, Math.max(0, raw) * (1 + totalBonus));
++  return {criticalBonus, totalBonus, beforeDefense};
++}
+diff --git a/src/kernel/contracts/damage-stages.ts b/src/kernel/contracts/damage-stages.ts
+new file mode 100644
+index 0000000..3cd5e68
+--- /dev/null
++++ b/src/kernel/contracts/damage-stages.ts
+@@ -0,0 +1,23 @@
++/** Synchronous numerical accessors. resolveFlat runs once after ordered scaling,
++ * before its numerical fields are read. Stable/pure caller policies make generic
++ * calculations deterministic; these callbacks are not snapshot data. */
++export interface DamageB0Input<Source extends string = string> {
++  readonly perRank: number;
++  readonly rank: number;
++  readonly base: number;
++  readonly sourceOrder: readonly Source[];
++  readonly sourceValue: (source: Source) => number;
++  readonly coefficient: (source: Source) => number;
++  readonly resolveFlat: () => {
++    readonly definition: number;
++    readonly additional: number;
++    readonly resolved: number;
++  };
++}
++/** Mutable diagnostics preserve adapter compatibility. No clone/freeze guarantee. */
++export interface DamageB0Result<Source extends string = string> {
++  base: number;
++  scaling: {source: Source; value: number}[];
++  flat: number;
++  raw: number;
++}
