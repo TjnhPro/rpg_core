@@ -175,6 +175,14 @@ The Developer approved the exact preservation amendment for modules 10/11 on
 2026-10-18; see [the review evidence](docs/v2/2.0.6-critical-defense-extraction.md).
 
 Delivery scheduling kernels, freeze helpers and debug wrappers remain internal.
+v2.0.8 adds `captureNumericalOffenseSnapshot` and `captureCalculationSnapshot`
+through `@rpg/core/kernel`. They validate closed numerical data, clone the whole
+graph once and deeply freeze the detached result, preserving shared aliases
+within it. Context labels convey no gameplay authority; RNG stays at calculator
+invocation. Legacy default mutable aliases and trusted Root S0 identity/timing
+remain unchanged. See the [snapshot extraction review](docs/v2/2.0.8-calculation-snapshot-context-extraction.md).
+The exact module-10 preservation amendment was approved by Developer on 2026-10-18.
+
 v2.0.7 implements `calculateResourceTransition`, `normalizeResource` and
 `calculateResourceRegeneration` through `@rpg/core/kernel`, using the existing
 six resource contracts. Legacy Combat/Stats delegate arithmetic and retain their

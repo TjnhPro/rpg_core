@@ -6,6 +6,7 @@ import { mitigateDefense,resolveDefenseHit,type DefenseConfigSnapshot } from './
 import { damageBonusReason,prepareModifierResolver,resolveModifiers } from '../modifiers/modifier-core.js';
 import {calculateDamageB0,calculateDamageB1,calculateDamageBonusValue} from '../kernel/damage/damage-calculation.js';
 import {calculateCritical} from '../kernel/defense/defense-calculation.js';
+import {cloneSnapshotData,freezeSnapshotData} from '../kernel/snapshots/snapshot-data.js';
 
 
 // Up to100 legacy damage settings plus256 Foundation registry entries.
@@ -67,7 +68,7 @@ export function calculateDamage(input:{definition:DamageDefinition;sources:Recor
 function actorOffense(sources:Record<DamageSource,number>,modifiers:CombatModifier[],settings:DamageSettings,criticalChance:number,criticalBonus:number){
  const flat=resolveModifiers(0,'damage.flat',modifiers).value;
  const tagModifiers=modifiers.filter(m=>m.target.startsWith('damage.tag.')).map(m=>({id:JSON.stringify([m.source,m.sourceInstanceId,m.id]),source:'setting' as const,option:'',value:m.value,enabled:true,types:[],tags:[m.target.slice(11) as typeof settings.modifiers[number]['tags'][number]],targets:[],statuses:[]}));
- return {flat,flatModifiers:structuredClone(modifiers.filter(m=>m.target==='flat_damage')),bonusModifiers:structuredClone(modifiers.filter(m=>m.target==='damage_bonus')),sources,settings:{skills:{},modifiers:[...settings.modifiers,...tagModifiers]},criticalChance,criticalBonus};
+ return {flat,flatModifiers:cloneSnapshotData(modifiers.filter(m=>m.target==='flat_damage')),bonusModifiers:cloneSnapshotData(modifiers.filter(m=>m.target==='damage_bonus')),sources,settings:{skills:{},modifiers:[...settings.modifiers,...tagModifiers]},criticalChance,criticalBonus};
 }
 
 export function snapshotActorDamage(definition:DamageDefinition,sources:Record<DamageSource,number>,modifiers:CombatModifier[],settings:DamageSettings,criticalChance:number,criticalBonus:number){
@@ -114,8 +115,7 @@ export function snapshotActorOffense(input:ActorOffenseInput):ActorOffenseSnapsh
  // Reuse the component-independent part of the canonical legacy adapter.
  const offense=actorOffense(input.sources,input.modifiers,settings,input.criticalChance,input.criticalBonus);
  if(!Number.isFinite(offense.flat)||offense.settings.modifiers.length+offense.bonusModifiers.length>MAX_DAMAGE_SNAPSHOT_MODIFIERS)fail();
- const copy=structuredClone({...offense,attacker:{entityId:a.entityId,entityType:a.entityType,level:a.level,targetTags:a.targetTags},defenseConfig:input.defenseConfig,options:input.options});
- const freeze=(v:unknown):void=>{if(v&&typeof v==='object'){Object.values(v).forEach(freeze);Object.freeze(v);}};
- freeze(copy);return copy;
+ const copy=cloneSnapshotData({...offense,attacker:{entityId:a.entityId,entityType:a.entityType,level:a.level,targetTags:a.targetTags},defenseConfig:input.defenseConfig,options:input.options});
+ freezeSnapshotData(copy);return copy;
  }catch {throw Error('invalid_root_offense');}
 }

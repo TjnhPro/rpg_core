@@ -164,3 +164,15 @@ receipt replay/disposal and coarse/fine shared modifier-expiry boundaries.
 Previous flat tests remain unchanged. `examples/percent-recovery.ts` and the existing
 installed consumer cover PR08 normal/capped recovery and public TypeScript narrowing.
 See [contract/evidence](RPG_CORE_V1.2.4_PERCENT_RECOVERY.md).
+
+
+### v2.0.8 Numerical Snapshot / Context extraction
+
+`tests/damage/snapshot-parity.test.ts` compares the accepted-source snapshot oracle;
+`tests/damage/kernel-snapshot.test.ts` covers closed shapes, detached aliases,
+shared topology, special numbers, nested freeze and native errors.
+`tests/integration/snapshot-extraction.test.ts` checks accepted Root/Child/trigger/
+recovery recipes and real reference identity. Existing delivery/RNG/lifecycle
+suites remain unchanged. `tests/fixtures/kernel-snapshots-consumer.ts` runs three
+independent numerical vocabularies in the installed strict NodeNext/ESM consumer.
+Developer approved the exact module 10 preservation amendment on 2026-10-18.

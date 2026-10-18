@@ -67,6 +67,11 @@ must never turn `BLOCKED` into `READY`.
   to Kernel; the exact modules 8/12 preservation amendment was approved on 2026-10-18.
   Legacy keeps validation, policy mapping and lazy accessors. Skills keeps percentage/lifesteal
   amounts, MP costs, resource writes and events; do not move those in this cut.
+  The approved v2.0.8 cut adds closed numerical snapshot capture APIs and internal
+  native-clone/recursive-freeze primitives. Legacy Damage delegates at its exact
+  existing boundaries; Skills/Root/Child/DoT production remains unchanged.
+  The exact module 10 preservation amendment was approved on 2026-10-18. Do not apply the
+  closed numerical validator to Legacy raw offense or alter default aliases.
   Further extraction requires approved plans.
   Transform callbacks are caller-owned synchronous pure numeric functions;
   snapshots contain no callbacks. TypeScript readonly is neither detached copy

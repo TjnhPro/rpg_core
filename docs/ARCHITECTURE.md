@@ -181,6 +181,26 @@ Type contracts named `PlayerStatsConfig`, entity kinds `player | monster` and ot
 inherited names retain their existing semantics; generic ownership does not authorize
 silently generalizing them.
 
+## v2.0.8 numerical snapshots
+
+Kernel's two capture APIs copy closed numerical offense/calculation data using
+one native `structuredClone`, then freeze supported nested records and arrays.
+Captured backing data is detached; shared aliases inside the graph are retained.
+TypeScript readonly alone still supplies neither copy nor runtime freeze.
+Public capture validation rejects cycles, accessors, callbacks, extra fields and
+non-data containers; NaN/Infinity/-0 and optional undefined are preserved.
+Context damageType/tags/ownerId/revision are labels without gameplay trust.
+
+The internal copy/freeze primitives are not package exports. Legacy Damage uses
+them at its original two modifier-list clone sites and full Root envelope
+clone/freeze site, keeping its validators/catch mapping and deferred eligibility.
+Default `snapshotActorDamage` retains mutable source/setting aliases. Root/Child
+share the original trusted S0; public derive remains a detached mutable copy.
+No Skill/DoT capture timing, identity registry or RNG provision changes. Existing
+Hit/Critical APIs consume injected lazy rolls; no RNG is captured in snapshots.
+See the [implementation and preservation review](v2/2.0.8-calculation-snapshot-context-extraction.md).
+The exact module-10 preservation amendment was separately approved on 2026-10-18.
+
 ## Execution and state
 
 1. **Admission:** `skillExecutionAvailability` validates definition/context, target,
