@@ -4,6 +4,8 @@ import {mkdtempSync, mkdirSync, readFileSync, writeFileSync, rmSync} from 'node:
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import ts from 'typescript';
+import {checkDeclarationClosure} from './check-architecture.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const npmCli = process.env.npm_execpath;
@@ -34,6 +36,37 @@ try {
   writeFileSync(path.join(consumer, 'package.json'), JSON.stringify({name: 'external-core-consumer', private: true, type: 'module'}));
   const pkg = JSON.parse(readFileSync(path.join(root, 'package.json'), 'utf8'));
   npm(['install', '--ignore-scripts', '--no-audit', '--no-fund', archive, `typescript@${pkg.devDependencies.typescript}`], consumer);
+  const kernelFixture = readFileSync(path.join(root, 'tests/fixtures/kernel-contracts.ts'), 'utf8');
+  writeFileSync(path.join(consumer, 'kernel-contracts.ts'), kernelFixture.replace('../../src/kernel/index.js', '@rpg/core/kernel'));
+  const installedEntry = path.join(consumer, 'node_modules/@rpg/core/dist/kernel/index.d.ts');
+  const declarationProgram = ts.createProgram([installedEntry], {
+    target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.NodeNext,
+    moduleResolution: ts.ModuleResolutionKind.NodeNext, strict: true, types: [], skipLibCheck: false,
+  });
+  const installedClosure = checkDeclarationClosure(declarationProgram, installedEntry, path.dirname(installedEntry), 'installed');
+  assert.equal(installedClosure.exports, 39);
+  assert.equal(installedClosure.files.length, 8);
+  const expectedSymbols = {'.': 243, './contracts': 102, './stats': 17, './modifiers': 8,
+    './combat': 33, './damage': 27, './skills': 76, './effects': 34, './mechanics': 20, './spatial': 6, './kernel': 39};
+  const installedEntries = Object.entries(pkg.exports).map(([name, entry]) =>
+    [name, path.join(consumer, 'node_modules/@rpg/core', entry.types)]);
+  const apiProgram = ts.createProgram(installedEntries.map(([, file]) => file), declarationProgram.getCompilerOptions());
+  const apiChecker = apiProgram.getTypeChecker();
+  for (const [name, file] of installedEntries) {
+    const symbols = apiChecker.getExportsOfModule(apiChecker.getSymbolAtLocation(apiProgram.getSourceFile(file)));
+    assert.equal(symbols.length, expectedSymbols[name], `Installed symbol count: ${name}`);
+    const values = symbols.filter(symbol => {
+      const target = symbol.flags & ts.SymbolFlags.Alias ? apiChecker.getAliasedSymbol(symbol) : symbol;
+      return target.flags & ts.SymbolFlags.Value;
+    });
+    if (name === '.') assert.equal(values.length, 122, 'Root runtime values');
+    if (name === './kernel') assert.equal(values.length, 0, 'Kernel must export types only');
+  }
+  for (const file of installedClosure.files) {
+    const member = path.relative(path.join(consumer, 'node_modules/@rpg/core'), file).replaceAll('\\', '/');
+    assert(members.includes(member), `Missing reachable Kernel declaration: ${member}`);
+  }
+  console.log(JSON.stringify({status: 'KERNEL_DECLARATIONS_VERIFIED', exports: installedClosure.exports, declarationFiles: installedClosure.files.length, compileOnly: true}));
   // Same real combat/skill example, copied as consumer-owned source. Every Core
   // import is a package import; no links, original paths or ambient Node types.
   const example = readFileSync(path.join(root, 'examples/headless.ts'), 'utf8');
@@ -60,7 +93,7 @@ try {
   writeFileSync(path.join(consumer, 'types.ts'), `
 import * as kernel from '@rpg/core/kernel';
 export const kernelNamespace: typeof kernel = kernel;
-// @ts-expect-error Kernel has no calculations in v2.0.1
+// @ts-expect-error Kernel has no calculation implementation in v2.0.2
 kernel.calculateDamage;
 // @ts-expect-error Kernel internals are not package exports
 import * as internalKernel from '@rpg/core/kernel/index.js';
@@ -98,7 +131,7 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import * as core from '@rpg/core';
 import * as kernel from '@rpg/core/kernel';
-assert.deepEqual(Object.keys(kernel), [], 'Kernel must remain empty in v2.0.1');
+assert.deepEqual(Object.keys(kernel), [], 'Kernel has type-only exports in v2.0.2');
 import {headlessCombat} from './build/headless.js';
 import {rootSnapshotExample} from './build/root-snapshot.js';
 import {skillInstanceExample} from './build/skill-instance.js';
@@ -175,7 +208,7 @@ for (const internal of ['@rpg/core/skills/skill-execution.js', '@rpg/core/dist/i
   await assert.rejects(import(internal), {code: 'ERR_PACKAGE_PATH_NOT_EXPORTED'});
 }
 for (const helper of ['resourceSource', 'resourceRecipient', 'restoreMana', 'manaOnHit', 'lifesteal', 'skillHealingEntities', 'heal', 'isPinnedSkillTriggerBundle', 'observesSkillConditionalHit', 'observesSkillStackApply', 'captureSkillHit', 'captureSkillStackApply', 'skillStackCount', 'skillEffectWork', 'consumeStackEffect', 'registerTriggeredSkillChildren', 'childInstanceDamage', 'assembleRootDamage', 'admitSkillProjectiles', 'recordSkillProjectile', 'pendingSkillTriggerPayload', 'childDispatcher', 'initializeSkillTriggerSession', 'captureSkillExpiry', 'captureSkillImpact', 'drainSkillTriggers', 'bindRootSkillTriggers', 'trustSkillInstanceDefinition', 'initializeSkillInstances', 'bindRootSkillInstance', 'advanceSkillInstances', 'disposeSkillInstances', 'prepareRootOffense', 'bindRootOffense', 'rootDamageSnapshot', 'actorOffense', 'freezeGameplayData', 'random', 'damageBonusReason', 'tickProjectileBodies', 'debugProjectile']) assert(!(helper in core));
-console.log(JSON.stringify({status: 'PASS', targetHp: a.entities[1].currentHp, deterministic: true, types: true, publicDomains: domains.length, legacyPaths: Object.keys(moduleMap).length, deepImportsBlocked: true, kernel: 'EMPTY_ESM_AND_NODENEXT_VERIFIED'}));
+console.log(JSON.stringify({status: 'PASS', targetHp: a.entities[1].currentHp, deterministic: true, types: true, publicDomains: domains.length, legacyPaths: Object.keys(moduleMap).length, deepImportsBlocked: true, kernel: 'TYPE_ONLY_CONTRACTS_ESM_AND_NODENEXT_VERIFIED'}));
 `);
   const result = execFileSync(process.execPath, ['run.mjs'], {cwd: consumer, encoding: 'utf8'});
   console.log(result.trim());

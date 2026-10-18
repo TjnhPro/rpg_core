@@ -78,16 +78,31 @@ legacy paths or application modules. The root barrel only assembles public expor
 | `effects` | Immutable effect definitions, apply/refresh/stack/expire/restrictions and on-hit DoT: `defineEffect`, `EffectLifecycle`, `applyDotSnapshot`, `tickDotRuntime` | contracts, combat, modifiers, damage | `tests/effects`, effect and status integrations |
 | `mechanics` | Melee hitboxes, projectile movement, AoE geometry; internal sequence/emitter kernels: `detectMeleeHitbox`, `moveProjectile`, `detectInstantAOE`, `lockAOEPosition`, `validateSkillMechanics` | contracts, spatial | `tests/integration/skill-effect-integration.test.ts` and skill/RPG integrations |
 | `spatial` | Supplied-grid walkability, exact cell traversal and range: `isWalkable`, `canTraverse`, `distance`, `inRange` | contracts | `tests/spatial`, skill range tests |
-| `kernel` | Empty reusable calculation ownership boundary; no APIs yet | None (Kernel-internal imports only) | `tests/tooling/architecture.test.ts`, installed consumer |
+| `kernel` | Universal numerical type contracts; no runtime calculations in v2.0.2 | None (Kernel-internal imports only) | Architecture/declaration fixtures, strict installed consumer |
 
 The eight non-Contracts Legacy domains above additionally may import `kernel`;
 all other Legacy allowances are unchanged. Contracts keeps its existing policy.
 The source-level gate applies to every file under `src/kernel/**`, including
 nested files and aliases through Kernel barrels. External dependencies remain
 forbidden. Full transitive emitted-declaration and generic-contract isolation is
-future v2.0.2 work, not a completed v2.0.1 claim. Historical cycle counts in the
+implemented in v2.0.2 using the TypeScript compiler API over source and emitted
+public dependency closures, plus actual installed declarations. v2.0.1 evidence
+remains scoped to its original source checks. Historical cycle counts in the
 v1 prose above do not replace current checker output; the v2.0.0 baseline records
 ten combined/type-containing cycle paths and zero runtime cycles.
+
+v2.0.2 [Universal Calculation Contracts](v2/2.0.2-universal-calculation-contracts.md)
+exports types only through Kernel, without root re-exports or new package subpaths.
+Generic numerical keys, selected rules and resolved eligibility replace gameplay
+schemas at this boundary. Stat results include attribute diagnostics and derived
+scaling totals; later Legacy facades can project all five historical result fields
+without another resolver pass. Transform callbacks remain caller-owned synchronous
+pure functions, once per derived stat after modifiers and before bounds/precision,
+including disabled stats; no attribute callback or snapshot callback is introduced.
+Types cannot enforce purity or deterministic closed-over state. Snapshot readonly
+means compile-time access restriction, detached copy means independent backing
+objects, and runtime freeze prevents writes; v2.0.2 implements neither copying nor
+freezing. Those guarantees belong to the separately reviewed v2.0.8 extraction.
 
 Supported delivery is direct hit, melee, projectile, instant AoE, timed AoE sequence,
 timed projectile emitter and on-hit DoT. Effect payloads support modifiers, stun and

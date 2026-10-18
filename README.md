@@ -123,13 +123,23 @@ allow only these imports; application code does not need internal source paths.
 | `@rpg/core/effects` | Definitions, lifecycle, stack/refresh/expire and DoT |
 | `@rpg/core/mechanics` | Melee/projectile/AoE geometry and configuration |
 | `@rpg/core/spatial` | Coordinate/grid contracts, range and wall traversal |
-| `@rpg/core/kernel` | Empty calculation ownership boundary in v2.0.1; no public symbols yet |
+| `@rpg/core/kernel` | Universal numerical type contracts in v2.0.2; no runtime calculations |
 
 v2.0.1 establishes an independently importable Kernel and enforces
 `Legacy / Gameplay → Kernel` dependencies. Kernel imports only Kernel files;
 existing contracts, runtime ownership and the ten old entrypoints are preserved.
 No calculation has moved and the root does not re-export Kernel. See the
 [Kernel Foundation contract and verification](docs/v2/2.0.1-kernel-foundation.md).
+
+v2.0.2 adds 39 type-only numerical contracts for custom keys, stats, modifiers,
+damage, critical/defense, resources and snapshots, independently of Legacy schemas.
+Import them with `import type {DamageCalculationInput} from '@rpg/core/kernel'`.
+The native ESM namespace remains empty. Stat results retain numerical breakdowns
+for later Legacy projection without recalculation. Caller transforms must be
+synchronous and pure; types cannot enforce determinism. Snapshot readonly types
+do not copy or freeze backing objects; capture/clone/freeze implementation belongs
+to v2.0.8. No calculator or runtime validator is implemented in this milestone.
+See the [approved contracts, mapping and evidence](docs/v2/2.0.2-universal-calculation-contracts.md).
 
 Delivery scheduling kernels, freeze helpers and debug wrappers remain internal.
 The inherited `SkillEffectRuntime` container shape is preserved; applications

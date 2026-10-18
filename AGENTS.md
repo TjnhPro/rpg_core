@@ -50,8 +50,11 @@ must never turn `BLOCKED` into `READY`.
 
 ## Kernel migration boundary
 
-- `src/kernel/**` owns reusable RPG calculations only. In v2.0.1 its public
-  module is empty; calculation contracts and extraction require later approved plans.
+- `src/kernel/**` owns reusable RPG calculations only. v2.0.2 exposes numerical
+  type contracts only; calculation/validator extraction requires later approved plans.
+  Transform callbacks are caller-owned synchronous pure numeric functions;
+  snapshots contain no callbacks. TypeScript readonly is neither detached copy
+  nor runtime freeze; v2.0.8 owns implementation of those guarantees.
 - Kernel may depend only on other Kernel files, never Legacy contracts, root/domain
   barrels, Skills, Mechanics, Spatial, gameplay runtimes, external packages or Node APIs.
   This applies to runtime and type dependencies, re-exports and dynamic loading.
