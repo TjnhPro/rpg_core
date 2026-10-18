@@ -1,0 +1,1517 @@
+{
+  "handProvenance": "Fixed hand-calculated Gate A anchors; snapshot A7 uses full typed stat graph with aliased rules, captured power 64.5 + might12 = 76.5. No candidate-derived expectations.",
+  "hand": {
+    "T1": [
+      48.25,
+      28,
+      100,
+      20,
+      48.5
+    ],
+    "T2": [
+      107.5,
+      188.125,
+      150.5,
+      49.5,
+      20
+    ],
+    "T3": [
+      60,
+      60,
+      30,
+      70,
+      14
+    ],
+    "T4": [
+      [
+        100,
+        10
+      ],
+      [
+        20,
+        1
+      ],
+      [
+        100,
+        0
+      ],
+      [
+        0,
+        0
+      ],
+      [
+        5,
+        5
+      ]
+    ],
+    "T5": [
+      85,
+      2,
+      49.5,
+      true
+    ],
+    "T6": [
+      true,
+      [
+        "hit",
+        [
+          "dodge",
+          0.1
+        ]
+      ]
+    ],
+    "T7": [
+      7,
+      15,
+      true,
+      0,
+      [
+        "__proto__"
+      ]
+    ],
+    "T8": [
+      100,
+      true,
+      0,
+      99.75,
+      0.25,
+      2,
+      []
+    ],
+    "T9": [
+      750,
+      100,
+      -20,
+      5,
+      "Current resource exceeds maximum",
+      true
+    ]
+  },
+  "acceptedTraceProvenance": {
+    "revision": "436cc35a17389a54e05843ec8efbcfc5c1604295",
+    "command": "node scripts/capture-multi-rpg-oracle.mjs --capture-reviewed-traces",
+    "sourceSha256": {
+      "src/kernel/contracts/common.ts": "8fced5a9366ea7691d8aeb652a61b23e40d67226e2cec474e4be9178f5c2be07",
+      "src/kernel/contracts/damage-stages.ts": "4d3fc2a218097e887d3076058b636dcef6343be228e5687bb62867c76e210113",
+      "src/kernel/contracts/damage.ts": "44be45b2a116f6996335e3d91b6fc7624e22ba301c177c66f144b253c8ff94d5",
+      "src/kernel/contracts/defense.ts": "6a53ffc2a2e77a119cfecf6d46291f3f17379fc6e94e990c24b959ddfc365ae3",
+      "src/kernel/contracts/modifier-resolution.ts": "8c5ab655a90c06656bdcf3ecf3ad2799e2c6156d709982de8fcc32b69f10fe0d",
+      "src/kernel/contracts/modifiers.ts": "acb433b3bab33f601d216964f24f679036b2a8338c4ac60005acbe42057ed420",
+      "src/kernel/contracts/resources.ts": "d2192e1a1b2c2295d0f826004d01d36441b591e973620dd746cb062198fac297",
+      "src/kernel/contracts/snapshots.ts": "ea20fdb0500ca090a5c01394ab81442117de78de5386fcbb6ca7279b3a7341e7",
+      "src/kernel/contracts/stats.ts": "76cd41174ca951ffd0733b1d41af140f606236ce9afedc2185cd573bb44dc4c9",
+      "src/kernel/damage/damage-calculation.ts": "3b925e26d813e771b4bf3a37e8f29932a0e195b30bceb716f5cc29ddfc146f0b",
+      "src/kernel/defense/defense-calculation.ts": "99d812d878e108f0cb32428552807aa710d89fad9ae690f0a816e83fe3f83fe2",
+      "src/kernel/index.ts": "5e57c62174f31d66ecbe49cf2657841232a638ff47da77025d438156f22cc6d6",
+      "src/kernel/modifiers/modifier-resolution.ts": "7f452a00b2eab5905fcca4b11b1546c8a7b1b599819f7a54ed678950fb4cb91d",
+      "src/kernel/resources/resource-calculation.ts": "fa29e85292f93e9c20306735fc337a2b3243f3bcab7b10325e769b68cebe70f8",
+      "src/kernel/snapshots/calculation-snapshot.ts": "a9eea94349ddc76065ce5d1d7d0023479256f4edcebb03739cd5af496dcf5a7c",
+      "src/kernel/snapshots/snapshot-data.ts": "cca3ea0085c99006fbe64488d8b8adc465fada6b693cd448d2932714f9f4ff8c",
+      "src/kernel/stats/stat-calculation.ts": "9a63ca1887ab8fb91d125c903dc055f86d24765cf43fd97eba4a32dc22f352e4"
+    },
+    "fixtureSha256": {
+      "observations.ts": "2f58ef5c987295825f3b49998bff399ee254a1b0399594b1ab72ec8991a95627",
+      "text-rpg/config.ts": "b2449d93deff022c32f13550366463e87df5df2566861ad8196b204856dc581f",
+      "text-rpg/scenarios.ts": "0ef03fa6eb3adeac770df9ac43b5e5695959a053a102f9a0e38e46a5954813fe",
+      "vo-lam-25d/config.ts": "68aa48155f1a4ca0f4a82718f8b81b1625268b5f33464cf8804fcc8bb98743d5",
+      "vo-lam-25d/scenarios.ts": "8d317db97c16e9f6bab76fe5fea2a43618292af59b23ea3dc23bfeaf7a36f3f4",
+      "arpg/config.ts": "ec24af66d7cc279cdfeee79a08b9aecd4be2b985873866777503ecb68871e4ec",
+      "arpg/scenarios.ts": "6bce39ee7a170ea57e7f001bf496f6454eb676afea72c91d905b39832cc3998f"
+    }
+  },
+  "observations": {
+    "T1": {
+      "id": "T1",
+      "inputs": {
+        "input": {
+          "attributeOrder": [
+            "strength",
+            "wisdom",
+            "vitality"
+          ],
+          "statOrder": [
+            "attackPower",
+            "magicPower",
+            "maxHp",
+            "maxMp"
+          ],
+          "attributeBases": {
+            "strength": 10,
+            "wisdom": 8,
+            "vitality": 12
+          },
+          "attributeBaselines": {
+            "strength": 0,
+            "wisdom": 0,
+            "vitality": 0
+          },
+          "attributeRules": {
+            "strength": {
+              "default": 0,
+              "enabled": true,
+              "bounds": {}
+            },
+            "wisdom": {
+              "default": 0,
+              "enabled": true,
+              "bounds": {}
+            },
+            "vitality": {
+              "default": 0,
+              "enabled": true,
+              "bounds": {}
+            }
+          },
+          "baseStats": {},
+          "flatContributions": {
+            "attackPower": 3
+          },
+          "rules": {
+            "attackPower": {
+              "default": 10,
+              "enabled": true,
+              "bounds": {
+                "max": 48.25
+              },
+              "training": 3,
+              "scaling": [
+                {
+                  "attribute": "strength",
+                  "coefficient": 2,
+                  "enabled": true
+                }
+              ],
+              "precision": {
+                "decimalPlaces": 1
+              }
+            },
+            "magicPower": {
+              "default": 4,
+              "enabled": true,
+              "bounds": {},
+              "training": 0,
+              "scaling": [
+                {
+                  "attribute": "wisdom",
+                  "coefficient": 3,
+                  "enabled": true
+                }
+              ]
+            },
+            "maxHp": {
+              "default": 40,
+              "enabled": true,
+              "bounds": {},
+              "training": 0,
+              "scaling": [
+                {
+                  "attribute": "vitality",
+                  "coefficient": 5,
+                  "enabled": true
+                }
+              ]
+            },
+            "maxMp": {
+              "default": 4,
+              "enabled": true,
+              "bounds": {},
+              "training": 0,
+              "scaling": [
+                {
+                  "attribute": "wisdom",
+                  "coefficient": 2,
+                  "enabled": true
+                }
+              ]
+            }
+          }
+        },
+        "modifiers": [
+          {
+            "identity": {
+              "source": "gear",
+              "sourceInstanceId": "sword",
+              "id": "flat"
+            },
+            "target": "attackPower",
+            "operation": "add_flat",
+            "value": 5,
+            "enabled": true
+          },
+          {
+            "identity": {
+              "source": "gear",
+              "sourceInstanceId": "sword",
+              "id": "percent"
+            },
+            "target": "attackPower",
+            "operation": "add_percent",
+            "value": 0.25,
+            "enabled": true
+          },
+          {
+            "identity": {
+              "source": "training",
+              "sourceInstanceId": "lesson",
+              "id": "points"
+            },
+            "target": "attackPower",
+            "operation": "add_percentage_points",
+            "value": 1,
+            "enabled": true
+          }
+        ]
+      },
+      "output": {
+        "attributes": {
+          "strength": 10,
+          "wisdom": 8,
+          "vitality": 12
+        },
+        "attributeDetails": {
+          "strength": {
+            "base": 10,
+            "value": 10,
+            "uncapped": 10,
+            "resolved": {
+              "target": "strength",
+              "base": 10,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 10,
+              "value": 10,
+              "contributions": []
+            }
+          },
+          "wisdom": {
+            "base": 8,
+            "value": 8,
+            "uncapped": 8,
+            "resolved": {
+              "target": "wisdom",
+              "base": 8,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 8,
+              "value": 8,
+              "contributions": []
+            }
+          },
+          "vitality": {
+            "base": 12,
+            "value": 12,
+            "uncapped": 12,
+            "resolved": {
+              "target": "vitality",
+              "base": 12,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 12,
+              "value": 12,
+              "contributions": []
+            }
+          }
+        },
+        "values": {
+          "attackPower": 48.25,
+          "magicPower": 28,
+          "maxHp": 100,
+          "maxMp": 20
+        },
+        "details": {
+          "attackPower": {
+            "base": 10,
+            "scaling": 20,
+            "flat": 3,
+            "value": 48.25,
+            "uncapped": 48.5,
+            "resolved": {
+              "target": "attackPower",
+              "base": 33,
+              "flat": 5,
+              "percent": 0.25,
+              "percentagePoints": 1,
+              "totalFlat": 38,
+              "value": 48.5,
+              "contributions": [
+                {
+                  "identity": {
+                    "source": "gear",
+                    "sourceInstanceId": "sword",
+                    "id": "flat"
+                  },
+                  "target": "attackPower",
+                  "operation": "add_flat",
+                  "value": 5,
+                  "enabled": true
+                },
+                {
+                  "identity": {
+                    "source": "gear",
+                    "sourceInstanceId": "sword",
+                    "id": "percent"
+                  },
+                  "target": "attackPower",
+                  "operation": "add_percent",
+                  "value": 0.25,
+                  "enabled": true
+                },
+                {
+                  "identity": {
+                    "source": "training",
+                    "sourceInstanceId": "lesson",
+                    "id": "points"
+                  },
+                  "target": "attackPower",
+                  "operation": "add_percentage_points",
+                  "value": 1,
+                  "enabled": true
+                }
+              ]
+            }
+          },
+          "magicPower": {
+            "base": 4,
+            "scaling": 24,
+            "flat": 0,
+            "value": 28,
+            "uncapped": 28,
+            "resolved": {
+              "target": "magicPower",
+              "base": 28,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 28,
+              "value": 28,
+              "contributions": []
+            }
+          },
+          "maxHp": {
+            "base": 40,
+            "scaling": 60,
+            "flat": 0,
+            "value": 100,
+            "uncapped": 100,
+            "resolved": {
+              "target": "maxHp",
+              "base": 100,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 100,
+              "value": 100,
+              "contributions": []
+            }
+          },
+          "maxMp": {
+            "base": 4,
+            "scaling": 16,
+            "flat": 0,
+            "value": 20,
+            "uncapped": 20,
+            "resolved": {
+              "target": "maxMp",
+              "base": 20,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 20,
+              "value": 20,
+              "contributions": []
+            }
+          }
+        }
+      },
+      "trace": [],
+      "anchors": [
+        48.25,
+        28,
+        100,
+        20,
+        48.5
+      ]
+    },
+    "T2": {
+      "id": "T2",
+      "inputs": {
+        "hitInput": {
+          "eligible": true,
+          "dodgeChance": 0.25,
+          "rule": {
+            "enabled": true,
+            "bounds": {
+              "min": 0,
+              "max": 1
+            }
+          }
+        },
+        "b0Input": {
+          "base": 8,
+          "perRank": 0,
+          "rank": 1,
+          "sources": {
+            "blade": 48.25
+          },
+          "coefficients": {
+            "blade": 2
+          },
+          "flat": 3
+        },
+        "critical": {
+          "chance": 0.5,
+          "bonus": 0.5,
+          "roll": 0.25
+        },
+        "bonuses": [
+          {
+            "id": "blade-training",
+            "value": 0.25
+          }
+        ],
+        "mitigationInput": {
+          "damage": 188.125,
+          "ruleKey": "guard",
+          "rating": 25,
+          "rule": {
+            "enabled": true,
+            "bounds": {},
+            "baseK": 100,
+            "levelPenalty": 0,
+            "levelScalingEnabled": false
+          }
+        },
+        "hpInput": {
+          "resource": "hp",
+          "current": 200,
+          "maximum": 200,
+          "amount": 150.5,
+          "operation": "decrease",
+          "rule": {
+            "minimum": 0,
+            "currentAboveMaximum": "allow",
+            "allowIncreaseFromMinimum": false
+          }
+        },
+        "costInput": {
+          "resource": "mp",
+          "current": 20,
+          "maximum": 20,
+          "amount": 0,
+          "operation": "decrease",
+          "rule": {
+            "minimum": 0,
+            "currentAboveMaximum": "allow",
+            "allowIncreaseFromMinimum": false
+          }
+        }
+      },
+      "output": {
+        "inputs": {
+          "hitInput": {
+            "eligible": true,
+            "dodgeChance": 0.25,
+            "rule": {
+              "enabled": true,
+              "bounds": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          },
+          "b0Input": {
+            "base": 8,
+            "perRank": 0,
+            "rank": 1,
+            "sources": {
+              "blade": 48.25
+            },
+            "coefficients": {
+              "blade": 2
+            },
+            "flat": 3
+          },
+          "critical": {
+            "chance": 0.5,
+            "bonus": 0.5,
+            "roll": 0.25
+          },
+          "bonuses": [
+            {
+              "id": "blade-training",
+              "value": 0.25
+            }
+          ],
+          "mitigationInput": {
+            "damage": 188.125,
+            "ruleKey": "guard",
+            "rating": 25,
+            "rule": {
+              "enabled": true,
+              "bounds": {},
+              "baseK": 100,
+              "levelPenalty": 0,
+              "levelScalingEnabled": false
+            }
+          },
+          "hpInput": {
+            "resource": "hp",
+            "current": 200,
+            "maximum": 200,
+            "amount": 150.5,
+            "operation": "decrease",
+            "rule": {
+              "minimum": 0,
+              "currentAboveMaximum": "allow",
+              "allowIncreaseFromMinimum": false
+            }
+          },
+          "costInput": {
+            "resource": "mp",
+            "current": 20,
+            "maximum": 20,
+            "amount": 0,
+            "operation": "decrease",
+            "rule": {
+              "minimum": 0,
+              "currentAboveMaximum": "allow",
+              "allowIncreaseFromMinimum": false
+            }
+          }
+        },
+        "hit": {
+          "hit": true,
+          "dodged": false,
+          "onHitSuccess": true,
+          "eligible": true,
+          "enabled": true,
+          "chance": 0.25,
+          "roll": 0.75
+        },
+        "b0": {
+          "base": 8,
+          "scaling": [
+            {
+              "source": "blade",
+              "value": 96.5
+            }
+          ],
+          "flat": 3,
+          "raw": 107.5
+        },
+        "critical": {
+          "chance": 0.5,
+          "roll": 0.25,
+          "isCritical": true,
+          "bonus": 0.5,
+          "multiplier": 1.5
+        },
+        "b1": {
+          "criticalBonus": 0.5,
+          "totalBonus": 0.75,
+          "beforeDefense": 188.125
+        },
+        "mitigation": {
+          "ruleKey": "guard",
+          "status": "applied",
+          "missing": [],
+          "levelGap": null,
+          "levelScalingEnabled": false,
+          "effectiveK": 100,
+          "rawReduction": 0.2,
+          "reduction": 0.2,
+          "inputDamage": 188.125,
+          "preventedDamage": 37.625,
+          "finalDamage": 150.5
+        },
+        "hp": {
+          "resource": "hp",
+          "before": 200,
+          "after": 49.5,
+          "applied": 150.5,
+          "reachedMinimum": false
+        },
+        "mp": {
+          "resource": "mp",
+          "before": 20,
+          "after": 20,
+          "applied": 0,
+          "reachedMinimum": false
+        }
+      },
+      "trace": [
+        "hit",
+        [
+          "dodge",
+          0.75
+        ],
+        "B0",
+        "flat",
+        "critical",
+        [
+          "critical-roll",
+          0.25
+        ],
+        "B1",
+        "mitigation",
+        [
+          "commit",
+          49.5,
+          20
+        ]
+      ],
+      "anchors": [
+        107.5,
+        188.125,
+        150.5,
+        49.5,
+        20
+      ]
+    },
+    "T3": {
+      "id": "T3",
+      "inputs": {
+        "hitInput": {
+          "eligible": true,
+          "dodgeChance": 0,
+          "rule": {
+            "enabled": true,
+            "bounds": {
+              "min": 0,
+              "max": 1
+            }
+          }
+        },
+        "b0Input": {
+          "base": 4,
+          "perRank": 0,
+          "rank": 1,
+          "sources": {
+            "spell": 28
+          },
+          "coefficients": {
+            "spell": 2
+          },
+          "flat": 0
+        },
+        "critical": {
+          "chance": 0,
+          "bonus": 0.5,
+          "roll": 0.25
+        },
+        "bonuses": [],
+        "mitigationInput": {
+          "damage": 60,
+          "ruleKey": "ward",
+          "rating": 100,
+          "rule": {
+            "enabled": true,
+            "bounds": {},
+            "baseK": 100,
+            "levelPenalty": 0,
+            "levelScalingEnabled": false
+          }
+        },
+        "hpInput": {
+          "resource": "hp",
+          "current": 100,
+          "maximum": 100,
+          "amount": 30,
+          "operation": "decrease",
+          "rule": {
+            "minimum": 0,
+            "currentAboveMaximum": "allow",
+            "allowIncreaseFromMinimum": false
+          }
+        },
+        "costInput": {
+          "resource": "mp",
+          "current": 20,
+          "maximum": 20,
+          "amount": 6,
+          "operation": "decrease",
+          "rule": {
+            "minimum": 0,
+            "currentAboveMaximum": "allow",
+            "allowIncreaseFromMinimum": false
+          }
+        }
+      },
+      "output": {
+        "inputs": {
+          "hitInput": {
+            "eligible": true,
+            "dodgeChance": 0,
+            "rule": {
+              "enabled": true,
+              "bounds": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          },
+          "b0Input": {
+            "base": 4,
+            "perRank": 0,
+            "rank": 1,
+            "sources": {
+              "spell": 28
+            },
+            "coefficients": {
+              "spell": 2
+            },
+            "flat": 0
+          },
+          "critical": {
+            "chance": 0,
+            "bonus": 0.5,
+            "roll": 0.25
+          },
+          "bonuses": [],
+          "mitigationInput": {
+            "damage": 60,
+            "ruleKey": "ward",
+            "rating": 100,
+            "rule": {
+              "enabled": true,
+              "bounds": {},
+              "baseK": 100,
+              "levelPenalty": 0,
+              "levelScalingEnabled": false
+            }
+          },
+          "hpInput": {
+            "resource": "hp",
+            "current": 100,
+            "maximum": 100,
+            "amount": 30,
+            "operation": "decrease",
+            "rule": {
+              "minimum": 0,
+              "currentAboveMaximum": "allow",
+              "allowIncreaseFromMinimum": false
+            }
+          },
+          "costInput": {
+            "resource": "mp",
+            "current": 20,
+            "maximum": 20,
+            "amount": 6,
+            "operation": "decrease",
+            "rule": {
+              "minimum": 0,
+              "currentAboveMaximum": "allow",
+              "allowIncreaseFromMinimum": false
+            }
+          }
+        },
+        "hit": {
+          "hit": true,
+          "dodged": false,
+          "onHitSuccess": true,
+          "eligible": true,
+          "enabled": true,
+          "chance": 0,
+          "roll": null
+        },
+        "b0": {
+          "base": 4,
+          "scaling": [
+            {
+              "source": "spell",
+              "value": 56
+            }
+          ],
+          "flat": 0,
+          "raw": 60
+        },
+        "critical": {
+          "chance": 0,
+          "roll": 0.25,
+          "isCritical": false,
+          "bonus": 0,
+          "multiplier": 1
+        },
+        "b1": {
+          "criticalBonus": 0,
+          "totalBonus": 0,
+          "beforeDefense": 60
+        },
+        "mitigation": {
+          "ruleKey": "ward",
+          "status": "applied",
+          "missing": [],
+          "levelGap": null,
+          "levelScalingEnabled": false,
+          "effectiveK": 100,
+          "rawReduction": 0.5,
+          "reduction": 0.5,
+          "inputDamage": 60,
+          "preventedDamage": 30,
+          "finalDamage": 30
+        },
+        "hp": {
+          "resource": "hp",
+          "before": 100,
+          "after": 70,
+          "applied": 30,
+          "reachedMinimum": false
+        },
+        "mp": {
+          "resource": "mp",
+          "before": 20,
+          "after": 14,
+          "applied": 6,
+          "reachedMinimum": false
+        }
+      },
+      "trace": [
+        "hit",
+        "B0",
+        "flat",
+        "critical",
+        [
+          "critical-roll",
+          0.25
+        ],
+        "B1",
+        "mitigation",
+        [
+          "commit",
+          70,
+          14
+        ]
+      ],
+      "anchors": [
+        60,
+        60,
+        30,
+        70,
+        14
+      ]
+    },
+    "T4": {
+      "id": "T4",
+      "inputs": [
+        [
+          90,
+          100,
+          25,
+          false
+        ],
+        [
+          19,
+          20,
+          8,
+          true
+        ],
+        [
+          100,
+          100,
+          5,
+          false
+        ],
+        [
+          0,
+          100,
+          5,
+          false
+        ],
+        [
+          0,
+          20,
+          5,
+          true
+        ]
+      ],
+      "output": [
+        {
+          "resource": "hp",
+          "before": 90,
+          "after": 100,
+          "applied": 10,
+          "reachedMinimum": false
+        },
+        {
+          "resource": "mp",
+          "before": 19,
+          "after": 20,
+          "applied": 1,
+          "reachedMinimum": false
+        },
+        {
+          "resource": "hp",
+          "before": 100,
+          "after": 100,
+          "applied": 0,
+          "reachedMinimum": false
+        },
+        {
+          "resource": "hp",
+          "before": 0,
+          "after": 0,
+          "applied": 0,
+          "reachedMinimum": false
+        },
+        {
+          "resource": "mp",
+          "before": 0,
+          "after": 5,
+          "applied": 5,
+          "reachedMinimum": false
+        }
+      ],
+      "trace": [],
+      "anchors": [
+        [
+          100,
+          10
+        ],
+        [
+          20,
+          1
+        ],
+        [
+          100,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          5,
+          5
+        ]
+      ]
+    },
+    "T5": {
+      "id": "T5",
+      "inputs": {
+        "initial": {
+          "hp": 80,
+          "mp": 2,
+          "enemyHp": 200
+        },
+        "defenseInput": {
+          "damage": 20,
+          "ruleKey": "guard",
+          "rating": 1,
+          "rule": {
+            "enabled": true,
+            "bounds": {
+              "min": 0.5,
+              "max": 0.5
+            },
+            "baseK": 100,
+            "levelPenalty": 0,
+            "levelScalingEnabled": false
+          }
+        },
+        "recovery": 15,
+        "cost": 6
+      },
+      "output": {
+        "first": {
+          "inputs": {
+            "hitInput": {
+              "eligible": true,
+              "dodgeChance": 0.25,
+              "rule": {
+                "enabled": true,
+                "bounds": {
+                  "min": 0,
+                  "max": 1
+                }
+              }
+            },
+            "b0Input": {
+              "base": 8,
+              "perRank": 0,
+              "rank": 1,
+              "sources": {
+                "blade": 48.25
+              },
+              "coefficients": {
+                "blade": 2
+              },
+              "flat": 3
+            },
+            "critical": {
+              "chance": 0.5,
+              "bonus": 0.5,
+              "roll": 0.25
+            },
+            "bonuses": [
+              {
+                "id": "blade-training",
+                "value": 0.25
+              }
+            ],
+            "mitigationInput": {
+              "damage": 188.125,
+              "ruleKey": "guard",
+              "rating": 25,
+              "rule": {
+                "enabled": true,
+                "bounds": {},
+                "baseK": 100,
+                "levelPenalty": 0,
+                "levelScalingEnabled": false
+              }
+            },
+            "hpInput": {
+              "resource": "hp",
+              "current": 200,
+              "maximum": 200,
+              "amount": 150.5,
+              "operation": "decrease",
+              "rule": {
+                "minimum": 0,
+                "currentAboveMaximum": "allow",
+                "allowIncreaseFromMinimum": false
+              }
+            },
+            "costInput": {
+              "resource": "mp",
+              "current": 2,
+              "maximum": 20,
+              "amount": 0,
+              "operation": "decrease",
+              "rule": {
+                "minimum": 0,
+                "currentAboveMaximum": "allow",
+                "allowIncreaseFromMinimum": false
+              }
+            }
+          },
+          "hit": {
+            "hit": true,
+            "dodged": false,
+            "onHitSuccess": true,
+            "eligible": true,
+            "enabled": true,
+            "chance": 0.25,
+            "roll": 0.75
+          },
+          "b0": {
+            "base": 8,
+            "scaling": [
+              {
+                "source": "blade",
+                "value": 96.5
+              }
+            ],
+            "flat": 3,
+            "raw": 107.5
+          },
+          "critical": {
+            "chance": 0.5,
+            "roll": 0.25,
+            "isCritical": true,
+            "bonus": 0.5,
+            "multiplier": 1.5
+          },
+          "b1": {
+            "criticalBonus": 0.5,
+            "totalBonus": 0.75,
+            "beforeDefense": 188.125
+          },
+          "mitigation": {
+            "ruleKey": "guard",
+            "status": "applied",
+            "missing": [],
+            "levelGap": null,
+            "levelScalingEnabled": false,
+            "effectiveK": 100,
+            "rawReduction": 0.2,
+            "reduction": 0.2,
+            "inputDamage": 188.125,
+            "preventedDamage": 37.625,
+            "finalDamage": 150.5
+          },
+          "hp": {
+            "resource": "hp",
+            "before": 200,
+            "after": 49.5,
+            "applied": 150.5,
+            "reachedMinimum": false
+          },
+          "mp": {
+            "resource": "mp",
+            "before": 2,
+            "after": 2,
+            "applied": 0,
+            "reachedMinimum": false
+          }
+        },
+        "defense": {
+          "ruleKey": "guard",
+          "status": "applied",
+          "missing": [],
+          "levelGap": null,
+          "levelScalingEnabled": false,
+          "effectiveK": 100,
+          "rawReduction": 0.009900990099009901,
+          "reduction": 0.5,
+          "inputDamage": 20,
+          "preventedDamage": 10,
+          "finalDamage": 10
+        },
+        "defend": {
+          "resource": "hp",
+          "before": 80,
+          "after": 70,
+          "applied": 10,
+          "reachedMinimum": false
+        },
+        "recovery": {
+          "resource": "hp",
+          "before": 70,
+          "after": 85,
+          "applied": 15,
+          "reachedMinimum": false
+        },
+        "rejected": true,
+        "state": {
+          "hp": 85,
+          "mp": 2,
+          "enemyHp": 49.5
+        }
+      },
+      "trace": [
+        "hit",
+        [
+          "dodge",
+          0.75
+        ],
+        "B0",
+        "flat",
+        "critical",
+        [
+          "critical-roll",
+          0.25
+        ],
+        "B1",
+        "mitigation",
+        [
+          "commit",
+          49.5,
+          2
+        ],
+        [
+          "attack",
+          {
+            "hp": 80,
+            "mp": 2,
+            "enemyHp": 49.5
+          }
+        ],
+        [
+          "defend",
+          {
+            "hp": 70,
+            "mp": 2,
+            "enemyHp": 49.5
+          }
+        ],
+        [
+          "recover",
+          {
+            "hp": 85,
+            "mp": 2,
+            "enemyHp": 49.5
+          }
+        ],
+        [
+          "spell",
+          "insufficient-mp",
+          {
+            "hp": 85,
+            "mp": 2,
+            "enemyHp": 49.5
+          }
+        ]
+      ],
+      "anchors": [
+        85,
+        2,
+        49.5,
+        true
+      ]
+    },
+    "T6": {
+      "id": "T6",
+      "inputs": {
+        "hitInput": {
+          "eligible": true,
+          "dodgeChance": 0.25,
+          "rule": {
+            "enabled": true,
+            "bounds": {
+              "min": 0,
+              "max": 1
+            }
+          }
+        }
+      },
+      "output": {
+        "inputs": {
+          "hitInput": {
+            "eligible": true,
+            "dodgeChance": 0.25,
+            "rule": {
+              "enabled": true,
+              "bounds": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          }
+        },
+        "hit": {
+          "hit": false,
+          "dodged": true,
+          "onHitSuccess": false,
+          "eligible": true,
+          "enabled": true,
+          "chance": 0.25,
+          "roll": 0.1
+        }
+      },
+      "trace": [
+        "hit",
+        [
+          "dodge",
+          0.1
+        ]
+      ],
+      "anchors": [
+        true,
+        [
+          "hit",
+          [
+            "dodge",
+            0.1
+          ]
+        ]
+      ]
+    },
+    "T7": {
+      "id": "T7",
+      "inputs": {
+        "attributeOrder": [
+          "__proto__"
+        ],
+        "statOrder": [
+          "__proto__"
+        ],
+        "attributeBases": {
+          "__proto__": 7
+        },
+        "attributeBaselines": {
+          "__proto__": 0
+        },
+        "attributeRules": {
+          "__proto__": {
+            "default": 0,
+            "enabled": true,
+            "bounds": {}
+          }
+        },
+        "baseStats": {},
+        "flatContributions": {},
+        "rules": {
+          "__proto__": {
+            "default": 1,
+            "enabled": true,
+            "bounds": {},
+            "training": 0,
+            "scaling": [
+              {
+                "attribute": "__proto__",
+                "coefficient": 2,
+                "enabled": true
+              }
+            ]
+          }
+        }
+      },
+      "output": {
+        "attributes": {
+          "__proto__": 7
+        },
+        "attributeDetails": {
+          "__proto__": {
+            "base": 7,
+            "value": 7,
+            "uncapped": 7,
+            "resolved": {
+              "target": "__proto__",
+              "base": 7,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 7,
+              "value": 7,
+              "contributions": []
+            }
+          }
+        },
+        "values": {
+          "__proto__": 15
+        },
+        "details": {
+          "__proto__": {
+            "base": 1,
+            "scaling": 14,
+            "flat": 0,
+            "value": 15,
+            "uncapped": 15,
+            "resolved": {
+              "target": "__proto__",
+              "base": 15,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 15,
+              "value": 15,
+              "contributions": []
+            }
+          }
+        }
+      },
+      "trace": [],
+      "anchors": [
+        7,
+        15,
+        true,
+        0,
+        [
+          "__proto__"
+        ]
+      ]
+    },
+    "T8": {
+      "id": "T8",
+      "inputs": {
+        "normalize": {
+          "resource": "hp",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "regen": {
+          "resource": "hp",
+          "current": 99.5,
+          "minimum": 0,
+          "maximum": 100,
+          "ratePerSecond": 0.125,
+          "elapsedSeconds": 2,
+          "eligible": true,
+          "precision": {
+            "decimalPlaces": 12
+          }
+        }
+      },
+      "output": {
+        "absent": {
+          "resource": "hp",
+          "before": {
+            "$number": "undefined"
+          },
+          "after": 100,
+          "initialized": true
+        },
+        "negative": {
+          "resource": "hp",
+          "before": -1,
+          "after": 0,
+          "initialized": false
+        },
+        "regen": {
+          "resource": "hp",
+          "before": 99.5,
+          "after": 99.75,
+          "applied": 0.25,
+          "reachedMinimum": false
+        },
+        "skipped": {
+          "resource": "mp",
+          "before": 2,
+          "after": 2,
+          "applied": 0,
+          "reachedMinimum": false
+        }
+      },
+      "trace": [],
+      "anchors": [
+        100,
+        true,
+        0,
+        99.75,
+        0.25,
+        2,
+        []
+      ]
+    },
+    "T9": {
+      "id": "T9",
+      "inputs": {
+        "input": {
+          "resource": "hp",
+          "current": 120,
+          "maximum": 100,
+          "amount": 5,
+          "rule": {
+            "minimum": 0,
+            "currentAboveMaximum": "allow",
+            "allowIncreaseFromMinimum": false
+          }
+        },
+        "baseMs": 1000,
+        "cdr": 0.25
+      },
+      "output": {
+        "increase": {
+          "resource": "hp",
+          "before": 120,
+          "after": 100,
+          "applied": -20,
+          "reachedMinimum": false
+        },
+        "decrease": {
+          "resource": "hp",
+          "before": 120,
+          "after": 100,
+          "applied": 5,
+          "reachedMinimum": false
+        },
+        "rejected": {
+          "name": "Error",
+          "message": "Current resource exceeds maximum",
+          "same": false
+        },
+        "error": {
+          "name": "object",
+          "message": "",
+          "same": true
+        },
+        "cooldown": 750
+      },
+      "trace": [
+        "throw"
+      ],
+      "anchors": [
+        750,
+        100,
+        -20,
+        5,
+        "Current resource exceeds maximum",
+        true
+      ]
+    }
+  }
+}

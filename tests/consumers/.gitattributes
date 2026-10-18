@@ -1,0 +1,3 @@
+# Caller fixture byte hashes are part of the accepted-source trace provenance.
+# Preserve their captured bytes across Windows and Linux checkouts.
+*.ts -text whitespace=cr-at-eol

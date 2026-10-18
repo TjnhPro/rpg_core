@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
+import {createHash} from 'node:crypto';
 import {mkdtempSync, mkdirSync, readFileSync, writeFileSync, rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
@@ -9,6 +10,7 @@ import {checkDeclarationClosure} from './check-architecture.mjs';
 import {cases as gameplayCases, withBoundaryTree, rejectCase} from '../tests/fixtures/gameplay-boundary-audit.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
+const verificationStarted = performance.now();
 const npmCli = process.env.npm_execpath;
 assert(npmCli, 'Run through npm run test:consumer');
 const scratch = mkdtempSync(path.join(tmpdir(), 'rpg-core-consumer-'));
@@ -147,6 +149,85 @@ import {executeSkill as internal} from '@rpg/core/skills/skill-execution.js';
     types: [], lib: ['ES2022', 'DOM'], outDir: 'build',
   }, include: ['*.ts']}));
   execFileSync(process.execPath, [path.join(consumer, 'node_modules/typescript/bin/tsc'), '-p', 'tsconfig.json'], {cwd: consumer, stdio: 'pipe'});
+  // v2.0.11: three unchanged caller-owned trees, one exact installed archive.
+  const multiStarted = performance.now();
+  const sha = value => createHash('sha256').update(value).digest('hex');
+  const names = ['text-rpg', 'vo-lam-25d', 'arpg'];
+  const archiveBytes = readFileSync(archive);
+  const integrity = 'sha512-' + createHash('sha512').update(archiveBytes).digest('base64');
+  assert.equal(integrity, artifact.integrity, 'Pack integrity');
+  const installedRoot = path.join(consumer, 'node_modules/@rpg/core');
+  const installedPackage = JSON.parse(readFileSync(path.join(installedRoot, 'package.json'), 'utf8'));
+  assert.equal(installedPackage.name, pkg.name); assert.equal(installedPackage.version, pkg.version);
+  assert.equal(JSON.parse(readFileSync(path.join(consumer, 'package-lock.json'), 'utf8')).packages['node_modules/@rpg/core'].integrity, integrity);
+  const kernelFiles = members.filter(file => /^dist\/kernel\/.*\.(js|d\.ts)$/.test(file));
+  const kernelFileSha256 = Object.fromEntries(kernelFiles.map(file => {
+    const installedBytes = readFileSync(path.join(installedRoot, file));
+    assert.equal(sha(installedBytes), sha(readFileSync(path.join(root, file))), file);
+    return [file, sha(installedBytes)];
+  }));
+  const fixtureSha256 = {}, oracleSha256 = {}, compilation = [];
+  for (const file of ['observations.ts', ...names.flatMap(name => [name + '/config.ts', name + '/scenarios.ts', name + '/expected.json'])]) {
+    const bytes = readFileSync(path.join(root, 'tests/consumers', file));
+    const target = path.join(consumer, 'consumers', file); mkdirSync(path.dirname(target), {recursive: true}); writeFileSync(target, bytes);
+    if (file.endsWith('.ts')) {
+      fixtureSha256[file] = sha(bytes);
+      const source = ts.createSourceFile(file, bytes.toString(), ts.ScriptTarget.Latest, true);
+      for (const statement of source.statements) if (ts.isImportDeclaration(statement)) {
+        const specifier = statement.moduleSpecifier.text;
+        assert(['@rpg/core/kernel', './config.js', '../observations.js'].includes(specifier), 'Forbidden multi-RPG import: ' + specifier);
+      }
+    } else oracleSha256[file] = sha(bytes);
+  }
+  // Compile each independently, with its own strict program and no source aliases.
+  for (const name of names) {
+    const options = {target: 'ES2022', module: 'NodeNext', moduleResolution: 'NodeNext', strict: true,
+      exactOptionalPropertyTypes: true, noUncheckedIndexedAccess: true, skipLibCheck: false,
+      types: [], lib: ['ES2022', 'DOM'], rootDir: 'consumers', outDir: 'build-multi/' + name};
+    const configName = 'tsconfig-' + name + '.json';
+    writeFileSync(path.join(consumer, configName), JSON.stringify({compilerOptions: options, include: ['consumers/' + name + '/*.ts']}));
+    const started = performance.now();
+    execFileSync(process.execPath, [path.join(consumer, 'node_modules/typescript/bin/tsc'), '-p', configName], {cwd: consumer, stdio: 'pipe'});
+    compilation.push({consumer: name, status: 'PASS', milliseconds: performance.now() - started, options});
+  }
+  writeFileSync(path.join(consumer, 'multi-rpg.mjs'), `
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import * as kernel from '@rpg/core/kernel';
+assert.equal(Object.keys(kernel).length,17);
+const results={},timings={};
+for(const name of process.argv.slice(2)) {
+ const api=await import('./build-multi/'+name+'/'+name+'/scenarios.js');
+ const expected=JSON.parse(readFileSync('./consumers/'+name+'/expected.json','utf8'));
+ const start=performance.now();const rows=api.ids.map(id=>api.runScenario(id));
+ for(const row of rows){assert.deepEqual(row.anchors,expected.hand[row.id],name+'/'+row.id+' independent anchor');assert.deepEqual(row,expected.observations[row.id]);assert.equal(JSON.stringify(row),JSON.stringify(expected.observations[row.id]),'Full field/key order');}
+ assert.deepEqual(api.ids.map(id=>api.runScenario(id)),rows,'Same inputs repeated');
+ // Each consumer includes its own input mutation/source policy cases. Reset and
+ // compare after the complete preceding action list, in the same process.
+ assert.deepEqual(api.ids.map(id=>api.runScenario(id)),rows,'Reset after mutation/policy toggles');
+ results[name]=rows;timings[name]=performance.now()-start;
+}
+console.log(JSON.stringify({results,timings,kernel:import.meta.resolve('@rpg/core/kernel'),runtimeExports:Object.keys(kernel).sort()}));
+`);
+  const executeMulti = order => JSON.parse(execFileSync(process.execPath, ['multi-rpg.mjs', ...order], {cwd: consumer, encoding: 'utf8', maxBuffer: 16 * 1024 * 1024}));
+  const fresh = Object.fromEntries(names.map(name => [name, executeMulti([name])]));
+  const forward = executeMulti(names), reverse = executeMulti([...names].reverse());
+  for (const name of names) {
+    assert.deepEqual(forward.results[name], fresh[name].results[name], 'Forward vs fresh: ' + name);
+    assert.deepEqual(reverse.results[name], fresh[name].results[name], 'Reverse vs fresh: ' + name);
+    assert.equal(fresh[name].kernel, forward.kernel, 'Same installed Kernel path');
+    assert.deepEqual(fresh[name].runtimeExports, forward.runtimeExports);
+  }
+  const multiEvidence = {status: 'MULTI_RPG_CONSUMERS_PASS', revision: '436cc35a17389a54e05843ec8efbcfc5c1604295', node: process.version,
+    package: {name: pkg.name, version: pkg.version, archiveSha256: sha(archiveBytes), integrity, integrityVerified: true, installedIntegrityVerified: true, oneArtifact: true},
+    fixtureSha256, oracleSha256, kernelFileSha256, compilation,
+    declarationClosure: {exports: installedClosure.exports, files: installedClosure.files.map(file => path.relative(installedRoot, file).replaceAll('\\', '/'))},
+    runtimeExports: forward.runtimeExports, sameResolvedModule: true,
+    isolation: {freshProcesses: 3, forward: names, reverse: [...names].reverse(), repetitionsPerRun: 3, mutationAndPolicyReset: 'PASS', allComparisons: 'PASS'},
+    consumers: names.map(name => ({name, status: 'PASS', scenarios: fresh[name].results[name].map(row => ({id: row.id, resultSha256: sha(JSON.stringify(row)), handAnchors: row.anchors, trace: row.trace, status: 'PASS'})),
+      resultSha256: sha(JSON.stringify(fresh[name].results[name])), milliseconds: fresh[name].timings[name]})),
+    timing: {threeConsumerVerificationMs: performance.now() - multiStarted, installedRunElapsedMs: performance.now() - verificationStarted}};
+  console.log(JSON.stringify(multiEvidence));
   writeFileSync(path.join(consumer, 'run.mjs'), `
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
@@ -277,6 +358,8 @@ console.log(JSON.stringify({status: 'PASS', targetHp: a.entities[1].currentHp, d
 `);
   const result = execFileSync(process.execPath, ['run.mjs'], {cwd: consumer, encoding: 'utf8'});
   console.log(result.trim());
+  console.log(JSON.stringify({status: 'MULTI_RPG_VERIFICATION_COMPLETE', archiveSha256: multiEvidence.package.archiveSha256,
+    installerSha256: sha(readFileSync(fileURLToPath(import.meta.url))), totalInstalledVerificationMs: performance.now() - verificationStarted}));
   console.log(`Archive installed into external temporary consumer: ${consumer}`);
 } catch (error) {
   if (error.stdout) console.error(error.stdout.toString());

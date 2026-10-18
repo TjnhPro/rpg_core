@@ -1,0 +1,4104 @@
+{
+  "handProvenance": "Fixed hand-calculated Gate A anchors; snapshot A7 uses full typed stat graph with aliased rules, captured power 64.5 + might12 = 76.5. No candidate-derived expectations.",
+  "hand": {
+    "A1": [
+      64.5,
+      40,
+      200,
+      60,
+      50
+    ],
+    "A2": [
+      3,
+      64.5,
+      true,
+      "Conflicting Modifier instance",
+      [
+        "accessory",
+        "armor",
+        "weapon"
+      ]
+    ],
+    "A3": [
+      77,
+      64.5,
+      4
+    ],
+    "A4": [
+      136,
+      238,
+      119,
+      81,
+      90,
+      112.5,
+      84.375,
+      115.625
+    ],
+    "A5": [
+      [
+        true,
+        false,
+        false
+      ],
+      [
+        {
+          "$number": "undefined"
+        },
+        0.5,
+        0
+      ],
+      [
+        {
+          "$number": "undefined"
+        },
+        175,
+        125
+      ],
+      5,
+      true
+    ],
+    "A6": [
+      2,
+      200,
+      0.5,
+      100,
+      100,
+      0.25,
+      150,
+      "disabled",
+      "missing_config"
+    ],
+    "A7": [
+      12,
+      64.5,
+      64.5,
+      76.5,
+      true,
+      true,
+      true,
+      true,
+      "TypeError",
+      "TypeError",
+      "TypeError",
+      []
+    ],
+    "A8": [
+      [
+        161,
+        90,
+        156
+      ],
+      [
+        100.625,
+        84.375,
+        97.5
+      ],
+      [
+        299.375,
+        215,
+        117.5
+      ],
+      false
+    ],
+    "A9": [
+      60,
+      199.75,
+      0.25,
+      200,
+      0,
+      199.5,
+      []
+    ],
+    "A10": [
+      10,
+      2,
+      true,
+      0,
+      1.7976931348623157e+308,
+      true
+    ],
+    "A11": [
+      64.5,
+      64.5,
+      [
+        "accessory",
+        "armor",
+        "weapon"
+      ],
+      [
+        "accessory",
+        "armor",
+        "weapon"
+      ],
+      "Conflicting Modifier instance",
+      0,
+      []
+    ],
+    "A12": [
+      1.225,
+      0,
+      1.234,
+      [
+        "transform"
+      ]
+    ],
+    "A13": [
+      true,
+      {
+        "$number": "Infinity"
+      },
+      true,
+      [
+        "nan",
+        "infinite",
+        "negativeZero"
+      ],
+      true,
+      true,
+      "TypeError",
+      "TypeError",
+      "TypeError"
+    ]
+  },
+  "acceptedTraceProvenance": {
+    "revision": "436cc35a17389a54e05843ec8efbcfc5c1604295",
+    "command": "node scripts/capture-multi-rpg-oracle.mjs --capture-reviewed-traces",
+    "sourceSha256": {
+      "src/kernel/contracts/common.ts": "8fced5a9366ea7691d8aeb652a61b23e40d67226e2cec474e4be9178f5c2be07",
+      "src/kernel/contracts/damage-stages.ts": "4d3fc2a218097e887d3076058b636dcef6343be228e5687bb62867c76e210113",
+      "src/kernel/contracts/damage.ts": "44be45b2a116f6996335e3d91b6fc7624e22ba301c177c66f144b253c8ff94d5",
+      "src/kernel/contracts/defense.ts": "6a53ffc2a2e77a119cfecf6d46291f3f17379fc6e94e990c24b959ddfc365ae3",
+      "src/kernel/contracts/modifier-resolution.ts": "8c5ab655a90c06656bdcf3ecf3ad2799e2c6156d709982de8fcc32b69f10fe0d",
+      "src/kernel/contracts/modifiers.ts": "acb433b3bab33f601d216964f24f679036b2a8338c4ac60005acbe42057ed420",
+      "src/kernel/contracts/resources.ts": "d2192e1a1b2c2295d0f826004d01d36441b591e973620dd746cb062198fac297",
+      "src/kernel/contracts/snapshots.ts": "ea20fdb0500ca090a5c01394ab81442117de78de5386fcbb6ca7279b3a7341e7",
+      "src/kernel/contracts/stats.ts": "76cd41174ca951ffd0733b1d41af140f606236ce9afedc2185cd573bb44dc4c9",
+      "src/kernel/damage/damage-calculation.ts": "3b925e26d813e771b4bf3a37e8f29932a0e195b30bceb716f5cc29ddfc146f0b",
+      "src/kernel/defense/defense-calculation.ts": "99d812d878e108f0cb32428552807aa710d89fad9ae690f0a816e83fe3f83fe2",
+      "src/kernel/index.ts": "5e57c62174f31d66ecbe49cf2657841232a638ff47da77025d438156f22cc6d6",
+      "src/kernel/modifiers/modifier-resolution.ts": "7f452a00b2eab5905fcca4b11b1546c8a7b1b599819f7a54ed678950fb4cb91d",
+      "src/kernel/resources/resource-calculation.ts": "fa29e85292f93e9c20306735fc337a2b3243f3bcab7b10325e769b68cebe70f8",
+      "src/kernel/snapshots/calculation-snapshot.ts": "a9eea94349ddc76065ce5d1d7d0023479256f4edcebb03739cd5af496dcf5a7c",
+      "src/kernel/snapshots/snapshot-data.ts": "cca3ea0085c99006fbe64488d8b8adc465fada6b693cd448d2932714f9f4ff8c",
+      "src/kernel/stats/stat-calculation.ts": "9a63ca1887ab8fb91d125c903dc055f86d24765cf43fd97eba4a32dc22f352e4"
+    },
+    "fixtureSha256": {
+      "observations.ts": "2f58ef5c987295825f3b49998bff399ee254a1b0399594b1ab72ec8991a95627",
+      "text-rpg/config.ts": "b2449d93deff022c32f13550366463e87df5df2566861ad8196b204856dc581f",
+      "text-rpg/scenarios.ts": "0ef03fa6eb3adeac770df9ac43b5e5695959a053a102f9a0e38e46a5954813fe",
+      "vo-lam-25d/config.ts": "68aa48155f1a4ca0f4a82718f8b81b1625268b5f33464cf8804fcc8bb98743d5",
+      "vo-lam-25d/scenarios.ts": "8d317db97c16e9f6bab76fe5fea2a43618292af59b23ea3dc23bfeaf7a36f3f4",
+      "arpg/config.ts": "ec24af66d7cc279cdfeee79a08b9aecd4be2b985873866777503ecb68871e4ec",
+      "arpg/scenarios.ts": "6bce39ee7a170ea57e7f001bf496f6454eb676afea72c91d905b39832cc3998f"
+    }
+  },
+  "observations": {
+    "A1": {
+      "id": "A1",
+      "inputs": {
+        "input": {
+          "attributeOrder": [
+            "might",
+            "agility",
+            "focus"
+          ],
+          "statOrder": [
+            "weaponPower",
+            "elementalPower",
+            "maxLife",
+            "maxMana",
+            "armorRating"
+          ],
+          "attributeBases": {
+            "might": 12,
+            "agility": 8,
+            "focus": 10
+          },
+          "attributeBaselines": {
+            "might": 0,
+            "agility": 0,
+            "focus": 0
+          },
+          "attributeRules": {
+            "might": {
+              "default": 0,
+              "enabled": true,
+              "bounds": {}
+            },
+            "agility": {
+              "default": 0,
+              "enabled": true,
+              "bounds": {}
+            },
+            "focus": {
+              "default": 0,
+              "enabled": true,
+              "bounds": {}
+            }
+          },
+          "baseStats": {},
+          "flatContributions": {},
+          "rules": {
+            "weaponPower": {
+              "default": 20,
+              "enabled": true,
+              "bounds": {},
+              "training": 0,
+              "scaling": [
+                {
+                  "attribute": "might",
+                  "coefficient": 2,
+                  "enabled": true
+                }
+              ]
+            },
+            "elementalPower": {
+              "default": 10,
+              "enabled": true,
+              "bounds": {},
+              "training": 0,
+              "scaling": [
+                {
+                  "attribute": "focus",
+                  "coefficient": 3,
+                  "enabled": true
+                }
+              ]
+            },
+            "maxLife": {
+              "default": 80,
+              "enabled": true,
+              "bounds": {},
+              "training": 0,
+              "scaling": [
+                {
+                  "attribute": "might",
+                  "coefficient": 10,
+                  "enabled": true
+                }
+              ]
+            },
+            "maxMana": {
+              "default": 10,
+              "enabled": true,
+              "bounds": {},
+              "training": 0,
+              "scaling": [
+                {
+                  "attribute": "focus",
+                  "coefficient": 5,
+                  "enabled": true
+                }
+              ]
+            },
+            "armorRating": {
+              "default": 10,
+              "enabled": true,
+              "bounds": {},
+              "training": 0,
+              "scaling": [
+                {
+                  "attribute": "agility",
+                  "coefficient": 5,
+                  "enabled": true
+                }
+              ]
+            }
+          }
+        },
+        "modifiers": [
+          {
+            "identity": {
+              "source": "weapon",
+              "sourceInstanceId": "axe",
+              "id": "power"
+            },
+            "target": "weaponPower",
+            "operation": "add_flat",
+            "value": 6,
+            "enabled": true
+          },
+          {
+            "identity": {
+              "source": "armor",
+              "sourceInstanceId": "plate",
+              "id": "power"
+            },
+            "target": "weaponPower",
+            "operation": "add_percent",
+            "value": 0.25,
+            "enabled": true
+          },
+          {
+            "identity": {
+              "source": "accessory",
+              "sourceInstanceId": "ring",
+              "id": "power"
+            },
+            "target": "weaponPower",
+            "operation": "add_percentage_points",
+            "value": 2,
+            "enabled": true
+          },
+          {
+            "identity": {
+              "source": "buff",
+              "sourceInstanceId": "rage",
+              "id": "power"
+            },
+            "target": "weaponPower",
+            "operation": "add_flat",
+            "value": 10,
+            "enabled": true
+          }
+        ]
+      },
+      "output": {
+        "attributes": {
+          "might": 12,
+          "agility": 8,
+          "focus": 10
+        },
+        "attributeDetails": {
+          "might": {
+            "base": 12,
+            "value": 12,
+            "uncapped": 12,
+            "resolved": {
+              "target": "might",
+              "base": 12,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 12,
+              "value": 12,
+              "contributions": []
+            }
+          },
+          "agility": {
+            "base": 8,
+            "value": 8,
+            "uncapped": 8,
+            "resolved": {
+              "target": "agility",
+              "base": 8,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 8,
+              "value": 8,
+              "contributions": []
+            }
+          },
+          "focus": {
+            "base": 10,
+            "value": 10,
+            "uncapped": 10,
+            "resolved": {
+              "target": "focus",
+              "base": 10,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 10,
+              "value": 10,
+              "contributions": []
+            }
+          }
+        },
+        "values": {
+          "weaponPower": 64.5,
+          "elementalPower": 40,
+          "maxLife": 200,
+          "maxMana": 60,
+          "armorRating": 50
+        },
+        "details": {
+          "weaponPower": {
+            "base": 20,
+            "scaling": 24,
+            "flat": 0,
+            "value": 64.5,
+            "uncapped": 64.5,
+            "resolved": {
+              "target": "weaponPower",
+              "base": 44,
+              "flat": 6,
+              "percent": 0.25,
+              "percentagePoints": 2,
+              "totalFlat": 50,
+              "value": 64.5,
+              "contributions": [
+                {
+                  "identity": {
+                    "source": "accessory",
+                    "sourceInstanceId": "ring",
+                    "id": "power"
+                  },
+                  "target": "weaponPower",
+                  "operation": "add_percentage_points",
+                  "value": 2,
+                  "enabled": true
+                },
+                {
+                  "identity": {
+                    "source": "armor",
+                    "sourceInstanceId": "plate",
+                    "id": "power"
+                  },
+                  "target": "weaponPower",
+                  "operation": "add_percent",
+                  "value": 0.25,
+                  "enabled": true
+                },
+                {
+                  "identity": {
+                    "source": "weapon",
+                    "sourceInstanceId": "axe",
+                    "id": "power"
+                  },
+                  "target": "weaponPower",
+                  "operation": "add_flat",
+                  "value": 6,
+                  "enabled": true
+                }
+              ]
+            }
+          },
+          "elementalPower": {
+            "base": 10,
+            "scaling": 30,
+            "flat": 0,
+            "value": 40,
+            "uncapped": 40,
+            "resolved": {
+              "target": "elementalPower",
+              "base": 40,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 40,
+              "value": 40,
+              "contributions": []
+            }
+          },
+          "maxLife": {
+            "base": 80,
+            "scaling": 120,
+            "flat": 0,
+            "value": 200,
+            "uncapped": 200,
+            "resolved": {
+              "target": "maxLife",
+              "base": 200,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 200,
+              "value": 200,
+              "contributions": []
+            }
+          },
+          "maxMana": {
+            "base": 10,
+            "scaling": 50,
+            "flat": 0,
+            "value": 60,
+            "uncapped": 60,
+            "resolved": {
+              "target": "maxMana",
+              "base": 60,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 60,
+              "value": 60,
+              "contributions": []
+            }
+          },
+          "armorRating": {
+            "base": 10,
+            "scaling": 40,
+            "flat": 0,
+            "value": 50,
+            "uncapped": 50,
+            "resolved": {
+              "target": "armorRating",
+              "base": 50,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 50,
+              "value": 50,
+              "contributions": []
+            }
+          }
+        }
+      },
+      "trace": [],
+      "anchors": [
+        64.5,
+        40,
+        200,
+        60,
+        50
+      ]
+    },
+    "A2": {
+      "id": "A2",
+      "inputs": {
+        "inputs": [
+          {
+            "identity": {
+              "source": "buff",
+              "sourceInstanceId": "rage",
+              "id": "power"
+            },
+            "target": "weaponPower",
+            "operation": "add_flat",
+            "value": 10,
+            "enabled": true
+          },
+          {
+            "identity": {
+              "source": "accessory",
+              "sourceInstanceId": "ring",
+              "id": "power"
+            },
+            "target": "weaponPower",
+            "operation": "add_percentage_points",
+            "value": 2,
+            "enabled": true
+          },
+          {
+            "identity": {
+              "source": "armor",
+              "sourceInstanceId": "plate",
+              "id": "power"
+            },
+            "target": "weaponPower",
+            "operation": "add_percent",
+            "value": 0.25,
+            "enabled": true
+          },
+          {
+            "identity": {
+              "source": "weapon",
+              "sourceInstanceId": "axe",
+              "id": "power"
+            },
+            "target": "weaponPower",
+            "operation": "add_flat",
+            "value": 6,
+            "enabled": true
+          },
+          {
+            "identity": {
+              "source": "weapon",
+              "sourceInstanceId": "axe",
+              "id": "power"
+            },
+            "target": "weaponPower",
+            "operation": "add_flat",
+            "value": 6,
+            "enabled": true
+          }
+        ],
+        "activeSources": [
+          "weapon",
+          "armor",
+          "accessory"
+        ]
+      },
+      "output": {
+        "selected": [
+          {
+            "identity": {
+              "source": "accessory",
+              "sourceInstanceId": "ring",
+              "id": "power"
+            },
+            "target": "weaponPower",
+            "operation": "add_percentage_points",
+            "value": 2,
+            "enabled": true
+          },
+          {
+            "identity": {
+              "source": "armor",
+              "sourceInstanceId": "plate",
+              "id": "power"
+            },
+            "target": "weaponPower",
+            "operation": "add_percent",
+            "value": 0.25,
+            "enabled": true
+          },
+          {
+            "identity": {
+              "source": "weapon",
+              "sourceInstanceId": "axe",
+              "id": "power"
+            },
+            "target": "weaponPower",
+            "operation": "add_flat",
+            "value": 6,
+            "enabled": true
+          }
+        ],
+        "output": {
+          "attributes": {
+            "might": 12,
+            "agility": 8,
+            "focus": 10
+          },
+          "attributeDetails": {
+            "might": {
+              "base": 12,
+              "value": 12,
+              "uncapped": 12,
+              "resolved": {
+                "target": "might",
+                "base": 12,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 12,
+                "value": 12,
+                "contributions": []
+              }
+            },
+            "agility": {
+              "base": 8,
+              "value": 8,
+              "uncapped": 8,
+              "resolved": {
+                "target": "agility",
+                "base": 8,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 8,
+                "value": 8,
+                "contributions": []
+              }
+            },
+            "focus": {
+              "base": 10,
+              "value": 10,
+              "uncapped": 10,
+              "resolved": {
+                "target": "focus",
+                "base": 10,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 10,
+                "value": 10,
+                "contributions": []
+              }
+            }
+          },
+          "values": {
+            "weaponPower": 64.5,
+            "elementalPower": 40,
+            "maxLife": 200,
+            "maxMana": 60,
+            "armorRating": 50
+          },
+          "details": {
+            "weaponPower": {
+              "base": 20,
+              "scaling": 24,
+              "flat": 0,
+              "value": 64.5,
+              "uncapped": 64.5,
+              "resolved": {
+                "target": "weaponPower",
+                "base": 44,
+                "flat": 6,
+                "percent": 0.25,
+                "percentagePoints": 2,
+                "totalFlat": 50,
+                "value": 64.5,
+                "contributions": [
+                  {
+                    "identity": {
+                      "source": "accessory",
+                      "sourceInstanceId": "ring",
+                      "id": "power"
+                    },
+                    "target": "weaponPower",
+                    "operation": "add_percentage_points",
+                    "value": 2,
+                    "enabled": true
+                  },
+                  {
+                    "identity": {
+                      "source": "armor",
+                      "sourceInstanceId": "plate",
+                      "id": "power"
+                    },
+                    "target": "weaponPower",
+                    "operation": "add_percent",
+                    "value": 0.25,
+                    "enabled": true
+                  },
+                  {
+                    "identity": {
+                      "source": "weapon",
+                      "sourceInstanceId": "axe",
+                      "id": "power"
+                    },
+                    "target": "weaponPower",
+                    "operation": "add_flat",
+                    "value": 6,
+                    "enabled": true
+                  }
+                ]
+              }
+            },
+            "elementalPower": {
+              "base": 10,
+              "scaling": 30,
+              "flat": 0,
+              "value": 40,
+              "uncapped": 40,
+              "resolved": {
+                "target": "elementalPower",
+                "base": 40,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 40,
+                "value": 40,
+                "contributions": []
+              }
+            },
+            "maxLife": {
+              "base": 80,
+              "scaling": 120,
+              "flat": 0,
+              "value": 200,
+              "uncapped": 200,
+              "resolved": {
+                "target": "maxLife",
+                "base": 200,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 200,
+                "value": 200,
+                "contributions": []
+              }
+            },
+            "maxMana": {
+              "base": 10,
+              "scaling": 50,
+              "flat": 0,
+              "value": 60,
+              "uncapped": 60,
+              "resolved": {
+                "target": "maxMana",
+                "base": 60,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 60,
+                "value": 60,
+                "contributions": []
+              }
+            },
+            "armorRating": {
+              "base": 10,
+              "scaling": 40,
+              "flat": 0,
+              "value": 50,
+              "uncapped": 50,
+              "resolved": {
+                "target": "armorRating",
+                "base": 50,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 50,
+                "value": 50,
+                "contributions": []
+              }
+            }
+          }
+        },
+        "identity": true,
+        "conflict": {
+          "name": "Error",
+          "message": "Conflicting Modifier instance",
+          "same": false
+        }
+      },
+      "trace": [],
+      "anchors": [
+        3,
+        64.5,
+        true,
+        "Conflicting Modifier instance",
+        [
+          "accessory",
+          "armor",
+          "weapon"
+        ]
+      ]
+    },
+    "A3": {
+      "id": "A3",
+      "inputs": {
+        "config": {
+          "input": {
+            "attributeOrder": [
+              "might",
+              "agility",
+              "focus"
+            ],
+            "statOrder": [
+              "weaponPower",
+              "elementalPower",
+              "maxLife",
+              "maxMana",
+              "armorRating"
+            ],
+            "attributeBases": {
+              "might": 12,
+              "agility": 8,
+              "focus": 10
+            },
+            "attributeBaselines": {
+              "might": 0,
+              "agility": 0,
+              "focus": 0
+            },
+            "attributeRules": {
+              "might": {
+                "default": 0,
+                "enabled": true,
+                "bounds": {}
+              },
+              "agility": {
+                "default": 0,
+                "enabled": true,
+                "bounds": {}
+              },
+              "focus": {
+                "default": 0,
+                "enabled": true,
+                "bounds": {}
+              }
+            },
+            "baseStats": {},
+            "flatContributions": {},
+            "rules": {
+              "weaponPower": {
+                "default": 20,
+                "enabled": true,
+                "bounds": {},
+                "training": 0,
+                "scaling": [
+                  {
+                    "attribute": "might",
+                    "coefficient": 2,
+                    "enabled": true
+                  }
+                ]
+              },
+              "elementalPower": {
+                "default": 10,
+                "enabled": true,
+                "bounds": {},
+                "training": 0,
+                "scaling": [
+                  {
+                    "attribute": "focus",
+                    "coefficient": 3,
+                    "enabled": true
+                  }
+                ]
+              },
+              "maxLife": {
+                "default": 80,
+                "enabled": true,
+                "bounds": {},
+                "training": 0,
+                "scaling": [
+                  {
+                    "attribute": "might",
+                    "coefficient": 10,
+                    "enabled": true
+                  }
+                ]
+              },
+              "maxMana": {
+                "default": 10,
+                "enabled": true,
+                "bounds": {},
+                "training": 0,
+                "scaling": [
+                  {
+                    "attribute": "focus",
+                    "coefficient": 5,
+                    "enabled": true
+                  }
+                ]
+              },
+              "armorRating": {
+                "default": 10,
+                "enabled": true,
+                "bounds": {},
+                "training": 0,
+                "scaling": [
+                  {
+                    "attribute": "agility",
+                    "coefficient": 5,
+                    "enabled": true
+                  }
+                ]
+              }
+            }
+          },
+          "modifiers": [
+            {
+              "identity": {
+                "source": "weapon",
+                "sourceInstanceId": "axe",
+                "id": "power"
+              },
+              "target": "weaponPower",
+              "operation": "add_flat",
+              "value": 6,
+              "enabled": true
+            },
+            {
+              "identity": {
+                "source": "armor",
+                "sourceInstanceId": "plate",
+                "id": "power"
+              },
+              "target": "weaponPower",
+              "operation": "add_percent",
+              "value": 0.25,
+              "enabled": true
+            },
+            {
+              "identity": {
+                "source": "accessory",
+                "sourceInstanceId": "ring",
+                "id": "power"
+              },
+              "target": "weaponPower",
+              "operation": "add_percentage_points",
+              "value": 2,
+              "enabled": true
+            },
+            {
+              "identity": {
+                "source": "buff",
+                "sourceInstanceId": "rage",
+                "id": "power"
+              },
+              "target": "weaponPower",
+              "operation": "add_flat",
+              "value": 10,
+              "enabled": true
+            },
+            {
+              "identity": {
+                "source": "weapon",
+                "sourceInstanceId": "disabled",
+                "id": "power"
+              },
+              "target": "weaponPower",
+              "operation": "add_flat",
+              "value": 100,
+              "enabled": false
+            }
+          ]
+        },
+        "activeBuff": "rage"
+      },
+      "output": {
+        "on": {
+          "attributes": {
+            "might": 12,
+            "agility": 8,
+            "focus": 10
+          },
+          "attributeDetails": {
+            "might": {
+              "base": 12,
+              "value": 12,
+              "uncapped": 12,
+              "resolved": {
+                "target": "might",
+                "base": 12,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 12,
+                "value": 12,
+                "contributions": []
+              }
+            },
+            "agility": {
+              "base": 8,
+              "value": 8,
+              "uncapped": 8,
+              "resolved": {
+                "target": "agility",
+                "base": 8,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 8,
+                "value": 8,
+                "contributions": []
+              }
+            },
+            "focus": {
+              "base": 10,
+              "value": 10,
+              "uncapped": 10,
+              "resolved": {
+                "target": "focus",
+                "base": 10,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 10,
+                "value": 10,
+                "contributions": []
+              }
+            }
+          },
+          "values": {
+            "weaponPower": 77,
+            "elementalPower": 40,
+            "maxLife": 200,
+            "maxMana": 60,
+            "armorRating": 50
+          },
+          "details": {
+            "weaponPower": {
+              "base": 20,
+              "scaling": 24,
+              "flat": 0,
+              "value": 77,
+              "uncapped": 77,
+              "resolved": {
+                "target": "weaponPower",
+                "base": 44,
+                "flat": 16,
+                "percent": 0.25,
+                "percentagePoints": 2,
+                "totalFlat": 60,
+                "value": 77,
+                "contributions": [
+                  {
+                    "identity": {
+                      "source": "accessory",
+                      "sourceInstanceId": "ring",
+                      "id": "power"
+                    },
+                    "target": "weaponPower",
+                    "operation": "add_percentage_points",
+                    "value": 2,
+                    "enabled": true
+                  },
+                  {
+                    "identity": {
+                      "source": "armor",
+                      "sourceInstanceId": "plate",
+                      "id": "power"
+                    },
+                    "target": "weaponPower",
+                    "operation": "add_percent",
+                    "value": 0.25,
+                    "enabled": true
+                  },
+                  {
+                    "identity": {
+                      "source": "buff",
+                      "sourceInstanceId": "rage",
+                      "id": "power"
+                    },
+                    "target": "weaponPower",
+                    "operation": "add_flat",
+                    "value": 10,
+                    "enabled": true
+                  },
+                  {
+                    "identity": {
+                      "source": "weapon",
+                      "sourceInstanceId": "axe",
+                      "id": "power"
+                    },
+                    "target": "weaponPower",
+                    "operation": "add_flat",
+                    "value": 6,
+                    "enabled": true
+                  }
+                ]
+              }
+            },
+            "elementalPower": {
+              "base": 10,
+              "scaling": 30,
+              "flat": 0,
+              "value": 40,
+              "uncapped": 40,
+              "resolved": {
+                "target": "elementalPower",
+                "base": 40,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 40,
+                "value": 40,
+                "contributions": []
+              }
+            },
+            "maxLife": {
+              "base": 80,
+              "scaling": 120,
+              "flat": 0,
+              "value": 200,
+              "uncapped": 200,
+              "resolved": {
+                "target": "maxLife",
+                "base": 200,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 200,
+                "value": 200,
+                "contributions": []
+              }
+            },
+            "maxMana": {
+              "base": 10,
+              "scaling": 50,
+              "flat": 0,
+              "value": 60,
+              "uncapped": 60,
+              "resolved": {
+                "target": "maxMana",
+                "base": 60,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 60,
+                "value": 60,
+                "contributions": []
+              }
+            },
+            "armorRating": {
+              "base": 10,
+              "scaling": 40,
+              "flat": 0,
+              "value": 50,
+              "uncapped": 50,
+              "resolved": {
+                "target": "armorRating",
+                "base": 50,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 50,
+                "value": 50,
+                "contributions": []
+              }
+            }
+          }
+        },
+        "off": {
+          "attributes": {
+            "might": 12,
+            "agility": 8,
+            "focus": 10
+          },
+          "attributeDetails": {
+            "might": {
+              "base": 12,
+              "value": 12,
+              "uncapped": 12,
+              "resolved": {
+                "target": "might",
+                "base": 12,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 12,
+                "value": 12,
+                "contributions": []
+              }
+            },
+            "agility": {
+              "base": 8,
+              "value": 8,
+              "uncapped": 8,
+              "resolved": {
+                "target": "agility",
+                "base": 8,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 8,
+                "value": 8,
+                "contributions": []
+              }
+            },
+            "focus": {
+              "base": 10,
+              "value": 10,
+              "uncapped": 10,
+              "resolved": {
+                "target": "focus",
+                "base": 10,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 10,
+                "value": 10,
+                "contributions": []
+              }
+            }
+          },
+          "values": {
+            "weaponPower": 64.5,
+            "elementalPower": 40,
+            "maxLife": 200,
+            "maxMana": 60,
+            "armorRating": 50
+          },
+          "details": {
+            "weaponPower": {
+              "base": 20,
+              "scaling": 24,
+              "flat": 0,
+              "value": 64.5,
+              "uncapped": 64.5,
+              "resolved": {
+                "target": "weaponPower",
+                "base": 44,
+                "flat": 6,
+                "percent": 0.25,
+                "percentagePoints": 2,
+                "totalFlat": 50,
+                "value": 64.5,
+                "contributions": [
+                  {
+                    "identity": {
+                      "source": "accessory",
+                      "sourceInstanceId": "ring",
+                      "id": "power"
+                    },
+                    "target": "weaponPower",
+                    "operation": "add_percentage_points",
+                    "value": 2,
+                    "enabled": true
+                  },
+                  {
+                    "identity": {
+                      "source": "armor",
+                      "sourceInstanceId": "plate",
+                      "id": "power"
+                    },
+                    "target": "weaponPower",
+                    "operation": "add_percent",
+                    "value": 0.25,
+                    "enabled": true
+                  },
+                  {
+                    "identity": {
+                      "source": "weapon",
+                      "sourceInstanceId": "axe",
+                      "id": "power"
+                    },
+                    "target": "weaponPower",
+                    "operation": "add_flat",
+                    "value": 6,
+                    "enabled": true
+                  }
+                ]
+              }
+            },
+            "elementalPower": {
+              "base": 10,
+              "scaling": 30,
+              "flat": 0,
+              "value": 40,
+              "uncapped": 40,
+              "resolved": {
+                "target": "elementalPower",
+                "base": 40,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 40,
+                "value": 40,
+                "contributions": []
+              }
+            },
+            "maxLife": {
+              "base": 80,
+              "scaling": 120,
+              "flat": 0,
+              "value": 200,
+              "uncapped": 200,
+              "resolved": {
+                "target": "maxLife",
+                "base": 200,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 200,
+                "value": 200,
+                "contributions": []
+              }
+            },
+            "maxMana": {
+              "base": 10,
+              "scaling": 50,
+              "flat": 0,
+              "value": 60,
+              "uncapped": 60,
+              "resolved": {
+                "target": "maxMana",
+                "base": 60,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 60,
+                "value": 60,
+                "contributions": []
+              }
+            },
+            "armorRating": {
+              "base": 10,
+              "scaling": 40,
+              "flat": 0,
+              "value": 50,
+              "uncapped": 50,
+              "resolved": {
+                "target": "armorRating",
+                "base": 50,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 50,
+                "value": 50,
+                "contributions": []
+              }
+            }
+          }
+        }
+      },
+      "trace": [],
+      "anchors": [
+        77,
+        64.5,
+        4
+      ]
+    },
+    "A4": {
+      "id": "A4",
+      "inputs": {
+        "physical": {
+          "base": 7,
+          "power": 64.5,
+          "coefficient": 2,
+          "source": "weapon",
+          "criticalRoll": 0.1,
+          "criticalChance": 0.25,
+          "current": 200
+        },
+        "elemental": {
+          "base": 10,
+          "power": 40,
+          "coefficient": 2,
+          "source": "elemental",
+          "criticalRoll": 0.8,
+          "criticalChance": 0,
+          "current": 200
+        }
+      },
+      "output": {
+        "physical": {
+          "inputs": {
+            "base": 7,
+            "power": 64.5,
+            "coefficient": 2,
+            "source": "weapon",
+            "criticalRoll": 0.1,
+            "criticalChance": 0.25,
+            "current": 200
+          },
+          "stats": {
+            "attributes": {
+              "might": 12,
+              "agility": 8,
+              "focus": 10
+            },
+            "attributeDetails": {
+              "might": {
+                "base": 12,
+                "value": 12,
+                "uncapped": 12,
+                "resolved": {
+                  "target": "might",
+                  "base": 12,
+                  "flat": 0,
+                  "percent": 0,
+                  "percentagePoints": 0,
+                  "totalFlat": 12,
+                  "value": 12,
+                  "contributions": []
+                }
+              },
+              "agility": {
+                "base": 8,
+                "value": 8,
+                "uncapped": 8,
+                "resolved": {
+                  "target": "agility",
+                  "base": 8,
+                  "flat": 0,
+                  "percent": 0,
+                  "percentagePoints": 0,
+                  "totalFlat": 8,
+                  "value": 8,
+                  "contributions": []
+                }
+              },
+              "focus": {
+                "base": 10,
+                "value": 10,
+                "uncapped": 10,
+                "resolved": {
+                  "target": "focus",
+                  "base": 10,
+                  "flat": 0,
+                  "percent": 0,
+                  "percentagePoints": 0,
+                  "totalFlat": 10,
+                  "value": 10,
+                  "contributions": []
+                }
+              }
+            },
+            "values": {
+              "weaponPower": 64.5,
+              "elementalPower": 40,
+              "maxLife": 200,
+              "maxMana": 60,
+              "armorRating": 50
+            },
+            "details": {
+              "weaponPower": {
+                "base": 20,
+                "scaling": 24,
+                "flat": 0,
+                "value": 64.5,
+                "uncapped": 64.5,
+                "resolved": {
+                  "target": "weaponPower",
+                  "base": 44,
+                  "flat": 6,
+                  "percent": 0.25,
+                  "percentagePoints": 2,
+                  "totalFlat": 50,
+                  "value": 64.5,
+                  "contributions": [
+                    {
+                      "identity": {
+                        "source": "accessory",
+                        "sourceInstanceId": "ring",
+                        "id": "power"
+                      },
+                      "target": "weaponPower",
+                      "operation": "add_percentage_points",
+                      "value": 2,
+                      "enabled": true
+                    },
+                    {
+                      "identity": {
+                        "source": "armor",
+                        "sourceInstanceId": "plate",
+                        "id": "power"
+                      },
+                      "target": "weaponPower",
+                      "operation": "add_percent",
+                      "value": 0.25,
+                      "enabled": true
+                    },
+                    {
+                      "identity": {
+                        "source": "weapon",
+                        "sourceInstanceId": "axe",
+                        "id": "power"
+                      },
+                      "target": "weaponPower",
+                      "operation": "add_flat",
+                      "value": 6,
+                      "enabled": true
+                    }
+                  ]
+                }
+              },
+              "elementalPower": {
+                "base": 10,
+                "scaling": 30,
+                "flat": 0,
+                "value": 40,
+                "uncapped": 40,
+                "resolved": {
+                  "target": "elementalPower",
+                  "base": 40,
+                  "flat": 0,
+                  "percent": 0,
+                  "percentagePoints": 0,
+                  "totalFlat": 40,
+                  "value": 40,
+                  "contributions": []
+                }
+              },
+              "maxLife": {
+                "base": 80,
+                "scaling": 120,
+                "flat": 0,
+                "value": 200,
+                "uncapped": 200,
+                "resolved": {
+                  "target": "maxLife",
+                  "base": 200,
+                  "flat": 0,
+                  "percent": 0,
+                  "percentagePoints": 0,
+                  "totalFlat": 200,
+                  "value": 200,
+                  "contributions": []
+                }
+              },
+              "maxMana": {
+                "base": 10,
+                "scaling": 50,
+                "flat": 0,
+                "value": 60,
+                "uncapped": 60,
+                "resolved": {
+                  "target": "maxMana",
+                  "base": 60,
+                  "flat": 0,
+                  "percent": 0,
+                  "percentagePoints": 0,
+                  "totalFlat": 60,
+                  "value": 60,
+                  "contributions": []
+                }
+              },
+              "armorRating": {
+                "base": 10,
+                "scaling": 40,
+                "flat": 0,
+                "value": 50,
+                "uncapped": 50,
+                "resolved": {
+                  "target": "armorRating",
+                  "base": 50,
+                  "flat": 0,
+                  "percent": 0,
+                  "percentagePoints": 0,
+                  "totalFlat": 50,
+                  "value": 50,
+                  "contributions": []
+                }
+              }
+            }
+          },
+          "hit": {
+            "hit": true,
+            "dodged": false,
+            "onHitSuccess": true,
+            "eligible": true,
+            "enabled": true,
+            "chance": 0,
+            "roll": null
+          },
+          "b0": {
+            "base": 7,
+            "scaling": [
+              {
+                "source": "weapon",
+                "value": 129
+              }
+            ],
+            "flat": 0,
+            "raw": 136
+          },
+          "critical": {
+            "chance": 0.25,
+            "roll": 0.1,
+            "isCritical": true,
+            "bonus": 0.5,
+            "multiplier": 1.5
+          },
+          "bonuses": [
+            {
+              "value": 0.25
+            }
+          ],
+          "b1": {
+            "criticalBonus": 0.5,
+            "totalBonus": 0.75,
+            "beforeDefense": 238
+          },
+          "mitigationInput": {
+            "damage": 238,
+            "ruleKey": "armor",
+            "rating": 100,
+            "rule": {
+              "enabled": true,
+              "bounds": {},
+              "baseK": 100,
+              "levelPenalty": 0,
+              "levelScalingEnabled": false
+            }
+          },
+          "mitigation": {
+            "ruleKey": "armor",
+            "status": "applied",
+            "missing": [],
+            "levelGap": null,
+            "levelScalingEnabled": false,
+            "effectiveK": 100,
+            "rawReduction": 0.5,
+            "reduction": 0.5,
+            "inputDamage": 238,
+            "preventedDamage": 119,
+            "finalDamage": 119
+          },
+          "resourceInput": {
+            "resource": "life",
+            "current": 200,
+            "maximum": 200,
+            "amount": 119,
+            "operation": "decrease",
+            "rule": {
+              "minimum": 0,
+              "currentAboveMaximum": "allow",
+              "allowIncreaseFromMinimum": true
+            }
+          },
+          "life": {
+            "resource": "life",
+            "before": 200,
+            "after": 81,
+            "applied": 119,
+            "reachedMinimum": false
+          }
+        },
+        "elemental": {
+          "inputs": {
+            "base": 10,
+            "power": 40,
+            "coefficient": 2,
+            "source": "elemental",
+            "criticalRoll": 0.8,
+            "criticalChance": 0,
+            "current": 200
+          },
+          "stats": {
+            "attributes": {
+              "might": 12,
+              "agility": 8,
+              "focus": 10
+            },
+            "attributeDetails": {
+              "might": {
+                "base": 12,
+                "value": 12,
+                "uncapped": 12,
+                "resolved": {
+                  "target": "might",
+                  "base": 12,
+                  "flat": 0,
+                  "percent": 0,
+                  "percentagePoints": 0,
+                  "totalFlat": 12,
+                  "value": 12,
+                  "contributions": []
+                }
+              },
+              "agility": {
+                "base": 8,
+                "value": 8,
+                "uncapped": 8,
+                "resolved": {
+                  "target": "agility",
+                  "base": 8,
+                  "flat": 0,
+                  "percent": 0,
+                  "percentagePoints": 0,
+                  "totalFlat": 8,
+                  "value": 8,
+                  "contributions": []
+                }
+              },
+              "focus": {
+                "base": 10,
+                "value": 10,
+                "uncapped": 10,
+                "resolved": {
+                  "target": "focus",
+                  "base": 10,
+                  "flat": 0,
+                  "percent": 0,
+                  "percentagePoints": 0,
+                  "totalFlat": 10,
+                  "value": 10,
+                  "contributions": []
+                }
+              }
+            },
+            "values": {
+              "weaponPower": 64.5,
+              "elementalPower": 40,
+              "maxLife": 200,
+              "maxMana": 60,
+              "armorRating": 50
+            },
+            "details": {
+              "weaponPower": {
+                "base": 20,
+                "scaling": 24,
+                "flat": 0,
+                "value": 64.5,
+                "uncapped": 64.5,
+                "resolved": {
+                  "target": "weaponPower",
+                  "base": 44,
+                  "flat": 6,
+                  "percent": 0.25,
+                  "percentagePoints": 2,
+                  "totalFlat": 50,
+                  "value": 64.5,
+                  "contributions": [
+                    {
+                      "identity": {
+                        "source": "accessory",
+                        "sourceInstanceId": "ring",
+                        "id": "power"
+                      },
+                      "target": "weaponPower",
+                      "operation": "add_percentage_points",
+                      "value": 2,
+                      "enabled": true
+                    },
+                    {
+                      "identity": {
+                        "source": "armor",
+                        "sourceInstanceId": "plate",
+                        "id": "power"
+                      },
+                      "target": "weaponPower",
+                      "operation": "add_percent",
+                      "value": 0.25,
+                      "enabled": true
+                    },
+                    {
+                      "identity": {
+                        "source": "weapon",
+                        "sourceInstanceId": "axe",
+                        "id": "power"
+                      },
+                      "target": "weaponPower",
+                      "operation": "add_flat",
+                      "value": 6,
+                      "enabled": true
+                    }
+                  ]
+                }
+              },
+              "elementalPower": {
+                "base": 10,
+                "scaling": 30,
+                "flat": 0,
+                "value": 40,
+                "uncapped": 40,
+                "resolved": {
+                  "target": "elementalPower",
+                  "base": 40,
+                  "flat": 0,
+                  "percent": 0,
+                  "percentagePoints": 0,
+                  "totalFlat": 40,
+                  "value": 40,
+                  "contributions": []
+                }
+              },
+              "maxLife": {
+                "base": 80,
+                "scaling": 120,
+                "flat": 0,
+                "value": 200,
+                "uncapped": 200,
+                "resolved": {
+                  "target": "maxLife",
+                  "base": 200,
+                  "flat": 0,
+                  "percent": 0,
+                  "percentagePoints": 0,
+                  "totalFlat": 200,
+                  "value": 200,
+                  "contributions": []
+                }
+              },
+              "maxMana": {
+                "base": 10,
+                "scaling": 50,
+                "flat": 0,
+                "value": 60,
+                "uncapped": 60,
+                "resolved": {
+                  "target": "maxMana",
+                  "base": 60,
+                  "flat": 0,
+                  "percent": 0,
+                  "percentagePoints": 0,
+                  "totalFlat": 60,
+                  "value": 60,
+                  "contributions": []
+                }
+              },
+              "armorRating": {
+                "base": 10,
+                "scaling": 40,
+                "flat": 0,
+                "value": 50,
+                "uncapped": 50,
+                "resolved": {
+                  "target": "armorRating",
+                  "base": 50,
+                  "flat": 0,
+                  "percent": 0,
+                  "percentagePoints": 0,
+                  "totalFlat": 50,
+                  "value": 50,
+                  "contributions": []
+                }
+              }
+            }
+          },
+          "hit": {
+            "hit": true,
+            "dodged": false,
+            "onHitSuccess": true,
+            "eligible": true,
+            "enabled": true,
+            "chance": 0,
+            "roll": null
+          },
+          "b0": {
+            "base": 10,
+            "scaling": [
+              {
+                "source": "elemental",
+                "value": 80
+              }
+            ],
+            "flat": 0,
+            "raw": 90
+          },
+          "critical": {
+            "chance": 0,
+            "roll": 0.8,
+            "isCritical": false,
+            "bonus": 0,
+            "multiplier": 1
+          },
+          "bonuses": [
+            {
+              "value": 0.25
+            }
+          ],
+          "b1": {
+            "criticalBonus": 0,
+            "totalBonus": 0.25,
+            "beforeDefense": 112.5
+          },
+          "mitigationInput": {
+            "damage": 112.5,
+            "ruleKey": "elementWard",
+            "rating": 50,
+            "rule": {
+              "enabled": true,
+              "bounds": {},
+              "baseK": 150,
+              "levelPenalty": 0,
+              "levelScalingEnabled": false
+            }
+          },
+          "mitigation": {
+            "ruleKey": "elementWard",
+            "status": "applied",
+            "missing": [],
+            "levelGap": null,
+            "levelScalingEnabled": false,
+            "effectiveK": 150,
+            "rawReduction": 0.25,
+            "reduction": 0.25,
+            "inputDamage": 112.5,
+            "preventedDamage": 28.125,
+            "finalDamage": 84.375
+          },
+          "resourceInput": {
+            "resource": "life",
+            "current": 200,
+            "maximum": 200,
+            "amount": 84.375,
+            "operation": "decrease",
+            "rule": {
+              "minimum": 0,
+              "currentAboveMaximum": "allow",
+              "allowIncreaseFromMinimum": true
+            }
+          },
+          "life": {
+            "resource": "life",
+            "before": 200,
+            "after": 115.625,
+            "applied": 84.375,
+            "reachedMinimum": false
+          }
+        }
+      },
+      "trace": [
+        "flat",
+        [
+          "crit",
+          0.1
+        ],
+        [
+          "life",
+          81
+        ],
+        "flat",
+        [
+          "crit",
+          0.8
+        ],
+        [
+          "life",
+          115.625
+        ]
+      ],
+      "anchors": [
+        136,
+        238,
+        119,
+        81,
+        90,
+        112.5,
+        84.375,
+        115.625
+      ]
+    },
+    "A5": {
+      "id": "A5",
+      "inputs": [
+        {
+          "dodge": 0.1,
+          "crit": 0.1
+        },
+        {
+          "dodge": 0.9,
+          "crit": 0.1
+        },
+        {
+          "dodge": 0.9,
+          "crit": 0.8
+        }
+      ],
+      "output": {
+        "output": [
+          {
+            "hit": {
+              "hit": false,
+              "dodged": true,
+              "onHitSuccess": false,
+              "eligible": true,
+              "enabled": true,
+              "chance": 0.2,
+              "roll": 0.1
+            }
+          },
+          {
+            "hit": {
+              "hit": true,
+              "dodged": false,
+              "onHitSuccess": true,
+              "eligible": true,
+              "enabled": true,
+              "chance": 0.2,
+              "roll": 0.9
+            },
+            "b0": {
+              "base": 100,
+              "scaling": [],
+              "flat": 0,
+              "raw": 100
+            },
+            "critical": {
+              "chance": 0.25,
+              "roll": 0.1,
+              "isCritical": true,
+              "bonus": 0.5,
+              "multiplier": 1.5
+            },
+            "b1": {
+              "criticalBonus": 0.5,
+              "totalBonus": 0.75,
+              "beforeDefense": 175
+            }
+          },
+          {
+            "hit": {
+              "hit": true,
+              "dodged": false,
+              "onHitSuccess": true,
+              "eligible": true,
+              "enabled": true,
+              "chance": 0.2,
+              "roll": 0.9
+            },
+            "b0": {
+              "base": 100,
+              "scaling": [],
+              "flat": 0,
+              "raw": 100
+            },
+            "critical": {
+              "chance": 0.25,
+              "roll": 0.8,
+              "isCritical": false,
+              "bonus": 0,
+              "multiplier": 1
+            },
+            "b1": {
+              "criticalBonus": 0,
+              "totalBonus": 0.25,
+              "beforeDefense": 125
+            }
+          }
+        ],
+        "error": {
+          "name": "object",
+          "message": "",
+          "same": true
+        }
+      },
+      "trace": [
+        [
+          "dodge",
+          0.1
+        ],
+        [
+          "dodge",
+          0.9
+        ],
+        [
+          "crit",
+          0.1
+        ],
+        [
+          "dodge",
+          0.9
+        ],
+        [
+          "crit",
+          0.8
+        ]
+      ],
+      "anchors": [
+        [
+          true,
+          false,
+          false
+        ],
+        [
+          {
+            "$number": "undefined"
+          },
+          0.5,
+          0
+        ],
+        [
+          {
+            "$number": "undefined"
+          },
+          175,
+          125
+        ],
+        5,
+        true
+      ]
+    },
+    "A6": {
+      "id": "A6",
+      "inputs": {
+        "damage": 200,
+        "ruleKey": "armor",
+        "rating": 200,
+        "sourceLevel": 12,
+        "targetLevel": 10,
+        "rule": {
+          "enabled": true,
+          "bounds": {},
+          "baseK": 100,
+          "levelPenalty": 0.5,
+          "levelScalingEnabled": true
+        }
+      },
+      "output": {
+        "rating": {
+          "ruleKey": "armor",
+          "status": "applied",
+          "missing": [],
+          "levelGap": 2,
+          "levelScalingEnabled": true,
+          "effectiveK": 200,
+          "rawReduction": 0.5,
+          "reduction": 0.5,
+          "inputDamage": 200,
+          "preventedDamage": 100,
+          "finalDamage": 100
+        },
+        "fixed": {
+          "ruleKey": "armor",
+          "status": "applied",
+          "missing": [],
+          "levelGap": 2,
+          "levelScalingEnabled": true,
+          "effectiveK": 200,
+          "rawReduction": 0.5,
+          "reduction": 0.25,
+          "inputDamage": 200,
+          "preventedDamage": 50,
+          "finalDamage": 150
+        },
+        "disabled": {
+          "ruleKey": "armor",
+          "status": "disabled",
+          "missing": [],
+          "levelGap": 2,
+          "levelScalingEnabled": true,
+          "effectiveK": 200,
+          "rawReduction": 0.5,
+          "reduction": 0,
+          "inputDamage": 200,
+          "preventedDamage": 0,
+          "finalDamage": 200
+        },
+        "missing": {
+          "ruleKey": "armor",
+          "status": "missing_config",
+          "missing": [
+            "baseK"
+          ],
+          "levelGap": 2,
+          "levelScalingEnabled": false,
+          "effectiveK": null,
+          "rawReduction": 0,
+          "reduction": 0,
+          "inputDamage": 200,
+          "preventedDamage": 0,
+          "finalDamage": 200
+        }
+      },
+      "trace": [],
+      "anchors": [
+        2,
+        200,
+        0.5,
+        100,
+        100,
+        0.25,
+        150,
+        "disabled",
+        "missing_config"
+      ]
+    },
+    "A7": {
+      "id": "A7",
+      "inputs": {
+        "before": {
+          "power": 64.5,
+          "tags": [
+            "physical"
+          ]
+        },
+        "mutations": {
+          "might": 120,
+          "power": 999,
+          "modifier": 99,
+          "tag": "fire"
+        }
+      },
+      "output": {
+        "snapshot": {
+          "attributes": {
+            "might": 12,
+            "agility": 8,
+            "focus": 10
+          },
+          "stats": {
+            "weaponPower": 64.5,
+            "elementalPower": 40,
+            "maxLife": 200,
+            "maxMana": 60,
+            "armorRating": 50
+          },
+          "statRules": {
+            "weaponPower": {
+              "default": 1,
+              "training": 0,
+              "enabled": true,
+              "bounds": {},
+              "scaling": [
+                {
+                  "attribute": "might",
+                  "coefficient": 1,
+                  "enabled": true
+                }
+              ]
+            },
+            "elementalPower": {
+              "default": 1,
+              "training": 0,
+              "enabled": true,
+              "bounds": {},
+              "scaling": [
+                {
+                  "attribute": "might",
+                  "coefficient": 1,
+                  "enabled": true
+                }
+              ]
+            },
+            "maxLife": {
+              "default": 80,
+              "enabled": true,
+              "bounds": {},
+              "training": 0,
+              "scaling": [
+                {
+                  "attribute": "might",
+                  "coefficient": 10,
+                  "enabled": true
+                }
+              ]
+            },
+            "maxMana": {
+              "default": 10,
+              "enabled": true,
+              "bounds": {},
+              "training": 0,
+              "scaling": [
+                {
+                  "attribute": "focus",
+                  "coefficient": 5,
+                  "enabled": true
+                }
+              ]
+            },
+            "armorRating": {
+              "default": 10,
+              "enabled": true,
+              "bounds": {},
+              "training": 0,
+              "scaling": [
+                {
+                  "attribute": "agility",
+                  "coefficient": 5,
+                  "enabled": true
+                }
+              ]
+            }
+          },
+          "modifiers": [
+            {
+              "identity": {
+                "source": "weapon",
+                "sourceInstanceId": "axe",
+                "id": "power"
+              },
+              "target": "weaponPower",
+              "operation": "add_flat",
+              "value": 6,
+              "enabled": true
+            },
+            {
+              "identity": {
+                "source": "armor",
+                "sourceInstanceId": "plate",
+                "id": "power"
+              },
+              "target": "weaponPower",
+              "operation": "add_percent",
+              "value": 0.25,
+              "enabled": true
+            },
+            {
+              "identity": {
+                "source": "accessory",
+                "sourceInstanceId": "ring",
+                "id": "power"
+              },
+              "target": "weaponPower",
+              "operation": "add_percentage_points",
+              "value": 2,
+              "enabled": true
+            },
+            {
+              "identity": {
+                "source": "buff",
+                "sourceInstanceId": "rage",
+                "id": "power"
+              },
+              "target": "weaponPower",
+              "operation": "add_flat",
+              "value": 10,
+              "enabled": true
+            }
+          ],
+          "context": {
+            "damageType": "physical",
+            "tags": [
+              "physical"
+            ],
+            "ownerId": "build-a",
+            "revision": "one"
+          }
+        },
+        "offense": {
+          "sources": {
+            "weapon": 64.5
+          },
+          "flatContributions": [],
+          "bonuses": [],
+          "criticalChance": 0.25,
+          "criticalBonus": 0.5
+        },
+        "caller": {
+          "attributes": {
+            "might": 120,
+            "agility": 8,
+            "focus": 10
+          },
+          "stats": {
+            "weaponPower": 999,
+            "elementalPower": 40,
+            "maxLife": 200,
+            "maxMana": 60,
+            "armorRating": 50
+          },
+          "statRules": {
+            "weaponPower": {
+              "default": 1,
+              "training": 0,
+              "enabled": true,
+              "bounds": {},
+              "scaling": [
+                {
+                  "attribute": "might",
+                  "coefficient": 1,
+                  "enabled": true
+                }
+              ]
+            },
+            "elementalPower": {
+              "default": 1,
+              "training": 0,
+              "enabled": true,
+              "bounds": {},
+              "scaling": [
+                {
+                  "attribute": "might",
+                  "coefficient": 1,
+                  "enabled": true
+                }
+              ]
+            },
+            "maxLife": {
+              "default": 80,
+              "enabled": true,
+              "bounds": {},
+              "training": 0,
+              "scaling": [
+                {
+                  "attribute": "might",
+                  "coefficient": 10,
+                  "enabled": true
+                }
+              ]
+            },
+            "maxMana": {
+              "default": 10,
+              "enabled": true,
+              "bounds": {},
+              "training": 0,
+              "scaling": [
+                {
+                  "attribute": "focus",
+                  "coefficient": 5,
+                  "enabled": true
+                }
+              ]
+            },
+            "armorRating": {
+              "default": 10,
+              "enabled": true,
+              "bounds": {},
+              "training": 0,
+              "scaling": [
+                {
+                  "attribute": "agility",
+                  "coefficient": 5,
+                  "enabled": true
+                }
+              ]
+            }
+          },
+          "modifiers": [
+            {
+              "identity": {
+                "source": "weapon",
+                "sourceInstanceId": "axe",
+                "id": "power"
+              },
+              "target": "weaponPower",
+              "operation": "add_flat",
+              "value": 99,
+              "enabled": true
+            },
+            {
+              "identity": {
+                "source": "armor",
+                "sourceInstanceId": "plate",
+                "id": "power"
+              },
+              "target": "weaponPower",
+              "operation": "add_percent",
+              "value": 0.25,
+              "enabled": true
+            },
+            {
+              "identity": {
+                "source": "accessory",
+                "sourceInstanceId": "ring",
+                "id": "power"
+              },
+              "target": "weaponPower",
+              "operation": "add_percentage_points",
+              "value": 2,
+              "enabled": true
+            },
+            {
+              "identity": {
+                "source": "buff",
+                "sourceInstanceId": "rage",
+                "id": "power"
+              },
+              "target": "weaponPower",
+              "operation": "add_flat",
+              "value": 10,
+              "enabled": true
+            }
+          ],
+          "context": {
+            "damageType": "physical",
+            "tags": [
+              "physical",
+              "fire"
+            ],
+            "ownerId": "build-a",
+            "revision": "one"
+          }
+        },
+        "capturedBuild": {
+          "attributes": {
+            "might": 12,
+            "agility": 8,
+            "focus": 10
+          },
+          "attributeDetails": {
+            "might": {
+              "base": 12,
+              "value": 12,
+              "uncapped": 12,
+              "resolved": {
+                "target": "might",
+                "base": 12,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 12,
+                "value": 12,
+                "contributions": []
+              }
+            },
+            "agility": {
+              "base": 8,
+              "value": 8,
+              "uncapped": 8,
+              "resolved": {
+                "target": "agility",
+                "base": 8,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 8,
+                "value": 8,
+                "contributions": []
+              }
+            },
+            "focus": {
+              "base": 10,
+              "value": 10,
+              "uncapped": 10,
+              "resolved": {
+                "target": "focus",
+                "base": 10,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 10,
+                "value": 10,
+                "contributions": []
+              }
+            }
+          },
+          "values": {
+            "weaponPower": 76.5,
+            "elementalPower": 52,
+            "maxLife": 320,
+            "maxMana": 110,
+            "armorRating": 90
+          },
+          "details": {
+            "weaponPower": {
+              "base": 64.5,
+              "scaling": 12,
+              "flat": 0,
+              "value": 76.5,
+              "uncapped": 76.5,
+              "resolved": {
+                "target": "weaponPower",
+                "base": 76.5,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 76.5,
+                "value": 76.5,
+                "contributions": []
+              }
+            },
+            "elementalPower": {
+              "base": 40,
+              "scaling": 12,
+              "flat": 0,
+              "value": 52,
+              "uncapped": 52,
+              "resolved": {
+                "target": "elementalPower",
+                "base": 52,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 52,
+                "value": 52,
+                "contributions": []
+              }
+            },
+            "maxLife": {
+              "base": 200,
+              "scaling": 120,
+              "flat": 0,
+              "value": 320,
+              "uncapped": 320,
+              "resolved": {
+                "target": "maxLife",
+                "base": 320,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 320,
+                "value": 320,
+                "contributions": []
+              }
+            },
+            "maxMana": {
+              "base": 60,
+              "scaling": 50,
+              "flat": 0,
+              "value": 110,
+              "uncapped": 110,
+              "resolved": {
+                "target": "maxMana",
+                "base": 110,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 110,
+                "value": 110,
+                "contributions": []
+              }
+            },
+            "armorRating": {
+              "base": 50,
+              "scaling": 40,
+              "flat": 0,
+              "value": 90,
+              "uncapped": 90,
+              "resolved": {
+                "target": "armorRating",
+                "base": 90,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 90,
+                "value": 90,
+                "contributions": []
+              }
+            }
+          }
+        },
+        "checks": {
+          "alias": true,
+          "detached": true,
+          "deepFrozen": true,
+          "callerMutable": true,
+          "write": {
+            "name": "TypeError",
+            "message": "Cannot add property 1, object is not extensible",
+            "same": false
+          }
+        },
+        "getter": {
+          "name": "TypeError",
+          "message": "Invalid calculation snapshot",
+          "same": false
+        },
+        "callback": {
+          "name": "TypeError",
+          "message": "Invalid numerical offense snapshot",
+          "same": false
+        }
+      },
+      "trace": [],
+      "anchors": [
+        12,
+        64.5,
+        64.5,
+        76.5,
+        true,
+        true,
+        true,
+        true,
+        "TypeError",
+        "TypeError",
+        "TypeError",
+        []
+      ]
+    },
+    "A8": {
+      "id": "A8",
+      "inputs": {
+        "initial": {
+          "life": 400,
+          "mana": 60
+        },
+        "events": [
+          "buff-on",
+          "buff-off",
+          "weapon-swap",
+          "rejected-cost"
+        ]
+      },
+      "output": {
+        "events": [
+          {
+            "event": "buff-on",
+            "revision": 1,
+            "result": {
+              "inputs": {
+                "base": 7,
+                "power": 77,
+                "coefficient": 2,
+                "source": "weapon",
+                "criticalRoll": 0.8,
+                "criticalChance": 0,
+                "current": 400
+              },
+              "stats": {
+                "attributes": {
+                  "might": 12,
+                  "agility": 8,
+                  "focus": 10
+                },
+                "attributeDetails": {
+                  "might": {
+                    "base": 12,
+                    "value": 12,
+                    "uncapped": 12,
+                    "resolved": {
+                      "target": "might",
+                      "base": 12,
+                      "flat": 0,
+                      "percent": 0,
+                      "percentagePoints": 0,
+                      "totalFlat": 12,
+                      "value": 12,
+                      "contributions": []
+                    }
+                  },
+                  "agility": {
+                    "base": 8,
+                    "value": 8,
+                    "uncapped": 8,
+                    "resolved": {
+                      "target": "agility",
+                      "base": 8,
+                      "flat": 0,
+                      "percent": 0,
+                      "percentagePoints": 0,
+                      "totalFlat": 8,
+                      "value": 8,
+                      "contributions": []
+                    }
+                  },
+                  "focus": {
+                    "base": 10,
+                    "value": 10,
+                    "uncapped": 10,
+                    "resolved": {
+                      "target": "focus",
+                      "base": 10,
+                      "flat": 0,
+                      "percent": 0,
+                      "percentagePoints": 0,
+                      "totalFlat": 10,
+                      "value": 10,
+                      "contributions": []
+                    }
+                  }
+                },
+                "values": {
+                  "weaponPower": 77,
+                  "elementalPower": 40,
+                  "maxLife": 200,
+                  "maxMana": 60,
+                  "armorRating": 50
+                },
+                "details": {
+                  "weaponPower": {
+                    "base": 20,
+                    "scaling": 24,
+                    "flat": 0,
+                    "value": 77,
+                    "uncapped": 77,
+                    "resolved": {
+                      "target": "weaponPower",
+                      "base": 44,
+                      "flat": 16,
+                      "percent": 0.25,
+                      "percentagePoints": 2,
+                      "totalFlat": 60,
+                      "value": 77,
+                      "contributions": [
+                        {
+                          "identity": {
+                            "source": "accessory",
+                            "sourceInstanceId": "ring",
+                            "id": "power"
+                          },
+                          "target": "weaponPower",
+                          "operation": "add_percentage_points",
+                          "value": 2,
+                          "enabled": true
+                        },
+                        {
+                          "identity": {
+                            "source": "armor",
+                            "sourceInstanceId": "plate",
+                            "id": "power"
+                          },
+                          "target": "weaponPower",
+                          "operation": "add_percent",
+                          "value": 0.25,
+                          "enabled": true
+                        },
+                        {
+                          "identity": {
+                            "source": "buff",
+                            "sourceInstanceId": "rage",
+                            "id": "power"
+                          },
+                          "target": "weaponPower",
+                          "operation": "add_flat",
+                          "value": 10,
+                          "enabled": true
+                        },
+                        {
+                          "identity": {
+                            "source": "weapon",
+                            "sourceInstanceId": "axe",
+                            "id": "power"
+                          },
+                          "target": "weaponPower",
+                          "operation": "add_flat",
+                          "value": 6,
+                          "enabled": true
+                        }
+                      ]
+                    }
+                  },
+                  "elementalPower": {
+                    "base": 10,
+                    "scaling": 30,
+                    "flat": 0,
+                    "value": 40,
+                    "uncapped": 40,
+                    "resolved": {
+                      "target": "elementalPower",
+                      "base": 40,
+                      "flat": 0,
+                      "percent": 0,
+                      "percentagePoints": 0,
+                      "totalFlat": 40,
+                      "value": 40,
+                      "contributions": []
+                    }
+                  },
+                  "maxLife": {
+                    "base": 80,
+                    "scaling": 120,
+                    "flat": 0,
+                    "value": 200,
+                    "uncapped": 200,
+                    "resolved": {
+                      "target": "maxLife",
+                      "base": 200,
+                      "flat": 0,
+                      "percent": 0,
+                      "percentagePoints": 0,
+                      "totalFlat": 200,
+                      "value": 200,
+                      "contributions": []
+                    }
+                  },
+                  "maxMana": {
+                    "base": 10,
+                    "scaling": 50,
+                    "flat": 0,
+                    "value": 60,
+                    "uncapped": 60,
+                    "resolved": {
+                      "target": "maxMana",
+                      "base": 60,
+                      "flat": 0,
+                      "percent": 0,
+                      "percentagePoints": 0,
+                      "totalFlat": 60,
+                      "value": 60,
+                      "contributions": []
+                    }
+                  },
+                  "armorRating": {
+                    "base": 10,
+                    "scaling": 40,
+                    "flat": 0,
+                    "value": 50,
+                    "uncapped": 50,
+                    "resolved": {
+                      "target": "armorRating",
+                      "base": 50,
+                      "flat": 0,
+                      "percent": 0,
+                      "percentagePoints": 0,
+                      "totalFlat": 50,
+                      "value": 50,
+                      "contributions": []
+                    }
+                  }
+                }
+              },
+              "hit": {
+                "hit": true,
+                "dodged": false,
+                "onHitSuccess": true,
+                "eligible": true,
+                "enabled": true,
+                "chance": 0,
+                "roll": null
+              },
+              "b0": {
+                "base": 7,
+                "scaling": [
+                  {
+                    "source": "weapon",
+                    "value": 154
+                  }
+                ],
+                "flat": 0,
+                "raw": 161
+              },
+              "critical": {
+                "chance": 0,
+                "roll": 0.8,
+                "isCritical": false,
+                "bonus": 0,
+                "multiplier": 1
+              },
+              "bonuses": [
+                {
+                  "value": 0.25
+                }
+              ],
+              "b1": {
+                "criticalBonus": 0,
+                "totalBonus": 0.25,
+                "beforeDefense": 201.25
+              },
+              "mitigationInput": {
+                "damage": 201.25,
+                "ruleKey": "armor",
+                "rating": 100,
+                "rule": {
+                  "enabled": true,
+                  "bounds": {},
+                  "baseK": 100,
+                  "levelPenalty": 0,
+                  "levelScalingEnabled": false
+                }
+              },
+              "mitigation": {
+                "ruleKey": "armor",
+                "status": "applied",
+                "missing": [],
+                "levelGap": null,
+                "levelScalingEnabled": false,
+                "effectiveK": 100,
+                "rawReduction": 0.5,
+                "reduction": 0.5,
+                "inputDamage": 201.25,
+                "preventedDamage": 100.625,
+                "finalDamage": 100.625
+              },
+              "resourceInput": {
+                "resource": "life",
+                "current": 400,
+                "maximum": 400,
+                "amount": 100.625,
+                "operation": "decrease",
+                "rule": {
+                  "minimum": 0,
+                  "currentAboveMaximum": "allow",
+                  "allowIncreaseFromMinimum": true
+                }
+              },
+              "life": {
+                "resource": "life",
+                "before": 400,
+                "after": 299.375,
+                "applied": 100.625,
+                "reachedMinimum": false
+              }
+            },
+            "state": {
+              "life": 299.375,
+              "mana": 60
+            }
+          },
+          {
+            "event": "buff-off",
+            "revision": 1,
+            "result": {
+              "inputs": {
+                "base": 10,
+                "power": 40,
+                "coefficient": 2,
+                "source": "elemental",
+                "criticalRoll": 0.8,
+                "criticalChance": 0,
+                "current": 299.375
+              },
+              "stats": {
+                "attributes": {
+                  "might": 12,
+                  "agility": 8,
+                  "focus": 10
+                },
+                "attributeDetails": {
+                  "might": {
+                    "base": 12,
+                    "value": 12,
+                    "uncapped": 12,
+                    "resolved": {
+                      "target": "might",
+                      "base": 12,
+                      "flat": 0,
+                      "percent": 0,
+                      "percentagePoints": 0,
+                      "totalFlat": 12,
+                      "value": 12,
+                      "contributions": []
+                    }
+                  },
+                  "agility": {
+                    "base": 8,
+                    "value": 8,
+                    "uncapped": 8,
+                    "resolved": {
+                      "target": "agility",
+                      "base": 8,
+                      "flat": 0,
+                      "percent": 0,
+                      "percentagePoints": 0,
+                      "totalFlat": 8,
+                      "value": 8,
+                      "contributions": []
+                    }
+                  },
+                  "focus": {
+                    "base": 10,
+                    "value": 10,
+                    "uncapped": 10,
+                    "resolved": {
+                      "target": "focus",
+                      "base": 10,
+                      "flat": 0,
+                      "percent": 0,
+                      "percentagePoints": 0,
+                      "totalFlat": 10,
+                      "value": 10,
+                      "contributions": []
+                    }
+                  }
+                },
+                "values": {
+                  "weaponPower": 64.5,
+                  "elementalPower": 40,
+                  "maxLife": 200,
+                  "maxMana": 60,
+                  "armorRating": 50
+                },
+                "details": {
+                  "weaponPower": {
+                    "base": 20,
+                    "scaling": 24,
+                    "flat": 0,
+                    "value": 64.5,
+                    "uncapped": 64.5,
+                    "resolved": {
+                      "target": "weaponPower",
+                      "base": 44,
+                      "flat": 6,
+                      "percent": 0.25,
+                      "percentagePoints": 2,
+                      "totalFlat": 50,
+                      "value": 64.5,
+                      "contributions": [
+                        {
+                          "identity": {
+                            "source": "accessory",
+                            "sourceInstanceId": "ring",
+                            "id": "power"
+                          },
+                          "target": "weaponPower",
+                          "operation": "add_percentage_points",
+                          "value": 2,
+                          "enabled": true
+                        },
+                        {
+                          "identity": {
+                            "source": "armor",
+                            "sourceInstanceId": "plate",
+                            "id": "power"
+                          },
+                          "target": "weaponPower",
+                          "operation": "add_percent",
+                          "value": 0.25,
+                          "enabled": true
+                        },
+                        {
+                          "identity": {
+                            "source": "weapon",
+                            "sourceInstanceId": "axe",
+                            "id": "power"
+                          },
+                          "target": "weaponPower",
+                          "operation": "add_flat",
+                          "value": 6,
+                          "enabled": true
+                        }
+                      ]
+                    }
+                  },
+                  "elementalPower": {
+                    "base": 10,
+                    "scaling": 30,
+                    "flat": 0,
+                    "value": 40,
+                    "uncapped": 40,
+                    "resolved": {
+                      "target": "elementalPower",
+                      "base": 40,
+                      "flat": 0,
+                      "percent": 0,
+                      "percentagePoints": 0,
+                      "totalFlat": 40,
+                      "value": 40,
+                      "contributions": []
+                    }
+                  },
+                  "maxLife": {
+                    "base": 80,
+                    "scaling": 120,
+                    "flat": 0,
+                    "value": 200,
+                    "uncapped": 200,
+                    "resolved": {
+                      "target": "maxLife",
+                      "base": 200,
+                      "flat": 0,
+                      "percent": 0,
+                      "percentagePoints": 0,
+                      "totalFlat": 200,
+                      "value": 200,
+                      "contributions": []
+                    }
+                  },
+                  "maxMana": {
+                    "base": 10,
+                    "scaling": 50,
+                    "flat": 0,
+                    "value": 60,
+                    "uncapped": 60,
+                    "resolved": {
+                      "target": "maxMana",
+                      "base": 60,
+                      "flat": 0,
+                      "percent": 0,
+                      "percentagePoints": 0,
+                      "totalFlat": 60,
+                      "value": 60,
+                      "contributions": []
+                    }
+                  },
+                  "armorRating": {
+                    "base": 10,
+                    "scaling": 40,
+                    "flat": 0,
+                    "value": 50,
+                    "uncapped": 50,
+                    "resolved": {
+                      "target": "armorRating",
+                      "base": 50,
+                      "flat": 0,
+                      "percent": 0,
+                      "percentagePoints": 0,
+                      "totalFlat": 50,
+                      "value": 50,
+                      "contributions": []
+                    }
+                  }
+                }
+              },
+              "hit": {
+                "hit": true,
+                "dodged": false,
+                "onHitSuccess": true,
+                "eligible": true,
+                "enabled": true,
+                "chance": 0,
+                "roll": null
+              },
+              "b0": {
+                "base": 10,
+                "scaling": [
+                  {
+                    "source": "elemental",
+                    "value": 80
+                  }
+                ],
+                "flat": 0,
+                "raw": 90
+              },
+              "critical": {
+                "chance": 0,
+                "roll": 0.8,
+                "isCritical": false,
+                "bonus": 0,
+                "multiplier": 1
+              },
+              "bonuses": [
+                {
+                  "value": 0.25
+                }
+              ],
+              "b1": {
+                "criticalBonus": 0,
+                "totalBonus": 0.25,
+                "beforeDefense": 112.5
+              },
+              "mitigationInput": {
+                "damage": 112.5,
+                "ruleKey": "elementWard",
+                "rating": 50,
+                "rule": {
+                  "enabled": true,
+                  "bounds": {},
+                  "baseK": 150,
+                  "levelPenalty": 0,
+                  "levelScalingEnabled": false
+                }
+              },
+              "mitigation": {
+                "ruleKey": "elementWard",
+                "status": "applied",
+                "missing": [],
+                "levelGap": null,
+                "levelScalingEnabled": false,
+                "effectiveK": 150,
+                "rawReduction": 0.25,
+                "reduction": 0.25,
+                "inputDamage": 112.5,
+                "preventedDamage": 28.125,
+                "finalDamage": 84.375
+              },
+              "resourceInput": {
+                "resource": "life",
+                "current": 299.375,
+                "maximum": 400,
+                "amount": 84.375,
+                "operation": "decrease",
+                "rule": {
+                  "minimum": 0,
+                  "currentAboveMaximum": "allow",
+                  "allowIncreaseFromMinimum": true
+                }
+              },
+              "life": {
+                "resource": "life",
+                "before": 299.375,
+                "after": 215,
+                "applied": 84.375,
+                "reachedMinimum": false
+              }
+            },
+            "state": {
+              "life": 215,
+              "mana": 60
+            }
+          },
+          {
+            "event": "weapon-swap",
+            "revision": 2,
+            "result": {
+              "inputs": {
+                "base": 7,
+                "power": 74.5,
+                "coefficient": 2,
+                "source": "weapon",
+                "criticalRoll": 0.8,
+                "criticalChance": 0,
+                "current": 215
+              },
+              "stats": {
+                "attributes": {
+                  "might": 12,
+                  "agility": 8,
+                  "focus": 10
+                },
+                "attributeDetails": {
+                  "might": {
+                    "base": 12,
+                    "value": 12,
+                    "uncapped": 12,
+                    "resolved": {
+                      "target": "might",
+                      "base": 12,
+                      "flat": 0,
+                      "percent": 0,
+                      "percentagePoints": 0,
+                      "totalFlat": 12,
+                      "value": 12,
+                      "contributions": []
+                    }
+                  },
+                  "agility": {
+                    "base": 8,
+                    "value": 8,
+                    "uncapped": 8,
+                    "resolved": {
+                      "target": "agility",
+                      "base": 8,
+                      "flat": 0,
+                      "percent": 0,
+                      "percentagePoints": 0,
+                      "totalFlat": 8,
+                      "value": 8,
+                      "contributions": []
+                    }
+                  },
+                  "focus": {
+                    "base": 10,
+                    "value": 10,
+                    "uncapped": 10,
+                    "resolved": {
+                      "target": "focus",
+                      "base": 10,
+                      "flat": 0,
+                      "percent": 0,
+                      "percentagePoints": 0,
+                      "totalFlat": 10,
+                      "value": 10,
+                      "contributions": []
+                    }
+                  }
+                },
+                "values": {
+                  "weaponPower": 74.5,
+                  "elementalPower": 40,
+                  "maxLife": 200,
+                  "maxMana": 60,
+                  "armorRating": 50
+                },
+                "details": {
+                  "weaponPower": {
+                    "base": 20,
+                    "scaling": 24,
+                    "flat": 0,
+                    "value": 74.5,
+                    "uncapped": 74.5,
+                    "resolved": {
+                      "target": "weaponPower",
+                      "base": 44,
+                      "flat": 14,
+                      "percent": 0.25,
+                      "percentagePoints": 2,
+                      "totalFlat": 58,
+                      "value": 74.5,
+                      "contributions": [
+                        {
+                          "identity": {
+                            "source": "accessory",
+                            "sourceInstanceId": "ring",
+                            "id": "power"
+                          },
+                          "target": "weaponPower",
+                          "operation": "add_percentage_points",
+                          "value": 2,
+                          "enabled": true
+                        },
+                        {
+                          "identity": {
+                            "source": "armor",
+                            "sourceInstanceId": "plate",
+                            "id": "power"
+                          },
+                          "target": "weaponPower",
+                          "operation": "add_percent",
+                          "value": 0.25,
+                          "enabled": true
+                        },
+                        {
+                          "identity": {
+                            "source": "weapon",
+                            "sourceInstanceId": "axe",
+                            "id": "power"
+                          },
+                          "target": "weaponPower",
+                          "operation": "add_flat",
+                          "value": 14,
+                          "enabled": true
+                        }
+                      ]
+                    }
+                  },
+                  "elementalPower": {
+                    "base": 10,
+                    "scaling": 30,
+                    "flat": 0,
+                    "value": 40,
+                    "uncapped": 40,
+                    "resolved": {
+                      "target": "elementalPower",
+                      "base": 40,
+                      "flat": 0,
+                      "percent": 0,
+                      "percentagePoints": 0,
+                      "totalFlat": 40,
+                      "value": 40,
+                      "contributions": []
+                    }
+                  },
+                  "maxLife": {
+                    "base": 80,
+                    "scaling": 120,
+                    "flat": 0,
+                    "value": 200,
+                    "uncapped": 200,
+                    "resolved": {
+                      "target": "maxLife",
+                      "base": 200,
+                      "flat": 0,
+                      "percent": 0,
+                      "percentagePoints": 0,
+                      "totalFlat": 200,
+                      "value": 200,
+                      "contributions": []
+                    }
+                  },
+                  "maxMana": {
+                    "base": 10,
+                    "scaling": 50,
+                    "flat": 0,
+                    "value": 60,
+                    "uncapped": 60,
+                    "resolved": {
+                      "target": "maxMana",
+                      "base": 60,
+                      "flat": 0,
+                      "percent": 0,
+                      "percentagePoints": 0,
+                      "totalFlat": 60,
+                      "value": 60,
+                      "contributions": []
+                    }
+                  },
+                  "armorRating": {
+                    "base": 10,
+                    "scaling": 40,
+                    "flat": 0,
+                    "value": 50,
+                    "uncapped": 50,
+                    "resolved": {
+                      "target": "armorRating",
+                      "base": 50,
+                      "flat": 0,
+                      "percent": 0,
+                      "percentagePoints": 0,
+                      "totalFlat": 50,
+                      "value": 50,
+                      "contributions": []
+                    }
+                  }
+                }
+              },
+              "hit": {
+                "hit": true,
+                "dodged": false,
+                "onHitSuccess": true,
+                "eligible": true,
+                "enabled": true,
+                "chance": 0,
+                "roll": null
+              },
+              "b0": {
+                "base": 7,
+                "scaling": [
+                  {
+                    "source": "weapon",
+                    "value": 149
+                  }
+                ],
+                "flat": 0,
+                "raw": 156
+              },
+              "critical": {
+                "chance": 0,
+                "roll": 0.8,
+                "isCritical": false,
+                "bonus": 0,
+                "multiplier": 1
+              },
+              "bonuses": [
+                {
+                  "value": 0.25
+                }
+              ],
+              "b1": {
+                "criticalBonus": 0,
+                "totalBonus": 0.25,
+                "beforeDefense": 195
+              },
+              "mitigationInput": {
+                "damage": 195,
+                "ruleKey": "armor",
+                "rating": 100,
+                "rule": {
+                  "enabled": true,
+                  "bounds": {},
+                  "baseK": 100,
+                  "levelPenalty": 0,
+                  "levelScalingEnabled": false
+                }
+              },
+              "mitigation": {
+                "ruleKey": "armor",
+                "status": "applied",
+                "missing": [],
+                "levelGap": null,
+                "levelScalingEnabled": false,
+                "effectiveK": 100,
+                "rawReduction": 0.5,
+                "reduction": 0.5,
+                "inputDamage": 195,
+                "preventedDamage": 97.5,
+                "finalDamage": 97.5
+              },
+              "resourceInput": {
+                "resource": "life",
+                "current": 215,
+                "maximum": 400,
+                "amount": 97.5,
+                "operation": "decrease",
+                "rule": {
+                  "minimum": 0,
+                  "currentAboveMaximum": "allow",
+                  "allowIncreaseFromMinimum": true
+                }
+              },
+              "life": {
+                "resource": "life",
+                "before": 215,
+                "after": 117.5,
+                "applied": 97.5,
+                "reachedMinimum": false
+              }
+            },
+            "state": {
+              "life": 117.5,
+              "mana": 0
+            }
+          }
+        ],
+        "rejected": {
+          "event": "rejected-cost",
+          "cost": 5,
+          "state": {
+            "life": 117.5,
+            "mana": 0
+          },
+          "admitted": false
+        }
+      },
+      "trace": [
+        "flat",
+        [
+          "crit",
+          0.8
+        ],
+        [
+          "life",
+          299.375
+        ],
+        "flat",
+        [
+          "crit",
+          0.8
+        ],
+        [
+          "life",
+          215
+        ],
+        "flat",
+        [
+          "crit",
+          0.8
+        ],
+        [
+          "life",
+          117.5
+        ],
+        {
+          "event": "rejected-cost",
+          "cost": 5,
+          "state": {
+            "life": 117.5,
+            "mana": 0
+          },
+          "admitted": false
+        }
+      ],
+      "anchors": [
+        [
+          161,
+          90,
+          156
+        ],
+        [
+          100.625,
+          84.375,
+          97.5
+        ],
+        [
+          299.375,
+          215,
+          117.5
+        ],
+        false
+      ]
+    },
+    "A9": {
+      "id": "A9",
+      "inputs": {
+        "resource": "life",
+        "current": 199.5,
+        "minimum": 0,
+        "maximum": 200,
+        "ratePerSecond": 0.125,
+        "elapsedSeconds": 2,
+        "eligible": true,
+        "precision": {
+          "decimalPlaces": 12
+        }
+      },
+      "output": {
+        "mana": {
+          "resource": "mana",
+          "before": {
+            "$number": "undefined"
+          },
+          "after": 60,
+          "initialized": true
+        },
+        "regen": {
+          "resource": "life",
+          "before": 199.5,
+          "after": 199.75,
+          "applied": 0.25,
+          "reachedMinimum": false
+        },
+        "full": {
+          "resource": "life",
+          "before": 200,
+          "after": 200,
+          "applied": 0,
+          "reachedMinimum": false
+        },
+        "skipped": {
+          "resource": "life",
+          "before": 199.5,
+          "after": 199.5,
+          "applied": 0,
+          "reachedMinimum": false
+        }
+      },
+      "trace": [],
+      "anchors": [
+        60,
+        199.75,
+        0.25,
+        200,
+        0,
+        199.5,
+        []
+      ]
+    },
+    "A10": {
+      "id": "A10",
+      "inputs": {
+        "resource": "life",
+        "current": 12,
+        "maximum": 200,
+        "amount": 9,
+        "operation": "decrease",
+        "rule": {
+          "minimum": 10,
+          "currentAboveMaximum": "allow",
+          "allowIncreaseFromMinimum": true
+        }
+      },
+      "output": {
+        "minimum": {
+          "resource": "life",
+          "before": 12,
+          "after": 10,
+          "applied": 2,
+          "reachedMinimum": true
+        },
+        "full": {
+          "resource": "life",
+          "before": 200,
+          "after": 200,
+          "applied": 0,
+          "reachedMinimum": false
+        },
+        "overflow": {
+          "resource": "life",
+          "before": 1.7976931348623157e+308,
+          "after": 1.7976931348623157e+308,
+          "applied": 0,
+          "reachedMinimum": false
+        }
+      },
+      "trace": [],
+      "anchors": [
+        10,
+        2,
+        true,
+        0,
+        1.7976931348623157e+308,
+        true
+      ]
+    },
+    "A11": {
+      "id": "A11",
+      "inputs": [
+        {
+          "identity": {
+            "source": "weapon",
+            "sourceInstanceId": "axe",
+            "id": "power"
+          },
+          "target": "weaponPower",
+          "operation": "add_flat",
+          "value": 6,
+          "enabled": true
+        },
+        {
+          "identity": {
+            "source": "armor",
+            "sourceInstanceId": "plate",
+            "id": "power"
+          },
+          "target": "weaponPower",
+          "operation": "add_percent",
+          "value": 0.25,
+          "enabled": true
+        },
+        {
+          "identity": {
+            "source": "accessory",
+            "sourceInstanceId": "ring",
+            "id": "power"
+          },
+          "target": "weaponPower",
+          "operation": "add_percentage_points",
+          "value": 2,
+          "enabled": true
+        },
+        {
+          "identity": {
+            "source": "buff",
+            "sourceInstanceId": "rage",
+            "id": "power"
+          },
+          "target": "weaponPower",
+          "operation": "add_flat",
+          "value": 10,
+          "enabled": true
+        }
+      ],
+      "output": {
+        "first": {
+          "target": "weaponPower",
+          "base": 44,
+          "flat": 6,
+          "percent": 0.25,
+          "percentagePoints": 2,
+          "totalFlat": 50,
+          "value": 64.5,
+          "contributions": [
+            {
+              "identity": {
+                "source": "accessory",
+                "sourceInstanceId": "ring",
+                "id": "power"
+              },
+              "target": "weaponPower",
+              "operation": "add_percentage_points",
+              "value": 2,
+              "enabled": true
+            },
+            {
+              "identity": {
+                "source": "armor",
+                "sourceInstanceId": "plate",
+                "id": "power"
+              },
+              "target": "weaponPower",
+              "operation": "add_percent",
+              "value": 0.25,
+              "enabled": true
+            },
+            {
+              "identity": {
+                "source": "weapon",
+                "sourceInstanceId": "axe",
+                "id": "power"
+              },
+              "target": "weaponPower",
+              "operation": "add_flat",
+              "value": 6,
+              "enabled": true
+            }
+          ]
+        },
+        "second": {
+          "target": "weaponPower",
+          "base": 44,
+          "flat": 6,
+          "percent": 0.25,
+          "percentagePoints": 2,
+          "totalFlat": 50,
+          "value": 64.5,
+          "contributions": [
+            {
+              "identity": {
+                "source": "accessory",
+                "sourceInstanceId": "ring",
+                "id": "power"
+              },
+              "target": "weaponPower",
+              "operation": "add_percentage_points",
+              "value": 2,
+              "enabled": true
+            },
+            {
+              "identity": {
+                "source": "armor",
+                "sourceInstanceId": "plate",
+                "id": "power"
+              },
+              "target": "weaponPower",
+              "operation": "add_percent",
+              "value": 0.25,
+              "enabled": true
+            },
+            {
+              "identity": {
+                "source": "weapon",
+                "sourceInstanceId": "axe",
+                "id": "power"
+              },
+              "target": "weaponPower",
+              "operation": "add_flat",
+              "value": 6,
+              "enabled": true
+            }
+          ]
+        },
+        "conflict": {
+          "name": "Error",
+          "message": "Conflicting Modifier instance",
+          "same": false
+        },
+        "empty": 0
+      },
+      "trace": [],
+      "anchors": [
+        64.5,
+        64.5,
+        [
+          "accessory",
+          "armor",
+          "weapon"
+        ],
+        [
+          "accessory",
+          "armor",
+          "weapon"
+        ],
+        "Conflicting Modifier instance",
+        0,
+        []
+      ]
+    },
+    "A12": {
+      "id": "A12",
+      "inputs": {
+        "base": 1.234,
+        "target": "threshold",
+        "rule": {
+          "enabled": true,
+          "bounds": {
+            "max": 1.225
+          },
+          "precision": {
+            "decimalPlaces": 2
+          }
+        }
+      },
+      "output": {
+        "rounded": {
+          "value": 1.225,
+          "uncapped": 1.234,
+          "resolved": {
+            "target": "threshold",
+            "base": 1.234,
+            "flat": 0,
+            "percent": 0,
+            "percentagePoints": 0,
+            "totalFlat": 1.234,
+            "value": 1.234,
+            "contributions": []
+          }
+        },
+        "disabled": {
+          "value": 0,
+          "uncapped": 1.234,
+          "resolved": {
+            "target": "threshold",
+            "base": 1.234,
+            "flat": 0,
+            "percent": 0,
+            "percentagePoints": 0,
+            "totalFlat": 1.234,
+            "value": 1.234,
+            "contributions": []
+          }
+        }
+      },
+      "trace": [
+        "transform"
+      ],
+      "anchors": [
+        1.225,
+        0,
+        1.234,
+        [
+          "transform"
+        ]
+      ]
+    },
+    "A13": {
+      "id": "A13",
+      "inputs": {
+        "keys": [
+          "nan",
+          "infinite",
+          "negativeZero"
+        ],
+        "context": {
+          "damageType": {
+            "$number": "undefined"
+          },
+          "tags": [
+            "fire"
+          ]
+        }
+      },
+      "output": {
+        "snapshot": {
+          "sources": {
+            "nan": {
+              "$number": "NaN"
+            },
+            "infinite": {
+              "$number": "Infinity"
+            },
+            "negativeZero": {
+              "$number": "-0"
+            }
+          },
+          "flatContributions": [
+            {
+              "id": "edge",
+              "value": {
+                "$number": "-0"
+              }
+            }
+          ],
+          "bonuses": [
+            {
+              "id": "edge",
+              "source": "accessory",
+              "eligible": true,
+              "reason": "caller-selected",
+              "value": 0,
+              "contributions": [
+                {
+                  "id": "edge",
+                  "value": {
+                    "$number": "-0"
+                  }
+                }
+              ]
+            }
+          ],
+          "criticalChance": 0,
+          "criticalBonus": 0
+        },
+        "full": {
+          "attributes": {
+            "focus": 1
+          },
+          "stats": {
+            "power": 1
+          },
+          "statRules": {
+            "power": {
+              "default": 1,
+              "training": 0,
+              "enabled": true,
+              "bounds": {},
+              "scaling": []
+            }
+          },
+          "modifiers": [],
+          "context": {
+            "damageType": {
+              "$number": "undefined"
+            },
+            "tags": [
+              "fire"
+            ]
+          }
+        },
+        "cycle": {
+          "name": "TypeError",
+          "message": "Invalid numerical offense snapshot",
+          "same": false
+        },
+        "unknown": {
+          "name": "TypeError",
+          "message": "Invalid numerical offense snapshot",
+          "same": false
+        },
+        "write": {
+          "name": "TypeError",
+          "message": "Cannot add property 1, object is not extensible",
+          "same": false
+        }
+      },
+      "trace": [],
+      "anchors": [
+        true,
+        {
+          "$number": "Infinity"
+        },
+        true,
+        [
+          "nan",
+          "infinite",
+          "negativeZero"
+        ],
+        true,
+        true,
+        "TypeError",
+        "TypeError",
+        "TypeError"
+      ]
+    }
+  }
+}

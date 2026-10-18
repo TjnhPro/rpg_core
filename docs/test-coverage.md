@@ -1,5 +1,10 @@
 # Core test coverage matrix
 
+## v2.0.11 independent numerical consumers
+
+32 named scenarios (Text RPG T1-T9, Vo Lam V1-V10, ARPG A1-A13) cover all 17 Kernel runtime APIs. `tests/consumers/multi-rpg-verification.test.ts` adds 49 tests. Three separate strict NodeNext consumers execute against one installed artifact, with fresh-process, same-process, forward/reverse and reset/repeat observations. Separate fixed hand vectors and supplemental accepted-Git traces are checked without regenerating goldens. See [Gate B evidence](v2/2.0.11-multi-rpg-consumer-verification.md). Developer approved Gate B with zero preservation delta; see the report for Gate C verification and delivery evidence.
+
+
 v2.0.7 resource extraction: `tests/stats/resource-parity.test.ts` checks 223
 accepted-source observations (97 error cases, 13 original-thrown-object cases),
 ordered getter traces, exact values/key order and captured elapsed arguments.

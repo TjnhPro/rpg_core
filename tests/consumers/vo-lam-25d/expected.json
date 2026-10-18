@@ -1,0 +1,1962 @@
+{
+  "handProvenance": "Fixed hand-calculated Gate A anchors; snapshot A7 uses full typed stat graph with aliased rules, captured power 64.5 + might12 = 76.5. No candidate-derived expectations.",
+  "hand": {
+    "V1": [
+      50,
+      75,
+      300,
+      80,
+      30
+    ],
+    "V2": [
+      120,
+      180,
+      90,
+      210,
+      0.25
+    ],
+    "V3": [
+      170,
+      212.5,
+      159.375,
+      140.625,
+      null
+    ],
+    "V4": [
+      [
+        true,
+        0.25,
+        125
+      ],
+      [
+        false,
+        0,
+        100
+      ]
+    ],
+    "V5": [
+      true,
+      false,
+      210
+    ],
+    "V6": [
+      [
+        95,
+        142.5,
+        190
+      ],
+      [
+        32,
+        20,
+        4
+      ],
+      [
+        750,
+        1125,
+        1500
+      ],
+      true
+    ],
+    "V7": [
+      [
+        60,
+        30
+      ],
+      [
+        240,
+        270
+      ],
+      [
+        "a-dodge",
+        "a-crit",
+        "b-dodge",
+        "b-crit"
+      ]
+    ],
+    "V8": [
+      50,
+      75,
+      120,
+      true,
+      true,
+      true,
+      "TypeError"
+    ],
+    "V9": [
+      [
+        "disabled",
+        212.5,
+        []
+      ],
+      [
+        "missing_config",
+        212.5,
+        [
+          "baseK"
+        ]
+      ]
+    ],
+    "V10": [
+      50,
+      40,
+      50,
+      2,
+      true
+    ]
+  },
+  "acceptedTraceProvenance": {
+    "revision": "436cc35a17389a54e05843ec8efbcfc5c1604295",
+    "command": "node scripts/capture-multi-rpg-oracle.mjs --capture-reviewed-traces",
+    "sourceSha256": {
+      "src/kernel/contracts/common.ts": "8fced5a9366ea7691d8aeb652a61b23e40d67226e2cec474e4be9178f5c2be07",
+      "src/kernel/contracts/damage-stages.ts": "4d3fc2a218097e887d3076058b636dcef6343be228e5687bb62867c76e210113",
+      "src/kernel/contracts/damage.ts": "44be45b2a116f6996335e3d91b6fc7624e22ba301c177c66f144b253c8ff94d5",
+      "src/kernel/contracts/defense.ts": "6a53ffc2a2e77a119cfecf6d46291f3f17379fc6e94e990c24b959ddfc365ae3",
+      "src/kernel/contracts/modifier-resolution.ts": "8c5ab655a90c06656bdcf3ecf3ad2799e2c6156d709982de8fcc32b69f10fe0d",
+      "src/kernel/contracts/modifiers.ts": "acb433b3bab33f601d216964f24f679036b2a8338c4ac60005acbe42057ed420",
+      "src/kernel/contracts/resources.ts": "d2192e1a1b2c2295d0f826004d01d36441b591e973620dd746cb062198fac297",
+      "src/kernel/contracts/snapshots.ts": "ea20fdb0500ca090a5c01394ab81442117de78de5386fcbb6ca7279b3a7341e7",
+      "src/kernel/contracts/stats.ts": "76cd41174ca951ffd0733b1d41af140f606236ce9afedc2185cd573bb44dc4c9",
+      "src/kernel/damage/damage-calculation.ts": "3b925e26d813e771b4bf3a37e8f29932a0e195b30bceb716f5cc29ddfc146f0b",
+      "src/kernel/defense/defense-calculation.ts": "99d812d878e108f0cb32428552807aa710d89fad9ae690f0a816e83fe3f83fe2",
+      "src/kernel/index.ts": "5e57c62174f31d66ecbe49cf2657841232a638ff47da77025d438156f22cc6d6",
+      "src/kernel/modifiers/modifier-resolution.ts": "7f452a00b2eab5905fcca4b11b1546c8a7b1b599819f7a54ed678950fb4cb91d",
+      "src/kernel/resources/resource-calculation.ts": "fa29e85292f93e9c20306735fc337a2b3243f3bcab7b10325e769b68cebe70f8",
+      "src/kernel/snapshots/calculation-snapshot.ts": "a9eea94349ddc76065ce5d1d7d0023479256f4edcebb03739cd5af496dcf5a7c",
+      "src/kernel/snapshots/snapshot-data.ts": "cca3ea0085c99006fbe64488d8b8adc465fada6b693cd448d2932714f9f4ff8c",
+      "src/kernel/stats/stat-calculation.ts": "9a63ca1887ab8fb91d125c903dc055f86d24765cf43fd97eba4a32dc22f352e4"
+    },
+    "fixtureSha256": {
+      "observations.ts": "2f58ef5c987295825f3b49998bff399ee254a1b0399594b1ab72ec8991a95627",
+      "text-rpg/config.ts": "b2449d93deff022c32f13550366463e87df5df2566861ad8196b204856dc581f",
+      "text-rpg/scenarios.ts": "0ef03fa6eb3adeac770df9ac43b5e5695959a053a102f9a0e38e46a5954813fe",
+      "vo-lam-25d/config.ts": "68aa48155f1a4ca0f4a82718f8b81b1625268b5f33464cf8804fcc8bb98743d5",
+      "vo-lam-25d/scenarios.ts": "8d317db97c16e9f6bab76fe5fea2a43618292af59b23ea3dc23bfeaf7a36f3f4",
+      "arpg/config.ts": "ec24af66d7cc279cdfeee79a08b9aecd4be2b985873866777503ecb68871e4ec",
+      "arpg/scenarios.ts": "6bce39ee7a170ea57e7f001bf496f6454eb676afea72c91d905b39832cc3998f"
+    }
+  },
+  "observations": {
+    "V1": {
+      "id": "V1",
+      "inputs": {
+        "input": {
+          "attributeOrder": [
+            "sức_mạnh",
+            "sinh_khí",
+            "nội_lực"
+          ],
+          "statOrder": [
+            "ngoại_công",
+            "nội_công",
+            "sinh_lực",
+            "mana",
+            "phòng_ngự"
+          ],
+          "attributeBases": {
+            "sức_mạnh": 12,
+            "sinh_khí": 20,
+            "nội_lực": 16
+          },
+          "attributeBaselines": {
+            "sức_mạnh": 0,
+            "sinh_khí": 0,
+            "nội_lực": 0
+          },
+          "attributeRules": {
+            "sức_mạnh": {
+              "default": 0,
+              "enabled": true,
+              "bounds": {}
+            },
+            "sinh_khí": {
+              "default": 0,
+              "enabled": true,
+              "bounds": {}
+            },
+            "nội_lực": {
+              "default": 0,
+              "enabled": true,
+              "bounds": {}
+            }
+          },
+          "baseStats": {},
+          "flatContributions": {
+            "ngoại_công": 6,
+            "nội_công": 4
+          },
+          "rules": {
+            "ngoại_công": {
+              "default": 10,
+              "enabled": true,
+              "bounds": {},
+              "training": 6,
+              "scaling": [
+                {
+                  "attribute": "sức_mạnh",
+                  "coefficient": 2,
+                  "enabled": true
+                }
+              ]
+            },
+            "nội_công": {
+              "default": 8,
+              "enabled": true,
+              "bounds": {},
+              "training": 4,
+              "scaling": [
+                {
+                  "attribute": "nội_lực",
+                  "coefficient": 3,
+                  "enabled": true
+                }
+              ]
+            },
+            "sinh_lực": {
+              "default": 100,
+              "enabled": true,
+              "bounds": {},
+              "training": 0,
+              "scaling": [
+                {
+                  "attribute": "sinh_khí",
+                  "coefficient": 10,
+                  "enabled": true
+                }
+              ]
+            },
+            "mana": {
+              "default": 0,
+              "enabled": true,
+              "bounds": {},
+              "training": 0,
+              "scaling": [
+                {
+                  "attribute": "nội_lực",
+                  "coefficient": 5,
+                  "enabled": true
+                }
+              ]
+            },
+            "phòng_ngự": {
+              "default": 10,
+              "enabled": true,
+              "bounds": {},
+              "training": 0,
+              "scaling": [
+                {
+                  "attribute": "sinh_khí",
+                  "coefficient": 1,
+                  "enabled": true
+                }
+              ]
+            }
+          }
+        },
+        "modifiers": [
+          {
+            "identity": {
+              "source": "trang_bị",
+              "sourceInstanceId": "kiếm",
+              "id": "ngoại"
+            },
+            "target": "ngoại_công",
+            "operation": "add_flat",
+            "value": 10,
+            "enabled": true
+          },
+          {
+            "identity": {
+              "source": "trang_bị",
+              "sourceInstanceId": "phù",
+              "id": "nội"
+            },
+            "target": "nội_công",
+            "operation": "add_percent",
+            "value": 0.25,
+            "enabled": true
+          }
+        ]
+      },
+      "output": {
+        "attributes": {
+          "sức_mạnh": 12,
+          "sinh_khí": 20,
+          "nội_lực": 16
+        },
+        "attributeDetails": {
+          "sức_mạnh": {
+            "base": 12,
+            "value": 12,
+            "uncapped": 12,
+            "resolved": {
+              "target": "sức_mạnh",
+              "base": 12,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 12,
+              "value": 12,
+              "contributions": []
+            }
+          },
+          "sinh_khí": {
+            "base": 20,
+            "value": 20,
+            "uncapped": 20,
+            "resolved": {
+              "target": "sinh_khí",
+              "base": 20,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 20,
+              "value": 20,
+              "contributions": []
+            }
+          },
+          "nội_lực": {
+            "base": 16,
+            "value": 16,
+            "uncapped": 16,
+            "resolved": {
+              "target": "nội_lực",
+              "base": 16,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 16,
+              "value": 16,
+              "contributions": []
+            }
+          }
+        },
+        "values": {
+          "ngoại_công": 50,
+          "nội_công": 75,
+          "sinh_lực": 300,
+          "mana": 80,
+          "phòng_ngự": 30
+        },
+        "details": {
+          "ngoại_công": {
+            "base": 10,
+            "scaling": 24,
+            "flat": 6,
+            "value": 50,
+            "uncapped": 50,
+            "resolved": {
+              "target": "ngoại_công",
+              "base": 40,
+              "flat": 10,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 50,
+              "value": 50,
+              "contributions": [
+                {
+                  "identity": {
+                    "source": "trang_bị",
+                    "sourceInstanceId": "kiếm",
+                    "id": "ngoại"
+                  },
+                  "target": "ngoại_công",
+                  "operation": "add_flat",
+                  "value": 10,
+                  "enabled": true
+                }
+              ]
+            }
+          },
+          "nội_công": {
+            "base": 8,
+            "scaling": 48,
+            "flat": 4,
+            "value": 75,
+            "uncapped": 75,
+            "resolved": {
+              "target": "nội_công",
+              "base": 60,
+              "flat": 0,
+              "percent": 0.25,
+              "percentagePoints": 0,
+              "totalFlat": 60,
+              "value": 75,
+              "contributions": [
+                {
+                  "identity": {
+                    "source": "trang_bị",
+                    "sourceInstanceId": "phù",
+                    "id": "nội"
+                  },
+                  "target": "nội_công",
+                  "operation": "add_percent",
+                  "value": 0.25,
+                  "enabled": true
+                }
+              ]
+            }
+          },
+          "sinh_lực": {
+            "base": 100,
+            "scaling": 200,
+            "flat": 0,
+            "value": 300,
+            "uncapped": 300,
+            "resolved": {
+              "target": "sinh_lực",
+              "base": 300,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 300,
+              "value": 300,
+              "contributions": []
+            }
+          },
+          "mana": {
+            "base": 0,
+            "scaling": 80,
+            "flat": 0,
+            "value": 80,
+            "uncapped": 80,
+            "resolved": {
+              "target": "mana",
+              "base": 80,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 80,
+              "value": 80,
+              "contributions": []
+            }
+          },
+          "phòng_ngự": {
+            "base": 10,
+            "scaling": 20,
+            "flat": 0,
+            "value": 30,
+            "uncapped": 30,
+            "resolved": {
+              "target": "phòng_ngự",
+              "base": 30,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 30,
+              "value": 30,
+              "contributions": []
+            }
+          }
+        }
+      },
+      "trace": [],
+      "anchors": [
+        50,
+        75,
+        300,
+        80,
+        30
+      ]
+    },
+    "V2": {
+      "id": "V2",
+      "inputs": {
+        "numerical": {
+          "base": 10,
+          "rank": 1,
+          "perRank": 0,
+          "power": 50,
+          "coefficient": 2,
+          "flat": 10
+        },
+        "source": "vật_lý",
+        "mitigation": {
+          "damage": 180,
+          "ruleKey": "ngoại",
+          "rating": 100,
+          "rule": {
+            "enabled": true,
+            "bounds": {},
+            "baseK": 100,
+            "levelPenalty": 0,
+            "levelScalingEnabled": false
+          }
+        }
+      },
+      "output": {
+        "numerical": {
+          "base": 10,
+          "rank": 1,
+          "perRank": 0,
+          "power": 50,
+          "coefficient": 2,
+          "flat": 10
+        },
+        "source": "vật_lý",
+        "hit": {
+          "hit": true,
+          "dodged": false,
+          "onHitSuccess": true,
+          "eligible": true,
+          "enabled": true,
+          "chance": 0.1,
+          "roll": 0.9
+        },
+        "b0": {
+          "base": 10,
+          "scaling": [
+            {
+              "source": "vật_lý",
+              "value": 100
+            }
+          ],
+          "flat": 10,
+          "raw": 120
+        },
+        "critical": {
+          "chance": 0.5,
+          "roll": 0.25,
+          "isCritical": true,
+          "bonus": 0.5,
+          "multiplier": 1.5
+        },
+        "bonuses": [],
+        "b1": {
+          "criticalBonus": 0.5,
+          "totalBonus": 0.5,
+          "beforeDefense": 180
+        },
+        "mitigationInput": {
+          "damage": 180,
+          "ruleKey": "ngoại",
+          "rating": 100,
+          "rule": {
+            "enabled": true,
+            "bounds": {},
+            "baseK": 100,
+            "levelPenalty": 0,
+            "levelScalingEnabled": false
+          }
+        },
+        "mitigation": {
+          "ruleKey": "ngoại",
+          "status": "applied",
+          "missing": [],
+          "levelGap": null,
+          "levelScalingEnabled": false,
+          "effectiveK": 100,
+          "rawReduction": 0.5,
+          "reduction": 0.5,
+          "inputDamage": 180,
+          "preventedDamage": 90,
+          "finalDamage": 90
+        },
+        "hp": {
+          "resource": "sinh_lực",
+          "before": 300,
+          "after": 210,
+          "applied": 90,
+          "reachedMinimum": false
+        }
+      },
+      "trace": [
+        [
+          "dodge",
+          0.9
+        ],
+        "flat",
+        [
+          "critical",
+          0.25
+        ],
+        [
+          "hp",
+          {
+            "resource": "sinh_lực",
+            "before": 300,
+            "after": 210,
+            "applied": 90,
+            "reachedMinimum": false
+          }
+        ]
+      ],
+      "anchors": [
+        120,
+        180,
+        90,
+        210,
+        0.25
+      ]
+    },
+    "V3": {
+      "id": "V3",
+      "inputs": {
+        "numerical": {
+          "base": 20,
+          "rank": 2,
+          "perRank": 0.5,
+          "power": 75,
+          "coefficient": 1.2,
+          "flat": 5
+        },
+        "source": "nội_công",
+        "mitigation": {
+          "damage": 212.5,
+          "ruleKey": "nội",
+          "rating": 50,
+          "rule": {
+            "enabled": true,
+            "bounds": {},
+            "baseK": 150,
+            "levelPenalty": 0,
+            "levelScalingEnabled": false
+          }
+        }
+      },
+      "output": {
+        "numerical": {
+          "base": 20,
+          "rank": 2,
+          "perRank": 0.5,
+          "power": 75,
+          "coefficient": 1.2,
+          "flat": 5
+        },
+        "source": "nội_công",
+        "hit": {
+          "hit": true,
+          "dodged": false,
+          "onHitSuccess": true,
+          "eligible": true,
+          "enabled": true,
+          "chance": 0.1,
+          "roll": 0.9
+        },
+        "b0": {
+          "base": 30,
+          "scaling": [
+            {
+              "source": "nội_công",
+              "value": 135
+            }
+          ],
+          "flat": 5,
+          "raw": 170
+        },
+        "critical": {
+          "chance": 0,
+          "roll": null,
+          "isCritical": false,
+          "bonus": 0,
+          "multiplier": 1
+        },
+        "bonuses": [
+          {
+            "value": 0.25
+          }
+        ],
+        "b1": {
+          "criticalBonus": 0,
+          "totalBonus": 0.25,
+          "beforeDefense": 212.5
+        },
+        "mitigationInput": {
+          "damage": 212.5,
+          "ruleKey": "nội",
+          "rating": 50,
+          "rule": {
+            "enabled": true,
+            "bounds": {},
+            "baseK": 150,
+            "levelPenalty": 0,
+            "levelScalingEnabled": false
+          }
+        },
+        "mitigation": {
+          "ruleKey": "nội",
+          "status": "applied",
+          "missing": [],
+          "levelGap": null,
+          "levelScalingEnabled": false,
+          "effectiveK": 150,
+          "rawReduction": 0.25,
+          "reduction": 0.25,
+          "inputDamage": 212.5,
+          "preventedDamage": 53.125,
+          "finalDamage": 159.375
+        },
+        "hp": {
+          "resource": "sinh_lực",
+          "before": 300,
+          "after": 140.625,
+          "applied": 159.375,
+          "reachedMinimum": false
+        }
+      },
+      "trace": [
+        [
+          "dodge",
+          0.9
+        ],
+        "flat",
+        [
+          "hp",
+          {
+            "resource": "sinh_lực",
+            "before": 300,
+            "after": 140.625,
+            "applied": 159.375,
+            "reachedMinimum": false
+          }
+        ]
+      ],
+      "anchors": [
+        170,
+        212.5,
+        159.375,
+        140.625,
+        null
+      ]
+    },
+    "V4": {
+      "id": "V4",
+      "inputs": [
+        {
+          "tags": [
+            "hỏa"
+          ],
+          "required": [
+            "hỏa"
+          ],
+          "terms": [
+            1,
+            1
+          ]
+        },
+        {
+          "tags": [
+            "thủy"
+          ],
+          "required": [
+            "hỏa"
+          ],
+          "terms": [
+            1,
+            1
+          ]
+        }
+      ],
+      "output": [
+        {
+          "eligible": true,
+          "selected": [
+            1,
+            1
+          ],
+          "value": 0.25,
+          "b1": {
+            "criticalBonus": 0,
+            "totalBonus": 0.25,
+            "beforeDefense": 125
+          }
+        },
+        {
+          "eligible": false,
+          "selected": [],
+          "value": 0,
+          "b1": {
+            "criticalBonus": 0,
+            "totalBonus": 0,
+            "beforeDefense": 100
+          }
+        }
+      ],
+      "trace": [
+        [
+          "term",
+          1
+        ],
+        "coefficient",
+        [
+          "term",
+          1
+        ],
+        "coefficient"
+      ],
+      "anchors": [
+        [
+          true,
+          0.25,
+          125
+        ],
+        [
+          false,
+          0,
+          100
+        ]
+      ]
+    },
+    "V5": {
+      "id": "V5",
+      "inputs": [
+        {
+          "position": {
+            "x": 2,
+            "y": 3
+          },
+          "launched": true,
+          "eligible": true,
+          "contact": true
+        },
+        {
+          "position": {
+            "x": 2,
+            "y": 3
+          },
+          "launched": true,
+          "eligible": true,
+          "contact": false
+        }
+      ],
+      "output": [
+        {
+          "requested": true,
+          "result": {
+            "numerical": {
+              "base": 10,
+              "rank": 1,
+              "perRank": 0,
+              "power": 50,
+              "coefficient": 2,
+              "flat": 10
+            },
+            "source": "vật_lý",
+            "hit": {
+              "hit": true,
+              "dodged": false,
+              "onHitSuccess": true,
+              "eligible": true,
+              "enabled": true,
+              "chance": 0.1,
+              "roll": 0.9
+            },
+            "b0": {
+              "base": 10,
+              "scaling": [
+                {
+                  "source": "vật_lý",
+                  "value": 100
+                }
+              ],
+              "flat": 10,
+              "raw": 120
+            },
+            "critical": {
+              "chance": 0.5,
+              "roll": 0.25,
+              "isCritical": true,
+              "bonus": 0.5,
+              "multiplier": 1.5
+            },
+            "bonuses": [],
+            "b1": {
+              "criticalBonus": 0.5,
+              "totalBonus": 0.5,
+              "beforeDefense": 180
+            },
+            "mitigationInput": {
+              "damage": 180,
+              "ruleKey": "ngoại",
+              "rating": 100,
+              "rule": {
+                "enabled": true,
+                "bounds": {},
+                "baseK": 100,
+                "levelPenalty": 0,
+                "levelScalingEnabled": false
+              }
+            },
+            "mitigation": {
+              "ruleKey": "ngoại",
+              "status": "applied",
+              "missing": [],
+              "levelGap": null,
+              "levelScalingEnabled": false,
+              "effectiveK": 100,
+              "rawReduction": 0.5,
+              "reduction": 0.5,
+              "inputDamage": 180,
+              "preventedDamage": 90,
+              "finalDamage": 90
+            },
+            "hp": {
+              "resource": "sinh_lực",
+              "before": 300,
+              "after": 210,
+              "applied": 90,
+              "reachedMinimum": false
+            }
+          }
+        },
+        {
+          "requested": false
+        }
+      ],
+      "trace": [
+        "launched",
+        "eligible",
+        "contact",
+        "calculation-requested",
+        [
+          "dodge",
+          0.9
+        ],
+        "flat",
+        [
+          "critical",
+          0.25
+        ],
+        [
+          "hp",
+          {
+            "resource": "sinh_lực",
+            "before": 300,
+            "after": 210,
+            "applied": 90,
+            "reachedMinimum": false
+          }
+        ],
+        "launched",
+        "eligible",
+        "miss"
+      ],
+      "anchors": [
+        true,
+        false,
+        210
+      ]
+    },
+    "V6": {
+      "id": "V6",
+      "inputs": {
+        "initial": 40,
+        "source": 75,
+        "perRank": 0.5,
+        "cdr": 0.25,
+        "nextCost": 16
+      },
+      "output": {
+        "rows": [
+          {
+            "content": {
+              "rank": 1,
+              "cost": 8,
+              "baseMs": 1000
+            },
+            "b0": {
+              "base": 20,
+              "scaling": [
+                {
+                  "source": "nội_công",
+                  "value": 75
+                }
+              ],
+              "flat": 0,
+              "raw": 95
+            },
+            "mp": {
+              "resource": "mana",
+              "before": 40,
+              "after": 32,
+              "applied": 8,
+              "reachedMinimum": false
+            },
+            "cooldown": 750
+          },
+          {
+            "content": {
+              "rank": 2,
+              "cost": 12,
+              "baseMs": 1500
+            },
+            "b0": {
+              "base": 30,
+              "scaling": [
+                {
+                  "source": "nội_công",
+                  "value": 112.5
+                }
+              ],
+              "flat": 0,
+              "raw": 142.5
+            },
+            "mp": {
+              "resource": "mana",
+              "before": 32,
+              "after": 20,
+              "applied": 12,
+              "reachedMinimum": false
+            },
+            "cooldown": 1125
+          },
+          {
+            "content": {
+              "rank": 3,
+              "cost": 16,
+              "baseMs": 2000
+            },
+            "b0": {
+              "base": 40,
+              "scaling": [
+                {
+                  "source": "nội_công",
+                  "value": 150
+                }
+              ],
+              "flat": 0,
+              "raw": 190
+            },
+            "mp": {
+              "resource": "mana",
+              "before": 20,
+              "after": 4,
+              "applied": 16,
+              "reachedMinimum": false
+            },
+            "cooldown": 1500
+          }
+        ],
+        "rejected": true,
+        "mana": 4
+      },
+      "trace": [
+        [
+          "admit",
+          1,
+          32,
+          750
+        ],
+        [
+          "admit",
+          2,
+          20,
+          1125
+        ],
+        [
+          "admit",
+          3,
+          4,
+          1500
+        ],
+        [
+          "reject",
+          true,
+          4
+        ]
+      ],
+      "anchors": [
+        [
+          95,
+          142.5,
+          190
+        ],
+        [
+          32,
+          20,
+          4
+        ],
+        [
+          750,
+          1125,
+          1500
+        ],
+        true
+      ]
+    },
+    "V7": {
+      "id": "V7",
+      "inputs": {
+        "snapshot": {
+          "sources": {
+            "vật_lý": 50
+          },
+          "flatContributions": [],
+          "bonuses": [],
+          "criticalChance": 0,
+          "criticalBonus": 0.5
+        },
+        "targets": [
+          {
+            "id": "a",
+            "rating": 100,
+            "hp": 300
+          },
+          {
+            "id": "b",
+            "rating": 300,
+            "hp": 300
+          }
+        ]
+      },
+      "output": [
+        {
+          "target": "a",
+          "hit": {
+            "hit": true,
+            "dodged": false,
+            "onHitSuccess": true,
+            "eligible": true,
+            "enabled": true,
+            "chance": 0.1,
+            "roll": 0.9
+          },
+          "b0": {
+            "base": 10,
+            "scaling": [
+              {
+                "source": "vật_lý",
+                "value": 100
+              }
+            ],
+            "flat": 10,
+            "raw": 120
+          },
+          "critical": {
+            "chance": 0,
+            "roll": 0.8,
+            "isCritical": false,
+            "bonus": 0,
+            "multiplier": 1
+          },
+          "b1": {
+            "criticalBonus": 0,
+            "totalBonus": 0,
+            "beforeDefense": 120
+          },
+          "mitigation": {
+            "ruleKey": "ngoại",
+            "status": "applied",
+            "missing": [],
+            "levelGap": null,
+            "levelScalingEnabled": false,
+            "effectiveK": 100,
+            "rawReduction": 0.5,
+            "reduction": 0.5,
+            "inputDamage": 120,
+            "preventedDamage": 60,
+            "finalDamage": 60
+          },
+          "hp": {
+            "resource": "sinh_lực",
+            "before": 300,
+            "after": 240,
+            "applied": 60,
+            "reachedMinimum": false
+          }
+        },
+        {
+          "target": "b",
+          "hit": {
+            "hit": true,
+            "dodged": false,
+            "onHitSuccess": true,
+            "eligible": true,
+            "enabled": true,
+            "chance": 0.1,
+            "roll": 0.9
+          },
+          "b0": {
+            "base": 10,
+            "scaling": [
+              {
+                "source": "vật_lý",
+                "value": 100
+              }
+            ],
+            "flat": 10,
+            "raw": 120
+          },
+          "critical": {
+            "chance": 0,
+            "roll": 0.8,
+            "isCritical": false,
+            "bonus": 0,
+            "multiplier": 1
+          },
+          "b1": {
+            "criticalBonus": 0,
+            "totalBonus": 0,
+            "beforeDefense": 120
+          },
+          "mitigation": {
+            "ruleKey": "ngoại",
+            "status": "applied",
+            "missing": [],
+            "levelGap": null,
+            "levelScalingEnabled": false,
+            "effectiveK": 100,
+            "rawReduction": 0.75,
+            "reduction": 0.75,
+            "inputDamage": 120,
+            "preventedDamage": 90,
+            "finalDamage": 30
+          },
+          "hp": {
+            "resource": "sinh_lực",
+            "before": 300,
+            "after": 270,
+            "applied": 30,
+            "reachedMinimum": false
+          }
+        }
+      ],
+      "trace": [
+        "a-dodge",
+        "a-crit",
+        "b-dodge",
+        "b-crit"
+      ],
+      "anchors": [
+        [
+          60,
+          30
+        ],
+        [
+          240,
+          270
+        ],
+        [
+          "a-dodge",
+          "a-crit",
+          "b-dodge",
+          "b-crit"
+        ]
+      ]
+    },
+    "V8": {
+      "id": "V8",
+      "inputs": {
+        "initial": {
+          "vật_lý": 50,
+          "nội_công": 75
+        },
+        "mutation": {
+          "vật_lý": 500,
+          "nội_công": 750
+        }
+      },
+      "output": {
+        "snapshot": {
+          "sources": {
+            "vật_lý": 50,
+            "nội_công": 75
+          },
+          "flatContributions": [],
+          "bonuses": [],
+          "criticalChance": 0,
+          "criticalBonus": 0.5
+        },
+        "caller": {
+          "sources": {
+            "vật_lý": 500,
+            "nội_công": 750
+          },
+          "flatContributions": [],
+          "bonuses": [],
+          "criticalChance": 0,
+          "criticalBonus": 0.5
+        },
+        "b0": {
+          "base": 10,
+          "scaling": [
+            {
+              "source": "vật_lý",
+              "value": 100
+            }
+          ],
+          "flat": 10,
+          "raw": 120
+        },
+        "checks": {
+          "detached": true,
+          "frozen": true,
+          "callerMutable": true,
+          "write": {
+            "name": "TypeError",
+            "message": "Cannot assign to read only property 'vật_lý' of object '#<Object>'",
+            "same": false
+          }
+        }
+      },
+      "trace": [],
+      "anchors": [
+        50,
+        75,
+        120,
+        true,
+        true,
+        true,
+        "TypeError"
+      ]
+    },
+    "V9": {
+      "id": "V9",
+      "inputs": [
+        {
+          "enabled": false,
+          "bounds": {},
+          "baseK": 150,
+          "levelPenalty": 0,
+          "levelScalingEnabled": false
+        },
+        {
+          "enabled": true,
+          "bounds": {},
+          "levelPenalty": 0,
+          "levelScalingEnabled": false
+        }
+      ],
+      "output": [
+        {
+          "ruleKey": "nội",
+          "status": "disabled",
+          "missing": [],
+          "levelGap": null,
+          "levelScalingEnabled": false,
+          "effectiveK": 150,
+          "rawReduction": 0.25,
+          "reduction": 0,
+          "inputDamage": 212.5,
+          "preventedDamage": 0,
+          "finalDamage": 212.5
+        },
+        {
+          "ruleKey": "nội",
+          "status": "missing_config",
+          "missing": [
+            "baseK"
+          ],
+          "levelGap": null,
+          "levelScalingEnabled": false,
+          "effectiveK": null,
+          "rawReduction": 0,
+          "reduction": 0,
+          "inputDamage": 212.5,
+          "preventedDamage": 0,
+          "finalDamage": 212.5
+        }
+      ],
+      "trace": [],
+      "anchors": [
+        [
+          "disabled",
+          212.5,
+          []
+        ],
+        [
+          "missing_config",
+          212.5,
+          [
+            "baseK"
+          ]
+        ]
+      ]
+    },
+    "V10": {
+      "id": "V10",
+      "inputs": {
+        "all": [
+          {
+            "identity": {
+              "source": "trang_bị",
+              "sourceInstanceId": "kiếm",
+              "id": "ngoại"
+            },
+            "target": "ngoại_công",
+            "operation": "add_flat",
+            "value": 10,
+            "enabled": true
+          },
+          {
+            "identity": {
+              "source": "trang_bị",
+              "sourceInstanceId": "phù",
+              "id": "nội"
+            },
+            "target": "nội_công",
+            "operation": "add_percent",
+            "value": 0.25,
+            "enabled": true
+          },
+          {
+            "identity": {
+              "source": "luyện_công",
+              "sourceInstanceId": "ẩn",
+              "id": "nội"
+            },
+            "target": "nội_công",
+            "operation": "add_flat",
+            "value": 100,
+            "enabled": true
+          },
+          {
+            "identity": {
+              "source": "trang_bị",
+              "sourceInstanceId": "tắt",
+              "id": "ngoại"
+            },
+            "target": "ngoại_công",
+            "operation": "add_flat",
+            "value": 10,
+            "enabled": false
+          }
+        ],
+        "activeInitially": [
+          "kiếm",
+          "phù",
+          "tắt"
+        ]
+      },
+      "output": {
+        "selected": [
+          {
+            "identity": {
+              "source": "trang_bị",
+              "sourceInstanceId": "kiếm",
+              "id": "ngoại"
+            },
+            "target": "ngoại_công",
+            "operation": "add_flat",
+            "value": 10,
+            "enabled": true
+          },
+          {
+            "identity": {
+              "source": "trang_bị",
+              "sourceInstanceId": "phù",
+              "id": "nội"
+            },
+            "target": "nội_công",
+            "operation": "add_percent",
+            "value": 0.25,
+            "enabled": true
+          }
+        ],
+        "before": {
+          "attributes": {
+            "sức_mạnh": 12,
+            "sinh_khí": 20,
+            "nội_lực": 16
+          },
+          "attributeDetails": {
+            "sức_mạnh": {
+              "base": 12,
+              "value": 12,
+              "uncapped": 12,
+              "resolved": {
+                "target": "sức_mạnh",
+                "base": 12,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 12,
+                "value": 12,
+                "contributions": []
+              }
+            },
+            "sinh_khí": {
+              "base": 20,
+              "value": 20,
+              "uncapped": 20,
+              "resolved": {
+                "target": "sinh_khí",
+                "base": 20,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 20,
+                "value": 20,
+                "contributions": []
+              }
+            },
+            "nội_lực": {
+              "base": 16,
+              "value": 16,
+              "uncapped": 16,
+              "resolved": {
+                "target": "nội_lực",
+                "base": 16,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 16,
+                "value": 16,
+                "contributions": []
+              }
+            }
+          },
+          "values": {
+            "ngoại_công": 50,
+            "nội_công": 75,
+            "sinh_lực": 300,
+            "mana": 80,
+            "phòng_ngự": 30
+          },
+          "details": {
+            "ngoại_công": {
+              "base": 10,
+              "scaling": 24,
+              "flat": 6,
+              "value": 50,
+              "uncapped": 50,
+              "resolved": {
+                "target": "ngoại_công",
+                "base": 40,
+                "flat": 10,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 50,
+                "value": 50,
+                "contributions": [
+                  {
+                    "identity": {
+                      "source": "trang_bị",
+                      "sourceInstanceId": "kiếm",
+                      "id": "ngoại"
+                    },
+                    "target": "ngoại_công",
+                    "operation": "add_flat",
+                    "value": 10,
+                    "enabled": true
+                  }
+                ]
+              }
+            },
+            "nội_công": {
+              "base": 8,
+              "scaling": 48,
+              "flat": 4,
+              "value": 75,
+              "uncapped": 75,
+              "resolved": {
+                "target": "nội_công",
+                "base": 60,
+                "flat": 0,
+                "percent": 0.25,
+                "percentagePoints": 0,
+                "totalFlat": 60,
+                "value": 75,
+                "contributions": [
+                  {
+                    "identity": {
+                      "source": "trang_bị",
+                      "sourceInstanceId": "phù",
+                      "id": "nội"
+                    },
+                    "target": "nội_công",
+                    "operation": "add_percent",
+                    "value": 0.25,
+                    "enabled": true
+                  }
+                ]
+              }
+            },
+            "sinh_lực": {
+              "base": 100,
+              "scaling": 200,
+              "flat": 0,
+              "value": 300,
+              "uncapped": 300,
+              "resolved": {
+                "target": "sinh_lực",
+                "base": 300,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 300,
+                "value": 300,
+                "contributions": []
+              }
+            },
+            "mana": {
+              "base": 0,
+              "scaling": 80,
+              "flat": 0,
+              "value": 80,
+              "uncapped": 80,
+              "resolved": {
+                "target": "mana",
+                "base": 80,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 80,
+                "value": 80,
+                "contributions": []
+              }
+            },
+            "phòng_ngự": {
+              "base": 10,
+              "scaling": 20,
+              "flat": 0,
+              "value": 30,
+              "uncapped": 30,
+              "resolved": {
+                "target": "phòng_ngự",
+                "base": 30,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 30,
+                "value": 30,
+                "contributions": []
+              }
+            }
+          }
+        },
+        "toggled": {
+          "attributes": {
+            "sức_mạnh": 12,
+            "sinh_khí": 20,
+            "nội_lực": 16
+          },
+          "attributeDetails": {
+            "sức_mạnh": {
+              "base": 12,
+              "value": 12,
+              "uncapped": 12,
+              "resolved": {
+                "target": "sức_mạnh",
+                "base": 12,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 12,
+                "value": 12,
+                "contributions": []
+              }
+            },
+            "sinh_khí": {
+              "base": 20,
+              "value": 20,
+              "uncapped": 20,
+              "resolved": {
+                "target": "sinh_khí",
+                "base": 20,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 20,
+                "value": 20,
+                "contributions": []
+              }
+            },
+            "nội_lực": {
+              "base": 16,
+              "value": 16,
+              "uncapped": 16,
+              "resolved": {
+                "target": "nội_lực",
+                "base": 16,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 16,
+                "value": 16,
+                "contributions": []
+              }
+            }
+          },
+          "values": {
+            "ngoại_công": 40,
+            "nội_công": 75,
+            "sinh_lực": 300,
+            "mana": 80,
+            "phòng_ngự": 30
+          },
+          "details": {
+            "ngoại_công": {
+              "base": 10,
+              "scaling": 24,
+              "flat": 6,
+              "value": 40,
+              "uncapped": 40,
+              "resolved": {
+                "target": "ngoại_công",
+                "base": 40,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 40,
+                "value": 40,
+                "contributions": []
+              }
+            },
+            "nội_công": {
+              "base": 8,
+              "scaling": 48,
+              "flat": 4,
+              "value": 75,
+              "uncapped": 75,
+              "resolved": {
+                "target": "nội_công",
+                "base": 60,
+                "flat": 0,
+                "percent": 0.25,
+                "percentagePoints": 0,
+                "totalFlat": 60,
+                "value": 75,
+                "contributions": [
+                  {
+                    "identity": {
+                      "source": "trang_bị",
+                      "sourceInstanceId": "phù",
+                      "id": "nội"
+                    },
+                    "target": "nội_công",
+                    "operation": "add_percent",
+                    "value": 0.25,
+                    "enabled": true
+                  }
+                ]
+              }
+            },
+            "sinh_lực": {
+              "base": 100,
+              "scaling": 200,
+              "flat": 0,
+              "value": 300,
+              "uncapped": 300,
+              "resolved": {
+                "target": "sinh_lực",
+                "base": 300,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 300,
+                "value": 300,
+                "contributions": []
+              }
+            },
+            "mana": {
+              "base": 0,
+              "scaling": 80,
+              "flat": 0,
+              "value": 80,
+              "uncapped": 80,
+              "resolved": {
+                "target": "mana",
+                "base": 80,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 80,
+                "value": 80,
+                "contributions": []
+              }
+            },
+            "phòng_ngự": {
+              "base": 10,
+              "scaling": 20,
+              "flat": 0,
+              "value": 30,
+              "uncapped": 30,
+              "resolved": {
+                "target": "phòng_ngự",
+                "base": 30,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 30,
+                "value": 30,
+                "contributions": []
+              }
+            }
+          }
+        },
+        "reset": {
+          "attributes": {
+            "sức_mạnh": 12,
+            "sinh_khí": 20,
+            "nội_lực": 16
+          },
+          "attributeDetails": {
+            "sức_mạnh": {
+              "base": 12,
+              "value": 12,
+              "uncapped": 12,
+              "resolved": {
+                "target": "sức_mạnh",
+                "base": 12,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 12,
+                "value": 12,
+                "contributions": []
+              }
+            },
+            "sinh_khí": {
+              "base": 20,
+              "value": 20,
+              "uncapped": 20,
+              "resolved": {
+                "target": "sinh_khí",
+                "base": 20,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 20,
+                "value": 20,
+                "contributions": []
+              }
+            },
+            "nội_lực": {
+              "base": 16,
+              "value": 16,
+              "uncapped": 16,
+              "resolved": {
+                "target": "nội_lực",
+                "base": 16,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 16,
+                "value": 16,
+                "contributions": []
+              }
+            }
+          },
+          "values": {
+            "ngoại_công": 50,
+            "nội_công": 75,
+            "sinh_lực": 300,
+            "mana": 80,
+            "phòng_ngự": 30
+          },
+          "details": {
+            "ngoại_công": {
+              "base": 10,
+              "scaling": 24,
+              "flat": 6,
+              "value": 50,
+              "uncapped": 50,
+              "resolved": {
+                "target": "ngoại_công",
+                "base": 40,
+                "flat": 10,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 50,
+                "value": 50,
+                "contributions": [
+                  {
+                    "identity": {
+                      "source": "trang_bị",
+                      "sourceInstanceId": "kiếm",
+                      "id": "ngoại"
+                    },
+                    "target": "ngoại_công",
+                    "operation": "add_flat",
+                    "value": 10,
+                    "enabled": true
+                  }
+                ]
+              }
+            },
+            "nội_công": {
+              "base": 8,
+              "scaling": 48,
+              "flat": 4,
+              "value": 75,
+              "uncapped": 75,
+              "resolved": {
+                "target": "nội_công",
+                "base": 60,
+                "flat": 0,
+                "percent": 0.25,
+                "percentagePoints": 0,
+                "totalFlat": 60,
+                "value": 75,
+                "contributions": [
+                  {
+                    "identity": {
+                      "source": "trang_bị",
+                      "sourceInstanceId": "phù",
+                      "id": "nội"
+                    },
+                    "target": "nội_công",
+                    "operation": "add_percent",
+                    "value": 0.25,
+                    "enabled": true
+                  }
+                ]
+              }
+            },
+            "sinh_lực": {
+              "base": 100,
+              "scaling": 200,
+              "flat": 0,
+              "value": 300,
+              "uncapped": 300,
+              "resolved": {
+                "target": "sinh_lực",
+                "base": 300,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 300,
+                "value": 300,
+                "contributions": []
+              }
+            },
+            "mana": {
+              "base": 0,
+              "scaling": 80,
+              "flat": 0,
+              "value": 80,
+              "uncapped": 80,
+              "resolved": {
+                "target": "mana",
+                "base": 80,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 80,
+                "value": 80,
+                "contributions": []
+              }
+            },
+            "phòng_ngự": {
+              "base": 10,
+              "scaling": 20,
+              "flat": 0,
+              "value": 30,
+              "uncapped": 30,
+              "resolved": {
+                "target": "phòng_ngự",
+                "base": 30,
+                "flat": 0,
+                "percent": 0,
+                "percentagePoints": 0,
+                "totalFlat": 30,
+                "value": 30,
+                "contributions": []
+              }
+            }
+          }
+        },
+        "refs": true
+      },
+      "trace": [],
+      "anchors": [
+        50,
+        40,
+        50,
+        2,
+        true
+      ]
+    }
+  }
+}
