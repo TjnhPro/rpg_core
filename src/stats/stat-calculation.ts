@@ -1,33 +1,35 @@
 import { ATTRIBUTE_IDS,DEFAULT_CORE_STATS,ELEMENTAL_STATS,STAT_IDS,type CharacterBaseStats,type CoreAttribute,type PlayerStat,type PlayerStatsConfig } from '../contracts/stat-contracts.js';
+import {calculateEffectiveValue,calculateStats,calculateCooldownDurationMs} from '../kernel/stats/stat-calculation.js';
+import type {NumericRule} from '../kernel/contracts/common.js';
+import type {DerivedStatRule} from '../kernel/contracts/stats.js';
 import type { prepareModifierResolver } from '../modifiers/modifier-core.js';
 
-// CDR is already resolved/capped by the shared stat resolver, not capped here.
+// CDR is already resolved/capped; the numerical implementation belongs to Kernel.
 export function cooldownDurationMs(baseMs:number,effectiveCdr:number):number {
- if(!Number.isFinite(baseMs)||baseMs<0||!Number.isFinite(effectiveCdr)||effectiveCdr<0||effectiveCdr>1)throw Error('Invalid resolved cooldown');
- return baseMs*(1-effectiveCdr);
+ return calculateCooldownDurationMs(baseMs,effectiveCdr);
 }
 
-// Actor-independent Flat → summed Percent/Points → transform → bounds. Base
-// adapters own content/scaling; neither Player defaults nor equipment leak into NPCs.
+// Preserve the Legacy signature and original resolver diagnostics by reference.
 export function calculateEffectiveStat(base:number,target:string,resolve:ReturnType<typeof prepareModifierResolver>,rule:{min:number;max?:number;enabled?:boolean},transform:(value:number)=>number=value=>value,precision?:number){
- const resolved=resolve(base,target),uncapped=transform(resolved.value);
- const clamp=(value:number)=>Math.max(rule.min,Math.min(rule.max??Infinity,value));
- let value=rule.enabled===false?0:clamp(uncapped);
- if(precision!==undefined&&rule.enabled!==false)value=clamp(Number(value.toFixed(precision)));
- return {value,uncapped,resolved};
+ const result=calculateEffectiveValue(base,target,resolve,{bounds:{min:rule.min,...(rule.max!==undefined?{max:rule.max}:{})},enabled:rule.enabled!==false,...(precision!==undefined?{precision:{decimalPlaces:precision}}:{})},transform);
+ return {value:result.value,uncapped:result.uncapped,resolved:result.resolved};
 }
 
-// One Core → Derived pass. Callers supply bases/sources, never actor type.
+// Legacy owns vocabulary/config selection only; Kernel owns the complete pass.
 export function resolveCharacterStats(bases:CharacterBaseStats,config:PlayerStatsConfig,resolve:ReturnType<typeof prepareModifierResolver>,baseline:Record<CoreAttribute,number>,extras:Partial<Record<PlayerStat,number>>={},transform:(id:PlayerStat,value:number)=>number=(_,v)=>v){
- const attributes={} as Record<CoreAttribute,number>,core={} as Record<CoreAttribute,ReturnType<typeof calculateEffectiveStat>>;
- for(const id of ATTRIBUTE_IDS){const r=config.attributes[id];core[id]=calculateEffectiveStat(bases[id],id,resolve,{min:r.min??0,...(r.max!==undefined?{max:r.max}:{})});attributes[id]=core[id].value;}
- const values={} as Record<PlayerStat,number>,details={} as Record<PlayerStat,ReturnType<typeof calculateEffectiveStat>>,scaling={} as Record<PlayerStat,number>;
- for(const id of STAT_IDS){const r=config.stats[id]??DEFAULT_CORE_STATS.stats[id],dodge=id==='dodgeChance'?config.defense?.types.dodgeChance:undefined;
-  scaling[id]=ATTRIBUTE_IDS.reduce((n,k)=>n+(r.scalingEnabled?.[k]===false?0:(attributes[k]-baseline[k])*r.scaling[k]),0);
+ const attributeRules=Object.fromEntries(ATTRIBUTE_IDS.map(id=>{const r=config.attributes[id];return [id,{default:r.default,bounds:{min:r.min??0,...(r.max!==undefined?{max:r.max}:{})},enabled:true}];})) as Record<CoreAttribute,NumericRule>;
+ const rules=Object.fromEntries<DerivedStatRule<CoreAttribute>>(STAT_IDS.map(id=>{const r=config.stats[id]??DEFAULT_CORE_STATS.stats[id],dodge=id==='dodgeChance'?config.defense?.types.dodgeChance:undefined;
   const cap=dodge?.max??r.max;
-  details[id]=calculateEffectiveStat((bases[id]??r.default)+scaling[id]+(extras[id]??0),id,resolve,{min:dodge?.min??r.min,...(cap!==undefined?{max:cap}:{}),enabled:!(config.version>=2&&ELEMENTAL_STATS.has(id))&&dodge?.enabled!==false},v=>transform(id,v),4);
-  values[id]=details[id].value;
- }
+  return [id,{default:r.default,training:r.training,scaling:ATTRIBUTE_IDS.map(k=>({attribute:k,coefficient:r.scaling[k],enabled:r.scalingEnabled?.[k]!==false})),bounds:{min:dodge?.min??r.min,...(cap!==undefined?{max:cap}:{})},enabled:!(config.version>=2&&ELEMENTAL_STATS.has(id))&&dodge?.enabled!==false,precision:{decimalPlaces:4}}];
+ })) as Record<PlayerStat,DerivedStatRule<CoreAttribute>>;
+ const transforms=Object.fromEntries(STAT_IDS.map(id=>[id,(value:number)=>transform(id,value)])) as Record<PlayerStat,(value:number)=>number>;
+ const baseStats=Object.fromEntries(STAT_IDS.flatMap(id=>bases[id]!==undefined?[[id,bases[id]]]:[])) as Partial<Record<PlayerStat,number>>;
+ const flatContributions=Object.fromEntries(STAT_IDS.flatMap(id=>extras[id]!==undefined?[[id,extras[id]]]:[])) as Partial<Record<PlayerStat,number>>;
+ const result=calculateStats({attributeOrder:ATTRIBUTE_IDS,statOrder:STAT_IDS,attributeBases:bases,attributeRules,attributeBaselines:baseline,baseStats,rules,flatContributions,transforms},resolve);
+ const attributes=result.attributes as Record<CoreAttribute,number>,core={} as Record<CoreAttribute,ReturnType<typeof calculateEffectiveStat>>;
+ for(const id of ATTRIBUTE_IDS){const d=result.attributeDetails[id];core[id]={value:d.value,uncapped:d.uncapped,resolved:d.resolved};}
+ const values=result.values as Record<PlayerStat,number>,details={} as Record<PlayerStat,ReturnType<typeof calculateEffectiveStat>>,scaling={} as Record<PlayerStat,number>;
+ for(const id of STAT_IDS){const d=result.details[id];details[id]={value:d.value,uncapped:d.uncapped,resolved:d.resolved};scaling[id]=d.scaling;}
  return {attributes,core,values,details,scaling};
 }
 

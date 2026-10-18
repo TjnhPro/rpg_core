@@ -1,0 +1,6102 @@
+{
+  "revision": "a05439ec504b759df48d3345eea199fecf08083f",
+  "scenarios": [
+    {
+      "name": "scalar:base",
+      "result": {
+        "value": 3,
+        "uncapped": 3,
+        "resolved": {
+          "base": 3,
+          "flat": 0,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 3,
+          "value": 3,
+          "contributions": []
+        }
+      },
+      "trace": [
+        [
+          "resolve",
+          "armor",
+          3
+        ],
+        [
+          "transform",
+          3
+        ]
+      ]
+    },
+    {
+      "name": "scalar:mixed",
+      "error": {
+        "name": "Error",
+        "message": "q: percentage points require a supported rate stat"
+      },
+      "trace": []
+    },
+    {
+      "name": "scalar:minimum",
+      "result": {
+        "value": 2,
+        "uncapped": -12,
+        "resolved": {
+          "base": -12,
+          "flat": 0,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": -12,
+          "value": -12,
+          "contributions": []
+        }
+      },
+      "trace": [
+        [
+          "resolve",
+          "armor",
+          -12
+        ],
+        [
+          "transform",
+          -12
+        ]
+      ]
+    },
+    {
+      "name": "scalar:maximum",
+      "result": {
+        "value": 10,
+        "uncapped": 12,
+        "resolved": {
+          "base": 12,
+          "flat": 0,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 12,
+          "value": 12,
+          "contributions": []
+        }
+      },
+      "trace": [
+        [
+          "resolve",
+          "armor",
+          12
+        ],
+        [
+          "transform",
+          12
+        ]
+      ]
+    },
+    {
+      "name": "scalar:precision",
+      "result": {
+        "value": 1.2346,
+        "uncapped": 1.234567,
+        "resolved": {
+          "base": 1.234567,
+          "flat": 0,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 1.234567,
+          "value": 1.234567,
+          "contributions": []
+        }
+      },
+      "trace": [
+        [
+          "resolve",
+          "armor",
+          1.234567
+        ],
+        [
+          "transform",
+          1.234567
+        ]
+      ]
+    },
+    {
+      "name": "scalar:reclamp",
+      "result": {
+        "value": 1.23456,
+        "uncapped": 1.23456,
+        "resolved": {
+          "base": 1.23456,
+          "flat": 0,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 1.23456,
+          "value": 1.23456,
+          "contributions": []
+        }
+      },
+      "trace": [
+        [
+          "resolve",
+          "armor",
+          1.23456
+        ],
+        [
+          "transform",
+          1.23456
+        ]
+      ]
+    },
+    {
+      "name": "scalar:disabled",
+      "error": {
+        "name": "Error",
+        "message": "q: percentage points require a supported rate stat"
+      },
+      "trace": []
+    },
+    {
+      "name": "scalar:disabled-native-precision",
+      "result": {
+        "value": 0,
+        "uncapped": 12,
+        "resolved": {
+          "base": 12,
+          "flat": 0,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 12,
+          "value": 12,
+          "contributions": []
+        }
+      },
+      "trace": [
+        [
+          "resolve",
+          "armor",
+          12
+        ],
+        [
+          "transform",
+          12
+        ]
+      ]
+    },
+    {
+      "name": "scalar:nan-transform",
+      "result": {
+        "value": {
+          "$number": "NaN"
+        },
+        "uncapped": {
+          "$number": "NaN"
+        },
+        "resolved": {
+          "base": 1,
+          "flat": 0,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 1,
+          "value": 1,
+          "contributions": []
+        }
+      },
+      "trace": [
+        [
+          "resolve",
+          "armor",
+          1
+        ],
+        [
+          "transform",
+          1
+        ]
+      ]
+    },
+    {
+      "name": "scalar:infinite-transform",
+      "result": {
+        "value": {
+          "$number": "Infinity"
+        },
+        "uncapped": {
+          "$number": "Infinity"
+        },
+        "resolved": {
+          "base": 1,
+          "flat": 0,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 1,
+          "value": 1,
+          "contributions": []
+        }
+      },
+      "trace": [
+        [
+          "resolve",
+          "armor",
+          1
+        ],
+        [
+          "transform",
+          1
+        ]
+      ]
+    },
+    {
+      "name": "scalar:infinite-transform-cap",
+      "result": {
+        "value": 10,
+        "uncapped": {
+          "$number": "Infinity"
+        },
+        "resolved": {
+          "base": 1,
+          "flat": 0,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 1,
+          "value": 1,
+          "contributions": []
+        }
+      },
+      "trace": [
+        [
+          "resolve",
+          "armor",
+          1
+        ],
+        [
+          "transform",
+          1
+        ]
+      ]
+    },
+    {
+      "name": "scalar:throw-transform",
+      "error": {
+        "name": "TypeError",
+        "message": "caller transform failed"
+      },
+      "trace": [
+        [
+          "resolve",
+          "armor",
+          1
+        ],
+        [
+          "transform",
+          1
+        ]
+      ]
+    },
+    {
+      "name": "scalar:invalid-precision",
+      "error": {
+        "name": "RangeError",
+        "message": "toFixed() digits argument must be between 0 and 100"
+      },
+      "trace": [
+        [
+          "resolve",
+          "armor",
+          1
+        ],
+        [
+          "transform",
+          1
+        ]
+      ]
+    },
+    {
+      "name": "scalar:nan-base",
+      "error": {
+        "name": "Error",
+        "message": "Nonfinite Modifier result"
+      },
+      "trace": [
+        [
+          "resolve",
+          "armor",
+          {
+            "$number": "NaN"
+          }
+        ]
+      ]
+    },
+    {
+      "name": "scalar:infinite-base",
+      "error": {
+        "name": "Error",
+        "message": "Nonfinite Modifier result"
+      },
+      "trace": [
+        [
+          "resolve",
+          "armor",
+          {
+            "$number": "Infinity"
+          }
+        ]
+      ]
+    },
+    {
+      "name": "scalar:negative-zero",
+      "result": {
+        "value": 0,
+        "uncapped": 0,
+        "resolved": {
+          "base": {
+            "$number": "-0"
+          },
+          "flat": 0,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 0,
+          "value": 0,
+          "contributions": []
+        }
+      },
+      "trace": [
+        [
+          "resolve",
+          "armor",
+          {
+            "$number": "-0"
+          }
+        ],
+        [
+          "transform",
+          0
+        ]
+      ]
+    },
+    {
+      "name": "scalar:duplicate",
+      "error": {
+        "name": "Error",
+        "message": "q: percentage points require a supported rate stat"
+      },
+      "trace": []
+    },
+    {
+      "name": "scalar:conflict",
+      "error": {
+        "name": "Error",
+        "message": "Conflicting Modifier instance"
+      },
+      "trace": []
+    },
+    {
+      "name": "character:default",
+      "result": {
+        "attributes": {
+          "str": 10.1,
+          "dex": 20.2,
+          "int": 30.3,
+          "vit": 40.4
+        },
+        "core": {
+          "str": {
+            "value": 10.1,
+            "uncapped": 10.1,
+            "resolved": {
+              "base": 10.1,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 10.1,
+              "value": 10.1,
+              "contributions": []
+            }
+          },
+          "dex": {
+            "value": 20.2,
+            "uncapped": 20.2,
+            "resolved": {
+              "base": 20.2,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 20.2,
+              "value": 20.2,
+              "contributions": []
+            }
+          },
+          "int": {
+            "value": 30.3,
+            "uncapped": 30.3,
+            "resolved": {
+              "base": 30.3,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 30.3,
+              "value": 30.3,
+              "contributions": []
+            }
+          },
+          "vit": {
+            "value": 40.4,
+            "uncapped": 40.4,
+            "resolved": {
+              "base": 40.4,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 40.4,
+              "value": 40.4,
+              "contributions": []
+            }
+          }
+        },
+        "values": {
+          "maxHp": 143.2,
+          "maxMana": 70.6,
+          "hpRegen": 3.04,
+          "manaRegen": 5.045,
+          "physicalAttack": 12.4657,
+          "magicAttack": 7,
+          "attackSpeed": 1.102,
+          "criticalChance": 0.0102,
+          "criticalDamage": 0.5,
+          "armor": 0.1635,
+          "magicResistance": 0,
+          "armorReduction": 0,
+          "dodgeChance": 0.0102,
+          "MetalResistance": 0,
+          "WoodResistance": 0,
+          "WaterResistance": 0,
+          "FireResistance": 0,
+          "EarthResistance": 0,
+          "movementSpeed": 273.26,
+          "movementSpeedMultiplier": 1,
+          "cooldownReduction": 0
+        },
+        "details": {
+          "maxHp": {
+            "value": 143.2,
+            "uncapped": 143.2,
+            "resolved": {
+              "base": 143.2,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 143.2,
+              "value": 143.2,
+              "contributions": []
+            }
+          },
+          "maxMana": {
+            "value": 70.6,
+            "uncapped": 70.6,
+            "resolved": {
+              "base": 70.6,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 70.6,
+              "value": 70.6,
+              "contributions": []
+            }
+          },
+          "hpRegen": {
+            "value": 3.04,
+            "uncapped": 3.04,
+            "resolved": {
+              "base": 3.04,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 3.04,
+              "value": 3.04,
+              "contributions": []
+            }
+          },
+          "manaRegen": {
+            "value": 5.045,
+            "uncapped": 5.045,
+            "resolved": {
+              "base": 5.045,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 5.045,
+              "value": 5.045,
+              "contributions": []
+            }
+          },
+          "physicalAttack": {
+            "value": 12.4657,
+            "uncapped": 12.46567,
+            "resolved": {
+              "base": 12.46567,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 12.46567,
+              "value": 12.46567,
+              "contributions": []
+            }
+          },
+          "magicAttack": {
+            "value": 7,
+            "uncapped": 7,
+            "resolved": {
+              "base": 7,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 7,
+              "value": 7,
+              "contributions": []
+            }
+          },
+          "attackSpeed": {
+            "value": 1.102,
+            "uncapped": 1.102,
+            "resolved": {
+              "base": 1.102,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 1.102,
+              "value": 1.102,
+              "contributions": []
+            }
+          },
+          "criticalChance": {
+            "value": 0.0102,
+            "uncapped": 0.010199999999999999,
+            "resolved": {
+              "base": 0.010199999999999999,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.010199999999999999,
+              "value": 0.010199999999999999,
+              "contributions": []
+            }
+          },
+          "criticalDamage": {
+            "value": 0.5,
+            "uncapped": 0.5,
+            "resolved": {
+              "base": 0.5,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.5,
+              "value": 0.5,
+              "contributions": []
+            }
+          },
+          "armor": {
+            "value": 0.1635,
+            "uncapped": 0.16345599999999985,
+            "resolved": {
+              "base": 0.16345599999999985,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.16345599999999985,
+              "value": 0.16345599999999985,
+              "contributions": []
+            }
+          },
+          "magicResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "armorReduction": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "dodgeChance": {
+            "value": 0.0102,
+            "uncapped": 0.010199999999999999,
+            "resolved": {
+              "base": 0.010199999999999999,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.010199999999999999,
+              "value": 0.010199999999999999,
+              "contributions": []
+            }
+          },
+          "MetalResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "WoodResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "WaterResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "FireResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "EarthResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "movementSpeed": {
+            "value": 273.26,
+            "uncapped": 273.26,
+            "resolved": {
+              "base": 273.26,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 273.26,
+              "value": 273.26,
+              "contributions": []
+            }
+          },
+          "movementSpeedMultiplier": {
+            "value": 1,
+            "uncapped": 1,
+            "resolved": {
+              "base": 1,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 1,
+              "value": 1,
+              "contributions": []
+            }
+          },
+          "cooldownReduction": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          }
+        },
+        "scaling": {
+          "maxHp": 91.19999999999999,
+          "maxMana": 40.6,
+          "hpRegen": 3.04,
+          "manaRegen": 3.045,
+          "physicalAttack": 3.119999999999999,
+          "magicAttack": 0,
+          "attackSpeed": 0.102,
+          "criticalChance": 0.010199999999999999,
+          "criticalDamage": 0,
+          "armor": 0.03999999999999986,
+          "magicResistance": 0,
+          "armorReduction": 0,
+          "dodgeChance": 0.010199999999999999,
+          "MetalResistance": 0,
+          "WoodResistance": 0,
+          "WaterResistance": 0,
+          "FireResistance": 0,
+          "EarthResistance": 0,
+          "movementSpeed": 13.26,
+          "movementSpeedMultiplier": 0,
+          "cooldownReduction": 0
+        }
+      },
+      "trace": [
+        [
+          "resolve",
+          "str",
+          10.1
+        ],
+        [
+          "resolve",
+          "dex",
+          20.2
+        ],
+        [
+          "resolve",
+          "int",
+          30.3
+        ],
+        [
+          "resolve",
+          "vit",
+          40.4
+        ],
+        [
+          "resolve",
+          "maxHp",
+          143.2
+        ],
+        [
+          "transform",
+          "maxHp",
+          143.2
+        ],
+        [
+          "resolve",
+          "maxMana",
+          70.6
+        ],
+        [
+          "transform",
+          "maxMana",
+          70.6
+        ],
+        [
+          "resolve",
+          "hpRegen",
+          3.04
+        ],
+        [
+          "transform",
+          "hpRegen",
+          3.04
+        ],
+        [
+          "resolve",
+          "manaRegen",
+          5.045
+        ],
+        [
+          "transform",
+          "manaRegen",
+          5.045
+        ],
+        [
+          "resolve",
+          "physicalAttack",
+          12.46567
+        ],
+        [
+          "transform",
+          "physicalAttack",
+          12.46567
+        ],
+        [
+          "resolve",
+          "magicAttack",
+          7
+        ],
+        [
+          "transform",
+          "magicAttack",
+          7
+        ],
+        [
+          "resolve",
+          "attackSpeed",
+          1.102
+        ],
+        [
+          "transform",
+          "attackSpeed",
+          1.102
+        ],
+        [
+          "resolve",
+          "criticalChance",
+          0.010199999999999999
+        ],
+        [
+          "transform",
+          "criticalChance",
+          0.010199999999999999
+        ],
+        [
+          "resolve",
+          "criticalDamage",
+          0.5
+        ],
+        [
+          "transform",
+          "criticalDamage",
+          0.5
+        ],
+        [
+          "resolve",
+          "armor",
+          0.16345599999999985
+        ],
+        [
+          "transform",
+          "armor",
+          0.16345599999999985
+        ],
+        [
+          "resolve",
+          "magicResistance",
+          0
+        ],
+        [
+          "transform",
+          "magicResistance",
+          0
+        ],
+        [
+          "resolve",
+          "armorReduction",
+          0
+        ],
+        [
+          "transform",
+          "armorReduction",
+          0
+        ],
+        [
+          "resolve",
+          "dodgeChance",
+          0.010199999999999999
+        ],
+        [
+          "transform",
+          "dodgeChance",
+          0.010199999999999999
+        ],
+        [
+          "resolve",
+          "MetalResistance",
+          0
+        ],
+        [
+          "transform",
+          "MetalResistance",
+          0
+        ],
+        [
+          "resolve",
+          "WoodResistance",
+          0
+        ],
+        [
+          "transform",
+          "WoodResistance",
+          0
+        ],
+        [
+          "resolve",
+          "WaterResistance",
+          0
+        ],
+        [
+          "transform",
+          "WaterResistance",
+          0
+        ],
+        [
+          "resolve",
+          "FireResistance",
+          0
+        ],
+        [
+          "transform",
+          "FireResistance",
+          0
+        ],
+        [
+          "resolve",
+          "EarthResistance",
+          0
+        ],
+        [
+          "transform",
+          "EarthResistance",
+          0
+        ],
+        [
+          "resolve",
+          "movementSpeed",
+          273.26
+        ],
+        [
+          "transform",
+          "movementSpeed",
+          273.26
+        ],
+        [
+          "resolve",
+          "movementSpeedMultiplier",
+          1
+        ],
+        [
+          "transform",
+          "movementSpeedMultiplier",
+          1
+        ],
+        [
+          "resolve",
+          "cooldownReduction",
+          0
+        ],
+        [
+          "transform",
+          "cooldownReduction",
+          0
+        ]
+      ]
+    },
+    {
+      "name": "character:mixed-scaling",
+      "error": {
+        "name": "Error",
+        "message": "q: percentage points require a supported rate stat"
+      },
+      "trace": []
+    },
+    {
+      "name": "character:caps",
+      "result": {
+        "attributes": {
+          "str": 5,
+          "dex": 20.2,
+          "int": 30.3,
+          "vit": 40.4
+        },
+        "core": {
+          "str": {
+            "value": 5,
+            "uncapped": 10.1,
+            "resolved": {
+              "base": 10.1,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 10.1,
+              "value": 10.1,
+              "contributions": []
+            }
+          },
+          "dex": {
+            "value": 20.2,
+            "uncapped": 20.2,
+            "resolved": {
+              "base": 20.2,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 20.2,
+              "value": 20.2,
+              "contributions": []
+            }
+          },
+          "int": {
+            "value": 30.3,
+            "uncapped": 30.3,
+            "resolved": {
+              "base": 30.3,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 30.3,
+              "value": 30.3,
+              "contributions": []
+            }
+          },
+          "vit": {
+            "value": 40.4,
+            "uncapped": 40.4,
+            "resolved": {
+              "base": 40.4,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 40.4,
+              "value": 40.4,
+              "contributions": []
+            }
+          }
+        },
+        "values": {
+          "maxHp": 143.2,
+          "maxMana": 70.6,
+          "hpRegen": 3.04,
+          "manaRegen": 5.045,
+          "physicalAttack": 9.4057,
+          "magicAttack": 7,
+          "attackSpeed": 1.102,
+          "criticalChance": 0.0102,
+          "criticalDamage": 0.5,
+          "armor": 0,
+          "magicResistance": 0,
+          "armorReduction": 0,
+          "dodgeChance": 0.0102,
+          "MetalResistance": 0,
+          "WoodResistance": 0,
+          "WaterResistance": 0,
+          "FireResistance": 0,
+          "EarthResistance": 0,
+          "movementSpeed": 273.26,
+          "movementSpeedMultiplier": 1,
+          "cooldownReduction": 0
+        },
+        "details": {
+          "maxHp": {
+            "value": 143.2,
+            "uncapped": 143.2,
+            "resolved": {
+              "base": 143.2,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 143.2,
+              "value": 143.2,
+              "contributions": []
+            }
+          },
+          "maxMana": {
+            "value": 70.6,
+            "uncapped": 70.6,
+            "resolved": {
+              "base": 70.6,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 70.6,
+              "value": 70.6,
+              "contributions": []
+            }
+          },
+          "hpRegen": {
+            "value": 3.04,
+            "uncapped": 3.04,
+            "resolved": {
+              "base": 3.04,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 3.04,
+              "value": 3.04,
+              "contributions": []
+            }
+          },
+          "manaRegen": {
+            "value": 5.045,
+            "uncapped": 5.045,
+            "resolved": {
+              "base": 5.045,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 5.045,
+              "value": 5.045,
+              "contributions": []
+            }
+          },
+          "physicalAttack": {
+            "value": 9.4057,
+            "uncapped": 9.40567,
+            "resolved": {
+              "base": 9.40567,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 9.40567,
+              "value": 9.40567,
+              "contributions": []
+            }
+          },
+          "magicAttack": {
+            "value": 7,
+            "uncapped": 7,
+            "resolved": {
+              "base": 7,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 7,
+              "value": 7,
+              "contributions": []
+            }
+          },
+          "attackSpeed": {
+            "value": 1.102,
+            "uncapped": 1.102,
+            "resolved": {
+              "base": 1.102,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 1.102,
+              "value": 1.102,
+              "contributions": []
+            }
+          },
+          "criticalChance": {
+            "value": 0.0102,
+            "uncapped": 0.010199999999999999,
+            "resolved": {
+              "base": 0.010199999999999999,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.010199999999999999,
+              "value": 0.010199999999999999,
+              "contributions": []
+            }
+          },
+          "criticalDamage": {
+            "value": 0.5,
+            "uncapped": 0.5,
+            "resolved": {
+              "base": 0.5,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.5,
+              "value": 0.5,
+              "contributions": []
+            }
+          },
+          "armor": {
+            "value": 0,
+            "uncapped": -1.876544,
+            "resolved": {
+              "base": -1.876544,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": -1.876544,
+              "value": -1.876544,
+              "contributions": []
+            }
+          },
+          "magicResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "armorReduction": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "dodgeChance": {
+            "value": 0.0102,
+            "uncapped": 0.010199999999999999,
+            "resolved": {
+              "base": 0.010199999999999999,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.010199999999999999,
+              "value": 0.010199999999999999,
+              "contributions": []
+            }
+          },
+          "MetalResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "WoodResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "WaterResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "FireResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "EarthResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "movementSpeed": {
+            "value": 273.26,
+            "uncapped": 273.26,
+            "resolved": {
+              "base": 273.26,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 273.26,
+              "value": 273.26,
+              "contributions": []
+            }
+          },
+          "movementSpeedMultiplier": {
+            "value": 1,
+            "uncapped": 1,
+            "resolved": {
+              "base": 1,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 1,
+              "value": 1,
+              "contributions": []
+            }
+          },
+          "cooldownReduction": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          }
+        },
+        "scaling": {
+          "maxHp": 91.19999999999999,
+          "maxMana": 40.6,
+          "hpRegen": 3.04,
+          "manaRegen": 3.045,
+          "physicalAttack": 0.05999999999999961,
+          "magicAttack": 0,
+          "attackSpeed": 0.102,
+          "criticalChance": 0.010199999999999999,
+          "criticalDamage": 0,
+          "armor": -2,
+          "magicResistance": 0,
+          "armorReduction": 0,
+          "dodgeChance": 0.010199999999999999,
+          "MetalResistance": 0,
+          "WoodResistance": 0,
+          "WaterResistance": 0,
+          "FireResistance": 0,
+          "EarthResistance": 0,
+          "movementSpeed": 13.26,
+          "movementSpeedMultiplier": 0,
+          "cooldownReduction": 0
+        }
+      },
+      "trace": [
+        [
+          "resolve",
+          "str",
+          10.1
+        ],
+        [
+          "resolve",
+          "dex",
+          20.2
+        ],
+        [
+          "resolve",
+          "int",
+          30.3
+        ],
+        [
+          "resolve",
+          "vit",
+          40.4
+        ],
+        [
+          "resolve",
+          "maxHp",
+          143.2
+        ],
+        [
+          "transform",
+          "maxHp",
+          143.2
+        ],
+        [
+          "resolve",
+          "maxMana",
+          70.6
+        ],
+        [
+          "transform",
+          "maxMana",
+          70.6
+        ],
+        [
+          "resolve",
+          "hpRegen",
+          3.04
+        ],
+        [
+          "transform",
+          "hpRegen",
+          3.04
+        ],
+        [
+          "resolve",
+          "manaRegen",
+          5.045
+        ],
+        [
+          "transform",
+          "manaRegen",
+          5.045
+        ],
+        [
+          "resolve",
+          "physicalAttack",
+          9.40567
+        ],
+        [
+          "transform",
+          "physicalAttack",
+          9.40567
+        ],
+        [
+          "resolve",
+          "magicAttack",
+          7
+        ],
+        [
+          "transform",
+          "magicAttack",
+          7
+        ],
+        [
+          "resolve",
+          "attackSpeed",
+          1.102
+        ],
+        [
+          "transform",
+          "attackSpeed",
+          1.102
+        ],
+        [
+          "resolve",
+          "criticalChance",
+          0.010199999999999999
+        ],
+        [
+          "transform",
+          "criticalChance",
+          0.010199999999999999
+        ],
+        [
+          "resolve",
+          "criticalDamage",
+          0.5
+        ],
+        [
+          "transform",
+          "criticalDamage",
+          0.5
+        ],
+        [
+          "resolve",
+          "armor",
+          -1.876544
+        ],
+        [
+          "transform",
+          "armor",
+          -1.876544
+        ],
+        [
+          "resolve",
+          "magicResistance",
+          0
+        ],
+        [
+          "transform",
+          "magicResistance",
+          0
+        ],
+        [
+          "resolve",
+          "armorReduction",
+          0
+        ],
+        [
+          "transform",
+          "armorReduction",
+          0
+        ],
+        [
+          "resolve",
+          "dodgeChance",
+          0.010199999999999999
+        ],
+        [
+          "transform",
+          "dodgeChance",
+          0.010199999999999999
+        ],
+        [
+          "resolve",
+          "MetalResistance",
+          0
+        ],
+        [
+          "transform",
+          "MetalResistance",
+          0
+        ],
+        [
+          "resolve",
+          "WoodResistance",
+          0
+        ],
+        [
+          "transform",
+          "WoodResistance",
+          0
+        ],
+        [
+          "resolve",
+          "WaterResistance",
+          0
+        ],
+        [
+          "transform",
+          "WaterResistance",
+          0
+        ],
+        [
+          "resolve",
+          "FireResistance",
+          0
+        ],
+        [
+          "transform",
+          "FireResistance",
+          0
+        ],
+        [
+          "resolve",
+          "EarthResistance",
+          0
+        ],
+        [
+          "transform",
+          "EarthResistance",
+          0
+        ],
+        [
+          "resolve",
+          "movementSpeed",
+          273.26
+        ],
+        [
+          "transform",
+          "movementSpeed",
+          273.26
+        ],
+        [
+          "resolve",
+          "movementSpeedMultiplier",
+          1
+        ],
+        [
+          "transform",
+          "movementSpeedMultiplier",
+          1
+        ],
+        [
+          "resolve",
+          "cooldownReduction",
+          0
+        ],
+        [
+          "transform",
+          "cooldownReduction",
+          0
+        ]
+      ]
+    },
+    {
+      "name": "character:disabled-scaling",
+      "result": {
+        "attributes": {
+          "str": 10.1,
+          "dex": 20.2,
+          "int": 30.3,
+          "vit": 40.4
+        },
+        "core": {
+          "str": {
+            "value": 10.1,
+            "uncapped": 10.1,
+            "resolved": {
+              "base": 10.1,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 10.1,
+              "value": 10.1,
+              "contributions": []
+            }
+          },
+          "dex": {
+            "value": 20.2,
+            "uncapped": 20.2,
+            "resolved": {
+              "base": 20.2,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 20.2,
+              "value": 20.2,
+              "contributions": []
+            }
+          },
+          "int": {
+            "value": 30.3,
+            "uncapped": 30.3,
+            "resolved": {
+              "base": 30.3,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 30.3,
+              "value": 30.3,
+              "contributions": []
+            }
+          },
+          "vit": {
+            "value": 40.4,
+            "uncapped": 40.4,
+            "resolved": {
+              "base": 40.4,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 40.4,
+              "value": 40.4,
+              "contributions": []
+            }
+          }
+        },
+        "values": {
+          "maxHp": 52,
+          "maxMana": 70.6,
+          "hpRegen": 3.04,
+          "manaRegen": 5.045,
+          "physicalAttack": 12.4657,
+          "magicAttack": 7,
+          "attackSpeed": 1.102,
+          "criticalChance": 0.0102,
+          "criticalDamage": 0.5,
+          "armor": 0.1635,
+          "magicResistance": 0,
+          "armorReduction": 0,
+          "dodgeChance": 0.0102,
+          "MetalResistance": 0,
+          "WoodResistance": 0,
+          "WaterResistance": 0,
+          "FireResistance": 0,
+          "EarthResistance": 0,
+          "movementSpeed": 273.26,
+          "movementSpeedMultiplier": 1,
+          "cooldownReduction": 0
+        },
+        "details": {
+          "maxHp": {
+            "value": 52,
+            "uncapped": 52,
+            "resolved": {
+              "base": 52,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 52,
+              "value": 52,
+              "contributions": []
+            }
+          },
+          "maxMana": {
+            "value": 70.6,
+            "uncapped": 70.6,
+            "resolved": {
+              "base": 70.6,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 70.6,
+              "value": 70.6,
+              "contributions": []
+            }
+          },
+          "hpRegen": {
+            "value": 3.04,
+            "uncapped": 3.04,
+            "resolved": {
+              "base": 3.04,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 3.04,
+              "value": 3.04,
+              "contributions": []
+            }
+          },
+          "manaRegen": {
+            "value": 5.045,
+            "uncapped": 5.045,
+            "resolved": {
+              "base": 5.045,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 5.045,
+              "value": 5.045,
+              "contributions": []
+            }
+          },
+          "physicalAttack": {
+            "value": 12.4657,
+            "uncapped": 12.46567,
+            "resolved": {
+              "base": 12.46567,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 12.46567,
+              "value": 12.46567,
+              "contributions": []
+            }
+          },
+          "magicAttack": {
+            "value": 7,
+            "uncapped": 7,
+            "resolved": {
+              "base": 7,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 7,
+              "value": 7,
+              "contributions": []
+            }
+          },
+          "attackSpeed": {
+            "value": 1.102,
+            "uncapped": 1.102,
+            "resolved": {
+              "base": 1.102,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 1.102,
+              "value": 1.102,
+              "contributions": []
+            }
+          },
+          "criticalChance": {
+            "value": 0.0102,
+            "uncapped": 0.010199999999999999,
+            "resolved": {
+              "base": 0.010199999999999999,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.010199999999999999,
+              "value": 0.010199999999999999,
+              "contributions": []
+            }
+          },
+          "criticalDamage": {
+            "value": 0.5,
+            "uncapped": 0.5,
+            "resolved": {
+              "base": 0.5,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.5,
+              "value": 0.5,
+              "contributions": []
+            }
+          },
+          "armor": {
+            "value": 0.1635,
+            "uncapped": 0.16345599999999985,
+            "resolved": {
+              "base": 0.16345599999999985,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.16345599999999985,
+              "value": 0.16345599999999985,
+              "contributions": []
+            }
+          },
+          "magicResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "armorReduction": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "dodgeChance": {
+            "value": 0.0102,
+            "uncapped": 0.010199999999999999,
+            "resolved": {
+              "base": 0.010199999999999999,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.010199999999999999,
+              "value": 0.010199999999999999,
+              "contributions": []
+            }
+          },
+          "MetalResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "WoodResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "WaterResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "FireResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "EarthResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "movementSpeed": {
+            "value": 273.26,
+            "uncapped": 273.26,
+            "resolved": {
+              "base": 273.26,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 273.26,
+              "value": 273.26,
+              "contributions": []
+            }
+          },
+          "movementSpeedMultiplier": {
+            "value": 1,
+            "uncapped": 1,
+            "resolved": {
+              "base": 1,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 1,
+              "value": 1,
+              "contributions": []
+            }
+          },
+          "cooldownReduction": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          }
+        },
+        "scaling": {
+          "maxHp": 0,
+          "maxMana": 40.6,
+          "hpRegen": 3.04,
+          "manaRegen": 3.045,
+          "physicalAttack": 3.119999999999999,
+          "magicAttack": 0,
+          "attackSpeed": 0.102,
+          "criticalChance": 0.010199999999999999,
+          "criticalDamage": 0,
+          "armor": 0.03999999999999986,
+          "magicResistance": 0,
+          "armorReduction": 0,
+          "dodgeChance": 0.010199999999999999,
+          "MetalResistance": 0,
+          "WoodResistance": 0,
+          "WaterResistance": 0,
+          "FireResistance": 0,
+          "EarthResistance": 0,
+          "movementSpeed": 13.26,
+          "movementSpeedMultiplier": 0,
+          "cooldownReduction": 0
+        }
+      },
+      "trace": [
+        [
+          "resolve",
+          "str",
+          10.1
+        ],
+        [
+          "resolve",
+          "dex",
+          20.2
+        ],
+        [
+          "resolve",
+          "int",
+          30.3
+        ],
+        [
+          "resolve",
+          "vit",
+          40.4
+        ],
+        [
+          "resolve",
+          "maxHp",
+          52
+        ],
+        [
+          "transform",
+          "maxHp",
+          52
+        ],
+        [
+          "resolve",
+          "maxMana",
+          70.6
+        ],
+        [
+          "transform",
+          "maxMana",
+          70.6
+        ],
+        [
+          "resolve",
+          "hpRegen",
+          3.04
+        ],
+        [
+          "transform",
+          "hpRegen",
+          3.04
+        ],
+        [
+          "resolve",
+          "manaRegen",
+          5.045
+        ],
+        [
+          "transform",
+          "manaRegen",
+          5.045
+        ],
+        [
+          "resolve",
+          "physicalAttack",
+          12.46567
+        ],
+        [
+          "transform",
+          "physicalAttack",
+          12.46567
+        ],
+        [
+          "resolve",
+          "magicAttack",
+          7
+        ],
+        [
+          "transform",
+          "magicAttack",
+          7
+        ],
+        [
+          "resolve",
+          "attackSpeed",
+          1.102
+        ],
+        [
+          "transform",
+          "attackSpeed",
+          1.102
+        ],
+        [
+          "resolve",
+          "criticalChance",
+          0.010199999999999999
+        ],
+        [
+          "transform",
+          "criticalChance",
+          0.010199999999999999
+        ],
+        [
+          "resolve",
+          "criticalDamage",
+          0.5
+        ],
+        [
+          "transform",
+          "criticalDamage",
+          0.5
+        ],
+        [
+          "resolve",
+          "armor",
+          0.16345599999999985
+        ],
+        [
+          "transform",
+          "armor",
+          0.16345599999999985
+        ],
+        [
+          "resolve",
+          "magicResistance",
+          0
+        ],
+        [
+          "transform",
+          "magicResistance",
+          0
+        ],
+        [
+          "resolve",
+          "armorReduction",
+          0
+        ],
+        [
+          "transform",
+          "armorReduction",
+          0
+        ],
+        [
+          "resolve",
+          "dodgeChance",
+          0.010199999999999999
+        ],
+        [
+          "transform",
+          "dodgeChance",
+          0.010199999999999999
+        ],
+        [
+          "resolve",
+          "MetalResistance",
+          0
+        ],
+        [
+          "transform",
+          "MetalResistance",
+          0
+        ],
+        [
+          "resolve",
+          "WoodResistance",
+          0
+        ],
+        [
+          "transform",
+          "WoodResistance",
+          0
+        ],
+        [
+          "resolve",
+          "WaterResistance",
+          0
+        ],
+        [
+          "transform",
+          "WaterResistance",
+          0
+        ],
+        [
+          "resolve",
+          "FireResistance",
+          0
+        ],
+        [
+          "transform",
+          "FireResistance",
+          0
+        ],
+        [
+          "resolve",
+          "EarthResistance",
+          0
+        ],
+        [
+          "transform",
+          "EarthResistance",
+          0
+        ],
+        [
+          "resolve",
+          "movementSpeed",
+          273.26
+        ],
+        [
+          "transform",
+          "movementSpeed",
+          273.26
+        ],
+        [
+          "resolve",
+          "movementSpeedMultiplier",
+          1
+        ],
+        [
+          "transform",
+          "movementSpeedMultiplier",
+          1
+        ],
+        [
+          "resolve",
+          "cooldownReduction",
+          0
+        ],
+        [
+          "transform",
+          "cooldownReduction",
+          0
+        ]
+      ]
+    },
+    {
+      "name": "character:fallback",
+      "result": {
+        "attributes": {
+          "str": 10.1,
+          "dex": 20.2,
+          "int": 30.3,
+          "vit": 40.4
+        },
+        "core": {
+          "str": {
+            "value": 10.1,
+            "uncapped": 10.1,
+            "resolved": {
+              "base": 10.1,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 10.1,
+              "value": 10.1,
+              "contributions": []
+            }
+          },
+          "dex": {
+            "value": 20.2,
+            "uncapped": 20.2,
+            "resolved": {
+              "base": 20.2,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 20.2,
+              "value": 20.2,
+              "contributions": []
+            }
+          },
+          "int": {
+            "value": 30.3,
+            "uncapped": 30.3,
+            "resolved": {
+              "base": 30.3,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 30.3,
+              "value": 30.3,
+              "contributions": []
+            }
+          },
+          "vit": {
+            "value": 40.4,
+            "uncapped": 40.4,
+            "resolved": {
+              "base": 40.4,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 40.4,
+              "value": 40.4,
+              "contributions": []
+            }
+          }
+        },
+        "values": {
+          "maxHp": 143.2,
+          "maxMana": 70.6,
+          "hpRegen": 3.04,
+          "manaRegen": 5.045,
+          "physicalAttack": 12.4657,
+          "magicAttack": 7,
+          "attackSpeed": 1.102,
+          "criticalChance": 0.0102,
+          "criticalDamage": 0.5,
+          "armor": 0.1635,
+          "magicResistance": 0,
+          "armorReduction": 0,
+          "dodgeChance": 0.0102,
+          "MetalResistance": 0,
+          "WoodResistance": 0,
+          "WaterResistance": 0,
+          "FireResistance": 0,
+          "EarthResistance": 0,
+          "movementSpeed": 273.26,
+          "movementSpeedMultiplier": 1,
+          "cooldownReduction": 0
+        },
+        "details": {
+          "maxHp": {
+            "value": 143.2,
+            "uncapped": 143.2,
+            "resolved": {
+              "base": 143.2,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 143.2,
+              "value": 143.2,
+              "contributions": []
+            }
+          },
+          "maxMana": {
+            "value": 70.6,
+            "uncapped": 70.6,
+            "resolved": {
+              "base": 70.6,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 70.6,
+              "value": 70.6,
+              "contributions": []
+            }
+          },
+          "hpRegen": {
+            "value": 3.04,
+            "uncapped": 3.04,
+            "resolved": {
+              "base": 3.04,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 3.04,
+              "value": 3.04,
+              "contributions": []
+            }
+          },
+          "manaRegen": {
+            "value": 5.045,
+            "uncapped": 5.045,
+            "resolved": {
+              "base": 5.045,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 5.045,
+              "value": 5.045,
+              "contributions": []
+            }
+          },
+          "physicalAttack": {
+            "value": 12.4657,
+            "uncapped": 12.46567,
+            "resolved": {
+              "base": 12.46567,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 12.46567,
+              "value": 12.46567,
+              "contributions": []
+            }
+          },
+          "magicAttack": {
+            "value": 7,
+            "uncapped": 7,
+            "resolved": {
+              "base": 7,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 7,
+              "value": 7,
+              "contributions": []
+            }
+          },
+          "attackSpeed": {
+            "value": 1.102,
+            "uncapped": 1.102,
+            "resolved": {
+              "base": 1.102,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 1.102,
+              "value": 1.102,
+              "contributions": []
+            }
+          },
+          "criticalChance": {
+            "value": 0.0102,
+            "uncapped": 0.010199999999999999,
+            "resolved": {
+              "base": 0.010199999999999999,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.010199999999999999,
+              "value": 0.010199999999999999,
+              "contributions": []
+            }
+          },
+          "criticalDamage": {
+            "value": 0.5,
+            "uncapped": 0.5,
+            "resolved": {
+              "base": 0.5,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.5,
+              "value": 0.5,
+              "contributions": []
+            }
+          },
+          "armor": {
+            "value": 0.1635,
+            "uncapped": 0.16345599999999985,
+            "resolved": {
+              "base": 0.16345599999999985,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.16345599999999985,
+              "value": 0.16345599999999985,
+              "contributions": []
+            }
+          },
+          "magicResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "armorReduction": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "dodgeChance": {
+            "value": 0.0102,
+            "uncapped": 0.010199999999999999,
+            "resolved": {
+              "base": 0.010199999999999999,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.010199999999999999,
+              "value": 0.010199999999999999,
+              "contributions": []
+            }
+          },
+          "MetalResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "WoodResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "WaterResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "FireResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "EarthResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "movementSpeed": {
+            "value": 273.26,
+            "uncapped": 273.26,
+            "resolved": {
+              "base": 273.26,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 273.26,
+              "value": 273.26,
+              "contributions": []
+            }
+          },
+          "movementSpeedMultiplier": {
+            "value": 1,
+            "uncapped": 1,
+            "resolved": {
+              "base": 1,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 1,
+              "value": 1,
+              "contributions": []
+            }
+          },
+          "cooldownReduction": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          }
+        },
+        "scaling": {
+          "maxHp": 91.19999999999999,
+          "maxMana": 40.6,
+          "hpRegen": 3.04,
+          "manaRegen": 3.045,
+          "physicalAttack": 3.119999999999999,
+          "magicAttack": 0,
+          "attackSpeed": 0.102,
+          "criticalChance": 0.010199999999999999,
+          "criticalDamage": 0,
+          "armor": 0.03999999999999986,
+          "magicResistance": 0,
+          "armorReduction": 0,
+          "dodgeChance": 0.010199999999999999,
+          "MetalResistance": 0,
+          "WoodResistance": 0,
+          "WaterResistance": 0,
+          "FireResistance": 0,
+          "EarthResistance": 0,
+          "movementSpeed": 13.26,
+          "movementSpeedMultiplier": 0,
+          "cooldownReduction": 0
+        }
+      },
+      "trace": [
+        [
+          "resolve",
+          "str",
+          10.1
+        ],
+        [
+          "resolve",
+          "dex",
+          20.2
+        ],
+        [
+          "resolve",
+          "int",
+          30.3
+        ],
+        [
+          "resolve",
+          "vit",
+          40.4
+        ],
+        [
+          "resolve",
+          "maxHp",
+          143.2
+        ],
+        [
+          "transform",
+          "maxHp",
+          143.2
+        ],
+        [
+          "resolve",
+          "maxMana",
+          70.6
+        ],
+        [
+          "transform",
+          "maxMana",
+          70.6
+        ],
+        [
+          "resolve",
+          "hpRegen",
+          3.04
+        ],
+        [
+          "transform",
+          "hpRegen",
+          3.04
+        ],
+        [
+          "resolve",
+          "manaRegen",
+          5.045
+        ],
+        [
+          "transform",
+          "manaRegen",
+          5.045
+        ],
+        [
+          "resolve",
+          "physicalAttack",
+          12.46567
+        ],
+        [
+          "transform",
+          "physicalAttack",
+          12.46567
+        ],
+        [
+          "resolve",
+          "magicAttack",
+          7
+        ],
+        [
+          "transform",
+          "magicAttack",
+          7
+        ],
+        [
+          "resolve",
+          "attackSpeed",
+          1.102
+        ],
+        [
+          "transform",
+          "attackSpeed",
+          1.102
+        ],
+        [
+          "resolve",
+          "criticalChance",
+          0.010199999999999999
+        ],
+        [
+          "transform",
+          "criticalChance",
+          0.010199999999999999
+        ],
+        [
+          "resolve",
+          "criticalDamage",
+          0.5
+        ],
+        [
+          "transform",
+          "criticalDamage",
+          0.5
+        ],
+        [
+          "resolve",
+          "armor",
+          0.16345599999999985
+        ],
+        [
+          "transform",
+          "armor",
+          0.16345599999999985
+        ],
+        [
+          "resolve",
+          "magicResistance",
+          0
+        ],
+        [
+          "transform",
+          "magicResistance",
+          0
+        ],
+        [
+          "resolve",
+          "armorReduction",
+          0
+        ],
+        [
+          "transform",
+          "armorReduction",
+          0
+        ],
+        [
+          "resolve",
+          "dodgeChance",
+          0.010199999999999999
+        ],
+        [
+          "transform",
+          "dodgeChance",
+          0.010199999999999999
+        ],
+        [
+          "resolve",
+          "MetalResistance",
+          0
+        ],
+        [
+          "transform",
+          "MetalResistance",
+          0
+        ],
+        [
+          "resolve",
+          "WoodResistance",
+          0
+        ],
+        [
+          "transform",
+          "WoodResistance",
+          0
+        ],
+        [
+          "resolve",
+          "WaterResistance",
+          0
+        ],
+        [
+          "transform",
+          "WaterResistance",
+          0
+        ],
+        [
+          "resolve",
+          "FireResistance",
+          0
+        ],
+        [
+          "transform",
+          "FireResistance",
+          0
+        ],
+        [
+          "resolve",
+          "EarthResistance",
+          0
+        ],
+        [
+          "transform",
+          "EarthResistance",
+          0
+        ],
+        [
+          "resolve",
+          "movementSpeed",
+          273.26
+        ],
+        [
+          "transform",
+          "movementSpeed",
+          273.26
+        ],
+        [
+          "resolve",
+          "movementSpeedMultiplier",
+          1
+        ],
+        [
+          "transform",
+          "movementSpeedMultiplier",
+          1
+        ],
+        [
+          "resolve",
+          "cooldownReduction",
+          0
+        ],
+        [
+          "transform",
+          "cooldownReduction",
+          0
+        ]
+      ]
+    },
+    {
+      "name": "character:dodge-override",
+      "result": {
+        "attributes": {
+          "str": 10.1,
+          "dex": 20.2,
+          "int": 30.3,
+          "vit": 40.4
+        },
+        "core": {
+          "str": {
+            "value": 10.1,
+            "uncapped": 10.1,
+            "resolved": {
+              "base": 10.1,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 10.1,
+              "value": 10.1,
+              "contributions": []
+            }
+          },
+          "dex": {
+            "value": 20.2,
+            "uncapped": 20.2,
+            "resolved": {
+              "base": 20.2,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 20.2,
+              "value": 20.2,
+              "contributions": []
+            }
+          },
+          "int": {
+            "value": 30.3,
+            "uncapped": 30.3,
+            "resolved": {
+              "base": 30.3,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 30.3,
+              "value": 30.3,
+              "contributions": []
+            }
+          },
+          "vit": {
+            "value": 40.4,
+            "uncapped": 40.4,
+            "resolved": {
+              "base": 40.4,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 40.4,
+              "value": 40.4,
+              "contributions": []
+            }
+          }
+        },
+        "values": {
+          "maxHp": 143.2,
+          "maxMana": 70.6,
+          "hpRegen": 3.04,
+          "manaRegen": 5.045,
+          "physicalAttack": 12.4657,
+          "magicAttack": 7,
+          "attackSpeed": 1.102,
+          "criticalChance": 0.0102,
+          "criticalDamage": 0.5,
+          "armor": 0.1635,
+          "magicResistance": 0,
+          "armorReduction": 0,
+          "dodgeChance": 0.1235,
+          "MetalResistance": 0,
+          "WoodResistance": 0,
+          "WaterResistance": 0,
+          "FireResistance": 0,
+          "EarthResistance": 0,
+          "movementSpeed": 273.26,
+          "movementSpeedMultiplier": 1,
+          "cooldownReduction": 0
+        },
+        "details": {
+          "maxHp": {
+            "value": 143.2,
+            "uncapped": 143.2,
+            "resolved": {
+              "base": 143.2,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 143.2,
+              "value": 143.2,
+              "contributions": []
+            }
+          },
+          "maxMana": {
+            "value": 70.6,
+            "uncapped": 70.6,
+            "resolved": {
+              "base": 70.6,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 70.6,
+              "value": 70.6,
+              "contributions": []
+            }
+          },
+          "hpRegen": {
+            "value": 3.04,
+            "uncapped": 3.04,
+            "resolved": {
+              "base": 3.04,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 3.04,
+              "value": 3.04,
+              "contributions": []
+            }
+          },
+          "manaRegen": {
+            "value": 5.045,
+            "uncapped": 5.045,
+            "resolved": {
+              "base": 5.045,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 5.045,
+              "value": 5.045,
+              "contributions": []
+            }
+          },
+          "physicalAttack": {
+            "value": 12.4657,
+            "uncapped": 12.46567,
+            "resolved": {
+              "base": 12.46567,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 12.46567,
+              "value": 12.46567,
+              "contributions": []
+            }
+          },
+          "magicAttack": {
+            "value": 7,
+            "uncapped": 7,
+            "resolved": {
+              "base": 7,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 7,
+              "value": 7,
+              "contributions": []
+            }
+          },
+          "attackSpeed": {
+            "value": 1.102,
+            "uncapped": 1.102,
+            "resolved": {
+              "base": 1.102,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 1.102,
+              "value": 1.102,
+              "contributions": []
+            }
+          },
+          "criticalChance": {
+            "value": 0.0102,
+            "uncapped": 0.010199999999999999,
+            "resolved": {
+              "base": 0.010199999999999999,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.010199999999999999,
+              "value": 0.010199999999999999,
+              "contributions": []
+            }
+          },
+          "criticalDamage": {
+            "value": 0.5,
+            "uncapped": 0.5,
+            "resolved": {
+              "base": 0.5,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.5,
+              "value": 0.5,
+              "contributions": []
+            }
+          },
+          "armor": {
+            "value": 0.1635,
+            "uncapped": 0.16345599999999985,
+            "resolved": {
+              "base": 0.16345599999999985,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.16345599999999985,
+              "value": 0.16345599999999985,
+              "contributions": []
+            }
+          },
+          "magicResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "armorReduction": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "dodgeChance": {
+            "value": 0.1235,
+            "uncapped": 0.010199999999999999,
+            "resolved": {
+              "base": 0.010199999999999999,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.010199999999999999,
+              "value": 0.010199999999999999,
+              "contributions": []
+            }
+          },
+          "MetalResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "WoodResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "WaterResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "FireResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "EarthResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "movementSpeed": {
+            "value": 273.26,
+            "uncapped": 273.26,
+            "resolved": {
+              "base": 273.26,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 273.26,
+              "value": 273.26,
+              "contributions": []
+            }
+          },
+          "movementSpeedMultiplier": {
+            "value": 1,
+            "uncapped": 1,
+            "resolved": {
+              "base": 1,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 1,
+              "value": 1,
+              "contributions": []
+            }
+          },
+          "cooldownReduction": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          }
+        },
+        "scaling": {
+          "maxHp": 91.19999999999999,
+          "maxMana": 40.6,
+          "hpRegen": 3.04,
+          "manaRegen": 3.045,
+          "physicalAttack": 3.119999999999999,
+          "magicAttack": 0,
+          "attackSpeed": 0.102,
+          "criticalChance": 0.010199999999999999,
+          "criticalDamage": 0,
+          "armor": 0.03999999999999986,
+          "magicResistance": 0,
+          "armorReduction": 0,
+          "dodgeChance": 0.010199999999999999,
+          "MetalResistance": 0,
+          "WoodResistance": 0,
+          "WaterResistance": 0,
+          "FireResistance": 0,
+          "EarthResistance": 0,
+          "movementSpeed": 13.26,
+          "movementSpeedMultiplier": 0,
+          "cooldownReduction": 0
+        }
+      },
+      "trace": [
+        [
+          "resolve",
+          "str",
+          10.1
+        ],
+        [
+          "resolve",
+          "dex",
+          20.2
+        ],
+        [
+          "resolve",
+          "int",
+          30.3
+        ],
+        [
+          "resolve",
+          "vit",
+          40.4
+        ],
+        [
+          "resolve",
+          "maxHp",
+          143.2
+        ],
+        [
+          "transform",
+          "maxHp",
+          143.2
+        ],
+        [
+          "resolve",
+          "maxMana",
+          70.6
+        ],
+        [
+          "transform",
+          "maxMana",
+          70.6
+        ],
+        [
+          "resolve",
+          "hpRegen",
+          3.04
+        ],
+        [
+          "transform",
+          "hpRegen",
+          3.04
+        ],
+        [
+          "resolve",
+          "manaRegen",
+          5.045
+        ],
+        [
+          "transform",
+          "manaRegen",
+          5.045
+        ],
+        [
+          "resolve",
+          "physicalAttack",
+          12.46567
+        ],
+        [
+          "transform",
+          "physicalAttack",
+          12.46567
+        ],
+        [
+          "resolve",
+          "magicAttack",
+          7
+        ],
+        [
+          "transform",
+          "magicAttack",
+          7
+        ],
+        [
+          "resolve",
+          "attackSpeed",
+          1.102
+        ],
+        [
+          "transform",
+          "attackSpeed",
+          1.102
+        ],
+        [
+          "resolve",
+          "criticalChance",
+          0.010199999999999999
+        ],
+        [
+          "transform",
+          "criticalChance",
+          0.010199999999999999
+        ],
+        [
+          "resolve",
+          "criticalDamage",
+          0.5
+        ],
+        [
+          "transform",
+          "criticalDamage",
+          0.5
+        ],
+        [
+          "resolve",
+          "armor",
+          0.16345599999999985
+        ],
+        [
+          "transform",
+          "armor",
+          0.16345599999999985
+        ],
+        [
+          "resolve",
+          "magicResistance",
+          0
+        ],
+        [
+          "transform",
+          "magicResistance",
+          0
+        ],
+        [
+          "resolve",
+          "armorReduction",
+          0
+        ],
+        [
+          "transform",
+          "armorReduction",
+          0
+        ],
+        [
+          "resolve",
+          "dodgeChance",
+          0.010199999999999999
+        ],
+        [
+          "transform",
+          "dodgeChance",
+          0.010199999999999999
+        ],
+        [
+          "resolve",
+          "MetalResistance",
+          0
+        ],
+        [
+          "transform",
+          "MetalResistance",
+          0
+        ],
+        [
+          "resolve",
+          "WoodResistance",
+          0
+        ],
+        [
+          "transform",
+          "WoodResistance",
+          0
+        ],
+        [
+          "resolve",
+          "WaterResistance",
+          0
+        ],
+        [
+          "transform",
+          "WaterResistance",
+          0
+        ],
+        [
+          "resolve",
+          "FireResistance",
+          0
+        ],
+        [
+          "transform",
+          "FireResistance",
+          0
+        ],
+        [
+          "resolve",
+          "EarthResistance",
+          0
+        ],
+        [
+          "transform",
+          "EarthResistance",
+          0
+        ],
+        [
+          "resolve",
+          "movementSpeed",
+          273.26
+        ],
+        [
+          "transform",
+          "movementSpeed",
+          273.26
+        ],
+        [
+          "resolve",
+          "movementSpeedMultiplier",
+          1
+        ],
+        [
+          "transform",
+          "movementSpeedMultiplier",
+          1
+        ],
+        [
+          "resolve",
+          "cooldownReduction",
+          0
+        ],
+        [
+          "transform",
+          "cooldownReduction",
+          0
+        ]
+      ]
+    },
+    {
+      "name": "character:dodge-disabled",
+      "result": {
+        "attributes": {
+          "str": 10.1,
+          "dex": 20.2,
+          "int": 30.3,
+          "vit": 40.4
+        },
+        "core": {
+          "str": {
+            "value": 10.1,
+            "uncapped": 10.1,
+            "resolved": {
+              "base": 10.1,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 10.1,
+              "value": 10.1,
+              "contributions": []
+            }
+          },
+          "dex": {
+            "value": 20.2,
+            "uncapped": 20.2,
+            "resolved": {
+              "base": 20.2,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 20.2,
+              "value": 20.2,
+              "contributions": []
+            }
+          },
+          "int": {
+            "value": 30.3,
+            "uncapped": 30.3,
+            "resolved": {
+              "base": 30.3,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 30.3,
+              "value": 30.3,
+              "contributions": []
+            }
+          },
+          "vit": {
+            "value": 40.4,
+            "uncapped": 40.4,
+            "resolved": {
+              "base": 40.4,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 40.4,
+              "value": 40.4,
+              "contributions": []
+            }
+          }
+        },
+        "values": {
+          "maxHp": 143.2,
+          "maxMana": 70.6,
+          "hpRegen": 3.04,
+          "manaRegen": 5.045,
+          "physicalAttack": 12.4657,
+          "magicAttack": 7,
+          "attackSpeed": 1.102,
+          "criticalChance": 0.0102,
+          "criticalDamage": 0.5,
+          "armor": 0.1635,
+          "magicResistance": 0,
+          "armorReduction": 0,
+          "dodgeChance": 0,
+          "MetalResistance": 0,
+          "WoodResistance": 0,
+          "WaterResistance": 0,
+          "FireResistance": 0,
+          "EarthResistance": 0,
+          "movementSpeed": 273.26,
+          "movementSpeedMultiplier": 1,
+          "cooldownReduction": 0
+        },
+        "details": {
+          "maxHp": {
+            "value": 143.2,
+            "uncapped": 143.2,
+            "resolved": {
+              "base": 143.2,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 143.2,
+              "value": 143.2,
+              "contributions": []
+            }
+          },
+          "maxMana": {
+            "value": 70.6,
+            "uncapped": 70.6,
+            "resolved": {
+              "base": 70.6,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 70.6,
+              "value": 70.6,
+              "contributions": []
+            }
+          },
+          "hpRegen": {
+            "value": 3.04,
+            "uncapped": 3.04,
+            "resolved": {
+              "base": 3.04,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 3.04,
+              "value": 3.04,
+              "contributions": []
+            }
+          },
+          "manaRegen": {
+            "value": 5.045,
+            "uncapped": 5.045,
+            "resolved": {
+              "base": 5.045,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 5.045,
+              "value": 5.045,
+              "contributions": []
+            }
+          },
+          "physicalAttack": {
+            "value": 12.4657,
+            "uncapped": 12.46567,
+            "resolved": {
+              "base": 12.46567,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 12.46567,
+              "value": 12.46567,
+              "contributions": []
+            }
+          },
+          "magicAttack": {
+            "value": 7,
+            "uncapped": 7,
+            "resolved": {
+              "base": 7,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 7,
+              "value": 7,
+              "contributions": []
+            }
+          },
+          "attackSpeed": {
+            "value": 1.102,
+            "uncapped": 1.102,
+            "resolved": {
+              "base": 1.102,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 1.102,
+              "value": 1.102,
+              "contributions": []
+            }
+          },
+          "criticalChance": {
+            "value": 0.0102,
+            "uncapped": 0.010199999999999999,
+            "resolved": {
+              "base": 0.010199999999999999,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.010199999999999999,
+              "value": 0.010199999999999999,
+              "contributions": []
+            }
+          },
+          "criticalDamage": {
+            "value": 0.5,
+            "uncapped": 0.5,
+            "resolved": {
+              "base": 0.5,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.5,
+              "value": 0.5,
+              "contributions": []
+            }
+          },
+          "armor": {
+            "value": 0.1635,
+            "uncapped": 0.16345599999999985,
+            "resolved": {
+              "base": 0.16345599999999985,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.16345599999999985,
+              "value": 0.16345599999999985,
+              "contributions": []
+            }
+          },
+          "magicResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "armorReduction": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "dodgeChance": {
+            "value": 0,
+            "uncapped": 0.010199999999999999,
+            "resolved": {
+              "base": 0.010199999999999999,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.010199999999999999,
+              "value": 0.010199999999999999,
+              "contributions": []
+            }
+          },
+          "MetalResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "WoodResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "WaterResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "FireResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "EarthResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "movementSpeed": {
+            "value": 273.26,
+            "uncapped": 273.26,
+            "resolved": {
+              "base": 273.26,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 273.26,
+              "value": 273.26,
+              "contributions": []
+            }
+          },
+          "movementSpeedMultiplier": {
+            "value": 1,
+            "uncapped": 1,
+            "resolved": {
+              "base": 1,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 1,
+              "value": 1,
+              "contributions": []
+            }
+          },
+          "cooldownReduction": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          }
+        },
+        "scaling": {
+          "maxHp": 91.19999999999999,
+          "maxMana": 40.6,
+          "hpRegen": 3.04,
+          "manaRegen": 3.045,
+          "physicalAttack": 3.119999999999999,
+          "magicAttack": 0,
+          "attackSpeed": 0.102,
+          "criticalChance": 0.010199999999999999,
+          "criticalDamage": 0,
+          "armor": 0.03999999999999986,
+          "magicResistance": 0,
+          "armorReduction": 0,
+          "dodgeChance": 0.010199999999999999,
+          "MetalResistance": 0,
+          "WoodResistance": 0,
+          "WaterResistance": 0,
+          "FireResistance": 0,
+          "EarthResistance": 0,
+          "movementSpeed": 13.26,
+          "movementSpeedMultiplier": 0,
+          "cooldownReduction": 0
+        }
+      },
+      "trace": [
+        [
+          "resolve",
+          "str",
+          10.1
+        ],
+        [
+          "resolve",
+          "dex",
+          20.2
+        ],
+        [
+          "resolve",
+          "int",
+          30.3
+        ],
+        [
+          "resolve",
+          "vit",
+          40.4
+        ],
+        [
+          "resolve",
+          "maxHp",
+          143.2
+        ],
+        [
+          "transform",
+          "maxHp",
+          143.2
+        ],
+        [
+          "resolve",
+          "maxMana",
+          70.6
+        ],
+        [
+          "transform",
+          "maxMana",
+          70.6
+        ],
+        [
+          "resolve",
+          "hpRegen",
+          3.04
+        ],
+        [
+          "transform",
+          "hpRegen",
+          3.04
+        ],
+        [
+          "resolve",
+          "manaRegen",
+          5.045
+        ],
+        [
+          "transform",
+          "manaRegen",
+          5.045
+        ],
+        [
+          "resolve",
+          "physicalAttack",
+          12.46567
+        ],
+        [
+          "transform",
+          "physicalAttack",
+          12.46567
+        ],
+        [
+          "resolve",
+          "magicAttack",
+          7
+        ],
+        [
+          "transform",
+          "magicAttack",
+          7
+        ],
+        [
+          "resolve",
+          "attackSpeed",
+          1.102
+        ],
+        [
+          "transform",
+          "attackSpeed",
+          1.102
+        ],
+        [
+          "resolve",
+          "criticalChance",
+          0.010199999999999999
+        ],
+        [
+          "transform",
+          "criticalChance",
+          0.010199999999999999
+        ],
+        [
+          "resolve",
+          "criticalDamage",
+          0.5
+        ],
+        [
+          "transform",
+          "criticalDamage",
+          0.5
+        ],
+        [
+          "resolve",
+          "armor",
+          0.16345599999999985
+        ],
+        [
+          "transform",
+          "armor",
+          0.16345599999999985
+        ],
+        [
+          "resolve",
+          "magicResistance",
+          0
+        ],
+        [
+          "transform",
+          "magicResistance",
+          0
+        ],
+        [
+          "resolve",
+          "armorReduction",
+          0
+        ],
+        [
+          "transform",
+          "armorReduction",
+          0
+        ],
+        [
+          "resolve",
+          "dodgeChance",
+          0.010199999999999999
+        ],
+        [
+          "transform",
+          "dodgeChance",
+          0.010199999999999999
+        ],
+        [
+          "resolve",
+          "MetalResistance",
+          0
+        ],
+        [
+          "transform",
+          "MetalResistance",
+          0
+        ],
+        [
+          "resolve",
+          "WoodResistance",
+          0
+        ],
+        [
+          "transform",
+          "WoodResistance",
+          0
+        ],
+        [
+          "resolve",
+          "WaterResistance",
+          0
+        ],
+        [
+          "transform",
+          "WaterResistance",
+          0
+        ],
+        [
+          "resolve",
+          "FireResistance",
+          0
+        ],
+        [
+          "transform",
+          "FireResistance",
+          0
+        ],
+        [
+          "resolve",
+          "EarthResistance",
+          0
+        ],
+        [
+          "transform",
+          "EarthResistance",
+          0
+        ],
+        [
+          "resolve",
+          "movementSpeed",
+          273.26
+        ],
+        [
+          "transform",
+          "movementSpeed",
+          273.26
+        ],
+        [
+          "resolve",
+          "movementSpeedMultiplier",
+          1
+        ],
+        [
+          "transform",
+          "movementSpeedMultiplier",
+          1
+        ],
+        [
+          "resolve",
+          "cooldownReduction",
+          0
+        ],
+        [
+          "transform",
+          "cooldownReduction",
+          0
+        ]
+      ]
+    },
+    {
+      "name": "character:version1",
+      "result": {
+        "attributes": {
+          "str": 10.1,
+          "dex": 20.2,
+          "int": 30.3,
+          "vit": 40.4
+        },
+        "core": {
+          "str": {
+            "value": 10.1,
+            "uncapped": 10.1,
+            "resolved": {
+              "base": 10.1,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 10.1,
+              "value": 10.1,
+              "contributions": []
+            }
+          },
+          "dex": {
+            "value": 20.2,
+            "uncapped": 20.2,
+            "resolved": {
+              "base": 20.2,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 20.2,
+              "value": 20.2,
+              "contributions": []
+            }
+          },
+          "int": {
+            "value": 30.3,
+            "uncapped": 30.3,
+            "resolved": {
+              "base": 30.3,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 30.3,
+              "value": 30.3,
+              "contributions": []
+            }
+          },
+          "vit": {
+            "value": 40.4,
+            "uncapped": 40.4,
+            "resolved": {
+              "base": 40.4,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 40.4,
+              "value": 40.4,
+              "contributions": []
+            }
+          }
+        },
+        "values": {
+          "maxHp": 143.2,
+          "maxMana": 70.6,
+          "hpRegen": 3.04,
+          "manaRegen": 5.045,
+          "physicalAttack": 12.4657,
+          "magicAttack": 7,
+          "attackSpeed": 1.102,
+          "criticalChance": 0.0102,
+          "criticalDamage": 0.5,
+          "armor": 0.1635,
+          "magicResistance": 0,
+          "armorReduction": 0,
+          "dodgeChance": 0.0102,
+          "MetalResistance": 0,
+          "WoodResistance": 0,
+          "WaterResistance": 0,
+          "FireResistance": 0,
+          "EarthResistance": 0,
+          "movementSpeed": 273.26,
+          "movementSpeedMultiplier": 1,
+          "cooldownReduction": 0
+        },
+        "details": {
+          "maxHp": {
+            "value": 143.2,
+            "uncapped": 143.2,
+            "resolved": {
+              "base": 143.2,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 143.2,
+              "value": 143.2,
+              "contributions": []
+            }
+          },
+          "maxMana": {
+            "value": 70.6,
+            "uncapped": 70.6,
+            "resolved": {
+              "base": 70.6,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 70.6,
+              "value": 70.6,
+              "contributions": []
+            }
+          },
+          "hpRegen": {
+            "value": 3.04,
+            "uncapped": 3.04,
+            "resolved": {
+              "base": 3.04,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 3.04,
+              "value": 3.04,
+              "contributions": []
+            }
+          },
+          "manaRegen": {
+            "value": 5.045,
+            "uncapped": 5.045,
+            "resolved": {
+              "base": 5.045,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 5.045,
+              "value": 5.045,
+              "contributions": []
+            }
+          },
+          "physicalAttack": {
+            "value": 12.4657,
+            "uncapped": 12.46567,
+            "resolved": {
+              "base": 12.46567,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 12.46567,
+              "value": 12.46567,
+              "contributions": []
+            }
+          },
+          "magicAttack": {
+            "value": 7,
+            "uncapped": 7,
+            "resolved": {
+              "base": 7,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 7,
+              "value": 7,
+              "contributions": []
+            }
+          },
+          "attackSpeed": {
+            "value": 1.102,
+            "uncapped": 1.102,
+            "resolved": {
+              "base": 1.102,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 1.102,
+              "value": 1.102,
+              "contributions": []
+            }
+          },
+          "criticalChance": {
+            "value": 0.0102,
+            "uncapped": 0.010199999999999999,
+            "resolved": {
+              "base": 0.010199999999999999,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.010199999999999999,
+              "value": 0.010199999999999999,
+              "contributions": []
+            }
+          },
+          "criticalDamage": {
+            "value": 0.5,
+            "uncapped": 0.5,
+            "resolved": {
+              "base": 0.5,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.5,
+              "value": 0.5,
+              "contributions": []
+            }
+          },
+          "armor": {
+            "value": 0.1635,
+            "uncapped": 0.16345599999999985,
+            "resolved": {
+              "base": 0.16345599999999985,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.16345599999999985,
+              "value": 0.16345599999999985,
+              "contributions": []
+            }
+          },
+          "magicResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "armorReduction": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "dodgeChance": {
+            "value": 0.0102,
+            "uncapped": 0.010199999999999999,
+            "resolved": {
+              "base": 0.010199999999999999,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.010199999999999999,
+              "value": 0.010199999999999999,
+              "contributions": []
+            }
+          },
+          "MetalResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "WoodResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "WaterResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "FireResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "EarthResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "movementSpeed": {
+            "value": 273.26,
+            "uncapped": 273.26,
+            "resolved": {
+              "base": 273.26,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 273.26,
+              "value": 273.26,
+              "contributions": []
+            }
+          },
+          "movementSpeedMultiplier": {
+            "value": 1,
+            "uncapped": 1,
+            "resolved": {
+              "base": 1,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 1,
+              "value": 1,
+              "contributions": []
+            }
+          },
+          "cooldownReduction": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          }
+        },
+        "scaling": {
+          "maxHp": 91.19999999999999,
+          "maxMana": 40.6,
+          "hpRegen": 3.04,
+          "manaRegen": 3.045,
+          "physicalAttack": 3.119999999999999,
+          "magicAttack": 0,
+          "attackSpeed": 0.102,
+          "criticalChance": 0.010199999999999999,
+          "criticalDamage": 0,
+          "armor": 0.03999999999999986,
+          "magicResistance": 0,
+          "armorReduction": 0,
+          "dodgeChance": 0.010199999999999999,
+          "MetalResistance": 0,
+          "WoodResistance": 0,
+          "WaterResistance": 0,
+          "FireResistance": 0,
+          "EarthResistance": 0,
+          "movementSpeed": 13.26,
+          "movementSpeedMultiplier": 0,
+          "cooldownReduction": 0
+        }
+      },
+      "trace": [
+        [
+          "resolve",
+          "str",
+          10.1
+        ],
+        [
+          "resolve",
+          "dex",
+          20.2
+        ],
+        [
+          "resolve",
+          "int",
+          30.3
+        ],
+        [
+          "resolve",
+          "vit",
+          40.4
+        ],
+        [
+          "resolve",
+          "maxHp",
+          143.2
+        ],
+        [
+          "transform",
+          "maxHp",
+          143.2
+        ],
+        [
+          "resolve",
+          "maxMana",
+          70.6
+        ],
+        [
+          "transform",
+          "maxMana",
+          70.6
+        ],
+        [
+          "resolve",
+          "hpRegen",
+          3.04
+        ],
+        [
+          "transform",
+          "hpRegen",
+          3.04
+        ],
+        [
+          "resolve",
+          "manaRegen",
+          5.045
+        ],
+        [
+          "transform",
+          "manaRegen",
+          5.045
+        ],
+        [
+          "resolve",
+          "physicalAttack",
+          12.46567
+        ],
+        [
+          "transform",
+          "physicalAttack",
+          12.46567
+        ],
+        [
+          "resolve",
+          "magicAttack",
+          7
+        ],
+        [
+          "transform",
+          "magicAttack",
+          7
+        ],
+        [
+          "resolve",
+          "attackSpeed",
+          1.102
+        ],
+        [
+          "transform",
+          "attackSpeed",
+          1.102
+        ],
+        [
+          "resolve",
+          "criticalChance",
+          0.010199999999999999
+        ],
+        [
+          "transform",
+          "criticalChance",
+          0.010199999999999999
+        ],
+        [
+          "resolve",
+          "criticalDamage",
+          0.5
+        ],
+        [
+          "transform",
+          "criticalDamage",
+          0.5
+        ],
+        [
+          "resolve",
+          "armor",
+          0.16345599999999985
+        ],
+        [
+          "transform",
+          "armor",
+          0.16345599999999985
+        ],
+        [
+          "resolve",
+          "magicResistance",
+          0
+        ],
+        [
+          "transform",
+          "magicResistance",
+          0
+        ],
+        [
+          "resolve",
+          "armorReduction",
+          0
+        ],
+        [
+          "transform",
+          "armorReduction",
+          0
+        ],
+        [
+          "resolve",
+          "dodgeChance",
+          0.010199999999999999
+        ],
+        [
+          "transform",
+          "dodgeChance",
+          0.010199999999999999
+        ],
+        [
+          "resolve",
+          "MetalResistance",
+          0
+        ],
+        [
+          "transform",
+          "MetalResistance",
+          0
+        ],
+        [
+          "resolve",
+          "WoodResistance",
+          0
+        ],
+        [
+          "transform",
+          "WoodResistance",
+          0
+        ],
+        [
+          "resolve",
+          "WaterResistance",
+          0
+        ],
+        [
+          "transform",
+          "WaterResistance",
+          0
+        ],
+        [
+          "resolve",
+          "FireResistance",
+          0
+        ],
+        [
+          "transform",
+          "FireResistance",
+          0
+        ],
+        [
+          "resolve",
+          "EarthResistance",
+          0
+        ],
+        [
+          "transform",
+          "EarthResistance",
+          0
+        ],
+        [
+          "resolve",
+          "movementSpeed",
+          273.26
+        ],
+        [
+          "transform",
+          "movementSpeed",
+          273.26
+        ],
+        [
+          "resolve",
+          "movementSpeedMultiplier",
+          1
+        ],
+        [
+          "transform",
+          "movementSpeedMultiplier",
+          1
+        ],
+        [
+          "resolve",
+          "cooldownReduction",
+          0
+        ],
+        [
+          "transform",
+          "cooldownReduction",
+          0
+        ]
+      ]
+    },
+    {
+      "name": "character:nan-transform",
+      "result": {
+        "attributes": {
+          "str": 10.1,
+          "dex": 20.2,
+          "int": 30.3,
+          "vit": 40.4
+        },
+        "core": {
+          "str": {
+            "value": 10.1,
+            "uncapped": 10.1,
+            "resolved": {
+              "base": 10.1,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 10.1,
+              "value": 10.1,
+              "contributions": []
+            }
+          },
+          "dex": {
+            "value": 20.2,
+            "uncapped": 20.2,
+            "resolved": {
+              "base": 20.2,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 20.2,
+              "value": 20.2,
+              "contributions": []
+            }
+          },
+          "int": {
+            "value": 30.3,
+            "uncapped": 30.3,
+            "resolved": {
+              "base": 30.3,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 30.3,
+              "value": 30.3,
+              "contributions": []
+            }
+          },
+          "vit": {
+            "value": 40.4,
+            "uncapped": 40.4,
+            "resolved": {
+              "base": 40.4,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 40.4,
+              "value": 40.4,
+              "contributions": []
+            }
+          }
+        },
+        "values": {
+          "maxHp": 143.2,
+          "maxMana": 70.6,
+          "hpRegen": 3.04,
+          "manaRegen": 5.045,
+          "physicalAttack": 12.4657,
+          "magicAttack": 7,
+          "attackSpeed": 1.102,
+          "criticalChance": 0.0102,
+          "criticalDamage": 0.5,
+          "armor": 0.1635,
+          "magicResistance": 0,
+          "armorReduction": 0,
+          "dodgeChance": 0.0102,
+          "MetalResistance": 0,
+          "WoodResistance": 0,
+          "WaterResistance": 0,
+          "FireResistance": 0,
+          "EarthResistance": 0,
+          "movementSpeed": 273.26,
+          "movementSpeedMultiplier": 1,
+          "cooldownReduction": 0
+        },
+        "details": {
+          "maxHp": {
+            "value": 143.2,
+            "uncapped": 143.2,
+            "resolved": {
+              "base": 143.2,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 143.2,
+              "value": 143.2,
+              "contributions": []
+            }
+          },
+          "maxMana": {
+            "value": 70.6,
+            "uncapped": 70.6,
+            "resolved": {
+              "base": 70.6,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 70.6,
+              "value": 70.6,
+              "contributions": []
+            }
+          },
+          "hpRegen": {
+            "value": 3.04,
+            "uncapped": 3.04,
+            "resolved": {
+              "base": 3.04,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 3.04,
+              "value": 3.04,
+              "contributions": []
+            }
+          },
+          "manaRegen": {
+            "value": 5.045,
+            "uncapped": 5.045,
+            "resolved": {
+              "base": 5.045,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 5.045,
+              "value": 5.045,
+              "contributions": []
+            }
+          },
+          "physicalAttack": {
+            "value": 12.4657,
+            "uncapped": 12.46567,
+            "resolved": {
+              "base": 12.46567,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 12.46567,
+              "value": 12.46567,
+              "contributions": []
+            }
+          },
+          "magicAttack": {
+            "value": 7,
+            "uncapped": 7,
+            "resolved": {
+              "base": 7,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 7,
+              "value": 7,
+              "contributions": []
+            }
+          },
+          "attackSpeed": {
+            "value": 1.102,
+            "uncapped": 1.102,
+            "resolved": {
+              "base": 1.102,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 1.102,
+              "value": 1.102,
+              "contributions": []
+            }
+          },
+          "criticalChance": {
+            "value": 0.0102,
+            "uncapped": 0.010199999999999999,
+            "resolved": {
+              "base": 0.010199999999999999,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.010199999999999999,
+              "value": 0.010199999999999999,
+              "contributions": []
+            }
+          },
+          "criticalDamage": {
+            "value": 0.5,
+            "uncapped": 0.5,
+            "resolved": {
+              "base": 0.5,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.5,
+              "value": 0.5,
+              "contributions": []
+            }
+          },
+          "armor": {
+            "value": 0.1635,
+            "uncapped": 0.16345599999999985,
+            "resolved": {
+              "base": 0.16345599999999985,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.16345599999999985,
+              "value": 0.16345599999999985,
+              "contributions": []
+            }
+          },
+          "magicResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "armorReduction": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "dodgeChance": {
+            "value": 0.0102,
+            "uncapped": 0.010199999999999999,
+            "resolved": {
+              "base": 0.010199999999999999,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.010199999999999999,
+              "value": 0.010199999999999999,
+              "contributions": []
+            }
+          },
+          "MetalResistance": {
+            "value": 0,
+            "uncapped": {
+              "$number": "NaN"
+            },
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "WoodResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "WaterResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "FireResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "EarthResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "movementSpeed": {
+            "value": 273.26,
+            "uncapped": 273.26,
+            "resolved": {
+              "base": 273.26,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 273.26,
+              "value": 273.26,
+              "contributions": []
+            }
+          },
+          "movementSpeedMultiplier": {
+            "value": 1,
+            "uncapped": 1,
+            "resolved": {
+              "base": 1,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 1,
+              "value": 1,
+              "contributions": []
+            }
+          },
+          "cooldownReduction": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          }
+        },
+        "scaling": {
+          "maxHp": 91.19999999999999,
+          "maxMana": 40.6,
+          "hpRegen": 3.04,
+          "manaRegen": 3.045,
+          "physicalAttack": 3.119999999999999,
+          "magicAttack": 0,
+          "attackSpeed": 0.102,
+          "criticalChance": 0.010199999999999999,
+          "criticalDamage": 0,
+          "armor": 0.03999999999999986,
+          "magicResistance": 0,
+          "armorReduction": 0,
+          "dodgeChance": 0.010199999999999999,
+          "MetalResistance": 0,
+          "WoodResistance": 0,
+          "WaterResistance": 0,
+          "FireResistance": 0,
+          "EarthResistance": 0,
+          "movementSpeed": 13.26,
+          "movementSpeedMultiplier": 0,
+          "cooldownReduction": 0
+        }
+      },
+      "trace": [
+        [
+          "resolve",
+          "str",
+          10.1
+        ],
+        [
+          "resolve",
+          "dex",
+          20.2
+        ],
+        [
+          "resolve",
+          "int",
+          30.3
+        ],
+        [
+          "resolve",
+          "vit",
+          40.4
+        ],
+        [
+          "resolve",
+          "maxHp",
+          143.2
+        ],
+        [
+          "transform",
+          "maxHp",
+          143.2
+        ],
+        [
+          "resolve",
+          "maxMana",
+          70.6
+        ],
+        [
+          "transform",
+          "maxMana",
+          70.6
+        ],
+        [
+          "resolve",
+          "hpRegen",
+          3.04
+        ],
+        [
+          "transform",
+          "hpRegen",
+          3.04
+        ],
+        [
+          "resolve",
+          "manaRegen",
+          5.045
+        ],
+        [
+          "transform",
+          "manaRegen",
+          5.045
+        ],
+        [
+          "resolve",
+          "physicalAttack",
+          12.46567
+        ],
+        [
+          "transform",
+          "physicalAttack",
+          12.46567
+        ],
+        [
+          "resolve",
+          "magicAttack",
+          7
+        ],
+        [
+          "transform",
+          "magicAttack",
+          7
+        ],
+        [
+          "resolve",
+          "attackSpeed",
+          1.102
+        ],
+        [
+          "transform",
+          "attackSpeed",
+          1.102
+        ],
+        [
+          "resolve",
+          "criticalChance",
+          0.010199999999999999
+        ],
+        [
+          "transform",
+          "criticalChance",
+          0.010199999999999999
+        ],
+        [
+          "resolve",
+          "criticalDamage",
+          0.5
+        ],
+        [
+          "transform",
+          "criticalDamage",
+          0.5
+        ],
+        [
+          "resolve",
+          "armor",
+          0.16345599999999985
+        ],
+        [
+          "transform",
+          "armor",
+          0.16345599999999985
+        ],
+        [
+          "resolve",
+          "magicResistance",
+          0
+        ],
+        [
+          "transform",
+          "magicResistance",
+          0
+        ],
+        [
+          "resolve",
+          "armorReduction",
+          0
+        ],
+        [
+          "transform",
+          "armorReduction",
+          0
+        ],
+        [
+          "resolve",
+          "dodgeChance",
+          0.010199999999999999
+        ],
+        [
+          "transform",
+          "dodgeChance",
+          0.010199999999999999
+        ],
+        [
+          "resolve",
+          "MetalResistance",
+          0
+        ],
+        [
+          "transform",
+          "MetalResistance",
+          0
+        ],
+        [
+          "resolve",
+          "WoodResistance",
+          0
+        ],
+        [
+          "transform",
+          "WoodResistance",
+          0
+        ],
+        [
+          "resolve",
+          "WaterResistance",
+          0
+        ],
+        [
+          "transform",
+          "WaterResistance",
+          0
+        ],
+        [
+          "resolve",
+          "FireResistance",
+          0
+        ],
+        [
+          "transform",
+          "FireResistance",
+          0
+        ],
+        [
+          "resolve",
+          "EarthResistance",
+          0
+        ],
+        [
+          "transform",
+          "EarthResistance",
+          0
+        ],
+        [
+          "resolve",
+          "movementSpeed",
+          273.26
+        ],
+        [
+          "transform",
+          "movementSpeed",
+          273.26
+        ],
+        [
+          "resolve",
+          "movementSpeedMultiplier",
+          1
+        ],
+        [
+          "transform",
+          "movementSpeedMultiplier",
+          1
+        ],
+        [
+          "resolve",
+          "cooldownReduction",
+          0
+        ],
+        [
+          "transform",
+          "cooldownReduction",
+          0
+        ]
+      ]
+    },
+    {
+      "name": "character:throw-transform",
+      "error": {
+        "name": "Error",
+        "message": "character transform failed"
+      },
+      "trace": [
+        [
+          "resolve",
+          "str",
+          10.1
+        ],
+        [
+          "resolve",
+          "dex",
+          20.2
+        ],
+        [
+          "resolve",
+          "int",
+          30.3
+        ],
+        [
+          "resolve",
+          "vit",
+          40.4
+        ],
+        [
+          "resolve",
+          "maxHp",
+          143.2
+        ],
+        [
+          "transform",
+          "maxHp",
+          143.2
+        ],
+        [
+          "resolve",
+          "maxMana",
+          70.6
+        ],
+        [
+          "transform",
+          "maxMana",
+          70.6
+        ],
+        [
+          "resolve",
+          "hpRegen",
+          3.04
+        ],
+        [
+          "transform",
+          "hpRegen",
+          3.04
+        ],
+        [
+          "resolve",
+          "manaRegen",
+          5.045
+        ],
+        [
+          "transform",
+          "manaRegen",
+          5.045
+        ],
+        [
+          "resolve",
+          "physicalAttack",
+          12.46567
+        ],
+        [
+          "transform",
+          "physicalAttack",
+          12.46567
+        ]
+      ]
+    },
+    {
+      "name": "character:accumulation",
+      "result": {
+        "attributes": {
+          "str": 10000000000000000,
+          "dex": 1,
+          "int": -10000000000000000,
+          "vit": 1
+        },
+        "core": {
+          "str": {
+            "value": 10000000000000000,
+            "uncapped": 10000000000000000,
+            "resolved": {
+              "base": 10000000000000000,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 10000000000000000,
+              "value": 10000000000000000,
+              "contributions": []
+            }
+          },
+          "dex": {
+            "value": 1,
+            "uncapped": 1,
+            "resolved": {
+              "base": 1,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 1,
+              "value": 1,
+              "contributions": []
+            }
+          },
+          "int": {
+            "value": -10000000000000000,
+            "uncapped": -10000000000000000,
+            "resolved": {
+              "base": -10000000000000000,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": -10000000000000000,
+              "value": -10000000000000000,
+              "contributions": []
+            }
+          },
+          "vit": {
+            "value": 1,
+            "uncapped": 1,
+            "resolved": {
+              "base": 1,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 1,
+              "value": 1,
+              "contributions": []
+            }
+          }
+        },
+        "values": {
+          "maxHp": 55,
+          "maxMana": 0,
+          "hpRegen": 0.1,
+          "manaRegen": 0,
+          "physicalAttack": 1000000,
+          "magicAttack": 7,
+          "attackSpeed": 1.01,
+          "criticalChance": 0.001,
+          "criticalDamage": 0.5,
+          "armor": 1.1235,
+          "magicResistance": 0,
+          "armorReduction": 0,
+          "dodgeChance": 0.001,
+          "MetalResistance": 0,
+          "WoodResistance": 0,
+          "WaterResistance": 0,
+          "FireResistance": 0,
+          "EarthResistance": 0,
+          "movementSpeed": 261.3,
+          "movementSpeedMultiplier": 1,
+          "cooldownReduction": 0
+        },
+        "details": {
+          "maxHp": {
+            "value": 55,
+            "uncapped": 55,
+            "resolved": {
+              "base": 55,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 55,
+              "value": 55,
+              "contributions": []
+            }
+          },
+          "maxMana": {
+            "value": 0,
+            "uncapped": -19999999999999970,
+            "resolved": {
+              "base": -19999999999999970,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": -19999999999999970,
+              "value": -19999999999999970,
+              "contributions": []
+            }
+          },
+          "hpRegen": {
+            "value": 0.1,
+            "uncapped": 0.1,
+            "resolved": {
+              "base": 0.1,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.1,
+              "value": 0.1,
+              "contributions": []
+            }
+          },
+          "manaRegen": {
+            "value": 0,
+            "uncapped": -1499999999999998,
+            "resolved": {
+              "base": -1499999999999998,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": -1499999999999998,
+              "value": -1499999999999998,
+              "contributions": []
+            }
+          },
+          "physicalAttack": {
+            "value": 1000000,
+            "uncapped": 6000000000000009,
+            "resolved": {
+              "base": 6000000000000009,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 6000000000000009,
+              "value": 6000000000000009,
+              "contributions": []
+            }
+          },
+          "magicAttack": {
+            "value": 7,
+            "uncapped": 7,
+            "resolved": {
+              "base": 7,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 7,
+              "value": 7,
+              "contributions": []
+            }
+          },
+          "attackSpeed": {
+            "value": 1.01,
+            "uncapped": 1.01,
+            "resolved": {
+              "base": 1.01,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 1.01,
+              "value": 1.01,
+              "contributions": []
+            }
+          },
+          "criticalChance": {
+            "value": 0.001,
+            "uncapped": 0.001,
+            "resolved": {
+              "base": 0.001,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.001,
+              "value": 0.001,
+              "contributions": []
+            }
+          },
+          "criticalDamage": {
+            "value": 0.5,
+            "uncapped": 0.5,
+            "resolved": {
+              "base": 0.5,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.5,
+              "value": 0.5,
+              "contributions": []
+            }
+          },
+          "armor": {
+            "value": 1.1235,
+            "uncapped": 1.123456,
+            "resolved": {
+              "base": 1.123456,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 1.123456,
+              "value": 1.123456,
+              "contributions": []
+            }
+          },
+          "magicResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "armorReduction": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "dodgeChance": {
+            "value": 0.001,
+            "uncapped": 0.001,
+            "resolved": {
+              "base": 0.001,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0.001,
+              "value": 0.001,
+              "contributions": []
+            }
+          },
+          "MetalResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "WoodResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "WaterResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "FireResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "EarthResistance": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          },
+          "movementSpeed": {
+            "value": 261.3,
+            "uncapped": 261.3,
+            "resolved": {
+              "base": 261.3,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 261.3,
+              "value": 261.3,
+              "contributions": []
+            }
+          },
+          "movementSpeedMultiplier": {
+            "value": 1,
+            "uncapped": 1,
+            "resolved": {
+              "base": 1,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 1,
+              "value": 1,
+              "contributions": []
+            }
+          },
+          "cooldownReduction": {
+            "value": 0,
+            "uncapped": 0,
+            "resolved": {
+              "base": 0,
+              "flat": 0,
+              "percent": 0,
+              "percentagePoints": 0,
+              "totalFlat": 0,
+              "value": 0,
+              "contributions": []
+            }
+          }
+        },
+        "scaling": {
+          "maxHp": 3,
+          "maxMana": -20000000000000000,
+          "hpRegen": 0.1,
+          "manaRegen": -1500000000000000,
+          "physicalAttack": 6000000000000000,
+          "magicAttack": 0,
+          "attackSpeed": 0.01,
+          "criticalChance": 0.001,
+          "criticalDamage": 0,
+          "armor": 1,
+          "magicResistance": 0,
+          "armorReduction": 0,
+          "dodgeChance": 0.001,
+          "MetalResistance": 0,
+          "WoodResistance": 0,
+          "WaterResistance": 0,
+          "FireResistance": 0,
+          "EarthResistance": 0,
+          "movementSpeed": 1.3,
+          "movementSpeedMultiplier": 0,
+          "cooldownReduction": 0
+        }
+      },
+      "trace": [
+        [
+          "resolve",
+          "str",
+          10000000000000000
+        ],
+        [
+          "resolve",
+          "dex",
+          1
+        ],
+        [
+          "resolve",
+          "int",
+          -10000000000000000
+        ],
+        [
+          "resolve",
+          "vit",
+          1
+        ],
+        [
+          "resolve",
+          "maxHp",
+          55
+        ],
+        [
+          "transform",
+          "maxHp",
+          55
+        ],
+        [
+          "resolve",
+          "maxMana",
+          -19999999999999970
+        ],
+        [
+          "transform",
+          "maxMana",
+          -19999999999999970
+        ],
+        [
+          "resolve",
+          "hpRegen",
+          0.1
+        ],
+        [
+          "transform",
+          "hpRegen",
+          0.1
+        ],
+        [
+          "resolve",
+          "manaRegen",
+          -1499999999999998
+        ],
+        [
+          "transform",
+          "manaRegen",
+          -1499999999999998
+        ],
+        [
+          "resolve",
+          "physicalAttack",
+          6000000000000009
+        ],
+        [
+          "transform",
+          "physicalAttack",
+          6000000000000009
+        ],
+        [
+          "resolve",
+          "magicAttack",
+          7
+        ],
+        [
+          "transform",
+          "magicAttack",
+          7
+        ],
+        [
+          "resolve",
+          "attackSpeed",
+          1.01
+        ],
+        [
+          "transform",
+          "attackSpeed",
+          1.01
+        ],
+        [
+          "resolve",
+          "criticalChance",
+          0.001
+        ],
+        [
+          "transform",
+          "criticalChance",
+          0.001
+        ],
+        [
+          "resolve",
+          "criticalDamage",
+          0.5
+        ],
+        [
+          "transform",
+          "criticalDamage",
+          0.5
+        ],
+        [
+          "resolve",
+          "armor",
+          1.123456
+        ],
+        [
+          "transform",
+          "armor",
+          1.123456
+        ],
+        [
+          "resolve",
+          "magicResistance",
+          0
+        ],
+        [
+          "transform",
+          "magicResistance",
+          0
+        ],
+        [
+          "resolve",
+          "armorReduction",
+          0
+        ],
+        [
+          "transform",
+          "armorReduction",
+          0
+        ],
+        [
+          "resolve",
+          "dodgeChance",
+          0.001
+        ],
+        [
+          "transform",
+          "dodgeChance",
+          0.001
+        ],
+        [
+          "resolve",
+          "MetalResistance",
+          0
+        ],
+        [
+          "transform",
+          "MetalResistance",
+          0
+        ],
+        [
+          "resolve",
+          "WoodResistance",
+          0
+        ],
+        [
+          "transform",
+          "WoodResistance",
+          0
+        ],
+        [
+          "resolve",
+          "WaterResistance",
+          0
+        ],
+        [
+          "transform",
+          "WaterResistance",
+          0
+        ],
+        [
+          "resolve",
+          "FireResistance",
+          0
+        ],
+        [
+          "transform",
+          "FireResistance",
+          0
+        ],
+        [
+          "resolve",
+          "EarthResistance",
+          0
+        ],
+        [
+          "transform",
+          "EarthResistance",
+          0
+        ],
+        [
+          "resolve",
+          "movementSpeed",
+          261.3
+        ],
+        [
+          "transform",
+          "movementSpeed",
+          261.3
+        ],
+        [
+          "resolve",
+          "movementSpeedMultiplier",
+          1
+        ],
+        [
+          "transform",
+          "movementSpeedMultiplier",
+          1
+        ],
+        [
+          "resolve",
+          "cooldownReduction",
+          0
+        ],
+        [
+          "transform",
+          "cooldownReduction",
+          0
+        ]
+      ]
+    },
+    {
+      "name": "cooldown:1000:0.5",
+      "result": 500,
+      "trace": []
+    },
+    {
+      "name": "cooldown:0:1",
+      "result": 0,
+      "trace": []
+    },
+    {
+      "name": "cooldown:0:0",
+      "result": {
+        "$number": "-0"
+      },
+      "trace": []
+    },
+    {
+      "name": "cooldown:1.1:0.3",
+      "result": 0.77,
+      "trace": []
+    },
+    {
+      "name": "cooldown:-1:0",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resolved cooldown"
+      },
+      "trace": []
+    },
+    {
+      "name": "cooldown:1:-1",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resolved cooldown"
+      },
+      "trace": []
+    },
+    {
+      "name": "cooldown:1:1.1",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resolved cooldown"
+      },
+      "trace": []
+    },
+    {
+      "name": "cooldown:NaN:0",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resolved cooldown"
+      },
+      "trace": []
+    },
+    {
+      "name": "cooldown:1:Infinity",
+      "error": {
+        "name": "Error",
+        "message": "Invalid resolved cooldown"
+      },
+      "trace": []
+    }
+  ]
+}

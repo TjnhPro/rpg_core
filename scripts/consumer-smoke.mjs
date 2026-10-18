@@ -38,16 +38,17 @@ try {
   npm(['install', '--ignore-scripts', '--no-audit', '--no-fund', archive, `typescript@${pkg.devDependencies.typescript}`], consumer);
   const kernelFixture = readFileSync(path.join(root, 'tests/fixtures/kernel-contracts.ts'), 'utf8');
   writeFileSync(path.join(consumer, 'kernel-contracts.ts'), kernelFixture.replace('../../src/kernel/index.js', '@rpg/core/kernel'));
+  writeFileSync(path.join(consumer, 'kernel-stats.ts'), readFileSync(path.join(root, 'tests/fixtures/kernel-stats-consumer.ts'), 'utf8').replaceAll('../../src/kernel/index.js', '@rpg/core/kernel'));
   const installedEntry = path.join(consumer, 'node_modules/@rpg/core/dist/kernel/index.d.ts');
   const declarationProgram = ts.createProgram([installedEntry], {
     target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.NodeNext,
     moduleResolution: ts.ModuleResolutionKind.NodeNext, strict: true, types: [], skipLibCheck: false,
   });
   const installedClosure = checkDeclarationClosure(declarationProgram, installedEntry, path.dirname(installedEntry), 'installed');
-  assert.equal(installedClosure.exports, 39);
-  assert.equal(installedClosure.files.length, 8);
+  assert.equal(installedClosure.exports, 44);
+  assert.equal(installedClosure.files.length, 9);
   const expectedSymbols = {'.': 243, './contracts': 102, './stats': 17, './modifiers': 8,
-    './combat': 33, './damage': 27, './skills': 76, './effects': 34, './mechanics': 20, './spatial': 6, './kernel': 39};
+    './combat': 33, './damage': 27, './skills': 76, './effects': 34, './mechanics': 20, './spatial': 6, './kernel': 44};
   const installedEntries = Object.entries(pkg.exports).map(([name, entry]) =>
     [name, path.join(consumer, 'node_modules/@rpg/core', entry.types)]);
   const apiProgram = ts.createProgram(installedEntries.map(([, file]) => file), declarationProgram.getCompilerOptions());
@@ -60,13 +61,13 @@ try {
       return target.flags & ts.SymbolFlags.Value;
     });
     if (name === '.') assert.equal(values.length, 122, 'Root runtime values');
-    if (name === './kernel') assert.equal(values.length, 0, 'Kernel must export types only');
+    if (name === './kernel') assert.equal(values.length, 3, 'Kernel stat runtime exports');
   }
   for (const file of installedClosure.files) {
     const member = path.relative(path.join(consumer, 'node_modules/@rpg/core'), file).replaceAll('\\', '/');
     assert(members.includes(member), `Missing reachable Kernel declaration: ${member}`);
   }
-  console.log(JSON.stringify({status: 'KERNEL_DECLARATIONS_VERIFIED', exports: installedClosure.exports, declarationFiles: installedClosure.files.length, compileOnly: true}));
+  console.log(JSON.stringify({status: 'KERNEL_DECLARATIONS_VERIFIED', exports: installedClosure.exports, declarationFiles: installedClosure.files.length}));
   // Same real combat/skill example, copied as consumer-owned source. Every Core
   // import is a package import; no links, original paths or ambient Node types.
   const example = readFileSync(path.join(root, 'examples/headless.ts'), 'utf8');
@@ -93,7 +94,7 @@ try {
   writeFileSync(path.join(consumer, 'types.ts'), `
 import * as kernel from '@rpg/core/kernel';
 export const kernelNamespace: typeof kernel = kernel;
-// @ts-expect-error Kernel has no calculation implementation in v2.0.2
+// @ts-expect-error Damage extraction is not implemented
 kernel.calculateDamage;
 // @ts-expect-error Kernel internals are not package exports
 import * as internalKernel from '@rpg/core/kernel/index.js';
@@ -131,7 +132,9 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import * as core from '@rpg/core';
 import * as kernel from '@rpg/core/kernel';
-assert.deepEqual(Object.keys(kernel), [], 'Kernel has type-only exports in v2.0.2');
+assert.deepEqual(Object.keys(kernel).sort(), ['calculateCooldownDurationMs', 'calculateEffectiveValue', 'calculateStats']);
+import {kernelStatsConsumer} from './build/kernel-stats.js';
+assert.equal(kernelStatsConsumer(), 10);
 import {headlessCombat} from './build/headless.js';
 import {rootSnapshotExample} from './build/root-snapshot.js';
 import {skillInstanceExample} from './build/skill-instance.js';
@@ -196,7 +199,7 @@ assert.equal(createHash('sha256').update(JSON.stringify(a)).digest('hex'), '29e8
 const domains = ${JSON.stringify(Object.keys(pkg.exports).filter(k => k !== '.').map(k => k.slice(2)))};
 for (const domain of domains) {
   const api = await import('@rpg/core/' + domain);
-  for (const [name, value] of Object.entries(api)) assert.equal(value, core[name]);
+  if (domain !== 'kernel') for (const [name, value] of Object.entries(api)) assert.equal(value, core[name]);
 }
 const moduleMap = ${JSON.stringify(moduleMap)};
 for (const [legacy, canonical] of Object.entries(moduleMap)) {
@@ -208,7 +211,7 @@ for (const internal of ['@rpg/core/skills/skill-execution.js', '@rpg/core/dist/i
   await assert.rejects(import(internal), {code: 'ERR_PACKAGE_PATH_NOT_EXPORTED'});
 }
 for (const helper of ['resourceSource', 'resourceRecipient', 'restoreMana', 'manaOnHit', 'lifesteal', 'skillHealingEntities', 'heal', 'isPinnedSkillTriggerBundle', 'observesSkillConditionalHit', 'observesSkillStackApply', 'captureSkillHit', 'captureSkillStackApply', 'skillStackCount', 'skillEffectWork', 'consumeStackEffect', 'registerTriggeredSkillChildren', 'childInstanceDamage', 'assembleRootDamage', 'admitSkillProjectiles', 'recordSkillProjectile', 'pendingSkillTriggerPayload', 'childDispatcher', 'initializeSkillTriggerSession', 'captureSkillExpiry', 'captureSkillImpact', 'drainSkillTriggers', 'bindRootSkillTriggers', 'trustSkillInstanceDefinition', 'initializeSkillInstances', 'bindRootSkillInstance', 'advanceSkillInstances', 'disposeSkillInstances', 'prepareRootOffense', 'bindRootOffense', 'rootDamageSnapshot', 'actorOffense', 'freezeGameplayData', 'random', 'damageBonusReason', 'tickProjectileBodies', 'debugProjectile']) assert(!(helper in core));
-console.log(JSON.stringify({status: 'PASS', targetHp: a.entities[1].currentHp, deterministic: true, types: true, publicDomains: domains.length, legacyPaths: Object.keys(moduleMap).length, deepImportsBlocked: true, kernel: 'TYPE_ONLY_CONTRACTS_ESM_AND_NODENEXT_VERIFIED'}));
+console.log(JSON.stringify({status: 'PASS', targetHp: a.entities[1].currentHp, deterministic: true, types: true, publicDomains: domains.length, legacyPaths: Object.keys(moduleMap).length, deepImportsBlocked: true, kernel: 'NUMERICAL_STATS_ESM_AND_NODENEXT_VERIFIED'}));
 `);
   const result = execFileSync(process.execPath, ['run.mjs'], {cwd: consumer, encoding: 'utf8'});
   console.log(result.trim());

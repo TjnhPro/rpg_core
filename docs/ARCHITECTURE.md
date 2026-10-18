@@ -78,7 +78,7 @@ legacy paths or application modules. The root barrel only assembles public expor
 | `effects` | Immutable effect definitions, apply/refresh/stack/expire/restrictions and on-hit DoT: `defineEffect`, `EffectLifecycle`, `applyDotSnapshot`, `tickDotRuntime` | contracts, combat, modifiers, damage | `tests/effects`, effect and status integrations |
 | `mechanics` | Melee hitboxes, projectile movement, AoE geometry; internal sequence/emitter kernels: `detectMeleeHitbox`, `moveProjectile`, `detectInstantAOE`, `lockAOEPosition`, `validateSkillMechanics` | contracts, spatial | `tests/integration/skill-effect-integration.test.ts` and skill/RPG integrations |
 | `spatial` | Supplied-grid walkability, exact cell traversal and range: `isWalkable`, `canTraverse`, `distance`, `inRange` | contracts | `tests/spatial`, skill range tests |
-| `kernel` | Universal numerical type contracts; no runtime calculations in v2.0.2 | None (Kernel-internal imports only) | Architecture/declaration fixtures, strict installed consumer |
+| `kernel` | Numerical contracts and canonical stat/scalar/cooldown calculations in v2.0.3 | None (Kernel-internal imports only) | Architecture/declaration fixtures, strict installed consumer |
 
 The eight non-Contracts Legacy domains above additionally may import `kernel`;
 all other Legacy allowances are unchanged. Contracts keeps its existing policy.
@@ -103,6 +103,17 @@ Types cannot enforce purity or deterministic closed-over state. Snapshot readonl
 means compile-time access restriction, detached copy means independent backing
 objects, and runtime freeze prevents writes; v2.0.2 implements neither copying nor
 freezing. Those guarantees belong to the separately reviewed v2.0.8 extraction.
+
+v2.0.3 moves attribute/derived-stat sequencing, scaling, transform, clamp,
+precision and cooldown arithmetic into Kernel. Legacy Stats adapts config/IDs
+and projects the five historical result fields. Prepared resolver injection keeps
+modifier arithmetic in its single Legacy implementation, with no reverse edge.
+The additive prepared input has explicit key order and no raw modifiers list;
+resolved diagnostics pass through by reference via a default-compatible generic.
+NaN/Infinity transforms and native callback/precision errors retain existing
+semantics; no new Legacy validator, clone/freeze or resource extraction is added.
+The [extraction evidence](v2/2.0.3-attribute-stat-extraction.md) records the separately
+reviewed preservation amendment. Roadmap order is now Stats .3, Modifiers .4.
 
 Supported delivery is direct hit, melee, projectile, instant AoE, timed AoE sequence,
 timed projectile emitter and on-hit DoT. Effect payloads support modifiers, stun and

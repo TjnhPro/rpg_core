@@ -25,21 +25,32 @@ export interface StatCalculationInput<A extends string = string, S extends strin
    * No callbacks are captured in numerical snapshots. */
   readonly transforms?: Readonly<Partial<Record<S, (value: number) => number>>>;
 }
-export interface StatBreakdown<A extends string = string, S extends string = string, Source extends string = string> {
+/** Prepared resolver is the sole modifier dependency; no raw list is ignored.
+ * Order arrays enumerate each supplied key exactly once, in caller evaluation
+ * order. This numerical contract performs no runtime schema validation. */
+export interface PreparedStatCalculationInput<A extends string = string, S extends string = string, Source extends string = string> extends Omit<StatCalculationInput<A, S, Source>, 'modifiers'> {
+  readonly attributeOrder: readonly A[];
+  readonly statOrder: readonly S[];
+}
+/** Only value is inspected. Other diagnostics pass through by reference.
+ * A synchronous caller dependency, invoked once per requested target. */
+export type StatModifierResolver<Target extends string, Resolved extends {readonly value: number}> = (base: number, target: Target) => Resolved;
+
+export interface StatBreakdown<A extends string = string, S extends string = string, Source extends string = string, Resolved extends {readonly value: number} = ModifierResult<A | S, Source>> {
   readonly base: number;
   readonly scaling: number;
   readonly flat: number;
-  readonly resolved: ModifierResult<A | S, Source>;
+  readonly resolved: Resolved;
   readonly uncapped: number;
   readonly value: number;
 }
-export interface StatCalculationResult<A extends string = string, S extends string = string, Source extends string = string> {
+export interface StatCalculationResult<A extends string = string, S extends string = string, Source extends string = string, Resolved extends {readonly value: number} = ModifierResult<A | S, Source>> {
   readonly attributes: NumericValues<A>;
   /** Attribute pass diagnostics; permits projection of Legacy core without
    * invoking the resolver again. base/resolved/uncapped/value are final outputs. */
   readonly attributeDetails: Readonly<Record<A, {
     readonly base: number;
-    readonly resolved: ModifierResult<A | S, Source>;
+    readonly resolved: Resolved;
     readonly uncapped: number;
     readonly value: number;
   }>>;
@@ -47,5 +58,5 @@ export interface StatCalculationResult<A extends string = string, S extends stri
   /** Each detail includes the evaluated scaling total and modifier result.
    * Legacy projects scaling[id] from details[id].scaling, and details/core from
    * their stored value/uncapped/resolved, without repeating any arithmetic. */
-  readonly details: Readonly<Record<S, StatBreakdown<A, S, Source>>>;
+  readonly details: Readonly<Record<S, StatBreakdown<A, S, Source, Resolved>>>;
 }

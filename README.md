@@ -123,7 +123,7 @@ allow only these imports; application code does not need internal source paths.
 | `@rpg/core/effects` | Definitions, lifecycle, stack/refresh/expire and DoT |
 | `@rpg/core/mechanics` | Melee/projectile/AoE geometry and configuration |
 | `@rpg/core/spatial` | Coordinate/grid contracts, range and wall traversal |
-| `@rpg/core/kernel` | Universal numerical type contracts in v2.0.2; no runtime calculations |
+| `@rpg/core/kernel` | Universal numerical contracts and canonical attribute/stat calculations |
 
 v2.0.1 establishes an independently importable Kernel and enforces
 `Legacy / Gameplay → Kernel` dependencies. Kernel imports only Kernel files;
@@ -140,6 +140,14 @@ synchronous and pure; types cannot enforce determinism. Snapshot readonly types
 do not copy or freeze backing objects; capture/clone/freeze implementation belongs
 to v2.0.8. No calculator or runtime validator is implemented in this milestone.
 See the [approved contracts, mapping and evidence](docs/v2/2.0.2-universal-calculation-contracts.md).
+
+v2.0.3 moves canonical attribute/stat/scaling/transform/bounds/precision and
+cooldown arithmetic into Kernel. `calculateStats`, `calculateEffectiveValue` and
+`calculateCooldownDurationMs` are available from `@rpg/core/kernel`; root remains
+Legacy. A prepared numerical callback supplies modifier resolution, preserving
+one Legacy Modifier Resolver until v2.0.4. Legacy stat signatures and resource
+calculation remain unchanged. The reviewed preservation amendment tracks both
+implementations; see the [review evidence](docs/v2/2.0.3-attribute-stat-extraction.md).
 
 Delivery scheduling kernels, freeze helpers and debug wrappers remain internal.
 The inherited `SkillEffectRuntime` container shape is preserved; applications
