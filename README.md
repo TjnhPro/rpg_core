@@ -3,7 +3,12 @@
 The v2.0.9 [gameplay boundary review](docs/v2/2.0.9-gameplay-contract-decoupling.md)
 adds contract isolation evidence without production API changes. Numerical
 consumers can use `@rpg/core/kernel` independently; gameplay delivery, entity and
-spatial contracts retain their Legacy owners. Developer approved Gate B with zero preservation delta on 2026-10-18.
+spatial contracts retain their Legacy owners. Developer accepted v2.0.9 at `f5c22e2431075dc9b610359fdede99460aee850e` on 2026-10-18.
+
+The v2.0.10 [delegation/isolation evidence](docs/v2/2.0.10-legacy-delegation-isolation.md)
+adds symbol-level audit and accepted-source runtime traces. Production APIs remain
+unchanged; Developer approved the runtime boundary review (Gate B) with zero preservation
+delta; final implementation review remains pending.
 
 v1.2.5 verifies Life on Hit/Kill and Mana on Kill as canonical trigger -> self Child
 recovery compositions, with no new runtime API. See the

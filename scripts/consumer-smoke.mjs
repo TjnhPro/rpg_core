@@ -47,6 +47,15 @@ try {
   writeFileSync(path.join(consumer, 'kernel-snapshots.ts'), readFileSync(path.join(root, 'tests/fixtures/kernel-snapshots-consumer.ts'), 'utf8').replaceAll('../../src/kernel/index.js', '@rpg/core/kernel'));
   writeFileSync(path.join(consumer, 'kernel-gameplay-boundary.ts'), readFileSync(path.join(root, 'tests/fixtures/kernel-gameplay-boundary-consumer.ts'), 'utf8').replaceAll('../../src/kernel/index.js', '@rpg/core/kernel'));
   writeFileSync(path.join(consumer, 'gameplay-compatibility.ts'), readFileSync(path.join(root, 'tests/fixtures/gameplay-contract-compatibility.ts'), 'utf8').replaceAll('../../src/contracts/index.js', '@rpg/core/contracts').replaceAll('../../src/mechanics/index.js', '@rpg/core/mechanics').replaceAll('../../src/spatial/index.js', '@rpg/core/spatial').replaceAll('../../src/kernel/index.js', '@rpg/core/kernel'));
+  // Caller-owned observation helpers, compiled against installed public barrels.
+  // Production code, private imports and alternate engines are never copied.
+  for (const file of ['skill-core.ts','skill-timeline.ts','nested-skill.ts','legacy-isolation-scenarios.ts','legacy-isolation-consumer.ts']) {
+    const source = readFileSync(path.join(root,'tests/fixtures',file),'utf8')
+      .replace(/\.\.\/\.\.\/src\/([^/]+)\/[^'"\s]+\.js/g, '@rpg/core/$1');
+    assert(!source.includes('../../src/'), file);
+    writeFileSync(path.join(consumer,file),source);
+  }
+  writeFileSync(path.join(consumer,'legacy-isolation-golden.json'),readFileSync(path.join(root,'tests/fixtures/legacy-isolation-golden.json')));
   const installedEntry = path.join(consumer, 'node_modules/@rpg/core/dist/kernel/index.d.ts');
   const declarationProgram = ts.createProgram([installedEntry], {
     target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.NodeNext,
@@ -144,6 +153,12 @@ import {createHash} from 'node:crypto';
 import * as core from '@rpg/core';
 import * as kernel from '@rpg/core/kernel';
 assert.deepEqual(Object.keys(kernel).sort(), ['calculateCooldownDurationMs', 'calculateCritical', 'calculateDamageB0', 'calculateDamageB1', 'calculateDamageBonusValue', 'calculateEffectiveValue', 'calculateHit', 'calculateMitigation', 'calculateResourceRegeneration', 'calculateResourceTransition', 'calculateStats', 'captureCalculationSnapshot', 'captureNumericalOffenseSnapshot', 'matchesAnyTag', 'normalizeResource', 'prepareNumericalModifiers', 'selectCanonicalModifiers']);
+import {readFileSync} from 'node:fs';
+import {legacyIsolationConsumer} from './build/legacy-isolation-consumer.js';
+const isolationGolden=JSON.parse(readFileSync('legacy-isolation-golden.json','utf8'));
+const installedIsolation=legacyIsolationConsumer();
+assert.deepEqual(installedIsolation,isolationGolden.scenarios);
+console.log(JSON.stringify({status:'INSTALLED_LEGACY_ISOLATION_PASS',revision:isolationGolden.revision,scenarios:installedIsolation.length,traceSha256:createHash('sha256').update(JSON.stringify(installedIsolation)).digest('hex')}));
 import {kernelStatsConsumer} from './build/kernel-stats.js';
 assert.equal(kernelStatsConsumer(), 10);
 import {kernelModifiersConsumer} from './build/kernel-modifiers.js';

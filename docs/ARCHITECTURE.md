@@ -24,6 +24,19 @@ with no Skill Engine requirement for consumers. Generic strings (including
 gameplay-looking labels) carry no built-in gameplay meaning. See the
 [v2.0.9 Gate B evidence](v2/2.0.9-gameplay-contract-decoupling.md).
 
+Legacy numerical facades retain policy/validation/projection and delegate to
+one canonical Kernel implementation. The read-only symbol audit
+`node scripts/audit-legacy-delegation.mjs` checks 24 direct call sites, reviewed
+wrapper edges and the returned modifier-resolver seam. Its finite owner mappings
+cover HP/MP/action assignment sites, selected trust/admission callers and
+module-scope collections; it is not a proof of arbitrary semantic equivalence.
+Skills retains admission, MP cost/deadlines, delivery and event commits; Root,
+Instance, Trigger and Effects retain their existing trust/lifecycle stores.
+Lifesteal/percentage requests and geometry remain gameplay responsibilities.
+The [v2.0.10 review](v2/2.0.10-legacy-delegation-isolation.md) records the exact
+owner graph, adversarial diagnostics and runtime trace limitations. Developer
+approved Gate B with zero preservation delta; no production change is proposed.
+
 v2 migration boundary: [Kernel Foundation](v2/2.0.1-kernel-foundation.md) established
 `src/kernel/` and `@rpg/core/kernel`. Kernel imports only Kernel modules. v2.0.3
 moved canonical stat calculations inward; the approved v2.0.4 cut also delegates

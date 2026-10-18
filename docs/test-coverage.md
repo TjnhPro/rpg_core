@@ -189,4 +189,30 @@ keeps public Legacy unions/imports and missing Kernel gameplay exports explicit.
 `tests/kernel/gameplay-boundary-consumer.test.ts` and the installed smoke test
 run Text RPG, Vo Lam and ARPG numerical recipes without gameplay engines.
 `node scripts/review-gameplay-boundary.mjs` emits read-only zero-delta evidence.
-See [Gate B report](v2/2.0.9-gameplay-contract-decoupling.md); final review pending.
+See [Gate B report](v2/2.0.9-gameplay-contract-decoupling.md). Developer accepted
+v2.0.9 at `f5c22e2431075dc9b610359fdede99460aee850e` on 2026-10-18.
+
+
+### v2.0.10 Legacy delegation and runtime isolation
+
+`tests/tooling/legacy-delegation.test.ts` resolves actual TypeScript declarations
+at 24 Kernel call sites, wrapper edges and the returned numerical resolver;
+it checks nine type-valid in-memory adversaries with valid controls, plus a
+valid-control/forbidden-declaration case through the unchanged architecture checker.
+Import aliases are a positive control. Finite owner mappings do not infer dynamic
+callback execution or detect every equivalent arithmetic expression.
+
+`tests/integration/legacy-isolation-parity.test.ts` compares 61 complete traces
+captured from isolated accepted Git source, adds live identity/error assertions,
+and verifies budget frontiers. Two appended random-in-area scenarios prove six
+Position draws each, exact strike positions and full fine/coarse trace parity;
+the original 59 expected observations remain hash-locked. Notifications include resources, action/serial,
+cooldowns, delivery/stack state; events contain complete numerical breakdowns.
+The installed consumer repeats all 61 via public package entrypoints. Existing
+seven goldens and runtime suites remain unchanged.
+
+`node scripts/review-legacy-isolation.mjs` emits source/declaration hashes,
+27 unchanged preservation records/history, exact exports, static diagnostics and
+the trace matrix. It writes stdout only. See [Gate B evidence and measured
+commands](v2/2.0.10-legacy-delegation-isolation.md). Gate B is approved; final
+`npm run verify`, commit/push and CI are reserved for Gate C.
