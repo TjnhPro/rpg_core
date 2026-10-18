@@ -52,8 +52,11 @@ must never turn `BLOCKED` into `READY`.
 
 - `src/kernel/**` owns reusable RPG calculations only. v2.0.3 moves canonical
   attribute/stat/cooldown calculations here with a prepared numerical resolver
-  callback. Modifier arithmetic stays Legacy until v2.0.4; resource calculation
-  stays Legacy until v2.0.7. Further extraction requires approved plans.
+  callback. The approved v2.0.4 cut moves modifier identity/dedup/order/grouping
+  and numerical aggregation into Kernel; its preservation checkpoint is approved.
+  Legacy retains validation, condition support, source activation and damage/tag
+  vocabulary. Resource calculation stays Legacy until v2.0.7. Further extraction
+  requires approved plans.
   Transform callbacks are caller-owned synchronous pure numeric functions;
   snapshots contain no callbacks. TypeScript readonly is neither detached copy
   nor runtime freeze; v2.0.8 owns implementation of those guarantees.

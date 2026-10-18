@@ -39,16 +39,17 @@ try {
   const kernelFixture = readFileSync(path.join(root, 'tests/fixtures/kernel-contracts.ts'), 'utf8');
   writeFileSync(path.join(consumer, 'kernel-contracts.ts'), kernelFixture.replace('../../src/kernel/index.js', '@rpg/core/kernel'));
   writeFileSync(path.join(consumer, 'kernel-stats.ts'), readFileSync(path.join(root, 'tests/fixtures/kernel-stats-consumer.ts'), 'utf8').replaceAll('../../src/kernel/index.js', '@rpg/core/kernel'));
+  writeFileSync(path.join(consumer, 'kernel-modifiers.ts'), readFileSync(path.join(root, 'tests/fixtures/kernel-modifiers-consumer.ts'), 'utf8').replaceAll('../../src/kernel/index.js', '@rpg/core/kernel'));
   const installedEntry = path.join(consumer, 'node_modules/@rpg/core/dist/kernel/index.d.ts');
   const declarationProgram = ts.createProgram([installedEntry], {
     target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.NodeNext,
     moduleResolution: ts.ModuleResolutionKind.NodeNext, strict: true, types: [], skipLibCheck: false,
   });
   const installedClosure = checkDeclarationClosure(declarationProgram, installedEntry, path.dirname(installedEntry), 'installed');
-  assert.equal(installedClosure.exports, 44);
-  assert.equal(installedClosure.files.length, 9);
+  assert.equal(installedClosure.exports, 50);
+  assert.equal(installedClosure.files.length, 11);
   const expectedSymbols = {'.': 243, './contracts': 102, './stats': 17, './modifiers': 8,
-    './combat': 33, './damage': 27, './skills': 76, './effects': 34, './mechanics': 20, './spatial': 6, './kernel': 44};
+    './combat': 33, './damage': 27, './skills': 76, './effects': 34, './mechanics': 20, './spatial': 6, './kernel': 50};
   const installedEntries = Object.entries(pkg.exports).map(([name, entry]) =>
     [name, path.join(consumer, 'node_modules/@rpg/core', entry.types)]);
   const apiProgram = ts.createProgram(installedEntries.map(([, file]) => file), declarationProgram.getCompilerOptions());
@@ -61,7 +62,7 @@ try {
       return target.flags & ts.SymbolFlags.Value;
     });
     if (name === '.') assert.equal(values.length, 122, 'Root runtime values');
-    if (name === './kernel') assert.equal(values.length, 3, 'Kernel stat runtime exports');
+    if (name === './kernel') assert.equal(values.length, 6, 'Kernel stat/modifier runtime exports');
   }
   for (const file of installedClosure.files) {
     const member = path.relative(path.join(consumer, 'node_modules/@rpg/core'), file).replaceAll('\\', '/');
@@ -132,9 +133,11 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import * as core from '@rpg/core';
 import * as kernel from '@rpg/core/kernel';
-assert.deepEqual(Object.keys(kernel).sort(), ['calculateCooldownDurationMs', 'calculateEffectiveValue', 'calculateStats']);
+assert.deepEqual(Object.keys(kernel).sort(), ['calculateCooldownDurationMs', 'calculateEffectiveValue', 'calculateStats', 'matchesAnyTag', 'prepareNumericalModifiers', 'selectCanonicalModifiers']);
 import {kernelStatsConsumer} from './build/kernel-stats.js';
 assert.equal(kernelStatsConsumer(), 10);
+import {kernelModifiersConsumer} from './build/kernel-modifiers.js';
+assert.deepEqual(kernelModifiersConsumer(), {text: 9, voLam: 17, arpg: .30000000000000004});
 import {headlessCombat} from './build/headless.js';
 import {rootSnapshotExample} from './build/root-snapshot.js';
 import {skillInstanceExample} from './build/skill-instance.js';
@@ -211,7 +214,7 @@ for (const internal of ['@rpg/core/skills/skill-execution.js', '@rpg/core/dist/i
   await assert.rejects(import(internal), {code: 'ERR_PACKAGE_PATH_NOT_EXPORTED'});
 }
 for (const helper of ['resourceSource', 'resourceRecipient', 'restoreMana', 'manaOnHit', 'lifesteal', 'skillHealingEntities', 'heal', 'isPinnedSkillTriggerBundle', 'observesSkillConditionalHit', 'observesSkillStackApply', 'captureSkillHit', 'captureSkillStackApply', 'skillStackCount', 'skillEffectWork', 'consumeStackEffect', 'registerTriggeredSkillChildren', 'childInstanceDamage', 'assembleRootDamage', 'admitSkillProjectiles', 'recordSkillProjectile', 'pendingSkillTriggerPayload', 'childDispatcher', 'initializeSkillTriggerSession', 'captureSkillExpiry', 'captureSkillImpact', 'drainSkillTriggers', 'bindRootSkillTriggers', 'trustSkillInstanceDefinition', 'initializeSkillInstances', 'bindRootSkillInstance', 'advanceSkillInstances', 'disposeSkillInstances', 'prepareRootOffense', 'bindRootOffense', 'rootDamageSnapshot', 'actorOffense', 'freezeGameplayData', 'random', 'damageBonusReason', 'tickProjectileBodies', 'debugProjectile']) assert(!(helper in core));
-console.log(JSON.stringify({status: 'PASS', targetHp: a.entities[1].currentHp, deterministic: true, types: true, publicDomains: domains.length, legacyPaths: Object.keys(moduleMap).length, deepImportsBlocked: true, kernel: 'NUMERICAL_STATS_ESM_AND_NODENEXT_VERIFIED'}));
+console.log(JSON.stringify({status: 'PASS', targetHp: a.entities[1].currentHp, deterministic: true, types: true, publicDomains: domains.length, legacyPaths: Object.keys(moduleMap).length, deepImportsBlocked: true, kernel: 'NUMERICAL_STATS_AND_MODIFIERS_ESM_AND_NODENEXT_VERIFIED'}));
 `);
   const result = execFileSync(process.execPath, ['run.mjs'], {cwd: consumer, encoding: 'utf8'});
   console.log(result.trim());

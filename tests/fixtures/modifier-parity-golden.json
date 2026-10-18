@@ -1,0 +1,2141 @@
+{
+  "revision": "390c6e8c96f467903401d18b32a4e44184b5f94e",
+  "sources": {
+    "src/modifiers/modifier-core.ts": "0df80a7cbd267ae7a7ed5b91e7f5922b8610ae536ef255b1a2a149a111e3d0ab",
+    "src/damage/damage-core.ts": "7f3d38d74e05db297c8b15df64b322fb1e9f647b0c043e21393089f4c4d67eae"
+  },
+  "scenarios": [
+    {
+      "name": "arithmetic:empty",
+      "result": {
+        "base": 10,
+        "flat": 0,
+        "percent": 0,
+        "percentagePoints": 0,
+        "totalFlat": 10,
+        "value": 10,
+        "contributions": []
+      },
+      "trace": []
+    },
+    {
+      "name": "arithmetic:flat",
+      "result": {
+        "base": 10,
+        "flat": 2,
+        "percent": 0,
+        "percentagePoints": 0,
+        "totalFlat": 12,
+        "value": 12,
+        "contributions": [
+          {
+            "id": "a",
+            "source": "setting",
+            "sourceInstanceId": "a",
+            "target": "str",
+            "operation": "add_flat",
+            "value": 2,
+            "enabled": true,
+            "conditions": []
+          }
+        ]
+      },
+      "trace": []
+    },
+    {
+      "name": "arithmetic:percent",
+      "result": {
+        "base": 10,
+        "flat": 0,
+        "percent": 0.2,
+        "percentagePoints": 0,
+        "totalFlat": 10,
+        "value": 12,
+        "contributions": [
+          {
+            "id": "p",
+            "source": "setting",
+            "sourceInstanceId": "p",
+            "target": "str",
+            "operation": "add_percent",
+            "value": 0.2,
+            "enabled": true,
+            "conditions": []
+          }
+        ]
+      },
+      "trace": []
+    },
+    {
+      "name": "arithmetic:points",
+      "result": {
+        "base": 0.1,
+        "flat": 0,
+        "percent": 0,
+        "percentagePoints": 0.1,
+        "totalFlat": 0.1,
+        "value": 0.2,
+        "contributions": [
+          {
+            "id": "p",
+            "source": "setting",
+            "sourceInstanceId": "p",
+            "target": "criticalChance",
+            "operation": "add_percentage_points",
+            "value": 0.1,
+            "enabled": true,
+            "conditions": []
+          }
+        ]
+      },
+      "trace": []
+    },
+    {
+      "name": "arithmetic:mixed",
+      "error": {
+        "name": "Error",
+        "message": "q: percentage points require a supported rate stat"
+      },
+      "trace": []
+    },
+    {
+      "name": "arithmetic:negative-zero",
+      "result": {
+        "base": {
+          "$number": "-0"
+        },
+        "flat": -2,
+        "percent": 0,
+        "percentagePoints": 0,
+        "totalFlat": -2,
+        "value": -2,
+        "contributions": [
+          {
+            "id": "n",
+            "source": "setting",
+            "sourceInstanceId": "n",
+            "target": "str",
+            "operation": "add_flat",
+            "value": -2,
+            "enabled": true,
+            "conditions": []
+          },
+          {
+            "id": "z",
+            "source": "setting",
+            "sourceInstanceId": "z",
+            "target": "str",
+            "operation": "add_flat",
+            "value": {
+              "$number": "-0"
+            },
+            "enabled": true,
+            "conditions": []
+          }
+        ]
+      },
+      "trace": []
+    },
+    {
+      "name": "arithmetic:negative-percent",
+      "result": {
+        "base": -3,
+        "flat": 0,
+        "percent": -2,
+        "percentagePoints": 0,
+        "totalFlat": -3,
+        "value": 3,
+        "contributions": [
+          {
+            "id": "n",
+            "source": "setting",
+            "sourceInstanceId": "n",
+            "target": "str",
+            "operation": "add_percent",
+            "value": -2,
+            "enabled": true,
+            "conditions": []
+          }
+        ]
+      },
+      "trace": []
+    },
+    {
+      "name": "arithmetic:accumulation",
+      "result": {
+        "base": 0.1,
+        "flat": 2.7755575615628914e-17,
+        "percent": 0,
+        "percentagePoints": 0,
+        "totalFlat": 0.10000000000000003,
+        "value": 0.10000000000000003,
+        "contributions": [
+          {
+            "id": "a",
+            "source": "setting",
+            "sourceInstanceId": "a",
+            "target": "str",
+            "operation": "add_flat",
+            "value": 0.2,
+            "enabled": true,
+            "conditions": []
+          },
+          {
+            "id": "b",
+            "source": "setting",
+            "sourceInstanceId": "b",
+            "target": "str",
+            "operation": "add_flat",
+            "value": -0.3,
+            "enabled": true,
+            "conditions": []
+          },
+          {
+            "id": "z",
+            "source": "setting",
+            "sourceInstanceId": "z",
+            "target": "str",
+            "operation": "add_flat",
+            "value": 0.1,
+            "enabled": true,
+            "conditions": []
+          }
+        ]
+      },
+      "trace": []
+    },
+    {
+      "name": "arithmetic:negative-damage-bonus",
+      "result": {
+        "base": 0,
+        "flat": 0,
+        "percent": 0,
+        "percentagePoints": -0.2,
+        "totalFlat": 0,
+        "value": -0.2,
+        "contributions": [
+          {
+            "id": "n",
+            "source": "setting",
+            "sourceInstanceId": "n",
+            "target": "damage_bonus",
+            "operation": "add_percentage_points",
+            "value": -0.2,
+            "enabled": true,
+            "conditions": []
+          }
+        ]
+      },
+      "trace": []
+    },
+    {
+      "name": "arithmetic:disabled-invalid",
+      "result": {
+        "base": 1,
+        "flat": 0,
+        "percent": 0,
+        "percentagePoints": 0,
+        "totalFlat": 1,
+        "value": 1,
+        "contributions": []
+      },
+      "trace": []
+    },
+    {
+      "name": "arithmetic:nan-base",
+      "error": {
+        "name": "Error",
+        "message": "Nonfinite Modifier result"
+      },
+      "trace": []
+    },
+    {
+      "name": "arithmetic:infinity-base",
+      "error": {
+        "name": "Error",
+        "message": "Nonfinite Modifier result"
+      },
+      "trace": []
+    },
+    {
+      "name": "arithmetic:nonfinite-result",
+      "error": {
+        "name": "Error",
+        "message": "Nonfinite Modifier result"
+      },
+      "trace": []
+    },
+    {
+      "name": "order:forward",
+      "result": {
+        "base": 10,
+        "flat": 10,
+        "percent": 0,
+        "percentagePoints": 0,
+        "totalFlat": 20,
+        "value": 20,
+        "contributions": [
+          {
+            "id": "A",
+            "source": "setting",
+            "sourceInstanceId": "A",
+            "target": "str",
+            "operation": "add_flat",
+            "value": 2,
+            "enabled": true,
+            "conditions": []
+          },
+          {
+            "id": "[x]",
+            "source": "setting",
+            "sourceInstanceId": "[x]",
+            "target": "str",
+            "operation": "add_flat",
+            "value": 2,
+            "enabled": true,
+            "conditions": []
+          },
+          {
+            "id": "a",
+            "source": "setting",
+            "sourceInstanceId": "a",
+            "target": "str",
+            "operation": "add_flat",
+            "value": 2,
+            "enabled": true,
+            "conditions": []
+          },
+          {
+            "id": "z",
+            "source": "setting",
+            "sourceInstanceId": "z",
+            "target": "str",
+            "operation": "add_flat",
+            "value": 2,
+            "enabled": true,
+            "conditions": []
+          },
+          {
+            "id": "é",
+            "source": "setting",
+            "sourceInstanceId": "é",
+            "target": "str",
+            "operation": "add_flat",
+            "value": 2,
+            "enabled": true,
+            "conditions": []
+          }
+        ]
+      },
+      "trace": []
+    },
+    {
+      "name": "order:reverse",
+      "result": {
+        "base": 10,
+        "flat": 10,
+        "percent": 0,
+        "percentagePoints": 0,
+        "totalFlat": 20,
+        "value": 20,
+        "contributions": [
+          {
+            "id": "A",
+            "source": "setting",
+            "sourceInstanceId": "A",
+            "target": "str",
+            "operation": "add_flat",
+            "value": 2,
+            "enabled": true,
+            "conditions": []
+          },
+          {
+            "id": "[x]",
+            "source": "setting",
+            "sourceInstanceId": "[x]",
+            "target": "str",
+            "operation": "add_flat",
+            "value": 2,
+            "enabled": true,
+            "conditions": []
+          },
+          {
+            "id": "a",
+            "source": "setting",
+            "sourceInstanceId": "a",
+            "target": "str",
+            "operation": "add_flat",
+            "value": 2,
+            "enabled": true,
+            "conditions": []
+          },
+          {
+            "id": "z",
+            "source": "setting",
+            "sourceInstanceId": "z",
+            "target": "str",
+            "operation": "add_flat",
+            "value": 2,
+            "enabled": true,
+            "conditions": []
+          },
+          {
+            "id": "é",
+            "source": "setting",
+            "sourceInstanceId": "é",
+            "target": "str",
+            "operation": "add_flat",
+            "value": 2,
+            "enabled": true,
+            "conditions": []
+          }
+        ]
+      },
+      "trace": []
+    },
+    {
+      "name": "order:rotated",
+      "result": {
+        "base": 10,
+        "flat": 10,
+        "percent": 0,
+        "percentagePoints": 0,
+        "totalFlat": 20,
+        "value": 20,
+        "contributions": [
+          {
+            "id": "A",
+            "source": "setting",
+            "sourceInstanceId": "A",
+            "target": "str",
+            "operation": "add_flat",
+            "value": 2,
+            "enabled": true,
+            "conditions": []
+          },
+          {
+            "id": "[x]",
+            "source": "setting",
+            "sourceInstanceId": "[x]",
+            "target": "str",
+            "operation": "add_flat",
+            "value": 2,
+            "enabled": true,
+            "conditions": []
+          },
+          {
+            "id": "a",
+            "source": "setting",
+            "sourceInstanceId": "a",
+            "target": "str",
+            "operation": "add_flat",
+            "value": 2,
+            "enabled": true,
+            "conditions": []
+          },
+          {
+            "id": "z",
+            "source": "setting",
+            "sourceInstanceId": "z",
+            "target": "str",
+            "operation": "add_flat",
+            "value": 2,
+            "enabled": true,
+            "conditions": []
+          },
+          {
+            "id": "é",
+            "source": "setting",
+            "sourceInstanceId": "é",
+            "target": "str",
+            "operation": "add_flat",
+            "value": 2,
+            "enabled": true,
+            "conditions": []
+          }
+        ]
+      },
+      "trace": []
+    },
+    {
+      "name": "duplicate:identical-last",
+      "result": {
+        "r": {
+          "base": 10,
+          "flat": 2,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 12,
+          "value": 12,
+          "contributions": [
+            {
+              "id": "a",
+              "source": "setting",
+              "sourceInstanceId": "a",
+              "target": "str",
+              "operation": "add_flat",
+              "value": 2,
+              "enabled": true,
+              "conditions": []
+            }
+          ]
+        },
+        "last": true
+      },
+      "trace": []
+    },
+    {
+      "name": "duplicate:distinct-source-instance",
+      "result": {
+        "base": 10,
+        "flat": 4,
+        "percent": 0,
+        "percentagePoints": 0,
+        "totalFlat": 14,
+        "value": 14,
+        "contributions": [
+          {
+            "id": "a",
+            "source": "setting",
+            "sourceInstanceId": "a",
+            "target": "str",
+            "operation": "add_flat",
+            "value": 2,
+            "enabled": true,
+            "conditions": []
+          },
+          {
+            "id": "a",
+            "source": "setting",
+            "sourceInstanceId": "other",
+            "target": "str",
+            "operation": "add_flat",
+            "value": 2,
+            "enabled": true,
+            "conditions": []
+          }
+        ]
+      },
+      "trace": []
+    },
+    {
+      "name": "conflict:value",
+      "error": {
+        "name": "Error",
+        "message": "Conflicting Modifier instance"
+      },
+      "trace": []
+    },
+    {
+      "name": "conflict:conditions",
+      "error": {
+        "name": "Error",
+        "message": "Conflicting Modifier instance"
+      },
+      "trace": []
+    },
+    {
+      "name": "conflict:eventTags",
+      "error": {
+        "name": "Error",
+        "message": "Conflicting Modifier instance"
+      },
+      "trace": []
+    },
+    {
+      "name": "conflict:targetTags",
+      "error": {
+        "name": "Error",
+        "message": "Conflicting Modifier instance"
+      },
+      "trace": []
+    },
+    {
+      "name": "conflict:damageType",
+      "error": {
+        "name": "Error",
+        "message": "Conflicting Modifier instance"
+      },
+      "trace": []
+    },
+    {
+      "name": "conflict:scope",
+      "error": {
+        "name": "Error",
+        "message": "Conflicting Modifier instance"
+      },
+      "trace": []
+    },
+    {
+      "name": "conflict:property-order",
+      "error": {
+        "name": "Error",
+        "message": "Conflicting Modifier instance"
+      },
+      "trace": []
+    },
+    {
+      "name": "conflict:before-invalid-conditions",
+      "error": {
+        "name": "Error",
+        "message": "Conflicting Modifier instance"
+      },
+      "trace": []
+    },
+    {
+      "name": "conflict:disabled-first",
+      "result": {
+        "base": 10,
+        "flat": 2,
+        "percent": 0,
+        "percentagePoints": 0,
+        "totalFlat": 12,
+        "value": 12,
+        "contributions": [
+          {
+            "id": "a",
+            "source": "setting",
+            "sourceInstanceId": "a",
+            "target": "str",
+            "operation": "add_flat",
+            "value": 2,
+            "enabled": true,
+            "conditions": []
+          }
+        ]
+      },
+      "trace": []
+    },
+    {
+      "name": "conflict:disabled-last",
+      "result": {
+        "base": 10,
+        "flat": 2,
+        "percent": 0,
+        "percentagePoints": 0,
+        "totalFlat": 12,
+        "value": 12,
+        "contributions": [
+          {
+            "id": "a",
+            "source": "setting",
+            "sourceInstanceId": "a",
+            "target": "str",
+            "operation": "add_flat",
+            "value": 2,
+            "enabled": true,
+            "conditions": []
+          }
+        ]
+      },
+      "trace": []
+    },
+    {
+      "name": "invalid:conditions",
+      "error": {
+        "name": "Error",
+        "message": "bad: Conditional Modifiers are unsupported"
+      },
+      "trace": []
+    },
+    {
+      "name": "invalid:fields",
+      "error": {
+        "name": "Error",
+        "message": "Invalid Modifier fields"
+      },
+      "trace": []
+    },
+    {
+      "name": "invalid:id",
+      "error": {
+        "name": "Error",
+        "message": "Invalid/duplicate Modifier instance"
+      },
+      "trace": []
+    },
+    {
+      "name": "invalid:source",
+      "error": {
+        "name": "Error",
+        "message": "bad: invalid source/operation/value"
+      },
+      "trace": []
+    },
+    {
+      "name": "invalid:operation",
+      "error": {
+        "name": "Error",
+        "message": "bad: invalid source/operation/value"
+      },
+      "trace": []
+    },
+    {
+      "name": "invalid:value-nan",
+      "error": {
+        "name": "Error",
+        "message": "bad: invalid source/operation/value"
+      },
+      "trace": []
+    },
+    {
+      "name": "invalid:value-infinity",
+      "error": {
+        "name": "Error",
+        "message": "bad: invalid source/operation/value"
+      },
+      "trace": []
+    },
+    {
+      "name": "invalid:target",
+      "error": {
+        "name": "Error",
+        "message": "bad: unsupported target"
+      },
+      "trace": []
+    },
+    {
+      "name": "invalid:points-target",
+      "error": {
+        "name": "Error",
+        "message": "bad: percentage points require a supported rate stat"
+      },
+      "trace": []
+    },
+    {
+      "name": "invalid:negative-damage-flat",
+      "error": {
+        "name": "Error",
+        "message": "bad: damage bonus must be nonnegative"
+      },
+      "trace": []
+    },
+    {
+      "name": "invalid:damage-tag-operation",
+      "error": {
+        "name": "Error",
+        "message": "bad: invalid damage operation"
+      },
+      "trace": []
+    },
+    {
+      "name": "invalid:invalid-event-tags",
+      "error": {
+        "name": "Error",
+        "message": "bad: invalid eventTags"
+      },
+      "trace": []
+    },
+    {
+      "name": "invalid:multiple-errors",
+      "error": {
+        "name": "Error",
+        "message": "bad: invalid source/operation/value\nbad: Conditional Modifiers are unsupported\nbad: unsupported target"
+      },
+      "trace": []
+    },
+    {
+      "name": "budget:257",
+      "error": {
+        "name": "Error",
+        "message": "Modifiers require an array of at most256 entries"
+      },
+      "trace": []
+    },
+    {
+      "name": "budget:duplicates-before-validation",
+      "result": {
+        "base": 10,
+        "flat": 2,
+        "percent": 0,
+        "percentagePoints": 0,
+        "totalFlat": 12,
+        "value": 12,
+        "contributions": [
+          {
+            "id": "a",
+            "source": "setting",
+            "sourceInstanceId": "a",
+            "target": "str",
+            "operation": "add_flat",
+            "value": 2,
+            "enabled": true,
+            "conditions": []
+          }
+        ]
+      },
+      "trace": []
+    },
+    {
+      "name": "budget:disabled-before-validation",
+      "result": {
+        "base": 10,
+        "flat": 0,
+        "percent": 0,
+        "percentagePoints": 0,
+        "totalFlat": 10,
+        "value": 10,
+        "contributions": []
+      },
+      "trace": []
+    },
+    {
+      "name": "source:setting:false",
+      "result": [
+        {
+          "id": "a",
+          "source": "setting",
+          "sourceInstanceId": "a",
+          "target": "str",
+          "operation": "add_flat",
+          "value": 2,
+          "enabled": true,
+          "conditions": []
+        }
+      ],
+      "trace": []
+    },
+    {
+      "name": "source:setting:true",
+      "result": [
+        {
+          "id": "a",
+          "source": "setting",
+          "sourceInstanceId": "a",
+          "target": "str",
+          "operation": "add_flat",
+          "value": 2,
+          "enabled": true,
+          "conditions": []
+        }
+      ],
+      "trace": []
+    },
+    {
+      "name": "source:equipment:false",
+      "result": [],
+      "trace": []
+    },
+    {
+      "name": "source:equipment:true",
+      "result": [
+        {
+          "id": "a",
+          "source": "equipment",
+          "sourceInstanceId": "a",
+          "target": "str",
+          "operation": "add_flat",
+          "value": 2,
+          "enabled": true,
+          "conditions": []
+        }
+      ],
+      "trace": []
+    },
+    {
+      "name": "source:buff:false",
+      "result": [],
+      "trace": []
+    },
+    {
+      "name": "source:buff:true",
+      "result": [
+        {
+          "id": "a",
+          "source": "buff",
+          "sourceInstanceId": "a",
+          "target": "str",
+          "operation": "add_flat",
+          "value": 2,
+          "enabled": true,
+          "conditions": []
+        }
+      ],
+      "trace": []
+    },
+    {
+      "name": "source:passive:false",
+      "result": [],
+      "trace": []
+    },
+    {
+      "name": "source:passive:true",
+      "result": [
+        {
+          "id": "a",
+          "source": "passive",
+          "sourceInstanceId": "a",
+          "target": "str",
+          "operation": "add_flat",
+          "value": 2,
+          "enabled": true,
+          "conditions": []
+        }
+      ],
+      "trace": []
+    },
+    {
+      "name": "source:inactive-conflict",
+      "result": [],
+      "trace": []
+    },
+    {
+      "name": "source:active-conflict",
+      "error": {
+        "name": "Error",
+        "message": "Conflicting Modifier instance"
+      },
+      "trace": []
+    },
+    {
+      "name": "source:duplicates-disabled-order",
+      "result": [
+        {
+          "id": "a",
+          "source": "buff",
+          "sourceInstanceId": "a",
+          "target": "str",
+          "operation": "add_flat",
+          "value": 2,
+          "enabled": true,
+          "conditions": []
+        },
+        {
+          "id": "b",
+          "source": "equipment",
+          "sourceInstanceId": "b",
+          "target": "str",
+          "operation": "add_flat",
+          "value": 2,
+          "enabled": true,
+          "conditions": []
+        }
+      ],
+      "trace": []
+    },
+    {
+      "name": "source:empty",
+      "result": [],
+      "trace": []
+    },
+    {
+      "name": "mutation:id",
+      "result": {
+        "before": {
+          "base": 10,
+          "flat": 2,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 12,
+          "value": 12,
+          "contributions": [
+            {
+              "id": "changed",
+              "source": "setting",
+              "sourceInstanceId": "a",
+              "target": "str",
+              "operation": "add_flat",
+              "value": 2,
+              "enabled": true,
+              "conditions": []
+            }
+          ]
+        },
+        "after": {
+          "base": 10,
+          "flat": 2,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 12,
+          "value": 12,
+          "contributions": [
+            {
+              "id": "changed",
+              "source": "setting",
+              "sourceInstanceId": "a",
+              "target": "str",
+              "operation": "add_flat",
+              "value": 2,
+              "enabled": true,
+              "conditions": []
+            }
+          ]
+        },
+        "sameArray": true,
+        "original": true,
+        "absent": {
+          "base": 10,
+          "flat": 0,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 10,
+          "value": 10,
+          "contributions": []
+        }
+      },
+      "trace": []
+    },
+    {
+      "name": "mutation:source",
+      "result": {
+        "before": {
+          "base": 10,
+          "flat": 2,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 12,
+          "value": 12,
+          "contributions": [
+            {
+              "id": "a",
+              "source": "buff",
+              "sourceInstanceId": "a",
+              "target": "str",
+              "operation": "add_flat",
+              "value": 2,
+              "enabled": true,
+              "conditions": []
+            }
+          ]
+        },
+        "after": {
+          "base": 10,
+          "flat": 2,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 12,
+          "value": 12,
+          "contributions": [
+            {
+              "id": "a",
+              "source": "buff",
+              "sourceInstanceId": "a",
+              "target": "str",
+              "operation": "add_flat",
+              "value": 2,
+              "enabled": true,
+              "conditions": []
+            }
+          ]
+        },
+        "sameArray": true,
+        "original": true,
+        "absent": {
+          "base": 10,
+          "flat": 0,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 10,
+          "value": 10,
+          "contributions": []
+        }
+      },
+      "trace": []
+    },
+    {
+      "name": "mutation:sourceInstanceId",
+      "result": {
+        "before": {
+          "base": 10,
+          "flat": 2,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 12,
+          "value": 12,
+          "contributions": [
+            {
+              "id": "a",
+              "source": "setting",
+              "sourceInstanceId": "other",
+              "target": "str",
+              "operation": "add_flat",
+              "value": 2,
+              "enabled": true,
+              "conditions": []
+            }
+          ]
+        },
+        "after": {
+          "base": 10,
+          "flat": 2,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 12,
+          "value": 12,
+          "contributions": [
+            {
+              "id": "a",
+              "source": "setting",
+              "sourceInstanceId": "other",
+              "target": "str",
+              "operation": "add_flat",
+              "value": 2,
+              "enabled": true,
+              "conditions": []
+            }
+          ]
+        },
+        "sameArray": true,
+        "original": true,
+        "absent": {
+          "base": 10,
+          "flat": 0,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 10,
+          "value": 10,
+          "contributions": []
+        }
+      },
+      "trace": []
+    },
+    {
+      "name": "mutation:enabled",
+      "result": {
+        "before": {
+          "base": 10,
+          "flat": 2,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 12,
+          "value": 12,
+          "contributions": [
+            {
+              "id": "a",
+              "source": "setting",
+              "sourceInstanceId": "a",
+              "target": "str",
+              "operation": "add_flat",
+              "value": 2,
+              "enabled": false,
+              "conditions": []
+            }
+          ]
+        },
+        "after": {
+          "base": 10,
+          "flat": 2,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 12,
+          "value": 12,
+          "contributions": [
+            {
+              "id": "a",
+              "source": "setting",
+              "sourceInstanceId": "a",
+              "target": "str",
+              "operation": "add_flat",
+              "value": 2,
+              "enabled": false,
+              "conditions": []
+            }
+          ]
+        },
+        "sameArray": true,
+        "original": true,
+        "absent": {
+          "base": 10,
+          "flat": 0,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 10,
+          "value": 10,
+          "contributions": []
+        }
+      },
+      "trace": []
+    },
+    {
+      "name": "mutation:target",
+      "result": {
+        "before": {
+          "base": 10,
+          "flat": 2,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 12,
+          "value": 12,
+          "contributions": [
+            {
+              "id": "a",
+              "source": "setting",
+              "sourceInstanceId": "a",
+              "target": "dex",
+              "operation": "add_flat",
+              "value": 2,
+              "enabled": true,
+              "conditions": []
+            }
+          ]
+        },
+        "after": {
+          "base": 10,
+          "flat": 2,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 12,
+          "value": 12,
+          "contributions": [
+            {
+              "id": "a",
+              "source": "setting",
+              "sourceInstanceId": "a",
+              "target": "dex",
+              "operation": "add_flat",
+              "value": 2,
+              "enabled": true,
+              "conditions": []
+            }
+          ]
+        },
+        "sameArray": true,
+        "original": true,
+        "absent": {
+          "base": 10,
+          "flat": 0,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 10,
+          "value": 10,
+          "contributions": []
+        }
+      },
+      "trace": []
+    },
+    {
+      "name": "mutation:operation",
+      "result": {
+        "before": {
+          "base": 10,
+          "flat": 2,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 12,
+          "value": 12,
+          "contributions": [
+            {
+              "id": "a",
+              "source": "setting",
+              "sourceInstanceId": "a",
+              "target": "str",
+              "operation": "add_percent",
+              "value": 2,
+              "enabled": true,
+              "conditions": []
+            }
+          ]
+        },
+        "after": {
+          "base": 10,
+          "flat": 0,
+          "percent": 2,
+          "percentagePoints": 0,
+          "totalFlat": 10,
+          "value": 30,
+          "contributions": [
+            {
+              "id": "a",
+              "source": "setting",
+              "sourceInstanceId": "a",
+              "target": "str",
+              "operation": "add_percent",
+              "value": 2,
+              "enabled": true,
+              "conditions": []
+            }
+          ]
+        },
+        "sameArray": true,
+        "original": true,
+        "absent": {
+          "base": 10,
+          "flat": 0,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 10,
+          "value": 10,
+          "contributions": []
+        }
+      },
+      "trace": []
+    },
+    {
+      "name": "mutation:value",
+      "result": {
+        "before": {
+          "base": 10,
+          "flat": 2,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 12,
+          "value": 12,
+          "contributions": [
+            {
+              "id": "a",
+              "source": "setting",
+              "sourceInstanceId": "a",
+              "target": "str",
+              "operation": "add_flat",
+              "value": 0.3,
+              "enabled": true,
+              "conditions": []
+            }
+          ]
+        },
+        "after": {
+          "base": 10,
+          "flat": 0.3,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 10.3,
+          "value": 10.3,
+          "contributions": [
+            {
+              "id": "a",
+              "source": "setting",
+              "sourceInstanceId": "a",
+              "target": "str",
+              "operation": "add_flat",
+              "value": 0.3,
+              "enabled": true,
+              "conditions": []
+            }
+          ]
+        },
+        "sameArray": true,
+        "original": true,
+        "absent": {
+          "base": 10,
+          "flat": 0,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 10,
+          "value": 10,
+          "contributions": []
+        }
+      },
+      "trace": []
+    },
+    {
+      "name": "mutation:conditions",
+      "result": {
+        "before": {
+          "base": 10,
+          "flat": 2,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 12,
+          "value": 12,
+          "contributions": [
+            {
+              "id": "a",
+              "source": "setting",
+              "sourceInstanceId": "a",
+              "target": "str",
+              "operation": "add_flat",
+              "value": 2,
+              "enabled": true,
+              "conditions": [
+                "later"
+              ]
+            }
+          ]
+        },
+        "after": {
+          "base": 10,
+          "flat": 2,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 12,
+          "value": 12,
+          "contributions": [
+            {
+              "id": "a",
+              "source": "setting",
+              "sourceInstanceId": "a",
+              "target": "str",
+              "operation": "add_flat",
+              "value": 2,
+              "enabled": true,
+              "conditions": [
+                "later"
+              ]
+            }
+          ]
+        },
+        "sameArray": true,
+        "original": true,
+        "absent": {
+          "base": 10,
+          "flat": 0,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 10,
+          "value": 10,
+          "contributions": []
+        }
+      },
+      "trace": []
+    },
+    {
+      "name": "mutation:disabled-not-reselected",
+      "result": {
+        "base": 1,
+        "flat": 0,
+        "percent": 0,
+        "percentagePoints": 0,
+        "totalFlat": 1,
+        "value": 1,
+        "contributions": []
+      },
+      "trace": []
+    },
+    {
+      "name": "mutation:array-alias",
+      "result": {
+        "a": {
+          "base": 1,
+          "flat": 2,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 3,
+          "value": 3,
+          "contributions": [
+            {
+              "id": "a",
+              "source": "setting",
+              "sourceInstanceId": "a",
+              "target": "str",
+              "operation": "add_flat",
+              "value": 2,
+              "enabled": true,
+              "conditions": []
+            }
+          ]
+        },
+        "b": {
+          "base": 1,
+          "flat": 5,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 6,
+          "value": 6,
+          "contributions": [
+            {
+              "id": "a",
+              "source": "setting",
+              "sourceInstanceId": "a",
+              "target": "str",
+              "operation": "add_flat",
+              "value": 2,
+              "enabled": true,
+              "conditions": []
+            }
+          ]
+        },
+        "c": {
+          "base": 1,
+          "flat": 5,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 6,
+          "value": 6,
+          "contributions": [
+            {
+              "id": "a",
+              "source": "setting",
+              "sourceInstanceId": "a",
+              "target": "str",
+              "operation": "add_flat",
+              "value": 2,
+              "enabled": true,
+              "conditions": []
+            }
+          ]
+        },
+        "d": {
+          "base": 1,
+          "flat": 2,
+          "percent": 0,
+          "percentagePoints": 0,
+          "totalFlat": 3,
+          "value": 3,
+          "contributions": [
+            {
+              "id": "a",
+              "source": "setting",
+              "sourceInstanceId": "a",
+              "target": "str",
+              "operation": "add_flat",
+              "value": 2,
+              "enabled": true,
+              "conditions": []
+            }
+          ]
+        },
+        "sameArray": true,
+        "freshResults": true,
+        "missingArraysDistinct": true
+      },
+      "trace": []
+    },
+    {
+      "name": "mutation:operation-value-read-order",
+      "result": {
+        "base": 10,
+        "flat": 2,
+        "percent": 0.5,
+        "percentagePoints": 0,
+        "totalFlat": 12,
+        "value": 18,
+        "contributions": [
+          "a",
+          "b"
+        ]
+      },
+      "trace": [
+        "a:operation",
+        "b:operation",
+        "a:value",
+        "a:operation",
+        "b:operation",
+        "b:value",
+        "a:operation",
+        "b:operation"
+      ]
+    },
+    {
+      "name": "mutation:value-mutates-later-operation",
+      "result": {
+        "base": 10,
+        "flat": 2,
+        "percent": 0,
+        "percentagePoints": 0,
+        "totalFlat": 12,
+        "value": 12,
+        "contributions": [
+          {
+            "id": "a",
+            "operation": "add_flat"
+          },
+          {
+            "id": "b",
+            "operation": "add_flat"
+          }
+        ]
+      },
+      "trace": [
+        "a:value"
+      ]
+    },
+    {
+      "name": "reason:eligible",
+      "result": "eligible",
+      "trace": []
+    },
+    {
+      "name": "reason:type",
+      "result": "damage type mismatch",
+      "trace": []
+    },
+    {
+      "name": "reason:scope",
+      "result": "scope mismatch",
+      "trace": []
+    },
+    {
+      "name": "reason:event",
+      "result": "event tag mismatch",
+      "trace": []
+    },
+    {
+      "name": "reason:target",
+      "result": "target tag mismatch",
+      "trace": []
+    },
+    {
+      "name": "reason:attacker-only",
+      "result": "eligible",
+      "trace": []
+    },
+    {
+      "name": "reason:empty-filters",
+      "result": "eligible",
+      "trace": []
+    },
+    {
+      "name": "reason:event-mixed-case",
+      "result": "eligible",
+      "trace": []
+    },
+    {
+      "name": "reason:empty-event-overrides-fallback",
+      "result": "event tag mismatch",
+      "trace": []
+    },
+    {
+      "name": "reason:entity-target-empty",
+      "result": "target tag mismatch",
+      "trace": []
+    },
+    {
+      "name": "reason:dot",
+      "result": "eligible",
+      "trace": []
+    },
+    {
+      "name": "timing:type-short-circuit",
+      "result": "damage type mismatch",
+      "trace": []
+    },
+    {
+      "name": "timing:scope-short-circuit",
+      "result": "scope mismatch",
+      "trace": []
+    },
+    {
+      "name": "timing:no-events",
+      "result": "eligible",
+      "trace": [
+        "target"
+      ]
+    },
+    {
+      "name": "timing:per-required-read",
+      "result": "eligible",
+      "trace": [
+        "eventTags",
+        "eventTags",
+        "target"
+      ]
+    },
+    {
+      "name": "timing:early-match",
+      "result": "eligible",
+      "trace": [
+        "eventTags",
+        "target"
+      ]
+    },
+    {
+      "name": "timing:mismatch-target-unread",
+      "result": "event tag mismatch",
+      "trace": [
+        "eventTags"
+      ]
+    },
+    {
+      "name": "timing:attacker-fallback-read",
+      "result": "eligible",
+      "trace": [
+        "eventTags",
+        "target"
+      ]
+    },
+    {
+      "name": "damage:direct_hit",
+      "result": {
+        "snapshot": {
+          "definition": {
+            "base": 10,
+            "flat": 2,
+            "scaling": {
+              "str": 1,
+              "dex": 0,
+              "int": 0,
+              "vit": 0,
+              "physicalAttack": 0.5,
+              "magicAttack": 0
+            },
+            "perRank": 0.1
+          },
+          "flat": 0,
+          "flatModifiers": [
+            {
+              "id": "f",
+              "source": "setting",
+              "sourceInstanceId": "f",
+              "target": "flat_damage",
+              "operation": "add_flat",
+              "value": 3,
+              "enabled": true,
+              "conditions": [],
+              "scope": "all"
+            }
+          ],
+          "bonusModifiers": [
+            {
+              "id": "bonus",
+              "source": "setting",
+              "sourceInstanceId": "bonus",
+              "target": "damage_bonus",
+              "operation": "add_percentage_points",
+              "value": 0.2,
+              "enabled": true,
+              "conditions": [],
+              "scope": "all",
+              "targetTags": [
+                "boss"
+              ]
+            }
+          ],
+          "sources": {
+            "str": 2,
+            "dex": 0,
+            "int": 0,
+            "vit": 0,
+            "physicalAttack": 4,
+            "magicAttack": 0
+          },
+          "settings": {
+            "skills": {},
+            "modifiers": [
+              {
+                "id": "[\"setting\",\"tag\",\"tag\"]",
+                "source": "setting",
+                "option": "",
+                "value": 0.1,
+                "enabled": true,
+                "types": [],
+                "tags": [
+                  "Basic"
+                ],
+                "targets": [],
+                "statuses": []
+              }
+            ]
+          },
+          "criticalChance": 0.5,
+          "criticalBonus": 0.2
+        },
+        "damage": {
+          "entities": {
+            "$undefined": true
+          },
+          "event": {
+            "damageType": "Physical",
+            "eventTags": [
+              "Basic",
+              "Direct"
+            ],
+            "targetTags": [
+              "boss"
+            ],
+            "scope": "direct"
+          },
+          "b0": {
+            "base": 11,
+            "scaling": [
+              {
+                "source": "str",
+                "value": 2.2
+              },
+              {
+                "source": "dex",
+                "value": 0
+              },
+              {
+                "source": "int",
+                "value": 0
+              },
+              {
+                "source": "vit",
+                "value": 0
+              },
+              {
+                "source": "physicalAttack",
+                "value": 2.2
+              },
+              {
+                "source": "magicAttack",
+                "value": 0
+              }
+            ],
+            "flat": 5,
+            "flatModifiers": [
+              {
+                "id": "f",
+                "source": "setting",
+                "sourceInstanceId": "f",
+                "target": "flat_damage",
+                "operation": "add_flat",
+                "value": 3,
+                "enabled": true,
+                "conditions": [],
+                "scope": "all"
+              }
+            ],
+            "raw": 20.4
+          },
+          "b1": {
+            "modifiers": [
+              {
+                "id": "[\"setting\",\"tag\",\"tag\"]",
+                "source": "setting",
+                "reason": "eligible",
+                "value": 0.1,
+                "sources": []
+              },
+              {
+                "id": "[\"setting\",\"bonus\",\"bonus\"]",
+                "source": "setting",
+                "reason": "eligible",
+                "value": 0.2,
+                "sources": [
+                  {
+                    "id": "bonus",
+                    "value": 0.2,
+                    "source": "bonus"
+                  }
+                ]
+              }
+            ],
+            "criticalBonus": 0.2,
+            "totalBonus": 0.5
+          },
+          "critical": {
+            "chance": 0.5,
+            "roll": 0,
+            "isCritical": true
+          },
+          "beforeDefense": 30.599999999999998,
+          "defense": {
+            "armor": 0,
+            "context": {
+              "source": {
+                "id": "a"
+              },
+              "target": {
+                "id": "b"
+              },
+              "damageType": "Physical",
+              "tags": [
+                "Basic",
+                "Direct"
+              ],
+              "mechanic": "direct_hit",
+              "armorRating": 0,
+              "magicResistanceRating": 0
+            },
+            "config": {
+              "version": 1,
+              "revision": 0
+            },
+            "mechanics": [
+              {
+                "type": "dodgeChance",
+                "enabled": true,
+                "status": "implemented",
+                "appliedReduction": 0
+              },
+              {
+                "type": "armorReduction",
+                "enabled": true,
+                "status": "implemented",
+                "appliedReduction": 0
+              },
+              {
+                "type": "magicReduction",
+                "enabled": true,
+                "status": "implemented",
+                "appliedReduction": 0
+              }
+            ],
+            "mitigation": {
+              "mode": "physical_armor",
+              "status": "missing_config",
+              "missing": [
+                "baseK",
+                "levelPenalty",
+                "attacker/defender level"
+              ],
+              "levelGap": null,
+              "levelScalingEnabled": true,
+              "effectiveK": null,
+              "rawReduction": 0,
+              "reductionMin": 0,
+              "reductionCap": 0.85,
+              "damageType": "Physical",
+              "attackerLevel": null,
+              "defenderLevel": null,
+              "effectiveArmor": 0,
+              "effectiveMagicResistance": 0,
+              "armorReduction": 0,
+              "magicReduction": 0,
+              "inputDamage": 30.599999999999998,
+              "preventedDamage": 0,
+              "finalDamage": 30.599999999999998
+            },
+            "finalDamage": 30.599999999999998,
+            "hit": {
+              "hit": true,
+              "dodged": false,
+              "onHitSuccess": true,
+              "dodgeEligible": true,
+              "enabled": true,
+              "chance": 0,
+              "roll": null,
+              "status": "implemented"
+            }
+          },
+          "finalDamage": 30.599999999999998
+        }
+      },
+      "trace": [
+        "crit"
+      ]
+    },
+    {
+      "name": "damage:dot",
+      "result": {
+        "snapshot": {
+          "definition": {
+            "base": 10,
+            "flat": 2,
+            "scaling": {
+              "str": 1,
+              "dex": 0,
+              "int": 0,
+              "vit": 0,
+              "physicalAttack": 0.5,
+              "magicAttack": 0
+            },
+            "perRank": 0.1
+          },
+          "flat": 0,
+          "flatModifiers": [
+            {
+              "id": "f",
+              "source": "setting",
+              "sourceInstanceId": "f",
+              "target": "flat_damage",
+              "operation": "add_flat",
+              "value": 3,
+              "enabled": true,
+              "conditions": [],
+              "scope": "all"
+            }
+          ],
+          "bonusModifiers": [
+            {
+              "id": "bonus",
+              "source": "setting",
+              "sourceInstanceId": "bonus",
+              "target": "damage_bonus",
+              "operation": "add_percentage_points",
+              "value": 0.2,
+              "enabled": true,
+              "conditions": [],
+              "scope": "all",
+              "targetTags": [
+                "boss"
+              ]
+            }
+          ],
+          "sources": {
+            "str": 2,
+            "dex": 0,
+            "int": 0,
+            "vit": 0,
+            "physicalAttack": 4,
+            "magicAttack": 0
+          },
+          "settings": {
+            "skills": {},
+            "modifiers": [
+              {
+                "id": "[\"setting\",\"tag\",\"tag\"]",
+                "source": "setting",
+                "option": "",
+                "value": 0.1,
+                "enabled": true,
+                "types": [],
+                "tags": [
+                  "Basic"
+                ],
+                "targets": [],
+                "statuses": []
+              }
+            ]
+          },
+          "criticalChance": 0.5,
+          "criticalBonus": 0.2
+        },
+        "damage": {
+          "entities": {
+            "$undefined": true
+          },
+          "event": {
+            "damageType": "Physical",
+            "eventTags": [
+              "Basic",
+              "Direct"
+            ],
+            "targetTags": [
+              "boss"
+            ],
+            "scope": "dot"
+          },
+          "b0": {
+            "base": 11,
+            "scaling": [
+              {
+                "source": "str",
+                "value": 2.2
+              },
+              {
+                "source": "dex",
+                "value": 0
+              },
+              {
+                "source": "int",
+                "value": 0
+              },
+              {
+                "source": "vit",
+                "value": 0
+              },
+              {
+                "source": "physicalAttack",
+                "value": 2.2
+              },
+              {
+                "source": "magicAttack",
+                "value": 0
+              }
+            ],
+            "flat": 5,
+            "flatModifiers": [
+              {
+                "id": "f",
+                "source": "setting",
+                "sourceInstanceId": "f",
+                "target": "flat_damage",
+                "operation": "add_flat",
+                "value": 3,
+                "enabled": true,
+                "conditions": [],
+                "scope": "all"
+              }
+            ],
+            "raw": 20.4
+          },
+          "b1": {
+            "modifiers": [
+              {
+                "id": "[\"setting\",\"tag\",\"tag\"]",
+                "source": "setting",
+                "reason": "eligible",
+                "value": 0.1,
+                "sources": []
+              },
+              {
+                "id": "[\"setting\",\"bonus\",\"bonus\"]",
+                "source": "setting",
+                "reason": "eligible",
+                "value": 0.2,
+                "sources": [
+                  {
+                    "id": "bonus",
+                    "value": 0.2,
+                    "source": "bonus"
+                  }
+                ]
+              }
+            ],
+            "criticalBonus": 0,
+            "totalBonus": 0.30000000000000004
+          },
+          "critical": {
+            "chance": 0,
+            "roll": 1,
+            "isCritical": false
+          },
+          "beforeDefense": 26.52,
+          "defense": {
+            "armor": 0,
+            "context": {
+              "source": {
+                "id": "a"
+              },
+              "target": {
+                "id": "b"
+              },
+              "damageType": "Physical",
+              "tags": [
+                "Basic",
+                "Direct"
+              ],
+              "mechanic": "dot",
+              "armorRating": 0,
+              "magicResistanceRating": 0
+            },
+            "config": {
+              "version": 1,
+              "revision": 0
+            },
+            "mechanics": [
+              {
+                "type": "dodgeChance",
+                "enabled": true,
+                "status": "implemented",
+                "appliedReduction": 0
+              },
+              {
+                "type": "armorReduction",
+                "enabled": true,
+                "status": "implemented",
+                "appliedReduction": 0
+              },
+              {
+                "type": "magicReduction",
+                "enabled": true,
+                "status": "implemented",
+                "appliedReduction": 0
+              }
+            ],
+            "mitigation": {
+              "mode": "physical_armor",
+              "status": "missing_config",
+              "missing": [
+                "baseK",
+                "levelPenalty",
+                "attacker/defender level"
+              ],
+              "levelGap": null,
+              "levelScalingEnabled": true,
+              "effectiveK": null,
+              "rawReduction": 0,
+              "reductionMin": 0,
+              "reductionCap": 0.85,
+              "damageType": "Physical",
+              "attackerLevel": null,
+              "defenderLevel": null,
+              "effectiveArmor": 0,
+              "effectiveMagicResistance": 0,
+              "armorReduction": 0,
+              "magicReduction": 0,
+              "inputDamage": 26.52,
+              "preventedDamage": 0,
+              "finalDamage": 26.52
+            },
+            "finalDamage": 26.52,
+            "hit": {
+              "hit": true,
+              "dodged": false,
+              "onHitSuccess": true,
+              "dodgeEligible": false,
+              "enabled": true,
+              "chance": 0,
+              "roll": null,
+              "status": "implemented"
+            }
+          },
+          "finalDamage": 26.52
+        }
+      },
+      "trace": []
+    }
+  ]
+}

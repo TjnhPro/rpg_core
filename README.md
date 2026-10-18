@@ -123,7 +123,7 @@ allow only these imports; application code does not need internal source paths.
 | `@rpg/core/effects` | Definitions, lifecycle, stack/refresh/expire and DoT |
 | `@rpg/core/mechanics` | Melee/projectile/AoE geometry and configuration |
 | `@rpg/core/spatial` | Coordinate/grid contracts, range and wall traversal |
-| `@rpg/core/kernel` | Universal numerical contracts and canonical attribute/stat calculations |
+| `@rpg/core/kernel` | Universal numerical contracts and canonical stat/modifier calculations |
 
 v2.0.1 establishes an independently importable Kernel and enforces
 `Legacy / Gameplay → Kernel` dependencies. Kernel imports only Kernel files;
@@ -148,6 +148,14 @@ Legacy. A prepared numerical callback supplies modifier resolution, preserving
 one Legacy Modifier Resolver until v2.0.4. Legacy stat signatures and resource
 calculation remain unchanged. The reviewed preservation amendment tracks both
 implementations; see the [review evidence](docs/v2/2.0.3-attribute-stat-extraction.md).
+
+The approved v2.0.4 implementation adds `selectCanonicalModifiers`,
+`prepareNumericalModifiers` and `matchesAnyTag` through `@rpg/core/kernel`.
+Legacy delegates canonical modifier selection/aggregation while retaining
+validation, source activation and damage/tag policy. Original contribution
+objects and mutable group arrays remain live; readonly types do not freeze them.
+The separate preservation checkpoint is approved: see the
+[extraction and preservation review](docs/v2/2.0.4-modifier-resolver-extraction.md).
 
 Delivery scheduling kernels, freeze helpers and debug wrappers remain internal.
 The inherited `SkillEffectRuntime` container shape is preserved; applications

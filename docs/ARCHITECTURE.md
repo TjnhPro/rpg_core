@@ -13,12 +13,12 @@ the historical Phase 1 refactor. [The coverage matrix](test-coverage.md) and
 
 ## Responsibility and ownership
 
-v2 migration boundary: [Kernel Foundation](v2/2.0.1-kernel-foundation.md) adds
-`src/kernel/` and the empty `@rpg/core/kernel` entrypoint. Kernel owns only future
-reusable calculations and imports only Kernel modules. All existing calculation
-implementations and gameplay runtimes described below remain canonical Legacy
-code; no extraction is complete. Legacy may delegate inward under later approved
-plans. Kernel cannot reference Legacy, including the current Contracts or root
+v2 migration boundary: [Kernel Foundation](v2/2.0.1-kernel-foundation.md) established
+`src/kernel/` and `@rpg/core/kernel`. Kernel imports only Kernel modules. v2.0.3
+moved canonical stat calculations inward; the approved v2.0.4 cut also delegates
+modifier selection/aggregation, with its separate preservation checkpoint approved.
+Other calculations and gameplay runtimes remain canonical Legacy code until
+their approved extraction. Kernel cannot reference Legacy, including Contracts or root
 barrel, through runtime imports, type imports, re-exports or dynamic loading.
 In-repository isolation does not require separate packages or repositories.
 
@@ -71,14 +71,14 @@ legacy paths or application modules. The root barrel only assembles public expor
 | --- | --- | --- | --- |
 | `contracts` | Shared shapes, default configs and validators: `CombatEntity`, `CombatModifier`, `DamageContext`, `EffectDefinition`, `Walkability`, `validateCombatModifiers`, `validateDefenseSettings` | None | Domain validation tests and integration fixtures |
 | `stats` | Resolved attributes → derived bases → modifiers/transform/caps, absolute resources, cooldown duration: `resolveCharacterStats`, `calculateEffectiveStat`, `updateCurrentResources`, `cooldownDurationMs` | contracts, modifiers | `tests/stats`, `tests/skills`, `tests/integration` |
-| `modifiers` | Live source filtering, identity deduplication, stable prepared resolution: `collectActiveModifiers`, `prepareModifierResolver`, `resolveModifiers` | contracts | `tests/modifiers`, `tests/effects/effect-modifiers.test.ts` |
+| `modifiers` | Legacy validation/source activation/tag policy and Kernel delegation: `collectActiveModifiers`, `prepareModifierResolver`, `resolveModifiers` | contracts, kernel | `tests/modifiers`, `tests/effects/effect-modifiers.test.ts` |
 | `combat` | Entity state, relations, target/action admission, hit revalidation, restriction cancellation, HP transition: `combatState`, `validateCombatAction`, `validateCombatHit`, `startCombatAction`, `cancelCombatAction`, `applyEntityDamage`, `applyEntityHealing` | contracts, spatial | `tests/combat`, skill and restriction tests |
 | `damage` | B0/B1 offense, Crit, Dodge, armor/MR: `calculateDamage`, `snapshotActorDamage`, `mitigateDefense`, `resolveDefenseHit` | contracts, combat, modifiers | `tests/damage`, delivery integration tests |
 | `skills` | Immutable definition, availability, MP/cooldown commit, activation and effect dispatch: `defineSkill`, `executeSkill`, `advanceSkillExecution`, `cancelSkillExecution`, `dispatchSkillEffects`, `advanceSkillEffects`, `clearSkillEffects` | contracts, combat, stats, effects, damage, mechanics, spatial | `tests/skills`, `tests/integration` |
 | `effects` | Immutable effect definitions, apply/refresh/stack/expire/restrictions and on-hit DoT: `defineEffect`, `EffectLifecycle`, `applyDotSnapshot`, `tickDotRuntime` | contracts, combat, modifiers, damage | `tests/effects`, effect and status integrations |
 | `mechanics` | Melee hitboxes, projectile movement, AoE geometry; internal sequence/emitter kernels: `detectMeleeHitbox`, `moveProjectile`, `detectInstantAOE`, `lockAOEPosition`, `validateSkillMechanics` | contracts, spatial | `tests/integration/skill-effect-integration.test.ts` and skill/RPG integrations |
 | `spatial` | Supplied-grid walkability, exact cell traversal and range: `isWalkable`, `canTraverse`, `distance`, `inRange` | contracts | `tests/spatial`, skill range tests |
-| `kernel` | Numerical contracts and canonical stat/scalar/cooldown calculations in v2.0.3 | None (Kernel-internal imports only) | Architecture/declaration fixtures, strict installed consumer |
+| `kernel` | Numerical contracts, stat/scalar/cooldown arithmetic and modifier selection/aggregation | None (Kernel-internal imports only) | Architecture/declaration fixtures, strict installed consumer, independent numerical fixtures |
 
 The eight non-Contracts Legacy domains above additionally may import `kernel`;
 all other Legacy allowances are unchanged. Contracts keeps its existing policy.
@@ -114,6 +114,18 @@ NaN/Infinity transforms and native callback/precision errors retain existing
 semantics; no new Legacy validator, clone/freeze or resource extraction is added.
 The [extraction evidence](v2/2.0.3-attribute-stat-extraction.md) records the separately
 reviewed preservation amendment. Roadmap order is now Stats .3, Modifiers .4.
+
+v2.0.4 uses that existing prepared resolver seam without changing Stats. Kernel
+owns identity tuples, last-identical deduplication, lexical order, grouping and
+the three ordered numerical passes. Legacy provides synchronous accessors and
+full-payload equivalence, validates canonical entries before grouping, and projects
+the historical result shape. Prepared target selection is fixed, but contribution
+objects, arrays, operations and values remain live. Generic callers should supply
+stable/pure accessors for deterministic results; no copy/freeze guarantee is added.
+Opaque source membership and lazy exact tag matching do not transfer gameplay
+activation or damage vocabulary into Kernel. Negative `damage_bonus` remains
+valid; nonempty conditions remain rejected by the unchanged Legacy validator.
+See the [parity evidence and approved module-13 preservation amendment](v2/2.0.4-modifier-resolver-extraction.md).
 
 Supported delivery is direct hit, melee, projectile, instant AoE, timed AoE sequence,
 timed projectile emitter and on-hit DoT. Effect payloads support modifiers, stun and

@@ -1,4 +1,6 @@
 /** Universal numerical contracts and canonical attribute/stat calculations. */
+export type {ModifierAdapter, ModifierSourceSelection, PreparedModifierResult} from './contracts/modifier-resolution.js';
+export {selectCanonicalModifiers, prepareNumericalModifiers, matchesAnyTag} from './modifiers/modifier-resolution.js';
 export type {Identifier, Scalar, NumericValues, NumericBounds, DecimalPrecision, NumericRule, CalculationIssue} from './contracts/common.js';
 export type {ModifierOperation, ModifierIdentity, NumericalModifier, ModifierResult} from './contracts/modifiers.js';
 export type {AttributeScaling, DerivedStatRule, StatCalculationInput, StatBreakdown, StatCalculationResult, PreparedStatCalculationInput, StatModifierResolver} from './contracts/stats.js';

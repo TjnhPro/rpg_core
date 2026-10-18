@@ -20,6 +20,9 @@ function fixture(files: Record<string, string>, run: (root: string) => void) {
 }
 
 const leaks = [
+  ['modifier accessor payload', "import type {Legacy} from 'TARGET'; export interface Public<M = number> {readonly identity: (input: M) => Legacy}"],
+  ['prepared contribution generic', "import type {Legacy} from 'TARGET'; export interface Public<M = Legacy> {readonly contributions: M[]}"],
+  ['source membership payload', "import type {Legacy} from 'TARGET'; export interface Public {readonly instances: ReadonlyMap<string, ReadonlySet<Legacy>>}"],
   ['type import', "import type {Legacy} from 'TARGET'; export type Public = Legacy;"],
   ['type re-export', "export type {Legacy as Public} from 'TARGET';"],
   ['star forwarding', "export * from 'TARGET';"],
@@ -80,6 +83,12 @@ for (const phase of ['source', 'emitted'] as const) {
     fixture({[`${dir}/kernel/index${ext}`]: 'export interface Public {readonly value: MissingType}'}, root => {
       expect(() => check(root)).toThrow('Cannot find name');
     });
+  });
+  it(`${phase}: accepts Kernel-only accessor/result/source contracts`, () => {
+    fixture({
+      [`${dir}/kernel/index${ext}`]: "export type {Adapter, Result, Sources} from './nested/contracts.js';",
+      [`${dir}/kernel/nested/contracts${ext}`]: 'export interface Adapter<M> {readonly identity: (input: M) => string} export interface Result<M = number> {readonly contributions: M[]} export interface Sources {readonly instances: ReadonlyMap<string, ReadonlySet<string>>}',
+    }, root => {expect(check(root).exports).toBe(3); expect(check(root).files).toHaveLength(2);});
   });
 }
 

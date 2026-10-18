@@ -503,16 +503,154 @@
     {
       "originalFile": "src/shared/game/modifier-core.ts",
       "currentFiles": [
-        "src/modifiers/modifier-core.ts"
+        "src/modifiers/modifier-core.ts",
+        "src/kernel/modifiers/modifier-resolution.ts",
+        "src/kernel/contracts/modifier-resolution.ts"
       ],
       "declarations": [
+        "0109fd72bf1ed801fe27848c62895b7317ffeb8293195e8d2988436cfaf20898",
+        "1863f3e5513bec3c314a41fbd16c8ac7a3224eb38afd2f99a913db31c94c978b",
+        "19f5ee1c6877f5c437c1f40430d819466094b98add6318f397eb9dd963e57eae",
         "267a8c6d7c22680f0c6654bc7e10a6fba18d0b307df3bc165b5d1aed1ecb7c1b",
-        "9f27e68a3d5956fcf527d422fabcc98610f35e57016f6c8050773d31808ffd36",
-        "bfd0e445ea72d7a9010807be5d76c2b2a2dc612dcddc25a35e1fa72cc135a5f3",
+        "272cc5ad8f46076da6a8b5a25dbe8f0c968f12c5288d8e63040c64b43ce6a670",
+        "2da13c175f45dd2df61755bb8965034080503aaafff238565d1f26d270d8172c",
+        "2e1c51ca50f300c25d610e58c645a96c27f39da625779cc19e6a1885d051c6ce",
+        "2eec52205d6e09cef668f07a70b3a4a5ab4039b7456e249f45d837df1868c1b5",
+        "3d5cb6099561ffac29f283e0dd3f5c120ed1a19ed4ee6e0d078259fef1a335b2",
+        "52c7dc75c15c038cdcd2de16cbd852fed11b2a57489fce65c722ce0a3dc53159",
+        "5b50c371d392f0fbd744d5f157f748482db3b955e17e5cc06d8dcbeb3fec8be0",
+        "7c7fa3f1e85f7d583a9bdc49d106805023730dab1f335faf8d1b094c3a73b5bc",
+        "9d25c86059d7a7c9d7ba493bce64b5a5d76425a524868481f5473e4639fb304c",
+        "b3632d45f263749b6ef0c0724a00733b547e499751f78fb1c5ca5b081a613b31",
+        "ca998f4d7dbbf8ba952531495fcb8bf8ac38ed1214ca9369398d7f1e151c316b",
+        "cef16ea2ed3529cd2bcef8f55a7491d414339d26e446682a5b0c4992212f09ec",
         "e59900ce92e858c7d6c9c66321fcadf7def04bb3d6832f16cd00c5c29b32f041",
-        "ebec3c9ec72d87ded049b9a0965bdd8cda7743a167d7392a17af60fc1f207daa",
-        "f282203bb150f7d017b06b4e9f76a76a566b57cae24d915b4ed0265a157361c7"
-      ]
+        "f7c3d28b46d62ff66dd4023eec3fa4bc8a2f41a5712b11bb1f7ba20693df825d",
+        "fdf5517a4ed6d03e85152434749c46f90d6c9ca54013a8ebae527fa74a47dc8c"
+      ],
+      "approvedChange": {
+        "checkpoint": "v2.0.4",
+        "baseCommit": "390c6e8c96f467903401d18b32a4e44184b5f94e",
+        "authority": "Developer approved the exact v2.0.4 module-13 preservation delta in this review (2026-10-18); docs/v2/2.0.4-modifier-resolver-extraction.md",
+        "originalDeclarations": [
+          "267a8c6d7c22680f0c6654bc7e10a6fba18d0b307df3bc165b5d1aed1ecb7c1b",
+          "9f27e68a3d5956fcf527d422fabcc98610f35e57016f6c8050773d31808ffd36",
+          "bfd0e445ea72d7a9010807be5d76c2b2a2dc612dcddc25a35e1fa72cc135a5f3",
+          "e59900ce92e858c7d6c9c66321fcadf7def04bb3d6832f16cd00c5c29b32f041",
+          "ebec3c9ec72d87ded049b9a0965bdd8cda7743a167d7392a17af60fc1f207daa",
+          "f282203bb150f7d017b06b4e9f76a76a566b57cae24d915b4ed0265a157361c7"
+        ],
+        "legacyBefore": [
+          {
+            "name": "damageBonusReason",
+            "hash": "f282203bb150f7d017b06b4e9f76a76a566b57cae24d915b4ed0265a157361c7"
+          },
+          {
+            "name": "ActiveModifierSources",
+            "hash": "e59900ce92e858c7d6c9c66321fcadf7def04bb3d6832f16cd00c5c29b32f041"
+          },
+          {
+            "name": "collectActiveModifiers",
+            "hash": "9f27e68a3d5956fcf527d422fabcc98610f35e57016f6c8050773d31808ffd36"
+          },
+          {
+            "name": "uniqueModifierInstances",
+            "hash": "ebec3c9ec72d87ded049b9a0965bdd8cda7743a167d7392a17af60fc1f207daa"
+          },
+          {
+            "name": "prepareModifierResolver",
+            "hash": "bfd0e445ea72d7a9010807be5d76c2b2a2dc612dcddc25a35e1fa72cc135a5f3"
+          },
+          {
+            "name": "resolveModifiers",
+            "hash": "267a8c6d7c22680f0c6654bc7e10a6fba18d0b307df3bc165b5d1aed1ecb7c1b"
+          }
+        ],
+        "legacyAfter": [
+          {
+            "name": "legacyAdapter",
+            "hash": "cef16ea2ed3529cd2bcef8f55a7491d414339d26e446682a5b0c4992212f09ec"
+          },
+          {
+            "name": "damageBonusReason",
+            "hash": "52c7dc75c15c038cdcd2de16cbd852fed11b2a57489fce65c722ce0a3dc53159"
+          },
+          {
+            "name": "ActiveModifierSources",
+            "hash": "e59900ce92e858c7d6c9c66321fcadf7def04bb3d6832f16cd00c5c29b32f041"
+          },
+          {
+            "name": "collectActiveModifiers",
+            "hash": "b3632d45f263749b6ef0c0724a00733b547e499751f78fb1c5ca5b081a613b31"
+          },
+          {
+            "name": "prepareModifierResolver",
+            "hash": "9d25c86059d7a7c9d7ba493bce64b5a5d76425a524868481f5473e4639fb304c"
+          },
+          {
+            "name": "resolveModifiers",
+            "hash": "267a8c6d7c22680f0c6654bc7e10a6fba18d0b307df3bc165b5d1aed1ecb7c1b"
+          }
+        ],
+        "kernel": {
+          "src/kernel/modifiers/modifier-resolution.ts": [
+            {
+              "name": "numericalAdapter",
+              "hash": "5b50c371d392f0fbd744d5f157f748482db3b955e17e5cc06d8dcbeb3fec8be0"
+            },
+            {
+              "name": "select",
+              "hash": "1863f3e5513bec3c314a41fbd16c8ac7a3224eb38afd2f99a913db31c94c978b"
+            },
+            {
+              "name": "selectCanonicalModifiers",
+              "hash": "ca998f4d7dbbf8ba952531495fcb8bf8ac38ed1214ca9369398d7f1e151c316b"
+            },
+            {
+              "name": "selectCanonicalModifiers",
+              "hash": "272cc5ad8f46076da6a8b5a25dbe8f0c968f12c5288d8e63040c64b43ce6a670"
+            },
+            {
+              "name": "selectCanonicalModifiers",
+              "hash": "0109fd72bf1ed801fe27848c62895b7317ffeb8293195e8d2988436cfaf20898"
+            },
+            {
+              "name": "prepare",
+              "hash": "fdf5517a4ed6d03e85152434749c46f90d6c9ca54013a8ebae527fa74a47dc8c"
+            },
+            {
+              "name": "prepareNumericalModifiers",
+              "hash": "2e1c51ca50f300c25d610e58c645a96c27f39da625779cc19e6a1885d051c6ce"
+            },
+            {
+              "name": "prepareNumericalModifiers",
+              "hash": "7c7fa3f1e85f7d583a9bdc49d106805023730dab1f335faf8d1b094c3a73b5bc"
+            },
+            {
+              "name": "prepareNumericalModifiers",
+              "hash": "f7c3d28b46d62ff66dd4023eec3fa4bc8a2f41a5712b11bb1f7ba20693df825d"
+            },
+            {
+              "name": "matchesAnyTag",
+              "hash": "19f5ee1c6877f5c437c1f40430d819466094b98add6318f397eb9dd963e57eae"
+            }
+          ],
+          "src/kernel/contracts/modifier-resolution.ts": [
+            {
+              "name": "ModifierAdapter",
+              "hash": "2eec52205d6e09cef668f07a70b3a4a5ab4039b7456e249f45d837df1868c1b5"
+            },
+            {
+              "name": "ModifierSourceSelection",
+              "hash": "3d5cb6099561ffac29f283e0dd3f5c120ed1a19ed4ee6e0d078259fef1a335b2"
+            },
+            {
+              "name": "PreparedModifierResult",
+              "hash": "2da13c175f45dd2df61755bb8965034080503aaafff238565d1f26d270d8172c"
+            }
+          ]
+        }
+      }
     },
     {
       "originalFile": "src/shared/game/skill-engine.ts",
