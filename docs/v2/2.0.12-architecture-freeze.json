@@ -1,0 +1,79 @@
+{
+  "activation": "Explicit final Developer RPG_CORE_V2_ARCHITECTURE_ACCEPTED record after Gate B, Gate C and exact-head PR/push CI",
+  "governance": {
+    "baseline": "Never edit a manifest or preservation record merely to accept unapproved code",
+    "breaking": "ARCHITECTURE_CHANGE_REQUEST; motivation, boundaries, alternatives, consumer impact, migration, verification, rollback; STOP for Developer approval",
+    "capability": "CORE_CAPABILITY_GAP; audit APIs; propose one owner/contract/semantics and compatibility/preservation impact; STOP for Developer approval",
+    "compatible": "Retain boundaries; approved plan when applicable; relevant regression and compatibility evidence"
+  },
+  "identity": {
+    "acceptedStartingRevision": "994a2fc8d7d01d8200e6377bb65436b7228b3a4e",
+    "architecture": "v2.0",
+    "milestone": "v2.0.12",
+    "package": "@rpg/core@1.0.0",
+    "status": "PROPOSED"
+  },
+  "schemaVersion": 1,
+  "sections": {
+    "consumers": {
+      "file": "docs/v2/2.0.12-architecture-closure-evidence.json",
+      "pointer": "/sections/consumers",
+      "sha256": "c0d83691e8f678df808b194683ee8ca61310cc8d1161444f4c48d283213fe3fd"
+    },
+    "declarations": {
+      "file": "docs/v2/2.0.12-architecture-closure-evidence.json",
+      "pointer": "/sections/declarations",
+      "sha256": "60f6c841e872eb995515d985a1240856c8b2d661bf6ab30b074b1dd710864fcd"
+    },
+    "dependencyGraph": {
+      "file": "docs/v2/2.0.12-architecture-closure-evidence.json",
+      "pointer": "/sections/dependencyGraph",
+      "sha256": "7d86d413a58bf3ae5078fd4582da7d12946db9c108e16ffaa6e65bbfb42253c8"
+    },
+    "oracles": {
+      "file": "docs/v2/2.0.12-architecture-closure-evidence.json",
+      "pointer": "/sections/oracles",
+      "sha256": "ab978cc897254f72c25d6ca25a1083397ac33bae958fdc0205882dc31a0d9f5e"
+    },
+    "ownership": {
+      "file": "docs/v2/2.0.12-architecture-closure-evidence.json",
+      "pointer": "/sections/ownership",
+      "sha256": "d1e3e78b3d9194cfb9ac796b97ce6ebb9b072b1cdfe75637df3077b770c73bd9"
+    },
+    "preservation": {
+      "file": "docs/v2/2.0.12-architecture-closure-evidence.json",
+      "pointer": "/sections/preservation",
+      "sha256": "a5ee1e116947b0352149ad03469648f848258f52810cadc085a89da46a9d2ee6"
+    },
+    "publicBoundary": {
+      "file": "docs/v2/2.0.12-architecture-closure-evidence.json",
+      "pointer": "/sections/publicBoundary",
+      "sha256": "c01f0e39615bca3e0b117bbbfb973177e16765276fb0827851fd286f39a44e29"
+    },
+    "sourceIntegrity": {
+      "file": "docs/v2/2.0.12-architecture-closure-evidence.json",
+      "pointer": "/sections/sourceIntegrity",
+      "sha256": "43d6f799170d3b0eed7e1096487c35427a0ce0a4257aea174aa98ff7f85502c7"
+    }
+  },
+  "verificationRequirements": {
+    "architecture": "Existing checker and source/emitted/installed closure",
+    "ci": {
+      "events": [
+        "pull_request",
+        "push"
+      ],
+      "exactHead": true,
+      "nodes": [
+        "22.13.0",
+        "24"
+      ],
+      "requiredStatus": "SUCCESS"
+    },
+    "consumers": "32 Multi-RPG / 61 Legacy scenarios; one installed artifact per run; strict NodeNext/native ESM",
+    "delegation": "24 reviewed direct sites plus wrappers and callback/runtime evidence",
+    "finalVerification": "npm run verify only after Gate B approval",
+    "freeze": "Final Developer acceptance required; agent cannot activate",
+    "preservation": "27 exact records/history and namespace identities; 99 Legacy declarations"
+  }
+}

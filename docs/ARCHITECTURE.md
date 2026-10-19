@@ -1,5 +1,30 @@
 # RPG Core architecture
 
+Current v2 boundary: [v2.0.12 closure](v2/2.0.12-architecture-closure.md),
+[verified inventories](v2/2.0.12-architecture-closure-evidence.json) and
+[proposed freeze](v2/2.0.12-architecture-freeze.json). Gates A and B are approved;
+Gate C delivery and final architecture acceptance remain pending. Kernel owns canonical
+Stats, Modifiers, Damage B0/B1, Hit/Critical/Mitigation, Resources and numerical
+snapshot capture. Legacy owns validation, gameplay eligibility, Skills/Mechanics/
+Effects/Trigger authority and HP/MP/event commitments; applications own content,
+clock/RNG inputs and orchestration. No source/API migration occurs in v2.0.12.
+
+Current graph: 89 source files including 27 forwarders, 285 dependency
+occurrences, zero runtime cycles. Two combined SCCs contain historical Contracts
+and Skills type relationships; ten DFS cycle paths are not ten independent SCCs.
+Exact edges and members are in the closure evidence. Existing checker policy
+remains authoritative; the eight non-Contracts Legacy domains may import Kernel.
+
+After final Developer acceptance, compatible implementation/test/docs extensions
+retain these boundaries and relevant compatibility checks. New capabilities
+require CORE_CAPABILITY_GAP, API audit, one owner/contract and Developer approval.
+Breaking changes require ARCHITECTURE_CHANGE_REQUEST with motivation, current/
+proposed boundary, alternatives, consumer/preservation impact, migration,
+verification and rollback, then STOP. A proposed manifest does not activate the
+freeze. Only the final RPG_CORE_V2_ARCHITECTURE_ACCEPTED Developer record after
+Gate C and exact-head CI does. Historical reports below retain their provenance.
+
+
 v1.2.5 adds acceptance evidence for canonical OnHit/OnKill -> self Child recovery,
 including lethal target handling, authenticated sources and existing budgets.
 It changes no production source, contracts or preservation baseline. See the

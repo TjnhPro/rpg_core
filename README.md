@@ -1,5 +1,14 @@
 # RPG Core
 
+The [v2.0.12 architecture closure](docs/v2/2.0.12-architecture-closure.md) records
+the Universal Calculation Kernel and preserved Legacy Gameplay Runtime: Kernel
+owns numerical calculations; Legacy owns gameplay policy, state and events;
+applications own content and orchestration. The architecture freeze is
+**PROPOSED**, awaiting final Developer acceptance. Public entrypoints and historical
+namespace compatibility remain unchanged. Historical milestone reports below
+retain their original review status; the closure report gives current status.
+
+
 The v2.0.9 [gameplay boundary review](docs/v2/2.0.9-gameplay-contract-decoupling.md)
 adds contract isolation evidence without production API changes. Numerical
 consumers can use `@rpg/core/kernel` independently; gameplay delivery, entity and

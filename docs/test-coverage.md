@@ -1,5 +1,16 @@
 # Core test coverage matrix
 
+## v2.0.12 architecture closure
+
+The new tooling suite validates live source/emitted inventories and the proposed
+freeze, with paired manifest/inventory and installed-evidence mutations.
+Synthetic installed controls test reviewer rejection only; real external ESM /
+strict NodeNext execution remains in scripts/consumer-smoke.mjs with one artifact,
+32 Multi-RPG scenarios and 61 Legacy scenarios. Clean CI tests need no local
+installed logs. [Closure report](v2/2.0.12-architecture-closure.md) records actual
+counts, timings and limitations. Full verification requires Gate B approval.
+
+
 ## v2.0.11 independent numerical consumers
 
 32 named scenarios (Text RPG T1-T9, Vo Lam V1-V10, ARPG A1-A13) cover all 17 Kernel runtime APIs. `tests/consumers/multi-rpg-verification.test.ts` adds 49 tests. Three separate strict NodeNext consumers execute against one installed artifact, with fresh-process, same-process, forward/reverse and reset/repeat observations. Separate fixed hand vectors and supplemental accepted-Git traces are checked without regenerating goldens. See [Gate B evidence](v2/2.0.11-multi-rpg-consumer-verification.md). Developer approved Gate B with zero preservation delta; see the report for Gate C verification and delivery evidence.

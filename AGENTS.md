@@ -1,5 +1,16 @@
 # Working in RPG Core
 
+The [v2 architecture closure](docs/v2/2.0.12-architecture-closure.md) records the
+current Kernel/gameplay owners. Its freeze manifest is PROPOSED, pending final
+Developer acceptance; agents cannot activate it. Compatible changes retain the
+boundaries and relevant regression/compatibility checks. New capabilities require
+CORE_CAPABILITY_GAP, an API audit and an approved owner/contract plan. Breaking
+ownership, public contracts, entrypoints, forwarders, cycles or preservation
+requires ARCHITECTURE_CHANGE_REQUEST with alternatives, consumer impact,
+migration, verification and rollback; STOP for Developer approval. Never edit a
+freeze record to make unapproved code pass.
+
+
 Generic, headless TypeScript RPG library (`@rpg/core`), independent of any specific
 game, including JX1. This repository owns mechanics, not a Game Runtime or editor.
 

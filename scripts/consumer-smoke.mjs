@@ -8,6 +8,7 @@ import {fileURLToPath} from 'node:url';
 import ts from 'typescript';
 import {checkDeclarationClosure} from './check-architecture.mjs';
 import {cases as gameplayCases, withBoundaryTree, rejectCase} from '../tests/fixtures/gameplay-boundary-audit.mjs';
+import {publicInventory,revision as closureRevision} from './audit-architecture-closure.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const verificationStarted = performance.now();
@@ -75,6 +76,8 @@ try {
     [name, path.join(consumer, 'node_modules/@rpg/core', entry.types)]);
   const apiProgram = ts.createProgram(installedEntries.map(([, file]) => file), declarationProgram.getCompilerOptions());
   const apiChecker = apiProgram.getTypeChecker();
+  const localApiProgram = ts.createProgram(Object.values(pkg.exports).map(entry => path.resolve(root,entry.types)), declarationProgram.getCompilerOptions());
+  const closureInventories = {};
   for (const [name, file] of installedEntries) {
     const symbols = apiChecker.getExportsOfModule(apiChecker.getSymbolAtLocation(apiProgram.getSourceFile(file)));
     assert.equal(symbols.length, expectedSymbols[name], `Installed symbol count: ${name}`);
@@ -84,7 +87,15 @@ try {
     });
     if (name === '.') assert.equal(values.length, 122, 'Root runtime values');
     if (name === './kernel') assert.equal(values.length, 17, 'Kernel stat/modifier/damage/defense/resource runtime exports');
+    closureInventories[name] = publicInventory(apiProgram,file,path.join(consumer,'node_modules/@rpg/core'));
+    assert.deepEqual(closureInventories[name],publicInventory(localApiProgram,path.resolve(root,pkg.exports[name].types),root),`Full installed symbol/origin inventory: ${name}`);
   }
+  const closureDeclarationSha256 = Object.fromEntries(members.filter(file=>file.endsWith('.d.ts')).sort().map(file=>{
+    const local = readFileSync(path.join(root,file)), installed = readFileSync(path.join(consumer,'node_modules/@rpg/core',file));
+    assert.deepEqual(installed,local,`Exact installed declaration: ${file}`);
+    return [file,createHash('sha256').update(installed).digest('hex')];
+  }));
+  assert.equal(Object.keys(closureDeclarationSha256).filter(file=>!file.startsWith('dist/kernel/')).length,99);
   for (const file of installedClosure.files) {
     const member = path.relative(path.join(consumer, 'node_modules/@rpg/core'), file).replaceAll('\\', '/');
     assert(members.includes(member), `Missing reachable Kernel declaration: ${member}`);
@@ -239,7 +250,14 @@ import {legacyIsolationConsumer} from './build/legacy-isolation-consumer.js';
 const isolationGolden=JSON.parse(readFileSync('legacy-isolation-golden.json','utf8'));
 const installedIsolation=legacyIsolationConsumer();
 assert.deepEqual(installedIsolation,isolationGolden.scenarios);
-console.log(JSON.stringify({status:'INSTALLED_LEGACY_ISOLATION_PASS',revision:isolationGolden.revision,scenarios:installedIsolation.length,traceSha256:createHash('sha256').update(JSON.stringify(installedIsolation)).digest('hex')}));
+// Retain raw runtime serialization; use sorted keys only for the additional
+// semantic hash because the accepted JSON orders object properties differently.
+function canonicalTrace(value){
+  if(Array.isArray(value))return value.map(canonicalTrace);
+  if(value&&typeof value==='object')return Object.fromEntries(Object.keys(value).sort().map(key=>[key,canonicalTrace(value[key])]));
+  return value;
+}
+console.log(JSON.stringify({status:'INSTALLED_LEGACY_ISOLATION_PASS',revision:isolationGolden.revision,scenarios:installedIsolation.length,traceSha256:createHash('sha256').update(JSON.stringify(installedIsolation)).digest('hex'),canonicalTraceSha256:createHash('sha256').update(JSON.stringify(canonicalTrace(installedIsolation))).digest('hex')}));
 import {kernelStatsConsumer} from './build/kernel-stats.js';
 assert.equal(kernelStatsConsumer(), 10);
 import {kernelModifiersConsumer} from './build/kernel-modifiers.js';
@@ -340,16 +358,24 @@ assert.deepEqual(a, b);
 assert.equal(a.entities[1].currentHp, 70);
 assert.equal(createHash('sha256').update(JSON.stringify(a)).digest('hex'), '29e8dbe79332a34a6760628aebfa157e5788a5750038183de558310fa9102656');
 const domains = ${JSON.stringify(Object.keys(pkg.exports).filter(k => k !== '.').map(k => k.slice(2)))};
+const closureInventories = ${JSON.stringify(closureInventories)};
+const publicNamespaces = {'.':Object.keys(core).sort()};
 for (const domain of domains) {
   const api = await import('@rpg/core/' + domain);
+  publicNamespaces['./'+domain] = Object.keys(api).sort();
   if (domain !== 'kernel') for (const [name, value] of Object.entries(api)) assert.equal(value, core[name]);
 }
+for (const [name,inventory] of Object.entries(closureInventories)) assert.deepEqual(publicNamespaces[name],inventory.filter(row=>row.value).map(row=>row.name).sort(),name);
 const moduleMap = ${JSON.stringify(moduleMap)};
+const historicalNamespaces = [];
 for (const [legacy, canonical] of Object.entries(moduleMap)) {
   const a = await import('./node_modules/@rpg/core/dist/' + legacy.replace(/\\.ts$/, '.js'));
   const b = await import('./node_modules/@rpg/core/' + canonical.replace(/^src\\//, 'dist/').replace(/\\.ts$/, '.js'));
   assert.deepEqual(a, b);
+  for (const name of Object.keys(a)) assert.equal(a[name],b[name],legacy+'#'+name);
+  historicalNamespaces.push({legacy,canonical,exports:Object.keys(a).sort(),status:'PASS'});
 }
+console.log(JSON.stringify({status:'INSTALLED_CLOSURE_RUNTIME_PASS',publicNamespaces,historicalNamespaces}));
 for (const internal of ['@rpg/core/skills/skill-execution.js', '@rpg/core/dist/index.js', '@rpg/core/shared/game/skill-execution.js', '@rpg/core/kernel/index.js', '@rpg/core/dist/kernel/index.js']) {
   await assert.rejects(import(internal), {code: 'ERR_PACKAGE_PATH_NOT_EXPORTED'});
 }
@@ -358,6 +384,18 @@ console.log(JSON.stringify({status: 'PASS', targetHp: a.entities[1].currentHp, d
 `);
   const result = execFileSync(process.execPath, ['run.mjs'], {cwd: consumer, encoding: 'utf8'});
   console.log(result.trim());
+  const closureRuntime = result.split(/\r?\n/).filter(line=>line.startsWith('{')).map(line=>JSON.parse(line)).find(row=>row.status==='INSTALLED_CLOSURE_RUNTIME_PASS');
+  assert(closureRuntime,'Installed runtime inventory observations required');
+  const closureContentSha256 = Object.fromEntries(members.filter(file=>file!=='package.json').sort().map(file=>{
+    const installed=readFileSync(path.join(installedRoot,file));
+    assert.deepEqual(installed,readFileSync(path.join(root,file)),`Installed artifact content ${file}`);
+    return [file,sha(installed)];
+  }));
+  assert.deepEqual(installedPackage,pkg,'Installed package metadata');
+  console.log(JSON.stringify({status:'INSTALLED_ARCHITECTURE_CLOSURE_PASS',revision:closureRevision,
+    package:multiEvidence.package,inventories:closureInventories,declarationSha256:closureDeclarationSha256,
+    contentSha256:closureContentSha256,closure:multiEvidence.declarationClosure,runtime:closureRuntime,
+    inventoryToolSha256:sha(readFileSync(path.join(root,'scripts/audit-architecture-closure.mjs'))),installerSha256:sha(readFileSync(fileURLToPath(import.meta.url)))}));
   console.log(JSON.stringify({status: 'MULTI_RPG_VERIFICATION_COMPLETE', archiveSha256: multiEvidence.package.archiveSha256,
     installerSha256: sha(readFileSync(fileURLToPath(import.meta.url))), totalInstalledVerificationMs: performance.now() - verificationStarted}));
   console.log(`Archive installed into external temporary consumer: ${consumer}`);
