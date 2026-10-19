@@ -1,5 +1,30 @@
 # RPG Core architecture
 
+Current v2 boundary: [v2.0.12 closure](v2/2.0.12-architecture-closure.md),
+[verified inventories](v2/2.0.12-architecture-closure-evidence.json) and
+[proposed freeze](v2/2.0.12-architecture-freeze.json). Gates A and B are approved;
+Gate C delivery and final architecture acceptance remain pending. Kernel owns canonical
+Stats, Modifiers, Damage B0/B1, Hit/Critical/Mitigation, Resources and numerical
+snapshot capture. Legacy owns validation, gameplay eligibility, Skills/Mechanics/
+Effects/Trigger authority and HP/MP/event commitments; applications own content,
+clock/RNG inputs and orchestration. No source/API migration occurs in v2.0.12.
+
+Current graph: 89 source files including 27 forwarders, 285 dependency
+occurrences, zero runtime cycles. Two combined SCCs contain historical Contracts
+and Skills type relationships; ten DFS cycle paths are not ten independent SCCs.
+Exact edges and members are in the closure evidence. Existing checker policy
+remains authoritative; the eight non-Contracts Legacy domains may import Kernel.
+
+After final Developer acceptance, compatible implementation/test/docs extensions
+retain these boundaries and relevant compatibility checks. New capabilities
+require CORE_CAPABILITY_GAP, API audit, one owner/contract and Developer approval.
+Breaking changes require ARCHITECTURE_CHANGE_REQUEST with motivation, current/
+proposed boundary, alternatives, consumer/preservation impact, migration,
+verification and rollback, then STOP. A proposed manifest does not activate the
+freeze. Only the final RPG_CORE_V2_ARCHITECTURE_ACCEPTED Developer record after
+Gate C and exact-head CI does. Historical reports below retain their provenance.
+
+
 v1.2.5 adds acceptance evidence for canonical OnHit/OnKill -> self Child recovery,
 including lethal target handling, authenticated sources and existing budgets.
 It changes no production source, contracts or preservation baseline. See the
@@ -13,6 +38,39 @@ the historical Phase 1 refactor. [The coverage matrix](test-coverage.md) and
 
 ## Responsibility and ownership
 
+Gameplay contract isolation is verified at source, emitted declaration and
+installed-package boundaries. `SkillMechanics` and delivery configurations stay
+in Contracts with Mechanics/Skills behavior; `DamageDelivery` and defense context
+stay in Contracts/Damage; `MapPoint` stays in Contracts/Spatial; `CombatEntity`
+and entity-dependent targeting/effect contracts stay in Contracts/Combat and
+their existing gameplay domains. No relocation is needed for correctly owned
+contracts. Kernel receives resolved scalars, selected rules and numerical data,
+with no Skill Engine requirement for consumers. Generic strings (including
+gameplay-looking labels) carry no built-in gameplay meaning. See the
+[v2.0.9 Gate B evidence](v2/2.0.9-gameplay-contract-decoupling.md).
+
+Legacy numerical facades retain policy/validation/projection and delegate to
+one canonical Kernel implementation. The read-only symbol audit
+`node scripts/audit-legacy-delegation.mjs` checks 24 direct call sites, reviewed
+wrapper edges and the returned modifier-resolver seam. Its finite owner mappings
+cover HP/MP/action assignment sites, selected trust/admission callers and
+module-scope collections; it is not a proof of arbitrary semantic equivalence.
+Skills retains admission, MP cost/deadlines, delivery and event commits; Root,
+Instance, Trigger and Effects retain their existing trust/lifecycle stores.
+Lifesteal/percentage requests and geometry remain gameplay responsibilities.
+The [v2.0.10 review](v2/2.0.10-legacy-delegation-isolation.md) records the exact
+owner graph, adversarial diagnostics and runtime trace limitations. Developer
+approved Gate B with zero preservation delta; no production change is proposed.
+
+v2 migration boundary: [Kernel Foundation](v2/2.0.1-kernel-foundation.md) established
+`src/kernel/` and `@rpg/core/kernel`. Kernel imports only Kernel modules. v2.0.3
+moved canonical stat calculations inward; the approved v2.0.4 cut also delegates
+modifier selection/aggregation, with its separate preservation checkpoint approved.
+Other calculations and gameplay runtimes remain canonical Legacy code until
+their approved extraction. Kernel cannot reference Legacy, including Contracts or root
+barrel, through runtime imports, type imports, re-exports or dynamic loading.
+In-repository isolation does not require separate packages or repositories.
+
 Core owns stat/modifier resolution, damage/defense, entity/target/action validation,
 skill admission/execution, effect lifecycle, delivery geometry and deterministic
 simulation primitives. The implementation lives once under `src/<domain>`.
@@ -23,6 +81,18 @@ assets/rendering/animation, persistence, networking, sessions and client/server
 orchestration. They supply entities, source identities, grid/positions, clock,
 RNG, config versions, event callbacks and advancement order. Core contains no
 application scheduler, wall clock or second resource ledger.
+
+v2.0.7's approved extraction moves scalar resource transitions, normalization and
+regeneration into `kernel/resources/resource-calculation.ts`. Combat and Stats
+retain validation, resource policy mapping and result projection. Stats forwards
+live maximum/rate accessors so validation, normalization and HP-before-MP regen
+retain their accepted reads. Kernel has no entities, resource store or writes.
+Skills keeps percent/lifesteal requested amounts, cost commitment and event/lifecycle
+ordering. Allowed above-max increase uses signed `after - before`; damage decrease
+retains authoritative magnitude rather than net change. Regen uses caller precision,
+the existing toFixed expression and fraction-preserving guard. Stable inputs are
+caller-validated; readonly is not a clone/freeze guarantee. The separate modules 8/12
+preservation amendment was approved on 2026-10-18; [review evidence](v2/2.0.7-resource-calculation-extraction.md).
 
 ## Change governance and capability gaps
 
@@ -62,13 +132,90 @@ legacy paths or application modules. The root barrel only assembles public expor
 | --- | --- | --- | --- |
 | `contracts` | Shared shapes, default configs and validators: `CombatEntity`, `CombatModifier`, `DamageContext`, `EffectDefinition`, `Walkability`, `validateCombatModifiers`, `validateDefenseSettings` | None | Domain validation tests and integration fixtures |
 | `stats` | Resolved attributes → derived bases → modifiers/transform/caps, absolute resources, cooldown duration: `resolveCharacterStats`, `calculateEffectiveStat`, `updateCurrentResources`, `cooldownDurationMs` | contracts, modifiers | `tests/stats`, `tests/skills`, `tests/integration` |
-| `modifiers` | Live source filtering, identity deduplication, stable prepared resolution: `collectActiveModifiers`, `prepareModifierResolver`, `resolveModifiers` | contracts | `tests/modifiers`, `tests/effects/effect-modifiers.test.ts` |
+| `modifiers` | Legacy validation/source activation/tag policy and Kernel delegation: `collectActiveModifiers`, `prepareModifierResolver`, `resolveModifiers` | contracts, kernel | `tests/modifiers`, `tests/effects/effect-modifiers.test.ts` |
 | `combat` | Entity state, relations, target/action admission, hit revalidation, restriction cancellation, HP transition: `combatState`, `validateCombatAction`, `validateCombatHit`, `startCombatAction`, `cancelCombatAction`, `applyEntityDamage`, `applyEntityHealing` | contracts, spatial | `tests/combat`, skill and restriction tests |
-| `damage` | B0/B1 offense, Crit, Dodge, armor/MR: `calculateDamage`, `snapshotActorDamage`, `mitigateDefense`, `resolveDefenseHit` | contracts, combat, modifiers | `tests/damage`, delivery integration tests |
+| `damage` | Legacy B0/B1 facade delegating Kernel arithmetic; Crit, Dodge, armor/MR: `calculateDamage`, `snapshotActorDamage`, `mitigateDefense`, `resolveDefenseHit` | contracts, combat, modifiers, kernel | `tests/damage`, delivery integration tests |
 | `skills` | Immutable definition, availability, MP/cooldown commit, activation and effect dispatch: `defineSkill`, `executeSkill`, `advanceSkillExecution`, `cancelSkillExecution`, `dispatchSkillEffects`, `advanceSkillEffects`, `clearSkillEffects` | contracts, combat, stats, effects, damage, mechanics, spatial | `tests/skills`, `tests/integration` |
 | `effects` | Immutable effect definitions, apply/refresh/stack/expire/restrictions and on-hit DoT: `defineEffect`, `EffectLifecycle`, `applyDotSnapshot`, `tickDotRuntime` | contracts, combat, modifiers, damage | `tests/effects`, effect and status integrations |
 | `mechanics` | Melee hitboxes, projectile movement, AoE geometry; internal sequence/emitter kernels: `detectMeleeHitbox`, `moveProjectile`, `detectInstantAOE`, `lockAOEPosition`, `validateSkillMechanics` | contracts, spatial | `tests/integration/skill-effect-integration.test.ts` and skill/RPG integrations |
 | `spatial` | Supplied-grid walkability, exact cell traversal and range: `isWalkable`, `canTraverse`, `distance`, `inRange` | contracts | `tests/spatial`, skill range tests |
+| `kernel` | Numerical contracts, stat/scalar/cooldown/B0/B1 arithmetic and modifier selection/aggregation | None (Kernel-internal imports only) | Architecture/declaration fixtures, strict installed consumer, independent numerical fixtures |
+
+The eight non-Contracts Legacy domains above additionally may import `kernel`;
+all other Legacy allowances are unchanged. Contracts keeps its existing policy.
+The source-level gate applies to every file under `src/kernel/**`, including
+nested files and aliases through Kernel barrels. External dependencies remain
+forbidden. Full transitive emitted-declaration and generic-contract isolation is
+implemented in v2.0.2 using the TypeScript compiler API over source and emitted
+public dependency closures, plus actual installed declarations. v2.0.1 evidence
+remains scoped to its original source checks. Historical cycle counts in the
+v1 prose above do not replace current checker output; the v2.0.0 baseline records
+ten combined/type-containing cycle paths and zero runtime cycles.
+
+v2.0.2 [Universal Calculation Contracts](v2/2.0.2-universal-calculation-contracts.md)
+exports types only through Kernel, without root re-exports or new package subpaths.
+Generic numerical keys, selected rules and resolved eligibility replace gameplay
+schemas at this boundary. Stat results include attribute diagnostics and derived
+scaling totals; later Legacy facades can project all five historical result fields
+without another resolver pass. Transform callbacks remain caller-owned synchronous
+pure functions, once per derived stat after modifiers and before bounds/precision,
+including disabled stats; no attribute callback or snapshot callback is introduced.
+Types cannot enforce purity or deterministic closed-over state. Snapshot readonly
+means compile-time access restriction, detached copy means independent backing
+objects, and runtime freeze prevents writes; v2.0.2 implements neither copying nor
+freezing. Those guarantees belong to the separately reviewed v2.0.8 extraction.
+
+v2.0.3 moves attribute/derived-stat sequencing, scaling, transform, clamp,
+precision and cooldown arithmetic into Kernel. Legacy Stats adapts config/IDs
+and projects the five historical result fields. Prepared resolver injection keeps
+modifier arithmetic in its single Legacy implementation, with no reverse edge.
+The additive prepared input has explicit key order and no raw modifiers list;
+resolved diagnostics pass through by reference via a default-compatible generic.
+NaN/Infinity transforms and native callback/precision errors retain existing
+semantics; no new Legacy validator, clone/freeze or resource extraction is added.
+The [extraction evidence](v2/2.0.3-attribute-stat-extraction.md) records the separately
+reviewed preservation amendment. Roadmap order is now Stats .3, Modifiers .4.
+
+v2.0.4 uses that existing prepared resolver seam without changing Stats. Kernel
+owns identity tuples, last-identical deduplication, lexical order, grouping and
+the three ordered numerical passes. Legacy provides synchronous accessors and
+full-payload equivalence, validates canonical entries before grouping, and projects
+the historical result shape. Prepared target selection is fixed, but contribution
+objects, arrays, operations and values remain live. Generic callers should supply
+stable/pure accessors for deterministic results; no copy/freeze guarantee is added.
+Opaque source membership and lazy exact tag matching do not transfer gameplay
+activation or damage vocabulary into Kernel. Negative `damage_bonus` remains
+valid; nonempty conditions remain rejected by the unchanged Legacy validator.
+See the [parity evidence and approved module-13 preservation amendment](v2/2.0.4-modifier-resolver-extraction.md).
+
+v2.0.5 moves B0 rank/base/scaling/flat arithmetic, ordered item-source products and
+B1 additive accumulation/clamps into Kernel. Legacy retains context/eligibility,
+canonical modifier selection policy, diagnostics, Dodge, Critical, Defense and
+snapshots. The existing v2.0.4 resolver remains canonical; no second modifier
+calculator is introduced. B0 runs only after a landed hit and before Critical RNG.
+Its `resolveFlat()` boundary runs once after scaling, followed by definition,
+additional and resolved flat reads. B1 runs after Critical without another RNG or
+eligibility pass. Accessors are synchronous, caller-owned, stable/pure for generic
+determinism; Legacy deliberately adapts live mutable configuration. Readonly types
+do not detach/freeze values and callbacks are not snapshot data. The five v2.0.2
+Damage contracts and all Legacy declarations remain unchanged. Module 10's
+preservation amendment was separately approved on 2026-10-18; see
+[the extraction review](v2/2.0.5-damage-calculation-extraction.md).
+
+The approved v2.0.6 implementation moves Hit/Critical probability and generic
+rating mitigation, including final/prevented damage, into Kernel. Legacy delegates
+without changing its declarations, validation, rule selection, gameplay eligibility,
+RNG provision or diagnostics. The private Legacy rating calculator is removed.
+Dodge invokes its callback unbound only for positive chance; Critical's Legacy
+adapter preserves the original input receiver and roll getter reads before chance
+and successful bonus reads. DoT still exposes roll `1` without drawing RNG.
+Mitigation captures the selected coefficient container while forwarding live
+numerical fields and late actor levels. Disabled/missing precedence is preserved.
+All nine v2.0.2 Defense contracts are unchanged. Generic callers provide numerical
+policies and stable synchronous accessors; no global RNG, clone/freeze or gameplay
+default is introduced. Text RPG fixed reduction uses fractional min=max bounds.
+Modules 10/11 received separate exact preservation approval on 2026-10-18; see
+[the review evidence](v2/2.0.6-critical-defense-extraction.md).
 
 Supported delivery is direct hit, melee, projectile, instant AoE, timed AoE sequence,
 timed projectile emitter and on-hit DoT. Effect payloads support modifiers, stun and
@@ -82,6 +229,26 @@ and `package.json.exports`. Delivery kernels and debug/freeze helpers are intern
 Type contracts named `PlayerStatsConfig`, entity kinds `player | monster` and other
 inherited names retain their existing semantics; generic ownership does not authorize
 silently generalizing them.
+
+## v2.0.8 numerical snapshots
+
+Kernel's two capture APIs copy closed numerical offense/calculation data using
+one native `structuredClone`, then freeze supported nested records and arrays.
+Captured backing data is detached; shared aliases inside the graph are retained.
+TypeScript readonly alone still supplies neither copy nor runtime freeze.
+Public capture validation rejects cycles, accessors, callbacks, extra fields and
+non-data containers; NaN/Infinity/-0 and optional undefined are preserved.
+Context damageType/tags/ownerId/revision are labels without gameplay trust.
+
+The internal copy/freeze primitives are not package exports. Legacy Damage uses
+them at its original two modifier-list clone sites and full Root envelope
+clone/freeze site, keeping its validators/catch mapping and deferred eligibility.
+Default `snapshotActorDamage` retains mutable source/setting aliases. Root/Child
+share the original trusted S0; public derive remains a detached mutable copy.
+No Skill/DoT capture timing, identity registry or RNG provision changes. Existing
+Hit/Critical APIs consume injected lazy rolls; no RNG is captured in snapshots.
+See the [implementation and preservation review](v2/2.0.8-calculation-snapshot-context-extraction.md).
+The exact module-10 preservation amendment was separately approved on 2026-10-18.
 
 ## Execution and state
 

@@ -1,5 +1,40 @@
 # Core test coverage matrix
 
+## v2.0.12 architecture closure
+
+The new tooling suite validates live source/emitted inventories and the proposed
+freeze, with paired manifest/inventory and installed-evidence mutations.
+Synthetic installed controls test reviewer rejection only; real external ESM /
+strict NodeNext execution remains in scripts/consumer-smoke.mjs with one artifact,
+32 Multi-RPG scenarios and 61 Legacy scenarios. Clean CI tests need no local
+installed logs. [Closure report](v2/2.0.12-architecture-closure.md) records actual
+counts, timings and limitations. Full verification requires Gate B approval.
+
+
+## v2.0.11 independent numerical consumers
+
+32 named scenarios (Text RPG T1-T9, Vo Lam V1-V10, ARPG A1-A13) cover all 17 Kernel runtime APIs. `tests/consumers/multi-rpg-verification.test.ts` adds 49 tests. Three separate strict NodeNext consumers execute against one installed artifact, with fresh-process, same-process, forward/reverse and reset/repeat observations. Separate fixed hand vectors and supplemental accepted-Git traces are checked without regenerating goldens. See [Gate B evidence](v2/2.0.11-multi-rpg-consumer-verification.md). Developer approved Gate B with zero preservation delta; see the report for Gate C verification and delivery evidence.
+
+
+v2.0.7 resource extraction: `tests/stats/resource-parity.test.ts` checks 223
+accepted-source observations (97 error cases, 13 original-thrown-object cases),
+ordered getter traces, exact values/key order and captured elapsed arguments.
+`kernel-resource-calculation.test.ts` covers generic policies, signed above-max
+increase, lazy ineligible inputs, nonzero minima, precision/overflow and three
+independent installed consumer styles. Existing recovery integration scenarios and
+installed gameplay examples retain event/observer ordering, source identity and
+replay semantics. The [resource review](v2/2.0.7-resource-calculation-extraction.md)
+records verification counts and the approved modules 8/12 preservation amendment.
+
+v2.0.6 targeted extraction evidence: `tests/damage/defense-parity.test.ts`
+compares 150 accepted-source observations (25 error cases), complete nested
+results/key order and RNG/getter traces, plus receiver/error/reference identity
+checks. `kernel-defense.test.ts` and the installed Kernel-only consumer cover
+independent Text RPG fixed fractional reduction, custom rating/level scaling and
+ARPG policies. Tooling checks declaration closure and Legacy numerical ownership.
+The [review report](v2/2.0.6-critical-defense-extraction.md) records actual counts
+and the separately approved preservation gate, including final verification.
+
 v1.2.5 recovery acceptance: `tests/integration/recovery-acceptance.test.ts` adds
 35 actual-Core RC01-RC08 cases for Life on Hit/Kill and Mana on Kill composition,
 exact fatal HP75/MP58/event order, live caps/modifiers, identity, replay/disposal,
@@ -145,3 +180,55 @@ receipt replay/disposal and coarse/fine shared modifier-expiry boundaries.
 Previous flat tests remain unchanged. `examples/percent-recovery.ts` and the existing
 installed consumer cover PR08 normal/capped recovery and public TypeScript narrowing.
 See [contract/evidence](RPG_CORE_V1.2.4_PERCENT_RECOVERY.md).
+
+
+### v2.0.8 Numerical Snapshot / Context extraction
+
+`tests/damage/snapshot-parity.test.ts` compares the accepted-source snapshot oracle;
+`tests/damage/kernel-snapshot.test.ts` covers closed shapes, detached aliases,
+shared topology, special numbers, nested freeze and native errors.
+`tests/integration/snapshot-extraction.test.ts` checks accepted Root/Child/trigger/
+recovery recipes and real reference identity. Existing delivery/RNG/lifecycle
+suites remain unchanged. `tests/fixtures/kernel-snapshots-consumer.ts` runs three
+independent numerical vocabularies in the installed strict NodeNext/ESM consumer.
+Developer approved the exact module 10 preservation amendment on 2026-10-18.
+
+
+### v2.0.9 Gameplay contract isolation
+
+`tests/tooling/gameplay-boundary.test.ts` checks real direct/transitive gameplay
+contracts in source and emitted declarations, plus deep Kernel CLI edge guards.
+Each negative has a valid control and requires a forbidden dependency/declaration
+diagnostic. The installed consumer repeats the closure cases against archived
+declarations with strict NodeNext compilation. `gameplay-contract-compatibility.ts`
+keeps public Legacy unions/imports and missing Kernel gameplay exports explicit.
+`tests/kernel/gameplay-boundary-consumer.test.ts` and the installed smoke test
+run Text RPG, Vo Lam and ARPG numerical recipes without gameplay engines.
+`node scripts/review-gameplay-boundary.mjs` emits read-only zero-delta evidence.
+See [Gate B report](v2/2.0.9-gameplay-contract-decoupling.md). Developer accepted
+v2.0.9 at `f5c22e2431075dc9b610359fdede99460aee850e` on 2026-10-18.
+
+
+### v2.0.10 Legacy delegation and runtime isolation
+
+`tests/tooling/legacy-delegation.test.ts` resolves actual TypeScript declarations
+at 24 Kernel call sites, wrapper edges and the returned numerical resolver;
+it checks nine type-valid in-memory adversaries with valid controls, plus a
+valid-control/forbidden-declaration case through the unchanged architecture checker.
+Import aliases are a positive control. Finite owner mappings do not infer dynamic
+callback execution or detect every equivalent arithmetic expression.
+
+`tests/integration/legacy-isolation-parity.test.ts` compares 61 complete traces
+captured from isolated accepted Git source, adds live identity/error assertions,
+and verifies budget frontiers. Two appended random-in-area scenarios prove six
+Position draws each, exact strike positions and full fine/coarse trace parity;
+the original 59 expected observations remain hash-locked. Notifications include resources, action/serial,
+cooldowns, delivery/stack state; events contain complete numerical breakdowns.
+The installed consumer repeats all 61 via public package entrypoints. Existing
+seven goldens and runtime suites remain unchanged.
+
+`node scripts/review-legacy-isolation.mjs` emits source/declaration hashes,
+27 unchanged preservation records/history, exact exports, static diagnostics and
+the trace matrix. It writes stdout only. See [Gate B evidence and measured
+commands](v2/2.0.10-legacy-delegation-isolation.md). Gate B is approved; final
+`npm run verify`, commit/push and CI are reserved for Gate C.

@@ -4,6 +4,9 @@ import { DAMAGE_SOURCES,DAMAGE_TAGS,DAMAGE_TARGETS,DAMAGE_STATUSES,type DamageCo
 import type { CombatEntityIdentity } from '../combat/combat-entity.js';
 import { mitigateDefense,resolveDefenseHit,type DefenseConfigSnapshot } from './defense-engine.js';
 import { damageBonusReason,prepareModifierResolver,resolveModifiers } from '../modifiers/modifier-core.js';
+import {calculateDamageB0,calculateDamageB1,calculateDamageBonusValue} from '../kernel/damage/damage-calculation.js';
+import {calculateCritical} from '../kernel/defense/defense-calculation.js';
+import {cloneSnapshotData,freezeSnapshotData} from '../kernel/snapshots/snapshot-data.js';
 
 
 // Up to100 legacy damage settings plus256 Foundation registry entries.
@@ -31,24 +34,32 @@ export function calculateDamage(input:{definition:DamageDefinition;sources:Recor
   const defense={...mitigateDefense(0,defenseContext,input.defenseConfig),hit};
   return {entities,event,b0:{base:0,scaling:[] as {source:DamageSource;value:number}[],flat:0,flatModifiers:[] as CombatModifier[],raw:0},b1:{modifiers:[] as {id:string;source:string;reason:string;value:number;sources:{id:string;value:number;source?:string}[]}[],criticalBonus:0,totalBonus:0},critical:{chance:input.criticalChance,roll:null as number|null,isCritical:false},beforeDefense:0,defense,finalDamage:0};
  }
- const {definition:d,context:c}=input,rankFactor=1+d.perRank*Math.max(0,(input.rank??1)-1);
- const base=d.base*rankFactor,scaling=DAMAGE_SOURCES.map(id=>({source:id,value:input.sources[id]*d.scaling[id]*rankFactor}));
- const scope=c.defender?.mechanic==='dot'?'dot':'direct';
- const eligible=canonicalFlat.filter(m=>(m.damageType??'all')==='all'||m.damageType===c.type.toLowerCase()).filter(m=>(m.scope??'direct')==='all'||(m.scope??'direct')===scope);
- const resolvedFlat=resolveModifiers(0,'flat_damage',eligible);
- const flat=d.flat+(input.flat??0)+resolvedFlat.value,raw=base+scaling.reduce((sum,s)=>sum+s.value,0)+flat;
+ const {definition:d,context:c}=input;
+ let scope!:'dot'|'direct',resolvedFlat!:ReturnType<typeof resolveModifiers>;
+ const {base,scaling,flat,raw}=calculateDamageB0({
+  get perRank(){return d.perRank;},get rank(){return input.rank??1;},get base(){return d.base;},
+  sourceOrder:DAMAGE_SOURCES,sourceValue:id=>input.sources[id],coefficient:id=>d.scaling[id],
+  resolveFlat:()=>{
+   scope=c.defender?.mechanic==='dot'?'dot':'direct';
+   const eligible=canonicalFlat.filter(m=>(m.damageType??'all')==='all'||m.damageType===c.type.toLowerCase()).filter(m=>(m.scope??'direct')==='all'||(m.scope??'direct')===scope);
+   resolvedFlat=resolveModifiers(0,'flat_damage',eligible);
+   return {get definition(){return d.flat;},get additional(){return input.flat??0;},get resolved(){return resolvedFlat.value;}};
+  },
+ });
  const modifiers:{id:string;source:string;reason:string;value:number;sources:{id:string;value:number;source?:string}[]}[]=input.settings.modifiers.map(m=>{
   const targetLabels:string[]=entities?.defender.targetTags.length?entities.defender.targetTags.map(t=>t==='boss'?'Boss':'Elite'):[c.target];
   const reason=!m.enabled?'disabled':m.types.length&&!m.types.includes(c.type)?'damage type mismatch':m.tags.length&&!m.tags.some(t=>c.tags.includes(t))?'tag mismatch':m.targets.length&&!m.targets.some(t=>targetLabels.includes(t))?'target mismatch':m.statuses.length&&!m.statuses.every(t=>c.statuses.includes(t))?'target status mismatch':'eligible';
   const sources=m.source==='item'?(input.options??[]).filter(o=>o.id===m.option):[];
-  const value=m.source==='item'?sources.reduce((n,o)=>n+o.value*m.value,0):m.value;
+  const value=m.source==='item'?calculateDamageBonusValue(sources,o=>o.value,()=>m.value):m.value;
   return {id:m.id,source:m.source,reason:reason==='eligible'&&m.source==='item'&&!sources.length?'no equipped source':reason,value:reason==='eligible'?value:0,sources};
  });
  modifiers.push(...canonicalBonus.map(m=>{const reason=damageBonusReason(m,c);return {id:JSON.stringify([m.source,m.sourceInstanceId,m.id]),source:m.source,reason,value:reason==='eligible'?m.value:0,sources:[{id:m.id,value:m.value,source:m.sourceInstanceId}]};}));
- const criticalRoll=scope==='dot'?1:typeof input.roll==='function'?input.roll():input.roll;
- const chance=scope==='dot'?0:Math.max(0,Math.min(.85,input.criticalChance)),critical=criticalRoll<chance;
- const criticalBonus=critical?Math.max(0,input.criticalBonus):0,totalBonus=modifiers.reduce((sum,m)=>sum+m.value,0)+criticalBonus;
- const beforeDefense=Math.max(0,Math.max(0,raw)*(1+totalBonus)),defense={...mitigateDefense(beforeDefense,defenseContext,input.defenseConfig),hit},finalDamage=defense.finalDamage;
+ const selectedCritical=calculateCritical({eligible:scope!=='dot',rule:{enabled:true,bounds:{min:0,max:.85}},
+  roll:()=>typeof input.roll==='function'?input.roll():input.roll,
+  get chance(){return input.criticalChance;},get bonus(){return input.criticalBonus;}});
+ const criticalRoll=scope==='dot'?1:selectedCritical.roll,chance=selectedCritical.chance,critical=selectedCritical.isCritical,criticalBonus=selectedCritical.bonus;
+ const {totalBonus,beforeDefense}=calculateDamageB1(raw,modifiers,criticalBonus);
+ const defense={...mitigateDefense(beforeDefense,defenseContext,input.defenseConfig),hit},finalDamage=defense.finalDamage;
  return {entities,event,b0:{base,scaling,flat,flatModifiers:resolvedFlat.contributions,raw},b1:{modifiers,criticalBonus,totalBonus},critical:{chance,roll:criticalRoll as number|null,isCritical:critical},beforeDefense,defense,finalDamage};
 }
 
@@ -57,7 +68,7 @@ export function calculateDamage(input:{definition:DamageDefinition;sources:Recor
 function actorOffense(sources:Record<DamageSource,number>,modifiers:CombatModifier[],settings:DamageSettings,criticalChance:number,criticalBonus:number){
  const flat=resolveModifiers(0,'damage.flat',modifiers).value;
  const tagModifiers=modifiers.filter(m=>m.target.startsWith('damage.tag.')).map(m=>({id:JSON.stringify([m.source,m.sourceInstanceId,m.id]),source:'setting' as const,option:'',value:m.value,enabled:true,types:[],tags:[m.target.slice(11) as typeof settings.modifiers[number]['tags'][number]],targets:[],statuses:[]}));
- return {flat,flatModifiers:structuredClone(modifiers.filter(m=>m.target==='flat_damage')),bonusModifiers:structuredClone(modifiers.filter(m=>m.target==='damage_bonus')),sources,settings:{skills:{},modifiers:[...settings.modifiers,...tagModifiers]},criticalChance,criticalBonus};
+ return {flat,flatModifiers:cloneSnapshotData(modifiers.filter(m=>m.target==='flat_damage')),bonusModifiers:cloneSnapshotData(modifiers.filter(m=>m.target==='damage_bonus')),sources,settings:{skills:{},modifiers:[...settings.modifiers,...tagModifiers]},criticalChance,criticalBonus};
 }
 
 export function snapshotActorDamage(definition:DamageDefinition,sources:Record<DamageSource,number>,modifiers:CombatModifier[],settings:DamageSettings,criticalChance:number,criticalBonus:number){
@@ -104,8 +115,7 @@ export function snapshotActorOffense(input:ActorOffenseInput):ActorOffenseSnapsh
  // Reuse the component-independent part of the canonical legacy adapter.
  const offense=actorOffense(input.sources,input.modifiers,settings,input.criticalChance,input.criticalBonus);
  if(!Number.isFinite(offense.flat)||offense.settings.modifiers.length+offense.bonusModifiers.length>MAX_DAMAGE_SNAPSHOT_MODIFIERS)fail();
- const copy=structuredClone({...offense,attacker:{entityId:a.entityId,entityType:a.entityType,level:a.level,targetTags:a.targetTags},defenseConfig:input.defenseConfig,options:input.options});
- const freeze=(v:unknown):void=>{if(v&&typeof v==='object'){Object.values(v).forEach(freeze);Object.freeze(v);}};
- freeze(copy);return copy;
+ const copy=cloneSnapshotData({...offense,attacker:{entityId:a.entityId,entityType:a.entityType,level:a.level,targetTags:a.targetTags},defenseConfig:input.defenseConfig,options:input.options});
+ freezeSnapshotData(copy);return copy;
  }catch {throw Error('invalid_root_offense');}
 }

@@ -5,8 +5,112 @@ import {fileURLToPath} from 'node:url';
 import ts from 'typescript';
 import {behaviorFingerprint} from './behavior-fingerprint.mjs';
 
+const absolute = file => path.resolve(file).replaceAll('\\', '/');
+const inside = (file, dir) => file.startsWith(`${dir}/`);
+
+/** Shared by the CLI, installed archive gate and isolated adversarial fixtures.
+ * Walk declarations and bound symbols, not formatted type strings: formatting
+ * erases aliases, heritage and unused generic constraints/defaults. */
+export function checkDeclarationClosure(program, entry, directory, phase = 'source') {
+  const checker = program.getTypeChecker();
+  const allowed = absolute(directory), source = program.getSourceFile(entry);
+  assert(source, `Kernel ${phase} declaration closure: missing entry ${entry}`);
+  const rootSymbol = checker.getSymbolAtLocation(source);
+  assert(rootSymbol, `Kernel ${phase} declaration closure: entry must be a module`);
+  const symbols = new Set(), nodes = new Set(), reached = new Set();
+  function fail(trail, detail) {
+    throw Error(`Kernel ${phase} declaration closure: ${trail.join(' -> ')}: ${detail}`);
+  }
+  function declaration(node, trail) {
+    if (nodes.has(node)) return;
+    nodes.add(node);
+    const file = node.getSourceFile();
+    if (program.isSourceFileDefaultLibrary(file)) return;
+    const name = absolute(file.fileName);
+    if (!inside(name, allowed)) fail(trail, `forbidden declaration ${name}`);
+    reached.add(file);
+    // Namespace symbols can own exported supporting types not reached through
+    // identifiers in an export * declaration alone.
+    if (ts.isSourceFile(node)) {
+      const symbol = checker.getSymbolAtLocation(node);
+      if (symbol) for (const exported of checker.getExportsOfModule(symbol)) visitSymbol(exported, trail);
+      return;
+    }
+    function walk(child) {
+      if (ts.isIdentifier(child) || ts.isQualifiedName(child) || ts.isImportTypeNode(child)) {
+        const symbol = checker.getSymbolAtLocation(child);
+        if (symbol) visitSymbol(symbol, trail);
+      }
+      // Import-type module arguments and namespace imports may resolve to a
+      // module symbol at their string literal rather than at the type node.
+      if (ts.isStringLiteralLike(child)) {
+        const symbol = checker.getSymbolAtLocation(child);
+        if (symbol) visitSymbol(symbol, trail);
+      }
+      ts.forEachChild(child, walk);
+    }
+    walk(node);
+  }
+  function visitSymbol(symbol, trail) {
+    if (symbols.has(symbol)) return;
+    symbols.add(symbol);
+    const next = [...trail, symbol.getName()];
+    for (const decl of symbol.getDeclarations() ?? []) declaration(decl, next);
+    if (symbol.flags & ts.SymbolFlags.Alias) {
+      const target = checker.getAliasedSymbol(symbol);
+      if (!target || target === symbol || target.getName() === 'unknown') fail(next, 'unresolved alias');
+      visitSymbol(target, next);
+    }
+    if (symbol.flags & ts.SymbolFlags.Module) {
+      for (const exported of checker.getExportsOfModule(symbol)) visitSymbol(exported, next);
+    }
+  }
+  const exported = checker.getExportsOfModule(rootSymbol);
+  for (const symbol of exported) visitSymbol(symbol, [path.basename(entry)]);
+  // Resolve ordinary invalid/unbound types fail-closed, after boundary traversal
+  // so a valid Legacy target yields a boundary diagnostic, not an unrelated error.
+  for (const file of reached) {
+    const errors = [...program.getSyntacticDiagnostics(file), ...program.getSemanticDiagnostics(file)]
+      .filter(d => d.category === ts.DiagnosticCategory.Error);
+    if (errors.length) fail([file.fileName], ts.flattenDiagnosticMessageText(errors[0].messageText, '\n'));
+  }
+  return {exports: exported.length, files: [...reached].map(f => absolute(f.fileName)).sort()};
+}
+
+/** Real source and emitted declaration programs; emission is in memory so the
+ * architecture command never depends on a stale dist directory. */
+export function checkKernelDeclarations(root) {
+  const entry = path.join(root, 'src/kernel/index.ts');
+  if (!ts.sys.fileExists(entry)) return {status: 'NO_KERNEL_ENTRY'};
+  const options = {
+    target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.NodeNext,
+    moduleResolution: ts.ModuleResolutionKind.NodeNext, strict: true,
+    exactOptionalPropertyTypes: true, noUncheckedIndexedAccess: true,
+    types: [], lib: ['lib.es2022.d.ts', 'lib.dom.d.ts'], skipLibCheck: false,
+    declaration: true, emitDeclarationOnly: true,
+    rootDir: path.join(root, 'src'), outDir: path.join(root, 'dist'),
+  };
+  const program = ts.createProgram([entry], options);
+  const source = checkDeclarationClosure(program, entry, path.join(root, 'src/kernel'), 'source');
+  const emitted = new Map();
+  const emit = program.emit(undefined, (file, text) => emitted.set(absolute(file), text));
+  assert(!emit.emitSkipped, 'Kernel declaration emission skipped');
+  const host = ts.createCompilerHost(options);
+  const read = host.readFile, exists = host.fileExists;
+  host.readFile = file => emitted.get(absolute(file)) ?? read(file);
+  host.fileExists = file => emitted.has(absolute(file)) || exists(file);
+  const emittedDirs = new Set([...emitted.keys()].map(file => path.posix.dirname(file)));
+  const directoryExists = host.directoryExists;
+  host.directoryExists = dir => emittedDirs.has(absolute(dir)) || directoryExists?.(dir) || false;
+  const declarationEntry = path.join(root, 'dist/kernel/index.d.ts');
+  const declarations = ts.createProgram([declarationEntry], {...options, noEmit: true}, host);
+  const compiled = checkDeclarationClosure(declarations, declarationEntry, path.join(root, 'dist/kernel'), 'emitted');
+  return {status: 'PASS', source, emitted: compiled};
+}
+
+// Source-edge checks remain the original gate, independent of declaration closure.
+function checkSourceArchitecture(root) {
 // Optional root lets regression tests audit isolated malformed source trees.
-const root = process.argv[2] ? path.resolve(process.argv[2]) : fileURLToPath(new URL('../', import.meta.url));
 const walk = dir => readdirSync(path.join(root, dir), {withFileTypes: true}).flatMap(e =>
   e.isDirectory() ? walk(`${dir}/${e.name}`) : [`${dir}/${e.name}`]);
 const sourceFiles = walk('src').filter(f => f.endsWith('.ts'));
@@ -20,6 +124,7 @@ for (const [legacy, canonical] of Object.entries(moduleMap)) {
 const graph = new Map(), runtime = new Map();
 const implementations = new Map();
 const allowed = {
+  kernel: ['kernel'],
   contracts: ['contracts'], spatial: ['contracts', 'spatial'],
   modifiers: ['contracts', 'modifiers'], stats: ['contracts', 'stats', 'modifiers'],
   combat: ['contracts', 'combat', 'spatial'],
@@ -28,6 +133,11 @@ const allowed = {
   mechanics: ['contracts', 'mechanics', 'spatial'],
   skills: ['contracts', 'skills', 'combat', 'stats', 'effects', 'damage', 'mechanics', 'spatial'],
 };
+// Legacy consumers may delegate inward; Kernel never reaches Legacy contracts,
+// implementations or the root barrel, including through type-only syntax.
+for (const domain of ['stats', 'modifiers', 'damage', 'combat', 'effects', 'skills', 'mechanics', 'spatial']) {
+  allowed[domain].push('kernel');
+}
 for (const file of files) {
   const source = readFileSync(path.join(root, file), 'utf8');
   const fingerprint = behaviorFingerprint(source);
@@ -83,4 +193,17 @@ function cycles(graph) {
 }
 const runtimeCycles = cycles(runtime), typeCycles = cycles(graph);
 assert.equal(runtimeCycles.length, 0, 'Runtime import cycle');
-console.log(JSON.stringify({status: 'PASS', modules: files.length, runtimeCycles, typeCycles}, null, 2));
+return {modules: files.length, runtimeCycles, typeCycles};
+}
+
+if (process.argv[1] && absolute(process.argv[1]) === absolute(fileURLToPath(import.meta.url))) {
+  const root = process.argv[2] ? path.resolve(process.argv[2]) : fileURLToPath(new URL('../', import.meta.url));
+  // Run both gates even when one fails: negative tests can prove declaration
+  // closure itself rejected a leak rather than count source lint as coverage.
+  const failures = [];
+  let architecture, declarations;
+  try { declarations = checkKernelDeclarations(root); } catch (error) { failures.push(error.message); }
+  try { architecture = checkSourceArchitecture(root); } catch (error) { failures.push(error.message); }
+  assert.equal(failures.length, 0, failures.join('\n'));
+  console.log(JSON.stringify({status: 'PASS', ...architecture, declarations}, null, 2));
+}

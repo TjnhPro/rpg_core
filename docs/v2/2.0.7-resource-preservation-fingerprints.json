@@ -1,0 +1,308 @@
+{
+  "status": "PENDING_PRESERVATION_APPROVAL",
+  "revision": "7b43bc5046ada04ce600ad714bfa34172dc5e160",
+  "baselineSha256": "016f628e83a951c4351cb7e82e82fe8a612179ca415d85f95604f58d13120bad",
+  "modules": [
+    {
+      "index": 8,
+      "originalFile": "src/shared/game/combat-entity.ts",
+      "before": [
+        {
+          "name": "applyEntityDamage",
+          "hash": "9059acdd8b260a40f6ed7e78dccc58bb2a64893f35f7c48281c3170232fc3599"
+        },
+        {
+          "name": "applyEntityHealing",
+          "hash": "da42591b1f2165fe87221f91e2171c7fa4ffd418f92f52bffb934b9c442abc60"
+        },
+        {
+          "name": "applyEntityManaGain",
+          "hash": "9e9c639ea27feada194d941e88ae124d3af35aa9ccb0996817a182a528c78cb2"
+        },
+        {
+          "name": "fields",
+          "hash": "445eae891dd223dcbc7d18efa4ecab82d308dd97409d5bd163c087c6c0e2d2b8"
+        },
+        {
+          "name": "statIds",
+          "hash": "88756ee1e67a256b2d643a94d184f0b0b84a4e2375f388a1eb333070174607ff"
+        },
+        {
+          "name": "validateCombatEntity",
+          "hash": "3d8d303844c8d0d58e83844d7fbc7a95fc14223a03e9e2ea3dfb552bf8f5e328"
+        },
+        {
+          "name": "validateCombatEntities",
+          "hash": "fc0307af95a9302f2eaa6e3ca91b702c757b36aee0c89f3f6ae86aad337d659e"
+        }
+      ],
+      "after": [
+        {
+          "name": "applyEntityDamage",
+          "hash": "8dbf6a85b0b46f02e23d912a94ae48cf22cb22cecf0c6509385ae41abaa11bec"
+        },
+        {
+          "name": "applyEntityHealing",
+          "hash": "82f4c617f8ce614d3ea70966c48b0444d67832ed04fc8d1351098a66bacd0d36"
+        },
+        {
+          "name": "applyEntityManaGain",
+          "hash": "14c8e4876d98a114e91e2e1364c3ec9e9b432185a97089876998ad2bc835b807"
+        },
+        {
+          "name": "fields",
+          "hash": "445eae891dd223dcbc7d18efa4ecab82d308dd97409d5bd163c087c6c0e2d2b8"
+        },
+        {
+          "name": "statIds",
+          "hash": "88756ee1e67a256b2d643a94d184f0b0b84a4e2375f388a1eb333070174607ff"
+        },
+        {
+          "name": "validateCombatEntity",
+          "hash": "3d8d303844c8d0d58e83844d7fbc7a95fc14223a03e9e2ea3dfb552bf8f5e328"
+        },
+        {
+          "name": "validateCombatEntities",
+          "hash": "fc0307af95a9302f2eaa6e3ca91b702c757b36aee0c89f3f6ae86aad337d659e"
+        }
+      ],
+      "changed": [
+        {
+          "name": "applyEntityDamage",
+          "before": "9059acdd8b260a40f6ed7e78dccc58bb2a64893f35f7c48281c3170232fc3599",
+          "after": "8dbf6a85b0b46f02e23d912a94ae48cf22cb22cecf0c6509385ae41abaa11bec"
+        },
+        {
+          "name": "applyEntityHealing",
+          "before": "da42591b1f2165fe87221f91e2171c7fa4ffd418f92f52bffb934b9c442abc60",
+          "after": "82f4c617f8ce614d3ea70966c48b0444d67832ed04fc8d1351098a66bacd0d36"
+        },
+        {
+          "name": "applyEntityManaGain",
+          "before": "9e9c639ea27feada194d941e88ae124d3af35aa9ccb0996817a182a528c78cb2",
+          "after": "14c8e4876d98a114e91e2e1364c3ec9e9b432185a97089876998ad2bc835b807"
+        }
+      ],
+      "removed": [],
+      "added": [
+        {
+          "name": "calculateResourceTransition",
+          "hash": "0510bae35da37082bf229655beb347844057981a7a0b619a61fa8434db086ff4"
+        },
+        {
+          "name": "normalizeResource",
+          "hash": "0c3848d5ef1e73a036f9e9d2b3afc86749754faac936f7ac7b07b5147fdef3ec"
+        },
+        {
+          "name": "calculateResourceRegeneration",
+          "hash": "30f4e49ded149b71da5ce7ba74820df3a60a77c69e8d0c27eb52822cc07063b8"
+        }
+      ],
+      "proposedCurrentFiles": [
+        "src/combat/combat-entity.ts",
+        "src/contracts/combat-entity.ts",
+        "src/kernel/resources/resource-calculation.ts"
+      ],
+      "proposedDeclarations": [
+        "0510bae35da37082bf229655beb347844057981a7a0b619a61fa8434db086ff4",
+        "0c3848d5ef1e73a036f9e9d2b3afc86749754faac936f7ac7b07b5147fdef3ec",
+        "14c8e4876d98a114e91e2e1364c3ec9e9b432185a97089876998ad2bc835b807",
+        "30f4e49ded149b71da5ce7ba74820df3a60a77c69e8d0c27eb52822cc07063b8",
+        "33e490dc15323cad764ba70b5c402811c2347b514edda7f34ef176db4915f3e8",
+        "3d8d303844c8d0d58e83844d7fbc7a95fc14223a03e9e2ea3dfb552bf8f5e328",
+        "445eae891dd223dcbc7d18efa4ecab82d308dd97409d5bd163c087c6c0e2d2b8",
+        "7aff977e081bf68ea749b64fc94e9f0a40161253890213603874b2bc4363ed97",
+        "82f4c617f8ce614d3ea70966c48b0444d67832ed04fc8d1351098a66bacd0d36",
+        "88756ee1e67a256b2d643a94d184f0b0b84a4e2375f388a1eb333070174607ff",
+        "8dbf6a85b0b46f02e23d912a94ae48cf22cb22cecf0c6509385ae41abaa11bec",
+        "fc0307af95a9302f2eaa6e3ca91b702c757b36aee0c89f3f6ae86aad337d659e"
+      ],
+      "sourceFiles": {
+        "src/combat/combat-entity.ts": {
+          "beforeGitSha256": "625ab159067234b1b403f8094483f357cb2d4c1aefcc105394f2c11ec0e3f698",
+          "sha256": "e1041d69787bc88d6129dfed532bcfbe1d9e732e58a5cca976d461dceba82012",
+          "gitNormalizedSha256": "ecef3096726e0ba3828f294856186cec9947225b7a1a2ffd09594ecd893ba3de"
+        },
+        "src/contracts/combat-entity.ts": {
+          "beforeGitSha256": "4229973e5f082dc91f4612000590b8c58b11799ee797889d3293c1563c85e5f1",
+          "sha256": "4229973e5f082dc91f4612000590b8c58b11799ee797889d3293c1563c85e5f1",
+          "gitNormalizedSha256": "4229973e5f082dc91f4612000590b8c58b11799ee797889d3293c1563c85e5f1"
+        },
+        "src/kernel/resources/resource-calculation.ts": {
+          "beforeGitSha256": null,
+          "sha256": "fa29e85292f93e9c20306735fc337a2b3243f3bcab7b10325e769b68cebe70f8",
+          "gitNormalizedSha256": "fa29e85292f93e9c20306735fc337a2b3243f3bcab7b10325e769b68cebe70f8"
+        }
+      },
+      "approvalHistoryPreserved": true
+    },
+    {
+      "index": 12,
+      "originalFile": "src/shared/game/stat-calculation.ts",
+      "before": [
+        {
+          "name": "cooldownDurationMs",
+          "hash": "648385952939609d7de52be2aecc9c50781c9ac2dee8b8b43f61caec6c7207d8"
+        },
+        {
+          "name": "calculateEffectiveStat",
+          "hash": "6f666ea5ce1a6755bde0470072bf4347af5df30c6f9b6b36fd61bb61b44a18d6"
+        },
+        {
+          "name": "resolveCharacterStats",
+          "hash": "bc0496db773d35ff4b8a9118a27c73b8fbd068d8660ab5be7f0cef861552228b"
+        },
+        {
+          "name": "updateCurrentResources",
+          "hash": "2e3e454e924e8416b2e104ffb47e456c29c738ced7da8b7d20299606f2a8dd12"
+        }
+      ],
+      "after": [
+        {
+          "name": "cooldownDurationMs",
+          "hash": "648385952939609d7de52be2aecc9c50781c9ac2dee8b8b43f61caec6c7207d8"
+        },
+        {
+          "name": "calculateEffectiveStat",
+          "hash": "6f666ea5ce1a6755bde0470072bf4347af5df30c6f9b6b36fd61bb61b44a18d6"
+        },
+        {
+          "name": "resolveCharacterStats",
+          "hash": "bc0496db773d35ff4b8a9118a27c73b8fbd068d8660ab5be7f0cef861552228b"
+        },
+        {
+          "name": "updateCurrentResources",
+          "hash": "b3e355c5153f8b0eae4c3cea9b113831d185d8750233f7229c204deac2189418"
+        }
+      ],
+      "changed": [
+        {
+          "name": "updateCurrentResources",
+          "before": "2e3e454e924e8416b2e104ffb47e456c29c738ced7da8b7d20299606f2a8dd12",
+          "after": "b3e355c5153f8b0eae4c3cea9b113831d185d8750233f7229c204deac2189418"
+        }
+      ],
+      "removed": [],
+      "added": [
+        {
+          "name": "calculateResourceTransition",
+          "hash": "0510bae35da37082bf229655beb347844057981a7a0b619a61fa8434db086ff4"
+        },
+        {
+          "name": "normalizeResource",
+          "hash": "0c3848d5ef1e73a036f9e9d2b3afc86749754faac936f7ac7b07b5147fdef3ec"
+        },
+        {
+          "name": "calculateResourceRegeneration",
+          "hash": "30f4e49ded149b71da5ce7ba74820df3a60a77c69e8d0c27eb52822cc07063b8"
+        }
+      ],
+      "proposedCurrentFiles": [
+        "src/stats/stat-calculation.ts",
+        "src/kernel/stats/stat-calculation.ts",
+        "src/kernel/resources/resource-calculation.ts"
+      ],
+      "proposedDeclarations": [
+        "0510bae35da37082bf229655beb347844057981a7a0b619a61fa8434db086ff4",
+        "0c3848d5ef1e73a036f9e9d2b3afc86749754faac936f7ac7b07b5147fdef3ec",
+        "30f4e49ded149b71da5ce7ba74820df3a60a77c69e8d0c27eb52822cc07063b8",
+        "648385952939609d7de52be2aecc9c50781c9ac2dee8b8b43f61caec6c7207d8",
+        "6f666ea5ce1a6755bde0470072bf4347af5df30c6f9b6b36fd61bb61b44a18d6",
+        "7ca4a5a60de9d7103d076e54087973b57b930876f7a91b1dbcf5b2f1b32496c5",
+        "84367370db53c7bb13023630526dee01e707f11acddf500e78330dfefcb11149",
+        "a0b6164093e0b7ca7e9f1840383c342b09b6e3c8265580aa603e2153c917ca39",
+        "b3e355c5153f8b0eae4c3cea9b113831d185d8750233f7229c204deac2189418",
+        "bc0496db773d35ff4b8a9118a27c73b8fbd068d8660ab5be7f0cef861552228b",
+        "bcadce8441fe958e167f3b98c1b9d13b7c822bf65bfabe3909666418892d5542"
+      ],
+      "sourceFiles": {
+        "src/stats/stat-calculation.ts": {
+          "beforeGitSha256": "7bbe0d8bc5c8b281d0a40ffaa33de60e6dd8ac3546fc57db7a3a373bce275d96",
+          "sha256": "75d4a1d68911300d7e8efa0c9226923c6580d1b52d5fd747fbbd657e8924bef0",
+          "gitNormalizedSha256": "9d914d7d6003f770d7cee0dcf5bac75bc7db60d205731f81efc0c726405a8b89"
+        },
+        "src/kernel/stats/stat-calculation.ts": {
+          "beforeGitSha256": "9a63ca1887ab8fb91d125c903dc055f86d24765cf43fd97eba4a32dc22f352e4",
+          "sha256": "9a63ca1887ab8fb91d125c903dc055f86d24765cf43fd97eba4a32dc22f352e4",
+          "gitNormalizedSha256": "9a63ca1887ab8fb91d125c903dc055f86d24765cf43fd97eba4a32dc22f352e4"
+        },
+        "src/kernel/resources/resource-calculation.ts": {
+          "beforeGitSha256": null,
+          "sha256": "fa29e85292f93e9c20306735fc337a2b3243f3bcab7b10325e769b68cebe70f8",
+          "gitNormalizedSha256": "fa29e85292f93e9c20306735fc337a2b3243f3bcab7b10325e769b68cebe70f8"
+        }
+      },
+      "approvalHistoryPreserved": true
+    }
+  ],
+  "unrelatedModulesUnchanged": 25,
+  "compatibility": {
+    "status": "PASS",
+    "unchangedDeclarations": 99,
+    "oldEntrypoints": 10,
+    "packageMetadataUnchanged": true,
+    "symbolSets": {
+      ".": {
+        "symbols": 243,
+        "values": 122
+      },
+      "./contracts": {
+        "symbols": 102,
+        "values": 41
+      },
+      "./stats": {
+        "symbols": 17,
+        "values": 10
+      },
+      "./modifiers": {
+        "symbols": 8,
+        "values": 6
+      },
+      "./combat": {
+        "symbols": 33,
+        "values": 17
+      },
+      "./damage": {
+        "symbols": 27,
+        "values": 12
+      },
+      "./skills": {
+        "symbols": 76,
+        "values": 34
+      },
+      "./effects": {
+        "symbols": 34,
+        "values": 10
+      },
+      "./mechanics": {
+        "symbols": 20,
+        "values": 11
+      },
+      "./spatial": {
+        "symbols": 6,
+        "values": 4
+      },
+      "./kernel": {
+        "symbols": 61,
+        "values": 15
+      }
+    },
+    "resourceDeclarationSha256": {
+      "combat/combat-entity": {
+        "before": "c8f4b48623e963edc9a771c6ece1e1b282b3bd3c0e9be6dbe34b03060153204c",
+        "after": "c8f4b48623e963edc9a771c6ece1e1b282b3bd3c0e9be6dbe34b03060153204c"
+      },
+      "stats/stat-calculation": {
+        "before": "1a2ec4ad0714e7f6450b032a2a03eaf7e7724ed95b715a3bb041f3663e06a9a9",
+        "after": "1a2ec4ad0714e7f6450b032a2a03eaf7e7724ed95b715a3bb041f3663e06a9a9"
+      }
+    }
+  },
+  "golden": {
+    "revision": "7b43bc5046ada04ce600ad714bfa34172dc5e160",
+    "sourceFiles": 86,
+    "scenarios": 223,
+    "errors": 97,
+    "originalThrownObjects": 13
+  }
+}

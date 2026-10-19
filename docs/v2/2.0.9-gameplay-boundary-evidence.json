@@ -1,0 +1,374 @@
+{
+  "status": "PASS",
+  "revision": "58b53ca1727002c3a31273f23cc0b484c40ef1f0",
+  "productionSourceDelta": [],
+  "packageMetadataDelta": [],
+  "preservationModulesUnchanged": 27,
+  "approvalHistoryUnchanged": true,
+  "baselineSha256": "7a8cf3cc60f66b951ba664e455ec2e653c9025165bd6ec8ccf5e4926a911711a",
+  "acceptedGoldenFilesUnchanged": 7,
+  "legacyDeclarationsByteIdentical": 99,
+  "kernelDeclarationsByteIdentical": true,
+  "symbolSets": {
+    ".": {
+      "symbols": 243,
+      "values": 122
+    },
+    "./contracts": {
+      "symbols": 102,
+      "values": 41
+    },
+    "./stats": {
+      "symbols": 17,
+      "values": 10
+    },
+    "./modifiers": {
+      "symbols": 8,
+      "values": 6
+    },
+    "./combat": {
+      "symbols": 33,
+      "values": 17
+    },
+    "./damage": {
+      "symbols": 27,
+      "values": 12
+    },
+    "./skills": {
+      "symbols": 76,
+      "values": 34
+    },
+    "./effects": {
+      "symbols": 34,
+      "values": 10
+    },
+    "./mechanics": {
+      "symbols": 20,
+      "values": 11
+    },
+    "./spatial": {
+      "symbols": 6,
+      "values": 4
+    },
+    "./kernel": {
+      "symbols": 63,
+      "values": 17
+    }
+  },
+  "closure": {
+    "status": "PASS",
+    "source": {
+      "exports": 63,
+      "files": [
+        "D:/python_code/game_dev/jx1_web/rpg-core/src/kernel/contracts/common.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/src/kernel/contracts/damage-stages.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/src/kernel/contracts/damage.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/src/kernel/contracts/defense.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/src/kernel/contracts/modifier-resolution.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/src/kernel/contracts/modifiers.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/src/kernel/contracts/resources.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/src/kernel/contracts/snapshots.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/src/kernel/contracts/stats.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/src/kernel/damage/damage-calculation.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/src/kernel/defense/defense-calculation.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/src/kernel/index.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/src/kernel/modifiers/modifier-resolution.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/src/kernel/resources/resource-calculation.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/src/kernel/snapshots/calculation-snapshot.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/src/kernel/snapshots/snapshot-data.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/src/kernel/stats/stat-calculation.ts"
+      ]
+    },
+    "emitted": {
+      "exports": 63,
+      "files": [
+        "D:/python_code/game_dev/jx1_web/rpg-core/dist/kernel/contracts/common.d.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/dist/kernel/contracts/damage-stages.d.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/dist/kernel/contracts/damage.d.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/dist/kernel/contracts/defense.d.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/dist/kernel/contracts/modifier-resolution.d.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/dist/kernel/contracts/modifiers.d.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/dist/kernel/contracts/resources.d.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/dist/kernel/contracts/snapshots.d.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/dist/kernel/contracts/stats.d.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/dist/kernel/damage/damage-calculation.d.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/dist/kernel/defense/defense-calculation.d.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/dist/kernel/index.d.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/dist/kernel/modifiers/modifier-resolution.d.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/dist/kernel/resources/resource-calculation.d.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/dist/kernel/snapshots/calculation-snapshot.d.ts",
+        "D:/python_code/game_dev/jx1_web/rpg-core/dist/kernel/stats/stat-calculation.d.ts"
+      ]
+    }
+  },
+  "kernelSymbols": [
+    {
+      "name": "AttributeScaling",
+      "value": false
+    },
+    {
+      "name": "CalculationContext",
+      "value": false
+    },
+    {
+      "name": "CalculationIssue",
+      "value": false
+    },
+    {
+      "name": "CalculationSnapshot",
+      "value": false
+    },
+    {
+      "name": "CriticalCalculationInput",
+      "value": false
+    },
+    {
+      "name": "CriticalCalculationResult",
+      "value": false
+    },
+    {
+      "name": "DamageB0Input",
+      "value": false
+    },
+    {
+      "name": "DamageB0Result",
+      "value": false
+    },
+    {
+      "name": "DamageCalculationInput",
+      "value": false
+    },
+    {
+      "name": "DamageCalculationResult",
+      "value": false
+    },
+    {
+      "name": "DamageScaling",
+      "value": false
+    },
+    {
+      "name": "DecimalPrecision",
+      "value": false
+    },
+    {
+      "name": "DerivedStatRule",
+      "value": false
+    },
+    {
+      "name": "HitCalculationInput",
+      "value": false
+    },
+    {
+      "name": "HitCalculationResult",
+      "value": false
+    },
+    {
+      "name": "Identifier",
+      "value": false
+    },
+    {
+      "name": "MitigationCalculationInput",
+      "value": false
+    },
+    {
+      "name": "MitigationCalculationResult",
+      "value": false
+    },
+    {
+      "name": "ModifierAdapter",
+      "value": false
+    },
+    {
+      "name": "ModifierIdentity",
+      "value": false
+    },
+    {
+      "name": "ModifierOperation",
+      "value": false
+    },
+    {
+      "name": "ModifierResult",
+      "value": false
+    },
+    {
+      "name": "ModifierSourceSelection",
+      "value": false
+    },
+    {
+      "name": "NumericBounds",
+      "value": false
+    },
+    {
+      "name": "NumericContribution",
+      "value": false
+    },
+    {
+      "name": "NumericRule",
+      "value": false
+    },
+    {
+      "name": "NumericValues",
+      "value": false
+    },
+    {
+      "name": "NumericalModifier",
+      "value": false
+    },
+    {
+      "name": "NumericalOffenseSnapshot",
+      "value": false
+    },
+    {
+      "name": "PreparedModifierResult",
+      "value": false
+    },
+    {
+      "name": "PreparedStatCalculationInput",
+      "value": false
+    },
+    {
+      "name": "ProbabilityRule",
+      "value": false
+    },
+    {
+      "name": "RandomRoll",
+      "value": false
+    },
+    {
+      "name": "RatingMitigationRule",
+      "value": false
+    },
+    {
+      "name": "ResolvedDamageBonus",
+      "value": false
+    },
+    {
+      "name": "ResourceNormalizationInput",
+      "value": false
+    },
+    {
+      "name": "ResourceNormalizationResult",
+      "value": false
+    },
+    {
+      "name": "ResourceRegenerationInput",
+      "value": false
+    },
+    {
+      "name": "ResourceTransitionInput",
+      "value": false
+    },
+    {
+      "name": "ResourceTransitionResult",
+      "value": false
+    },
+    {
+      "name": "ResourceTransitionRule",
+      "value": false
+    },
+    {
+      "name": "Scalar",
+      "value": false
+    },
+    {
+      "name": "StatBreakdown",
+      "value": false
+    },
+    {
+      "name": "StatCalculationInput",
+      "value": false
+    },
+    {
+      "name": "StatCalculationResult",
+      "value": false
+    },
+    {
+      "name": "StatModifierResolver",
+      "value": false
+    },
+    {
+      "name": "calculateCooldownDurationMs",
+      "value": true
+    },
+    {
+      "name": "calculateCritical",
+      "value": true
+    },
+    {
+      "name": "calculateDamageB0",
+      "value": true
+    },
+    {
+      "name": "calculateDamageB1",
+      "value": true
+    },
+    {
+      "name": "calculateDamageBonusValue",
+      "value": true
+    },
+    {
+      "name": "calculateEffectiveValue",
+      "value": true
+    },
+    {
+      "name": "calculateHit",
+      "value": true
+    },
+    {
+      "name": "calculateMitigation",
+      "value": true
+    },
+    {
+      "name": "calculateResourceRegeneration",
+      "value": true
+    },
+    {
+      "name": "calculateResourceTransition",
+      "value": true
+    },
+    {
+      "name": "calculateStats",
+      "value": true
+    },
+    {
+      "name": "captureCalculationSnapshot",
+      "value": true
+    },
+    {
+      "name": "captureNumericalOffenseSnapshot",
+      "value": true
+    },
+    {
+      "name": "matchesAnyTag",
+      "value": true
+    },
+    {
+      "name": "normalizeResource",
+      "value": true
+    },
+    {
+      "name": "prepareNumericalModifiers",
+      "value": true
+    },
+    {
+      "name": "selectCanonicalModifiers",
+      "value": true
+    }
+  ],
+  "changedFiles": [
+    "M AGENTS.md",
+    " M README.md",
+    " M docs/ARCHITECTURE.md",
+    " M docs/test-coverage.md",
+    " M scripts/consumer-smoke.mjs",
+    "?? docs/v2/2.0.9-gameplay-boundary-evidence.json",
+    "?? docs/v2/2.0.9-gameplay-contract-decoupling.md",
+    "?? docs/v2/rpg-core-v2.0.9-implementation-plan.md",
+    "?? scripts/review-gameplay-boundary.mjs",
+    "?? tests/fixtures/gameplay-boundary-audit.mjs",
+    "?? tests/fixtures/gameplay-contract-compatibility.ts",
+    "?? tests/fixtures/kernel-gameplay-boundary-consumer.ts",
+    "?? tests/kernel/gameplay-boundary-consumer.test.ts",
+    "?? tests/tooling/gameplay-boundary.test.ts"
+  ]
+}

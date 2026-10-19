@@ -276,42 +276,138 @@
       "originalFile": "src/shared/game/combat-entity.ts",
       "currentFiles": [
         "src/combat/combat-entity.ts",
-        "src/contracts/combat-entity.ts"
+        "src/contracts/combat-entity.ts",
+        "src/kernel/resources/resource-calculation.ts"
       ],
       "declarations": [
+        "0510bae35da37082bf229655beb347844057981a7a0b619a61fa8434db086ff4",
+        "0c3848d5ef1e73a036f9e9d2b3afc86749754faac936f7ac7b07b5147fdef3ec",
+        "14c8e4876d98a114e91e2e1364c3ec9e9b432185a97089876998ad2bc835b807",
+        "30f4e49ded149b71da5ce7ba74820df3a60a77c69e8d0c27eb52822cc07063b8",
         "33e490dc15323cad764ba70b5c402811c2347b514edda7f34ef176db4915f3e8",
         "3d8d303844c8d0d58e83844d7fbc7a95fc14223a03e9e2ea3dfb552bf8f5e328",
         "445eae891dd223dcbc7d18efa4ecab82d308dd97409d5bd163c087c6c0e2d2b8",
         "7aff977e081bf68ea749b64fc94e9f0a40161253890213603874b2bc4363ed97",
+        "82f4c617f8ce614d3ea70966c48b0444d67832ed04fc8d1351098a66bacd0d36",
         "88756ee1e67a256b2d643a94d184f0b0b84a4e2375f388a1eb333070174607ff",
-        "9059acdd8b260a40f6ed7e78dccc58bb2a64893f35f7c48281c3170232fc3599",
-        "9e9c639ea27feada194d941e88ae124d3af35aa9ccb0996817a182a528c78cb2",
-        "da42591b1f2165fe87221f91e2171c7fa4ffd418f92f52bffb934b9c442abc60",
+        "8dbf6a85b0b46f02e23d912a94ae48cf22cb22cecf0c6509385ae41abaa11bec",
         "fc0307af95a9302f2eaa6e3ca91b702c757b36aee0c89f3f6ae86aad337d659e"
       ],
       "approvedChange": {
-        "checkpoint": "v1.2.0",
-        "baseCommit": "263b4069e84cd9ca9456ef944b41778d08823f7f",
-        "authority": "Developer approval of Healing Foundation delta plan and H1-H8, 2026-10-16; docs/RPG_CORE_V1.2.0_HEALING_FOUNDATION.md",
-        "declarations": [
+        "checkpoint": "v2.0.7",
+        "baseCommit": "7b43bc5046ada04ce600ad714bfa34172dc5e160",
+        "authority": "Developer approved the exact v2.0.7 preservation delta for modules 8/12 on 2026-10-18; docs/v2/2.0.7-resource-calculation-extraction.md",
+        "previousApprovedChange": {
+          "checkpoint": "v1.2.0",
+          "baseCommit": "263b4069e84cd9ca9456ef944b41778d08823f7f",
+          "authority": "Developer approval of Healing Foundation delta plan and H1-H8, 2026-10-16; docs/RPG_CORE_V1.2.0_HEALING_FOUNDATION.md",
+          "declarations": [
+            {
+              "name": "applyEntityHealing",
+              "after": "da42591b1f2165fe87221f91e2171c7fa4ffd418f92f52bffb934b9c442abc60"
+            }
+          ],
+          "followUpChanges": [
+            {
+              "checkpoint": "v1.2.2",
+              "baseCommit": "2a8e1eff7d7e2164d1b8a6e7c7ab21cecbe0d801",
+              "authority": "Developer approval of Mana on Hit Foundation delta plan and continuation on existing PR, M1-M8; docs/RPG_CORE_V1.2.2_MANA_ON_HIT.md",
+              "declarations": [
+                {
+                  "name": "applyEntityManaGain",
+                  "after": "9e9c639ea27feada194d941e88ae124d3af35aa9ccb0996817a182a528c78cb2"
+                }
+              ]
+            }
+          ]
+        },
+        "originalDeclarations": [
+          "33e490dc15323cad764ba70b5c402811c2347b514edda7f34ef176db4915f3e8",
+          "3d8d303844c8d0d58e83844d7fbc7a95fc14223a03e9e2ea3dfb552bf8f5e328",
+          "445eae891dd223dcbc7d18efa4ecab82d308dd97409d5bd163c087c6c0e2d2b8",
+          "7aff977e081bf68ea749b64fc94e9f0a40161253890213603874b2bc4363ed97",
+          "88756ee1e67a256b2d643a94d184f0b0b84a4e2375f388a1eb333070174607ff",
+          "9059acdd8b260a40f6ed7e78dccc58bb2a64893f35f7c48281c3170232fc3599",
+          "9e9c639ea27feada194d941e88ae124d3af35aa9ccb0996817a182a528c78cb2",
+          "da42591b1f2165fe87221f91e2171c7fa4ffd418f92f52bffb934b9c442abc60",
+          "fc0307af95a9302f2eaa6e3ca91b702c757b36aee0c89f3f6ae86aad337d659e"
+        ],
+        "legacyBefore": [
+          {
+            "name": "applyEntityDamage",
+            "hash": "9059acdd8b260a40f6ed7e78dccc58bb2a64893f35f7c48281c3170232fc3599"
+          },
           {
             "name": "applyEntityHealing",
-            "after": "da42591b1f2165fe87221f91e2171c7fa4ffd418f92f52bffb934b9c442abc60"
+            "hash": "da42591b1f2165fe87221f91e2171c7fa4ffd418f92f52bffb934b9c442abc60"
+          },
+          {
+            "name": "applyEntityManaGain",
+            "hash": "9e9c639ea27feada194d941e88ae124d3af35aa9ccb0996817a182a528c78cb2"
+          },
+          {
+            "name": "fields",
+            "hash": "445eae891dd223dcbc7d18efa4ecab82d308dd97409d5bd163c087c6c0e2d2b8"
+          },
+          {
+            "name": "statIds",
+            "hash": "88756ee1e67a256b2d643a94d184f0b0b84a4e2375f388a1eb333070174607ff"
+          },
+          {
+            "name": "validateCombatEntity",
+            "hash": "3d8d303844c8d0d58e83844d7fbc7a95fc14223a03e9e2ea3dfb552bf8f5e328"
+          },
+          {
+            "name": "validateCombatEntities",
+            "hash": "fc0307af95a9302f2eaa6e3ca91b702c757b36aee0c89f3f6ae86aad337d659e"
           }
         ],
-        "followUpChanges": [
+        "legacyAfter": [
           {
-            "checkpoint": "v1.2.2",
-            "baseCommit": "2a8e1eff7d7e2164d1b8a6e7c7ab21cecbe0d801",
-            "authority": "Developer approval of Mana on Hit Foundation delta plan and continuation on existing PR, M1-M8; docs/RPG_CORE_V1.2.2_MANA_ON_HIT.md",
-            "declarations": [
-              {
-                "name": "applyEntityManaGain",
-                "after": "9e9c639ea27feada194d941e88ae124d3af35aa9ccb0996817a182a528c78cb2"
-              }
-            ]
+            "name": "applyEntityDamage",
+            "hash": "8dbf6a85b0b46f02e23d912a94ae48cf22cb22cecf0c6509385ae41abaa11bec"
+          },
+          {
+            "name": "applyEntityHealing",
+            "hash": "82f4c617f8ce614d3ea70966c48b0444d67832ed04fc8d1351098a66bacd0d36"
+          },
+          {
+            "name": "applyEntityManaGain",
+            "hash": "14c8e4876d98a114e91e2e1364c3ec9e9b432185a97089876998ad2bc835b807"
+          },
+          {
+            "name": "fields",
+            "hash": "445eae891dd223dcbc7d18efa4ecab82d308dd97409d5bd163c087c6c0e2d2b8"
+          },
+          {
+            "name": "statIds",
+            "hash": "88756ee1e67a256b2d643a94d184f0b0b84a4e2375f388a1eb333070174607ff"
+          },
+          {
+            "name": "validateCombatEntity",
+            "hash": "3d8d303844c8d0d58e83844d7fbc7a95fc14223a03e9e2ea3dfb552bf8f5e328"
+          },
+          {
+            "name": "validateCombatEntities",
+            "hash": "fc0307af95a9302f2eaa6e3ca91b702c757b36aee0c89f3f6ae86aad337d659e"
           }
-        ]
+        ],
+        "kernel": {
+          "src/kernel/resources/resource-calculation.ts": [
+            {
+              "name": "calculateResourceTransition",
+              "hash": "0510bae35da37082bf229655beb347844057981a7a0b619a61fa8434db086ff4"
+            },
+            {
+              "name": "normalizeResource",
+              "hash": "0c3848d5ef1e73a036f9e9d2b3afc86749754faac936f7ac7b07b5147fdef3ec"
+            },
+            {
+              "name": "calculateResourceRegeneration",
+              "hash": "30f4e49ded149b71da5ce7ba74820df3a60a77c69e8d0c27eb52822cc07063b8"
+            }
+          ]
+        }
       }
     },
     {
@@ -381,76 +477,766 @@
     {
       "originalFile": "src/shared/game/damage-core.ts",
       "currentFiles": [
-        "src/damage/damage-core.ts"
+        "src/damage/damage-core.ts",
+        "src/kernel/damage/damage-calculation.ts",
+        "src/kernel/contracts/damage-stages.ts",
+        "src/kernel/defense/defense-calculation.ts",
+        "src/kernel/snapshots/snapshot-data.ts"
       ],
       "declarations": [
+        "071c308450aa11b4cae8196108a0d10b1ce6a4a57f7b865625c5461e60c859bf",
         "19fdb48027fd7762cc5f97bdd3aedd94d975470822c2c939d195b6bef748aa02",
         "2323568f897eed1197b64bf9de64e9ed6169550394ed71a1eb964ce846759a61",
+        "2ae1a37b723f27615a82778f7f8a4c94ffb3a3b2367ad425b3f4fb6e19516f93",
+        "3efb06f66722a58ed355fe32b713296ae3874da956a2dac928adcd73600c1676",
+        "4d10b1e11de01e2f39e530054fab0a8c4829e696023bc1a3480ae287081c295d",
+        "58f06aac795b721a2d9d3faf7585dcf15693a9df7d1264170d1d60c4597910f9",
         "69ad5533c02e2a878b3b81e651790f90f6d9ebff598fb72ea4a02c54300d74a1",
-        "96627cf6aa481446a844558db520a0573ffe39ee0c41cb0785584634170bdbfe",
-        "b1271afd144a20d4a3c938130666c3b83bc58c8dde96a5bae2e8d9a7c67cfe11",
+        "6c4ec42854202b8af767915ab86b3eeea5fa1d525cb318405e4af6ca4871b970",
+        "6e0278ede14c43dd44b61c999f99d6090d07db1e63382a7406a25a63501b6bd1",
+        "8a660a1a4a2c2c27a19da03452e87256b1cd4f3c8bddace4d3ba3ff09a5d53a3",
         "bfc6d1e55a0a2ed0c2d53ff344827f4f11b662c9958d9ea2b0a905dfc1031f7a",
         "c1e421ff6bc4de0eb39ead587978cea8189a26d9f9151b2b2e1c0193c44fa649",
+        "d1cb854c7dc3d80f92b81dd585fb4b40da26268de31efd57f9b25e3adb91d022",
         "d222a4d010ebd244f1f97bc29bd7329520d61e56db03682c387b17224b8f019a",
-        "dcdffe845c2b01dd4a036a2ebda535df40e9dfc6a42f73cc75e7681e0fa86a4e"
+        "d4ce7c08e9090e92c8294a4bcaa3a5e36c7f849f3ae680d91f96dfb895273280",
+        "d831b14156848cbc94e5dbdd321e477535cadf8e837f543114c97ae7fad6fee9",
+        "e6fb1065a3a0794ef99ffeedb22da60750b37f304588fefee27e2c4126d256b0",
+        "f09a0f79670b6c0e664abca3e5f993a16903fd6268215c591033c64bc8733749"
       ],
       "approvedChange": {
-        "checkpoint": "v1.1.1",
-        "baseCommit": "2c32ebce3a5b8b86e3c22d1095645249a4202cfd",
-        "authority": "Developer approval of implementation plan, 2026-10-16; docs/RPG_CORE_V1.1.1_ROOT_SNAPSHOT.md",
-        "previousDeclarations": [
-          "c01ac125fe886154dd2eb618ec0e183b7264e493ba2de9b31cbe89f97272e5bc"
+        "checkpoint": "v2.0.8",
+        "baseCommit": "1b1183641858c4654f4dac22c338fb47e265b8de",
+        "authority": "Developer approved exact v2.0.8 preservation delta for module 10 on 2026-10-18; docs/v2/2.0.8-calculation-snapshot-context-extraction.md",
+        "previousApprovedChange": {
+          "checkpoint": "v2.0.6",
+          "baseCommit": "65334063e7ceac788ff2f73122694a158a10c5a8",
+          "authority": "Developer approved exact v2.0.6 preservation delta for modules 10 and 11 on 2026-10-18; docs/v2/2.0.6-critical-defense-extraction.md",
+          "previousApprovedChange": {
+            "checkpoint": "v2.0.5",
+            "baseCommit": "7443ff8e897ce61a4216d5386ec7e72310d352c3",
+            "authority": "Developer approved exact v2.0.5 preservation delta on 2026-10-18; docs/v2/2.0.5-damage-calculation-extraction.md",
+            "previousApprovedChange": {
+              "checkpoint": "v1.1.1",
+              "baseCommit": "2c32ebce3a5b8b86e3c22d1095645249a4202cfd",
+              "authority": "Developer approval of implementation plan, 2026-10-16; docs/RPG_CORE_V1.1.1_ROOT_SNAPSHOT.md",
+              "previousDeclarations": [
+                "c01ac125fe886154dd2eb618ec0e183b7264e493ba2de9b31cbe89f97272e5bc"
+              ],
+              "removedDeclarations": [
+                "snapshotActorDamage"
+              ],
+              "addedDeclarations": [
+                "actorOffense",
+                "snapshotActorDamage",
+                "ActorOffenseInput",
+                "DeepReadonly",
+                "ActorOffenseSnapshot",
+                "snapshotActorOffense"
+              ]
+            },
+            "originalDeclarations": [
+              "19fdb48027fd7762cc5f97bdd3aedd94d975470822c2c939d195b6bef748aa02",
+              "2323568f897eed1197b64bf9de64e9ed6169550394ed71a1eb964ce846759a61",
+              "69ad5533c02e2a878b3b81e651790f90f6d9ebff598fb72ea4a02c54300d74a1",
+              "96627cf6aa481446a844558db520a0573ffe39ee0c41cb0785584634170bdbfe",
+              "b1271afd144a20d4a3c938130666c3b83bc58c8dde96a5bae2e8d9a7c67cfe11",
+              "bfc6d1e55a0a2ed0c2d53ff344827f4f11b662c9958d9ea2b0a905dfc1031f7a",
+              "c1e421ff6bc4de0eb39ead587978cea8189a26d9f9151b2b2e1c0193c44fa649",
+              "d222a4d010ebd244f1f97bc29bd7329520d61e56db03682c387b17224b8f019a",
+              "dcdffe845c2b01dd4a036a2ebda535df40e9dfc6a42f73cc75e7681e0fa86a4e"
+            ],
+            "legacyBefore": [
+              {
+                "name": "MAX_DAMAGE_SNAPSHOT_MODIFIERS",
+                "hash": "69ad5533c02e2a878b3b81e651790f90f6d9ebff598fb72ea4a02c54300d74a1"
+              },
+              {
+                "name": "calculateDamage",
+                "hash": "dcdffe845c2b01dd4a036a2ebda535df40e9dfc6a42f73cc75e7681e0fa86a4e"
+              },
+              {
+                "name": "actorOffense",
+                "hash": "96627cf6aa481446a844558db520a0573ffe39ee0c41cb0785584634170bdbfe"
+              },
+              {
+                "name": "snapshotActorDamage",
+                "hash": "d222a4d010ebd244f1f97bc29bd7329520d61e56db03682c387b17224b8f019a"
+              },
+              {
+                "name": "DamageSnapshot",
+                "hash": "bfc6d1e55a0a2ed0c2d53ff344827f4f11b662c9958d9ea2b0a905dfc1031f7a"
+              },
+              {
+                "name": "ActorOffenseInput",
+                "hash": "2323568f897eed1197b64bf9de64e9ed6169550394ed71a1eb964ce846759a61"
+              },
+              {
+                "name": "DeepReadonly",
+                "hash": "c1e421ff6bc4de0eb39ead587978cea8189a26d9f9151b2b2e1c0193c44fa649"
+              },
+              {
+                "name": "ActorOffenseSnapshot",
+                "hash": "19fdb48027fd7762cc5f97bdd3aedd94d975470822c2c939d195b6bef748aa02"
+              },
+              {
+                "name": "snapshotActorOffense",
+                "hash": "b1271afd144a20d4a3c938130666c3b83bc58c8dde96a5bae2e8d9a7c67cfe11"
+              }
+            ],
+            "legacyAfter": [
+              {
+                "name": "MAX_DAMAGE_SNAPSHOT_MODIFIERS",
+                "hash": "69ad5533c02e2a878b3b81e651790f90f6d9ebff598fb72ea4a02c54300d74a1"
+              },
+              {
+                "name": "calculateDamage",
+                "hash": "140700dceaae949d095b65e4b02897eac199e0fab6eaa295d3b06ec026b443f1"
+              },
+              {
+                "name": "actorOffense",
+                "hash": "96627cf6aa481446a844558db520a0573ffe39ee0c41cb0785584634170bdbfe"
+              },
+              {
+                "name": "snapshotActorDamage",
+                "hash": "d222a4d010ebd244f1f97bc29bd7329520d61e56db03682c387b17224b8f019a"
+              },
+              {
+                "name": "DamageSnapshot",
+                "hash": "bfc6d1e55a0a2ed0c2d53ff344827f4f11b662c9958d9ea2b0a905dfc1031f7a"
+              },
+              {
+                "name": "ActorOffenseInput",
+                "hash": "2323568f897eed1197b64bf9de64e9ed6169550394ed71a1eb964ce846759a61"
+              },
+              {
+                "name": "DeepReadonly",
+                "hash": "c1e421ff6bc4de0eb39ead587978cea8189a26d9f9151b2b2e1c0193c44fa649"
+              },
+              {
+                "name": "ActorOffenseSnapshot",
+                "hash": "19fdb48027fd7762cc5f97bdd3aedd94d975470822c2c939d195b6bef748aa02"
+              },
+              {
+                "name": "snapshotActorOffense",
+                "hash": "b1271afd144a20d4a3c938130666c3b83bc58c8dde96a5bae2e8d9a7c67cfe11"
+              }
+            ],
+            "kernel": {
+              "src/kernel/damage/damage-calculation.ts": [
+                {
+                  "name": "calculateDamageB0",
+                  "hash": "6c4ec42854202b8af767915ab86b3eeea5fa1d525cb318405e4af6ca4871b970"
+                },
+                {
+                  "name": "calculateDamageBonusValue",
+                  "hash": "d831b14156848cbc94e5dbdd321e477535cadf8e837f543114c97ae7fad6fee9"
+                },
+                {
+                  "name": "calculateDamageB1",
+                  "hash": "8a660a1a4a2c2c27a19da03452e87256b1cd4f3c8bddace4d3ba3ff09a5d53a3"
+                }
+              ],
+              "src/kernel/contracts/damage-stages.ts": [
+                {
+                  "name": "DamageB0Input",
+                  "hash": "6e0278ede14c43dd44b61c999f99d6090d07db1e63382a7406a25a63501b6bd1"
+                },
+                {
+                  "name": "DamageB0Result",
+                  "hash": "4d10b1e11de01e2f39e530054fab0a8c4829e696023bc1a3480ae287081c295d"
+                }
+              ]
+            }
+          },
+          "originalDeclarations": [
+            "140700dceaae949d095b65e4b02897eac199e0fab6eaa295d3b06ec026b443f1",
+            "19fdb48027fd7762cc5f97bdd3aedd94d975470822c2c939d195b6bef748aa02",
+            "2323568f897eed1197b64bf9de64e9ed6169550394ed71a1eb964ce846759a61",
+            "4d10b1e11de01e2f39e530054fab0a8c4829e696023bc1a3480ae287081c295d",
+            "69ad5533c02e2a878b3b81e651790f90f6d9ebff598fb72ea4a02c54300d74a1",
+            "6c4ec42854202b8af767915ab86b3eeea5fa1d525cb318405e4af6ca4871b970",
+            "6e0278ede14c43dd44b61c999f99d6090d07db1e63382a7406a25a63501b6bd1",
+            "8a660a1a4a2c2c27a19da03452e87256b1cd4f3c8bddace4d3ba3ff09a5d53a3",
+            "96627cf6aa481446a844558db520a0573ffe39ee0c41cb0785584634170bdbfe",
+            "b1271afd144a20d4a3c938130666c3b83bc58c8dde96a5bae2e8d9a7c67cfe11",
+            "bfc6d1e55a0a2ed0c2d53ff344827f4f11b662c9958d9ea2b0a905dfc1031f7a",
+            "c1e421ff6bc4de0eb39ead587978cea8189a26d9f9151b2b2e1c0193c44fa649",
+            "d222a4d010ebd244f1f97bc29bd7329520d61e56db03682c387b17224b8f019a",
+            "d831b14156848cbc94e5dbdd321e477535cadf8e837f543114c97ae7fad6fee9"
+          ],
+          "legacyBefore": [
+            {
+              "name": "MAX_DAMAGE_SNAPSHOT_MODIFIERS",
+              "hash": "69ad5533c02e2a878b3b81e651790f90f6d9ebff598fb72ea4a02c54300d74a1"
+            },
+            {
+              "name": "calculateDamage",
+              "hash": "140700dceaae949d095b65e4b02897eac199e0fab6eaa295d3b06ec026b443f1"
+            },
+            {
+              "name": "actorOffense",
+              "hash": "96627cf6aa481446a844558db520a0573ffe39ee0c41cb0785584634170bdbfe"
+            },
+            {
+              "name": "snapshotActorDamage",
+              "hash": "d222a4d010ebd244f1f97bc29bd7329520d61e56db03682c387b17224b8f019a"
+            },
+            {
+              "name": "DamageSnapshot",
+              "hash": "bfc6d1e55a0a2ed0c2d53ff344827f4f11b662c9958d9ea2b0a905dfc1031f7a"
+            },
+            {
+              "name": "ActorOffenseInput",
+              "hash": "2323568f897eed1197b64bf9de64e9ed6169550394ed71a1eb964ce846759a61"
+            },
+            {
+              "name": "DeepReadonly",
+              "hash": "c1e421ff6bc4de0eb39ead587978cea8189a26d9f9151b2b2e1c0193c44fa649"
+            },
+            {
+              "name": "ActorOffenseSnapshot",
+              "hash": "19fdb48027fd7762cc5f97bdd3aedd94d975470822c2c939d195b6bef748aa02"
+            },
+            {
+              "name": "snapshotActorOffense",
+              "hash": "b1271afd144a20d4a3c938130666c3b83bc58c8dde96a5bae2e8d9a7c67cfe11"
+            }
+          ],
+          "legacyAfter": [
+            {
+              "name": "MAX_DAMAGE_SNAPSHOT_MODIFIERS",
+              "hash": "69ad5533c02e2a878b3b81e651790f90f6d9ebff598fb72ea4a02c54300d74a1"
+            },
+            {
+              "name": "calculateDamage",
+              "hash": "3efb06f66722a58ed355fe32b713296ae3874da956a2dac928adcd73600c1676"
+            },
+            {
+              "name": "actorOffense",
+              "hash": "96627cf6aa481446a844558db520a0573ffe39ee0c41cb0785584634170bdbfe"
+            },
+            {
+              "name": "snapshotActorDamage",
+              "hash": "d222a4d010ebd244f1f97bc29bd7329520d61e56db03682c387b17224b8f019a"
+            },
+            {
+              "name": "DamageSnapshot",
+              "hash": "bfc6d1e55a0a2ed0c2d53ff344827f4f11b662c9958d9ea2b0a905dfc1031f7a"
+            },
+            {
+              "name": "ActorOffenseInput",
+              "hash": "2323568f897eed1197b64bf9de64e9ed6169550394ed71a1eb964ce846759a61"
+            },
+            {
+              "name": "DeepReadonly",
+              "hash": "c1e421ff6bc4de0eb39ead587978cea8189a26d9f9151b2b2e1c0193c44fa649"
+            },
+            {
+              "name": "ActorOffenseSnapshot",
+              "hash": "19fdb48027fd7762cc5f97bdd3aedd94d975470822c2c939d195b6bef748aa02"
+            },
+            {
+              "name": "snapshotActorOffense",
+              "hash": "b1271afd144a20d4a3c938130666c3b83bc58c8dde96a5bae2e8d9a7c67cfe11"
+            }
+          ],
+          "kernel": {
+            "src/kernel/defense/defense-calculation.ts": [
+              {
+                "name": "calculateHit",
+                "hash": "f09a0f79670b6c0e664abca3e5f993a16903fd6268215c591033c64bc8733749"
+              },
+              {
+                "name": "calculateCritical",
+                "hash": "d1cb854c7dc3d80f92b81dd585fb4b40da26268de31efd57f9b25e3adb91d022"
+              },
+              {
+                "name": "calculateMitigation",
+                "hash": "58f06aac795b721a2d9d3faf7585dcf15693a9df7d1264170d1d60c4597910f9"
+              }
+            ]
+          }
+        },
+        "originalDeclarations": [
+          "19fdb48027fd7762cc5f97bdd3aedd94d975470822c2c939d195b6bef748aa02",
+          "2323568f897eed1197b64bf9de64e9ed6169550394ed71a1eb964ce846759a61",
+          "3efb06f66722a58ed355fe32b713296ae3874da956a2dac928adcd73600c1676",
+          "4d10b1e11de01e2f39e530054fab0a8c4829e696023bc1a3480ae287081c295d",
+          "58f06aac795b721a2d9d3faf7585dcf15693a9df7d1264170d1d60c4597910f9",
+          "69ad5533c02e2a878b3b81e651790f90f6d9ebff598fb72ea4a02c54300d74a1",
+          "6c4ec42854202b8af767915ab86b3eeea5fa1d525cb318405e4af6ca4871b970",
+          "6e0278ede14c43dd44b61c999f99d6090d07db1e63382a7406a25a63501b6bd1",
+          "8a660a1a4a2c2c27a19da03452e87256b1cd4f3c8bddace4d3ba3ff09a5d53a3",
+          "96627cf6aa481446a844558db520a0573ffe39ee0c41cb0785584634170bdbfe",
+          "b1271afd144a20d4a3c938130666c3b83bc58c8dde96a5bae2e8d9a7c67cfe11",
+          "bfc6d1e55a0a2ed0c2d53ff344827f4f11b662c9958d9ea2b0a905dfc1031f7a",
+          "c1e421ff6bc4de0eb39ead587978cea8189a26d9f9151b2b2e1c0193c44fa649",
+          "d1cb854c7dc3d80f92b81dd585fb4b40da26268de31efd57f9b25e3adb91d022",
+          "d222a4d010ebd244f1f97bc29bd7329520d61e56db03682c387b17224b8f019a",
+          "d831b14156848cbc94e5dbdd321e477535cadf8e837f543114c97ae7fad6fee9",
+          "f09a0f79670b6c0e664abca3e5f993a16903fd6268215c591033c64bc8733749"
         ],
-        "removedDeclarations": [
-          "snapshotActorDamage"
+        "legacyBefore": [
+          {
+            "name": "MAX_DAMAGE_SNAPSHOT_MODIFIERS",
+            "hash": "69ad5533c02e2a878b3b81e651790f90f6d9ebff598fb72ea4a02c54300d74a1"
+          },
+          {
+            "name": "calculateDamage",
+            "hash": "3efb06f66722a58ed355fe32b713296ae3874da956a2dac928adcd73600c1676"
+          },
+          {
+            "name": "actorOffense",
+            "hash": "96627cf6aa481446a844558db520a0573ffe39ee0c41cb0785584634170bdbfe"
+          },
+          {
+            "name": "snapshotActorDamage",
+            "hash": "d222a4d010ebd244f1f97bc29bd7329520d61e56db03682c387b17224b8f019a"
+          },
+          {
+            "name": "DamageSnapshot",
+            "hash": "bfc6d1e55a0a2ed0c2d53ff344827f4f11b662c9958d9ea2b0a905dfc1031f7a"
+          },
+          {
+            "name": "ActorOffenseInput",
+            "hash": "2323568f897eed1197b64bf9de64e9ed6169550394ed71a1eb964ce846759a61"
+          },
+          {
+            "name": "DeepReadonly",
+            "hash": "c1e421ff6bc4de0eb39ead587978cea8189a26d9f9151b2b2e1c0193c44fa649"
+          },
+          {
+            "name": "ActorOffenseSnapshot",
+            "hash": "19fdb48027fd7762cc5f97bdd3aedd94d975470822c2c939d195b6bef748aa02"
+          },
+          {
+            "name": "snapshotActorOffense",
+            "hash": "b1271afd144a20d4a3c938130666c3b83bc58c8dde96a5bae2e8d9a7c67cfe11"
+          }
         ],
-        "addedDeclarations": [
-          "actorOffense",
-          "snapshotActorDamage",
-          "ActorOffenseInput",
-          "DeepReadonly",
-          "ActorOffenseSnapshot",
-          "snapshotActorOffense"
-        ]
+        "legacyAfter": [
+          {
+            "name": "MAX_DAMAGE_SNAPSHOT_MODIFIERS",
+            "hash": "69ad5533c02e2a878b3b81e651790f90f6d9ebff598fb72ea4a02c54300d74a1"
+          },
+          {
+            "name": "calculateDamage",
+            "hash": "3efb06f66722a58ed355fe32b713296ae3874da956a2dac928adcd73600c1676"
+          },
+          {
+            "name": "actorOffense",
+            "hash": "e6fb1065a3a0794ef99ffeedb22da60750b37f304588fefee27e2c4126d256b0"
+          },
+          {
+            "name": "snapshotActorDamage",
+            "hash": "d222a4d010ebd244f1f97bc29bd7329520d61e56db03682c387b17224b8f019a"
+          },
+          {
+            "name": "DamageSnapshot",
+            "hash": "bfc6d1e55a0a2ed0c2d53ff344827f4f11b662c9958d9ea2b0a905dfc1031f7a"
+          },
+          {
+            "name": "ActorOffenseInput",
+            "hash": "2323568f897eed1197b64bf9de64e9ed6169550394ed71a1eb964ce846759a61"
+          },
+          {
+            "name": "DeepReadonly",
+            "hash": "c1e421ff6bc4de0eb39ead587978cea8189a26d9f9151b2b2e1c0193c44fa649"
+          },
+          {
+            "name": "ActorOffenseSnapshot",
+            "hash": "19fdb48027fd7762cc5f97bdd3aedd94d975470822c2c939d195b6bef748aa02"
+          },
+          {
+            "name": "snapshotActorOffense",
+            "hash": "d4ce7c08e9090e92c8294a4bcaa3a5e36c7f849f3ae680d91f96dfb895273280"
+          }
+        ],
+        "kernel": {
+          "src/kernel/snapshots/snapshot-data.ts": [
+            {
+              "name": "cloneSnapshotData",
+              "hash": "2ae1a37b723f27615a82778f7f8a4c94ffb3a3b2367ad425b3f4fb6e19516f93"
+            },
+            {
+              "name": "freezeSnapshotData",
+              "hash": "071c308450aa11b4cae8196108a0d10b1ce6a4a57f7b865625c5461e60c859bf"
+            }
+          ]
+        }
       }
     },
     {
       "originalFile": "src/shared/game/defense-engine.ts",
       "currentFiles": [
-        "src/damage/defense-engine.ts"
+        "src/damage/defense-engine.ts",
+        "src/kernel/defense/defense-calculation.ts"
       ],
       "declarations": [
-        "8353a6fed8bbdf415e86aaee2e34d359b07e5ef54eeb4fe9a41b575fa6d2aecf",
+        "2ec5d48b66ef2799955c6efb6e5d927717e3c79420b3a6109c3626e4b6551b50",
+        "541b7dc4bd33001fc905497c6139833de639ee182e431f7ef1d8b45888d2eebc",
+        "58f06aac795b721a2d9d3faf7585dcf15693a9df7d1264170d1d60c4597910f9",
         "9db2878270eeb985cddceae380fae16feead980e93f21663f131881d370409ad",
-        "b1464129ca785644d2a48114d4f3067d0b0ecd4d80101a96413cc01d8a76cab2",
-        "b2908df59094942d7875f88f15788fd8945155acca477062ff69c69425a2c37d"
-      ]
+        "d1cb854c7dc3d80f92b81dd585fb4b40da26268de31efd57f9b25e3adb91d022",
+        "f09a0f79670b6c0e664abca3e5f993a16903fd6268215c591033c64bc8733749"
+      ],
+      "approvedChange": {
+        "checkpoint": "v2.0.6",
+        "baseCommit": "65334063e7ceac788ff2f73122694a158a10c5a8",
+        "authority": "Developer approved exact v2.0.6 preservation delta for modules 10 and 11 on 2026-10-18; docs/v2/2.0.6-critical-defense-extraction.md",
+        "originalDeclarations": [
+          "8353a6fed8bbdf415e86aaee2e34d359b07e5ef54eeb4fe9a41b575fa6d2aecf",
+          "9db2878270eeb985cddceae380fae16feead980e93f21663f131881d370409ad",
+          "b1464129ca785644d2a48114d4f3067d0b0ecd4d80101a96413cc01d8a76cab2",
+          "b2908df59094942d7875f88f15788fd8945155acca477062ff69c69425a2c37d"
+        ],
+        "legacyBefore": [
+          {
+            "name": "validateDefenseContext",
+            "hash": "9db2878270eeb985cddceae380fae16feead980e93f21663f131881d370409ad"
+          },
+          {
+            "name": "resolveDefenseHit",
+            "hash": "b1464129ca785644d2a48114d4f3067d0b0ecd4d80101a96413cc01d8a76cab2"
+          },
+          {
+            "name": "ratingReduction",
+            "hash": "8353a6fed8bbdf415e86aaee2e34d359b07e5ef54eeb4fe9a41b575fa6d2aecf"
+          },
+          {
+            "name": "mitigateDefense",
+            "hash": "b2908df59094942d7875f88f15788fd8945155acca477062ff69c69425a2c37d"
+          }
+        ],
+        "legacyAfter": [
+          {
+            "name": "validateDefenseContext",
+            "hash": "9db2878270eeb985cddceae380fae16feead980e93f21663f131881d370409ad"
+          },
+          {
+            "name": "resolveDefenseHit",
+            "hash": "541b7dc4bd33001fc905497c6139833de639ee182e431f7ef1d8b45888d2eebc"
+          },
+          {
+            "name": "mitigateDefense",
+            "hash": "2ec5d48b66ef2799955c6efb6e5d927717e3c79420b3a6109c3626e4b6551b50"
+          }
+        ],
+        "kernel": {
+          "src/kernel/defense/defense-calculation.ts": [
+            {
+              "name": "calculateHit",
+              "hash": "f09a0f79670b6c0e664abca3e5f993a16903fd6268215c591033c64bc8733749"
+            },
+            {
+              "name": "calculateCritical",
+              "hash": "d1cb854c7dc3d80f92b81dd585fb4b40da26268de31efd57f9b25e3adb91d022"
+            },
+            {
+              "name": "calculateMitigation",
+              "hash": "58f06aac795b721a2d9d3faf7585dcf15693a9df7d1264170d1d60c4597910f9"
+            }
+          ]
+        }
+      }
     },
     {
       "originalFile": "src/shared/game/stat-calculation.ts",
       "currentFiles": [
-        "src/stats/stat-calculation.ts"
+        "src/stats/stat-calculation.ts",
+        "src/kernel/stats/stat-calculation.ts",
+        "src/kernel/resources/resource-calculation.ts"
       ],
       "declarations": [
-        "2e3e454e924e8416b2e104ffb47e456c29c738ced7da8b7d20299606f2a8dd12",
-        "6feb2ac6aa93ada20b357db5ae7767a33ac0bce5dec5bda177e20408ec76668e",
-        "d5f009cc1700a7bc4e2b48ba4372c7987456ec8f5dc83888098ac17e9dec22b8",
-        "e34fa86a939b92803b9b728372875266ba89988cebb2363755f929562ae51156"
-      ]
+        "0510bae35da37082bf229655beb347844057981a7a0b619a61fa8434db086ff4",
+        "0c3848d5ef1e73a036f9e9d2b3afc86749754faac936f7ac7b07b5147fdef3ec",
+        "30f4e49ded149b71da5ce7ba74820df3a60a77c69e8d0c27eb52822cc07063b8",
+        "648385952939609d7de52be2aecc9c50781c9ac2dee8b8b43f61caec6c7207d8",
+        "6f666ea5ce1a6755bde0470072bf4347af5df30c6f9b6b36fd61bb61b44a18d6",
+        "7ca4a5a60de9d7103d076e54087973b57b930876f7a91b1dbcf5b2f1b32496c5",
+        "84367370db53c7bb13023630526dee01e707f11acddf500e78330dfefcb11149",
+        "a0b6164093e0b7ca7e9f1840383c342b09b6e3c8265580aa603e2153c917ca39",
+        "b3e355c5153f8b0eae4c3cea9b113831d185d8750233f7229c204deac2189418",
+        "bc0496db773d35ff4b8a9118a27c73b8fbd068d8660ab5be7f0cef861552228b",
+        "bcadce8441fe958e167f3b98c1b9d13b7c822bf65bfabe3909666418892d5542"
+      ],
+      "approvedChange": {
+        "checkpoint": "v2.0.7",
+        "baseCommit": "7b43bc5046ada04ce600ad714bfa34172dc5e160",
+        "authority": "Developer approved the exact v2.0.7 preservation delta for modules 8/12 on 2026-10-18; docs/v2/2.0.7-resource-calculation-extraction.md",
+        "previousApprovedChange": {
+          "checkpoint": "v2.0.3",
+          "baseCommit": "a05439ec504b759df48d3345eea199fecf08083f",
+          "authority": "Developer authorized commit and push after reviewing exact preservation delta (2026-10-18); docs/v2/2.0.3-attribute-stat-extraction.md",
+          "declarations": [
+            {
+              "name": "cooldownDurationMs",
+              "before": "6feb2ac6aa93ada20b357db5ae7767a33ac0bce5dec5bda177e20408ec76668e",
+              "after": "648385952939609d7de52be2aecc9c50781c9ac2dee8b8b43f61caec6c7207d8"
+            },
+            {
+              "name": "calculateEffectiveStat",
+              "before": "d5f009cc1700a7bc4e2b48ba4372c7987456ec8f5dc83888098ac17e9dec22b8",
+              "after": "d9ecf709bf5a447c8bb6e5c68a9c6025c18da023a2512ba771a64af422ddc4f4"
+            },
+            {
+              "name": "resolveCharacterStats",
+              "before": "e34fa86a939b92803b9b728372875266ba89988cebb2363755f929562ae51156",
+              "after": "c3873dcd97152751fe7281aa3aef90f12a42693fda883c63dc7f39b060a98896"
+            },
+            {
+              "name": "setValue",
+              "after": "bcadce8441fe958e167f3b98c1b9d13b7c822bf65bfabe3909666418892d5542"
+            },
+            {
+              "name": "calculateCooldownDurationMs",
+              "after": "84367370db53c7bb13023630526dee01e707f11acddf500e78330dfefcb11149"
+            },
+            {
+              "name": "calculateEffectiveValue",
+              "after": "7ca4a5a60de9d7103d076e54087973b57b930876f7a91b1dbcf5b2f1b32496c5"
+            },
+            {
+              "name": "calculateStats",
+              "after": "a0b6164093e0b7ca7e9f1840383c342b09b6e3c8265580aa603e2153c917ca39"
+            }
+          ],
+          "patches": [
+            {
+              "checkpoint": "v2.0.3-callback-parity",
+              "baseCommit": "d57feeee02691a4eee58eeeabfc410fde9317626",
+              "authority": "Developer authorized commit and push after reviewing exact callback parity preservation delta (2026-10-18); docs/v2/2.0.3-callback-parity-patch.md",
+              "declarations": [
+                {
+                  "name": "calculateEffectiveStat",
+                  "before": "d9ecf709bf5a447c8bb6e5c68a9c6025c18da023a2512ba771a64af422ddc4f4",
+                  "after": "6f666ea5ce1a6755bde0470072bf4347af5df30c6f9b6b36fd61bb61b44a18d6"
+                },
+                {
+                  "name": "resolveCharacterStats",
+                  "before": "c3873dcd97152751fe7281aa3aef90f12a42693fda883c63dc7f39b060a98896",
+                  "after": "bc0496db773d35ff4b8a9118a27c73b8fbd068d8660ab5be7f0cef861552228b"
+                }
+              ]
+            }
+          ]
+        },
+        "originalDeclarations": [
+          "2e3e454e924e8416b2e104ffb47e456c29c738ced7da8b7d20299606f2a8dd12",
+          "648385952939609d7de52be2aecc9c50781c9ac2dee8b8b43f61caec6c7207d8",
+          "6f666ea5ce1a6755bde0470072bf4347af5df30c6f9b6b36fd61bb61b44a18d6",
+          "7ca4a5a60de9d7103d076e54087973b57b930876f7a91b1dbcf5b2f1b32496c5",
+          "84367370db53c7bb13023630526dee01e707f11acddf500e78330dfefcb11149",
+          "a0b6164093e0b7ca7e9f1840383c342b09b6e3c8265580aa603e2153c917ca39",
+          "bc0496db773d35ff4b8a9118a27c73b8fbd068d8660ab5be7f0cef861552228b",
+          "bcadce8441fe958e167f3b98c1b9d13b7c822bf65bfabe3909666418892d5542"
+        ],
+        "legacyBefore": [
+          {
+            "name": "cooldownDurationMs",
+            "hash": "648385952939609d7de52be2aecc9c50781c9ac2dee8b8b43f61caec6c7207d8"
+          },
+          {
+            "name": "calculateEffectiveStat",
+            "hash": "6f666ea5ce1a6755bde0470072bf4347af5df30c6f9b6b36fd61bb61b44a18d6"
+          },
+          {
+            "name": "resolveCharacterStats",
+            "hash": "bc0496db773d35ff4b8a9118a27c73b8fbd068d8660ab5be7f0cef861552228b"
+          },
+          {
+            "name": "updateCurrentResources",
+            "hash": "2e3e454e924e8416b2e104ffb47e456c29c738ced7da8b7d20299606f2a8dd12"
+          }
+        ],
+        "legacyAfter": [
+          {
+            "name": "cooldownDurationMs",
+            "hash": "648385952939609d7de52be2aecc9c50781c9ac2dee8b8b43f61caec6c7207d8"
+          },
+          {
+            "name": "calculateEffectiveStat",
+            "hash": "6f666ea5ce1a6755bde0470072bf4347af5df30c6f9b6b36fd61bb61b44a18d6"
+          },
+          {
+            "name": "resolveCharacterStats",
+            "hash": "bc0496db773d35ff4b8a9118a27c73b8fbd068d8660ab5be7f0cef861552228b"
+          },
+          {
+            "name": "updateCurrentResources",
+            "hash": "b3e355c5153f8b0eae4c3cea9b113831d185d8750233f7229c204deac2189418"
+          }
+        ],
+        "kernel": {
+          "src/kernel/resources/resource-calculation.ts": [
+            {
+              "name": "calculateResourceTransition",
+              "hash": "0510bae35da37082bf229655beb347844057981a7a0b619a61fa8434db086ff4"
+            },
+            {
+              "name": "normalizeResource",
+              "hash": "0c3848d5ef1e73a036f9e9d2b3afc86749754faac936f7ac7b07b5147fdef3ec"
+            },
+            {
+              "name": "calculateResourceRegeneration",
+              "hash": "30f4e49ded149b71da5ce7ba74820df3a60a77c69e8d0c27eb52822cc07063b8"
+            }
+          ]
+        }
+      }
     },
     {
       "originalFile": "src/shared/game/modifier-core.ts",
       "currentFiles": [
-        "src/modifiers/modifier-core.ts"
+        "src/modifiers/modifier-core.ts",
+        "src/kernel/modifiers/modifier-resolution.ts",
+        "src/kernel/contracts/modifier-resolution.ts"
       ],
       "declarations": [
+        "0109fd72bf1ed801fe27848c62895b7317ffeb8293195e8d2988436cfaf20898",
+        "1863f3e5513bec3c314a41fbd16c8ac7a3224eb38afd2f99a913db31c94c978b",
+        "19f5ee1c6877f5c437c1f40430d819466094b98add6318f397eb9dd963e57eae",
         "267a8c6d7c22680f0c6654bc7e10a6fba18d0b307df3bc165b5d1aed1ecb7c1b",
-        "9f27e68a3d5956fcf527d422fabcc98610f35e57016f6c8050773d31808ffd36",
-        "bfd0e445ea72d7a9010807be5d76c2b2a2dc612dcddc25a35e1fa72cc135a5f3",
+        "272cc5ad8f46076da6a8b5a25dbe8f0c968f12c5288d8e63040c64b43ce6a670",
+        "2da13c175f45dd2df61755bb8965034080503aaafff238565d1f26d270d8172c",
+        "2e1c51ca50f300c25d610e58c645a96c27f39da625779cc19e6a1885d051c6ce",
+        "2eec52205d6e09cef668f07a70b3a4a5ab4039b7456e249f45d837df1868c1b5",
+        "3d5cb6099561ffac29f283e0dd3f5c120ed1a19ed4ee6e0d078259fef1a335b2",
+        "52c7dc75c15c038cdcd2de16cbd852fed11b2a57489fce65c722ce0a3dc53159",
+        "5b50c371d392f0fbd744d5f157f748482db3b955e17e5cc06d8dcbeb3fec8be0",
+        "7c7fa3f1e85f7d583a9bdc49d106805023730dab1f335faf8d1b094c3a73b5bc",
+        "9d25c86059d7a7c9d7ba493bce64b5a5d76425a524868481f5473e4639fb304c",
+        "b3632d45f263749b6ef0c0724a00733b547e499751f78fb1c5ca5b081a613b31",
+        "ca998f4d7dbbf8ba952531495fcb8bf8ac38ed1214ca9369398d7f1e151c316b",
+        "cef16ea2ed3529cd2bcef8f55a7491d414339d26e446682a5b0c4992212f09ec",
         "e59900ce92e858c7d6c9c66321fcadf7def04bb3d6832f16cd00c5c29b32f041",
-        "ebec3c9ec72d87ded049b9a0965bdd8cda7743a167d7392a17af60fc1f207daa",
-        "f282203bb150f7d017b06b4e9f76a76a566b57cae24d915b4ed0265a157361c7"
-      ]
+        "f7c3d28b46d62ff66dd4023eec3fa4bc8a2f41a5712b11bb1f7ba20693df825d",
+        "fdf5517a4ed6d03e85152434749c46f90d6c9ca54013a8ebae527fa74a47dc8c"
+      ],
+      "approvedChange": {
+        "checkpoint": "v2.0.4",
+        "baseCommit": "390c6e8c96f467903401d18b32a4e44184b5f94e",
+        "authority": "Developer approved the exact v2.0.4 module-13 preservation delta in this review (2026-10-18); docs/v2/2.0.4-modifier-resolver-extraction.md",
+        "originalDeclarations": [
+          "267a8c6d7c22680f0c6654bc7e10a6fba18d0b307df3bc165b5d1aed1ecb7c1b",
+          "9f27e68a3d5956fcf527d422fabcc98610f35e57016f6c8050773d31808ffd36",
+          "bfd0e445ea72d7a9010807be5d76c2b2a2dc612dcddc25a35e1fa72cc135a5f3",
+          "e59900ce92e858c7d6c9c66321fcadf7def04bb3d6832f16cd00c5c29b32f041",
+          "ebec3c9ec72d87ded049b9a0965bdd8cda7743a167d7392a17af60fc1f207daa",
+          "f282203bb150f7d017b06b4e9f76a76a566b57cae24d915b4ed0265a157361c7"
+        ],
+        "legacyBefore": [
+          {
+            "name": "damageBonusReason",
+            "hash": "f282203bb150f7d017b06b4e9f76a76a566b57cae24d915b4ed0265a157361c7"
+          },
+          {
+            "name": "ActiveModifierSources",
+            "hash": "e59900ce92e858c7d6c9c66321fcadf7def04bb3d6832f16cd00c5c29b32f041"
+          },
+          {
+            "name": "collectActiveModifiers",
+            "hash": "9f27e68a3d5956fcf527d422fabcc98610f35e57016f6c8050773d31808ffd36"
+          },
+          {
+            "name": "uniqueModifierInstances",
+            "hash": "ebec3c9ec72d87ded049b9a0965bdd8cda7743a167d7392a17af60fc1f207daa"
+          },
+          {
+            "name": "prepareModifierResolver",
+            "hash": "bfd0e445ea72d7a9010807be5d76c2b2a2dc612dcddc25a35e1fa72cc135a5f3"
+          },
+          {
+            "name": "resolveModifiers",
+            "hash": "267a8c6d7c22680f0c6654bc7e10a6fba18d0b307df3bc165b5d1aed1ecb7c1b"
+          }
+        ],
+        "legacyAfter": [
+          {
+            "name": "legacyAdapter",
+            "hash": "cef16ea2ed3529cd2bcef8f55a7491d414339d26e446682a5b0c4992212f09ec"
+          },
+          {
+            "name": "damageBonusReason",
+            "hash": "52c7dc75c15c038cdcd2de16cbd852fed11b2a57489fce65c722ce0a3dc53159"
+          },
+          {
+            "name": "ActiveModifierSources",
+            "hash": "e59900ce92e858c7d6c9c66321fcadf7def04bb3d6832f16cd00c5c29b32f041"
+          },
+          {
+            "name": "collectActiveModifiers",
+            "hash": "b3632d45f263749b6ef0c0724a00733b547e499751f78fb1c5ca5b081a613b31"
+          },
+          {
+            "name": "prepareModifierResolver",
+            "hash": "9d25c86059d7a7c9d7ba493bce64b5a5d76425a524868481f5473e4639fb304c"
+          },
+          {
+            "name": "resolveModifiers",
+            "hash": "267a8c6d7c22680f0c6654bc7e10a6fba18d0b307df3bc165b5d1aed1ecb7c1b"
+          }
+        ],
+        "kernel": {
+          "src/kernel/modifiers/modifier-resolution.ts": [
+            {
+              "name": "numericalAdapter",
+              "hash": "5b50c371d392f0fbd744d5f157f748482db3b955e17e5cc06d8dcbeb3fec8be0"
+            },
+            {
+              "name": "select",
+              "hash": "1863f3e5513bec3c314a41fbd16c8ac7a3224eb38afd2f99a913db31c94c978b"
+            },
+            {
+              "name": "selectCanonicalModifiers",
+              "hash": "ca998f4d7dbbf8ba952531495fcb8bf8ac38ed1214ca9369398d7f1e151c316b"
+            },
+            {
+              "name": "selectCanonicalModifiers",
+              "hash": "272cc5ad8f46076da6a8b5a25dbe8f0c968f12c5288d8e63040c64b43ce6a670"
+            },
+            {
+              "name": "selectCanonicalModifiers",
+              "hash": "0109fd72bf1ed801fe27848c62895b7317ffeb8293195e8d2988436cfaf20898"
+            },
+            {
+              "name": "prepare",
+              "hash": "fdf5517a4ed6d03e85152434749c46f90d6c9ca54013a8ebae527fa74a47dc8c"
+            },
+            {
+              "name": "prepareNumericalModifiers",
+              "hash": "2e1c51ca50f300c25d610e58c645a96c27f39da625779cc19e6a1885d051c6ce"
+            },
+            {
+              "name": "prepareNumericalModifiers",
+              "hash": "7c7fa3f1e85f7d583a9bdc49d106805023730dab1f335faf8d1b094c3a73b5bc"
+            },
+            {
+              "name": "prepareNumericalModifiers",
+              "hash": "f7c3d28b46d62ff66dd4023eec3fa4bc8a2f41a5712b11bb1f7ba20693df825d"
+            },
+            {
+              "name": "matchesAnyTag",
+              "hash": "19f5ee1c6877f5c437c1f40430d819466094b98add6318f397eb9dd963e57eae"
+            }
+          ],
+          "src/kernel/contracts/modifier-resolution.ts": [
+            {
+              "name": "ModifierAdapter",
+              "hash": "2eec52205d6e09cef668f07a70b3a4a5ab4039b7456e249f45d837df1868c1b5"
+            },
+            {
+              "name": "ModifierSourceSelection",
+              "hash": "3d5cb6099561ffac29f283e0dd3f5c120ed1a19ed4ee6e0d078259fef1a335b2"
+            },
+            {
+              "name": "PreparedModifierResult",
+              "hash": "2da13c175f45dd2df61755bb8965034080503aaafff238565d1f26d270d8172c"
+            }
+          ]
+        }
+      }
     },
     {
       "originalFile": "src/shared/game/skill-engine.ts",

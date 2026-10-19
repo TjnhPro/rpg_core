@@ -1,0 +1,36 @@
+{
+  "status": "PENDING_PRESERVATION_APPROVAL",
+  "revision": "d57feeee02691a4eee58eeeabfc410fde9317626",
+  "baselineSha256": "d70ca17eaf244dad30ffe89dbba34b377807673517fbc8bd827046f1253c69df",
+  "moduleIndex": 12,
+  "changed": [
+    {
+      "name": "calculateEffectiveStat",
+      "before": "d9ecf709bf5a447c8bb6e5c68a9c6025c18da023a2512ba771a64af422ddc4f4",
+      "after": "6f666ea5ce1a6755bde0470072bf4347af5df30c6f9b6b36fd61bb61b44a18d6"
+    },
+    {
+      "name": "resolveCharacterStats",
+      "before": "c3873dcd97152751fe7281aa3aef90f12a42693fda883c63dc7f39b060a98896",
+      "after": "bc0496db773d35ff4b8a9118a27c73b8fbd068d8660ab5be7f0cef861552228b"
+    }
+  ],
+  "unchanged": {
+    "cooldownDurationMs": "648385952939609d7de52be2aecc9c50781c9ac2dee8b8b43f61caec6c7207d8",
+    "updateCurrentResources": "2e3e454e924e8416b2e104ffb47e456c29c738ced7da8b7d20299606f2a8dd12"
+  },
+  "kernelSourceAndApiUnchanged": true,
+  "modifierSourceUnchanged": true,
+  "existingGoldenUnchanged": true,
+  "unrelatedModulesUnchanged": 26,
+  "proposedDeclarations": [
+    "2e3e454e924e8416b2e104ffb47e456c29c738ced7da8b7d20299606f2a8dd12",
+    "648385952939609d7de52be2aecc9c50781c9ac2dee8b8b43f61caec6c7207d8",
+    "6f666ea5ce1a6755bde0470072bf4347af5df30c6f9b6b36fd61bb61b44a18d6",
+    "7ca4a5a60de9d7103d076e54087973b57b930876f7a91b1dbcf5b2f1b32496c5",
+    "84367370db53c7bb13023630526dee01e707f11acddf500e78330dfefcb11149",
+    "a0b6164093e0b7ca7e9f1840383c342b09b6e3c8265580aa603e2153c917ca39",
+    "bc0496db773d35ff4b8a9118a27c73b8fbd068d8660ab5be7f0cef861552228b",
+    "bcadce8441fe958e167f3b98c1b9d13b7c822bf65bfabe3909666418892d5542"
+  ]
+}

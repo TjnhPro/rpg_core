@@ -1,5 +1,24 @@
 # RPG Core
 
+The [v2.0.12 architecture closure](docs/v2/2.0.12-architecture-closure.md) records
+the Universal Calculation Kernel and preserved Legacy Gameplay Runtime: Kernel
+owns numerical calculations; Legacy owns gameplay policy, state and events;
+applications own content and orchestration. The architecture freeze is
+**PROPOSED**, awaiting final Developer acceptance. Public entrypoints and historical
+namespace compatibility remain unchanged. Historical milestone reports below
+retain their original review status; the closure report gives current status.
+
+
+The v2.0.9 [gameplay boundary review](docs/v2/2.0.9-gameplay-contract-decoupling.md)
+adds contract isolation evidence without production API changes. Numerical
+consumers can use `@rpg/core/kernel` independently; gameplay delivery, entity and
+spatial contracts retain their Legacy owners. Developer accepted v2.0.9 at `f5c22e2431075dc9b610359fdede99460aee850e` on 2026-10-18.
+
+The v2.0.10 [delegation/isolation evidence](docs/v2/2.0.10-legacy-delegation-isolation.md)
+adds symbol-level audit and accepted-source runtime traces. Production APIs remain
+unchanged; Developer approved the runtime boundary review (Gate B) with zero preservation
+delta; final implementation review remains pending.
+
 v1.2.5 verifies Life on Hit/Kill and Mana on Kill as canonical trigger -> self Child
 recovery compositions, with no new runtime API. See the
 [phase acceptance report](docs/RPG_CORE_V1.2.5_RECOVERY_ACCEPTANCE_CLOSURE.md) and
@@ -123,8 +142,75 @@ allow only these imports; application code does not need internal source paths.
 | `@rpg/core/effects` | Definitions, lifecycle, stack/refresh/expire and DoT |
 | `@rpg/core/mechanics` | Melee/projectile/AoE geometry and configuration |
 | `@rpg/core/spatial` | Coordinate/grid contracts, range and wall traversal |
+| `@rpg/core/kernel` | Universal numerical contracts and canonical stat/modifier/B0/B1 calculations |
+
+v2.0.1 establishes an independently importable Kernel and enforces
+`Legacy / Gameplay → Kernel` dependencies. Kernel imports only Kernel files;
+existing contracts, runtime ownership and the ten old entrypoints are preserved.
+No calculation has moved and the root does not re-export Kernel. See the
+[Kernel Foundation contract and verification](docs/v2/2.0.1-kernel-foundation.md).
+
+v2.0.2 adds 39 type-only numerical contracts for custom keys, stats, modifiers,
+damage, critical/defense, resources and snapshots, independently of Legacy schemas.
+Import them with `import type {DamageCalculationInput} from '@rpg/core/kernel'`.
+The native ESM namespace remains empty. Stat results retain numerical breakdowns
+for later Legacy projection without recalculation. Caller transforms must be
+synchronous and pure; types cannot enforce determinism. Snapshot readonly types
+do not copy or freeze backing objects; capture/clone/freeze implementation belongs
+to v2.0.8. No calculator or runtime validator is implemented in this milestone.
+See the [approved contracts, mapping and evidence](docs/v2/2.0.2-universal-calculation-contracts.md).
+
+v2.0.3 moves canonical attribute/stat/scaling/transform/bounds/precision and
+cooldown arithmetic into Kernel. `calculateStats`, `calculateEffectiveValue` and
+`calculateCooldownDurationMs` are available from `@rpg/core/kernel`; root remains
+Legacy. A prepared numerical callback supplies modifier resolution, preserving
+one Legacy Modifier Resolver until v2.0.4. Legacy stat signatures and resource
+calculation remain unchanged. The reviewed preservation amendment tracks both
+implementations; see the [review evidence](docs/v2/2.0.3-attribute-stat-extraction.md).
+
+The approved v2.0.4 implementation adds `selectCanonicalModifiers`,
+`prepareNumericalModifiers` and `matchesAnyTag` through `@rpg/core/kernel`.
+Legacy delegates canonical modifier selection/aggregation while retaining
+validation, source activation and damage/tag policy. Original contribution
+objects and mutable group arrays remain live; readonly types do not freeze them.
+The separate preservation checkpoint is approved: see the
+[extraction and preservation review](docs/v2/2.0.4-modifier-resolver-extraction.md).
+
+v2.0.5 adds `calculateDamageB0`, `calculateDamageB1` and
+`calculateDamageBonusValue`, with `DamageB0Input`/`DamageB0Result`. Legacy delegates
+numerical B0/B1 while retaining eligibility, diagnostics, Dodge, Critical, Defense
+and snapshots. B0 runs before Critical RNG; B1 consumes its selected additive bonus
+after Critical. Synchronous live accessors preserve Legacy read timing; generic
+callers should supply stable/pure accessors. No copy/freeze guarantee is added.
+The Developer approved the exact module-10 preservation amendment on 2026-10-18.
+See [the extraction review](docs/v2/2.0.5-damage-calculation-extraction.md).
+
+v2.0.6 implements `calculateHit`, `calculateCritical` and `calculateMitigation`
+from the existing nine Defense contracts. Kernel owns probability, rating,
+clamping and final/prevented damage arithmetic; Legacy supplies eligibility,
+rules, validation and RNG, and maps its original diagnostics. Dodge remains lazy;
+Critical draws before chance reads and retains the DoT public roll sentinel `1`.
+The Developer approved the exact preservation amendment for modules 10/11 on
+2026-10-18; see [the review evidence](docs/v2/2.0.6-critical-defense-extraction.md).
 
 Delivery scheduling kernels, freeze helpers and debug wrappers remain internal.
+v2.0.8 adds `captureNumericalOffenseSnapshot` and `captureCalculationSnapshot`
+through `@rpg/core/kernel`. They validate closed numerical data, clone the whole
+graph once and deeply freeze the detached result, preserving shared aliases
+within it. Context labels convey no gameplay authority; RNG stays at calculator
+invocation. Legacy default mutable aliases and trusted Root S0 identity/timing
+remain unchanged. See the [snapshot extraction review](docs/v2/2.0.8-calculation-snapshot-context-extraction.md).
+The exact module-10 preservation amendment was approved by Developer on 2026-10-18.
+
+v2.0.7 implements `calculateResourceTransition`, `normalizeResource` and
+`calculateResourceRegeneration` through `@rpg/core/kernel`, using the existing
+six resource contracts. Legacy Combat/Stats delegate arithmetic and retain their
+validation/results; Skills still owns resource writes, costs and recovery amount
+resolution. Allowed above-max increases can normalize downward with negative
+`applied`; damage applied is not universally net resource change. Regen retains
+precision 12 and living fractions. The Developer approved the exact preservation
+amendment for modules 8/12 on 2026-10-18; see [the resource review](docs/v2/2.0.7-resource-calculation-extraction.md).
+
 The inherited `SkillEffectRuntime` container shape is preserved; applications
 should operate it through lifecycle APIs, rather than mutate its stores.
 

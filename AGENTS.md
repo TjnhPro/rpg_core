@@ -1,5 +1,16 @@
 # Working in RPG Core
 
+The [v2 architecture closure](docs/v2/2.0.12-architecture-closure.md) records the
+current Kernel/gameplay owners. Its freeze manifest is PROPOSED, pending final
+Developer acceptance; agents cannot activate it. Compatible changes retain the
+boundaries and relevant regression/compatibility checks. New capabilities require
+CORE_CAPABILITY_GAP, an API audit and an approved owner/contract plan. Breaking
+ownership, public contracts, entrypoints, forwarders, cycles or preservation
+requires ARCHITECTURE_CHANGE_REQUEST with alternatives, consumer impact,
+migration, verification and rollback; STOP for Developer approval. Never edit a
+freeze record to make unapproved code pass.
+
+
 Generic, headless TypeScript RPG library (`@rpg/core`), independent of any specific
 game, including JX1. This repository owns mechanics, not a Game Runtime or editor.
 
@@ -47,6 +58,53 @@ must never turn `BLOCKED` into `READY`.
   Public/legacy contract changes require an explicitly reviewed compatibility plan.
 - Keep historical provenance intact. For approved future behavior changes, follow
   the preservation-baseline policy in ARCHITECTURE; do not bypass the check.
+
+## Kernel migration boundary
+
+- Gameplay contracts keep their current Legacy owners: SkillMechanics/Delivery
+  in Contracts/Mechanics/Skills, DamageDelivery in Contracts/Damage, MapPoint in
+  Contracts/Spatial, and CombatEntity in Contracts/Combat. Resolve eligibility,
+  delivery and entity policy before calling numerical Kernel APIs. Caller labels
+  such as `magic`, `projectile` or `player` are ordinary identifiers. See the
+  [v2.0.9 boundary review](docs/v2/2.0.9-gameplay-contract-decoupling.md).
+
+- `src/kernel/**` owns reusable RPG calculations only. v2.0.3 moves canonical
+  attribute/stat/cooldown calculations here with a prepared numerical resolver
+  callback. The approved v2.0.4 cut moves modifier identity/dedup/order/grouping
+  and numerical aggregation into Kernel; its preservation checkpoint is approved.
+  Legacy retains validation, condition support, source activation and damage/tag
+  vocabulary. The approved v2.0.5 cut delegates numerical B0/B1 to Kernel, with
+  synchronous live numerical accessors; its preservation checkpoint is approved.
+  The approved v2.0.6 implementation delegates numerical Hit, Critical and rating
+  mitigation to Kernel; its exact preservation checkpoint was approved on
+  2026-10-18 for modules 10/11. Legacy
+  retains eligibility, validation, rule selection, RNG provision, diagnostics and
+  snapshots. Live accessors preserve captured coefficients and late actor reads;
+  Dodge callbacks are unbound, while Legacy Critical preserves its input receiver.
+  The approved v2.0.7 cut delegates resource transitions, normalization and regen
+  to Kernel; the exact modules 8/12 preservation amendment was approved on 2026-10-18.
+  Legacy keeps validation, policy mapping and lazy accessors. Skills keeps percentage/lifesteal
+  amounts, MP costs, resource writes and events; do not move those in this cut.
+  The approved v2.0.8 cut adds closed numerical snapshot capture APIs and internal
+  native-clone/recursive-freeze primitives. Legacy Damage delegates at its exact
+  existing boundaries; Skills/Root/Child/DoT production remains unchanged.
+  The exact module 10 preservation amendment was approved on 2026-10-18. Do not apply the
+  closed numerical validator to Legacy raw offense or alter default aliases.
+  Further extraction requires approved plans.
+  Transform callbacks are caller-owned synchronous pure numeric functions;
+  snapshots contain no callbacks. TypeScript readonly is neither detached copy
+  nor runtime freeze; v2.0.8 owns implementation of those guarantees.
+- Kernel may depend only on other Kernel files, never Legacy contracts, root/domain
+  barrels, Skills, Mechanics, Spatial, gameplay runtimes, external packages or Node APIs.
+  This applies to runtime and type dependencies, re-exports and dynamic loading.
+- Gameplay-only features are not automatically Kernel capability gaps. Propose a
+  Kernel upgrade only for a genuinely missing calculation primitive or numerical rule;
+  new gameplay/skill systems remain independent of the Legacy Skill Engine.
+- Legacy retains its public API, canonical implementations and runtime behavior until
+  an approved Extract & Delegate step moves a calculation once into Kernel. Do not
+  introduce alternative calculation implementations outside Kernel or duplicate engines.
+- Existing v1 policies continue to govern Legacy. See the
+  [Kernel Foundation contract](docs/v2/2.0.1-kernel-foundation.md).
 
 ## Verification
 
