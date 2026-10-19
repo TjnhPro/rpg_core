@@ -1,5 +1,22 @@
 # Core test coverage matrix
 
+## v2.0.0 release transition
+
+Architecture Freeze v2.0 is ACCEPTED at `e99d36e4345e14486ec40448ad8df872d3a44a57`.
+The original PROPOSED manifest and eight section hashes remain immutable.
+Historical mode rebuilds accepted Git source in isolation. Release mode audits the
+actual 2.0.0 candidate and fresh installed artifact. Private tooling tests pair
+valid controls with exact authorization, version/metadata, symbol/declaration,
+source/oracle/preservation and installed-integrity rejections. Synthetic controls
+exercise rejection only; real installed consumers execute separately.
+
+[Release Gate B evidence](releases/v2.0.0-transition-review.md) records current
+counts, hashes and limitations. Final full verify requires Gate B approval;
+release merge/tag/GitHub Release require separate final approval.
+
+Historical coverage descriptions below retain their original milestone context.
+
+
 ## v2.0.12 architecture closure
 
 The new tooling suite validates live source/emitted inventories and the proposed

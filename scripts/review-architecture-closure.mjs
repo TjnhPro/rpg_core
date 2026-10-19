@@ -5,10 +5,11 @@ import {execFileSync} from 'node:child_process';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {collectClosure,validateFreeze,sha,digest,revision,evidencePath,manifestPath,protectedDiff} from './audit-architecture-closure.mjs';
+import {requireRelease} from './release-transition.mjs';
 import {cases as gameplayCases} from '../tests/fixtures/gameplay-boundary-audit.mjs';
 
 export function parseInstalledLog(text){return text.split(/\r?\n/).filter(line=>line.startsWith('{')).map(line=>JSON.parse(line));}
-export function validateInstalled(records,live){
+export function validateInstalled(records,live,{mode='historical'}={}){
  const diagnostics=[];
  try{
   const one=status=>{const rows=records.filter(row=>row.status===status);assert.equal(rows.length,1,`Exactly one ${status} record required`);return rows[0];};
@@ -24,7 +25,12 @@ export function validateInstalled(records,live){
   assert.match(proof.package.archiveSha256,/^[0-9a-f]{64}$/);assert.match(proof.package.integrity,/^sha512-[A-Za-z0-9+/]+=*$/);
   assert.equal(complete.archiveSha256,proof.package.archiveSha256);
   for(const flag of ['integrityVerified','installedIntegrityVerified','oneArtifact'])assert.equal(proof.package[flag],true,flag);
-  assert.equal(proof.package.name,'@rpg/core');assert.equal(proof.package.version,'1.0.0');
+  assert.equal(proof.package.name,'@rpg/core');
+  assert(['historical','release'].includes(mode),'Explicit installed mode');
+  if(mode==='release')requireRelease();
+  const version=mode==='release'?'2.0.0':'1.0.0';
+  assert.equal(live.sections.publicBoundary.package.version,version,'Candidate approved package version');
+  assert.equal(proof.package.version,version,'Installed package version mismatch');
   assert.deepEqual(proof.inventories,live.sections.publicBoundary.inventories,'Installed complete public inventories');
   assert.deepEqual(proof.declarationSha256,live.sections.declarations.sha256,'Installed complete declaration hashes');
   assert.deepEqual(proof.runtime.publicNamespaces,live.sections.publicBoundary.runtimeNamespaces,'Installed runtime values');

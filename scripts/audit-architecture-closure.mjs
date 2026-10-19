@@ -8,6 +8,7 @@ import {fileURLToPath,pathToFileURL} from 'node:url';
 import ts from 'typescript';
 import {checkKernelDeclarations} from './check-architecture.mjs';
 import {behaviorFingerprint} from './behavior-fingerprint.mjs';
+import {requireRelease,validateReleaseState} from './release-transition.mjs';
 import {auditLegacyDelegation} from './audit-legacy-delegation.mjs';
 
 export const revision='994a2fc8d7d01d8200e6377bb65436b7228b3a4e';
@@ -26,11 +27,12 @@ export function stable(value){
  return value;
 }
 export const digest=value=>sha(JSON.stringify(stable(value))??'undefined');
-const git=args=>execFileSync('git',args,{encoding:'utf8',maxBuffer:32*1024*1024}).trim();
+const git=args=>execFileSync('git',args,{encoding:'utf8',maxBuffer:32*1024*1024,stdio:'pipe'}).trim();
 const original=file=>execFileSync('git',['show',`${revision}:${file}`],{maxBuffer:32*1024*1024});
 const relative=file=>path.relative(process.cwd(),file).replaceAll('\\','/');
 const walk=dir=>readdirSync(dir,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(`${dir}/${e.name}`):[`${dir}/${e.name}`]);
-export function protectedDiff(){
+export function protectedDiff(mode='historical'){
+ if(mode==='release'){const state=requireRelease();return {changedFiles:state.changedFiles,unauthorized:[]};}
  const changed=[...new Set([...git(['diff','--name-only',revision]).split('\n'),...git(['ls-files','--others','--exclude-standard']).split('\n')].filter(Boolean))].sort();
  return {changedFiles:changed,unauthorized:changed.filter(file=>!allowedFiles.includes(file))};
 }
@@ -82,10 +84,11 @@ function dependencyGraph(program,options){
   }visit(file);return {file:relative(file.fileName),edges};
  }).sort((a,b)=>a.file<b.file?-1:1);
 }
-export async function collectClosure(){
+export async function collectClosure({mode='historical'}={}){
+ assert(['historical','release'].includes(mode),'Explicit verification mode');
  const started=performance.now();
  execFileSync('git',['merge-base','--is-ancestor',revision,'HEAD']);
- const delta=protectedDiff();assert.deepEqual(delta.unauthorized,[],'Unapproved candidate file delta');
+ const delta=protectedDiff(mode);assert.deepEqual(delta.unauthorized,[],'Unapproved candidate file delta');
  const config=ts.readConfigFile('tsconfig.json',ts.sys.readFile);assert(!config.error);
  const parsed=ts.parseJsonConfigFileContent(config.config,ts.sys,process.cwd());
  const program=ts.createProgram(parsed.fileNames,{...parsed.options,newLine:ts.NewLineKind.LineFeed});
@@ -96,7 +99,7 @@ export async function collectClosure(){
  const sourceSha256={},rawSourceSha256={};
  for(const file of sourceFiles){sourceSha256[file]=sha(lf(readFileSync(file)));rawSourceSha256[file]=sha(readFileSync(file));assert.equal(sourceSha256[file],sha(original(file)),file);}
  const protectedFiles=['package.json','package-lock.json','tsconfig.json','tsconfig.tests.json','tsconfig.examples.json','vitest.config.ts','docs/behavior-baseline.json','docs/module-map.json','EXPORT-MANIFEST.json','scripts/check-architecture.mjs','scripts/check-preservation.mjs'];
- const protectedSha256=Object.fromEntries(protectedFiles.map(file=>{const hash=sha(lf(readFileSync(file)));assert.equal(hash,sha(original(file)),file);return [file,hash];}));
+ const protectedSha256=Object.fromEntries(protectedFiles.map(file=>{const hash=sha(lf(readFileSync(file)));if(!(mode==='release'&&['package.json','package-lock.json'].includes(file)))assert.equal(hash,sha(original(file)),file);return [file,hash];}));
  // Actual source gate stays independent: reporting must not substitute its own policy.
  const architecture=JSON.parse(execFileSync(process.execPath,['scripts/check-architecture.mjs'],{encoding:'utf8',maxBuffer:8*1024*1024}));
  const closure=checkKernelDeclarations(process.cwd());
@@ -188,13 +191,28 @@ export function validateFreeze(manifest,evidence,live){
  }
  return {status:diagnostics.length?'FAIL':'PASS',diagnostics};
 }
+export function validateReleaseClosure(manifest,evidence,live,state=requireRelease()){
+ const authorization=validateReleaseState(state);if(authorization.status!=='PASS')return authorization;
+ const candidate=structuredClone(live);
+ if(candidate.sections.publicBoundary.package.version!=='2.0.0')return {status:'FAIL',diagnostics:[{code:'RELEASE_VERSION',detail:'Live candidate version'}]};
+ // Authorization verified the actual complete metadata first. Only these exact
+ // release fields are projected for architecture comparison; historical mode
+ // never calls this function and its meaning/hashes remain unchanged.
+ candidate.sections.publicBoundary.package.version='1.0.0';
+ for(const file of ['package.json','package-lock.json']){
+  if(candidate.sections.sourceIntegrity.protectedSha256[file]!==sha(lf(state.metadata[file])))return {status:'FAIL',diagnostics:[{code:'RELEASE_METADATA',detail:'Candidate metadata hash mismatch: '+file}]};
+  candidate.sections.sourceIntegrity.protectedSha256[file]=sha(lf(state.original[file]));
+ }
+ return validateFreeze(manifest,evidence,candidate);
+}
 export const governance={compatible:'Retain boundaries; approved plan when applicable; relevant regression and compatibility evidence',capability:'CORE_CAPABILITY_GAP; audit APIs; propose one owner/contract/semantics and compatibility/preservation impact; STOP for Developer approval',breaking:'ARCHITECTURE_CHANGE_REQUEST; motivation, boundaries, alternatives, consumer impact, migration, verification, rollback; STOP for Developer approval',baseline:'Never edit a manifest or preservation record merely to accept unapproved code'};
 export const verificationRequirements={architecture:'Existing checker and source/emitted/installed closure',preservation:'27 exact records/history and namespace identities; 99 Legacy declarations',delegation:'24 reviewed direct sites plus wrappers and callback/runtime evidence',consumers:'32 Multi-RPG / 61 Legacy scenarios; one installed artifact per run; strict NodeNext/native ESM',finalVerification:'npm run verify only after Gate B approval',ci:{events:['pull_request','push'],nodes:['22.13.0','24'],exactHead:true,requiredStatus:'SUCCESS'},freeze:'Final Developer acceptance required; agent cannot activate'};
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
- const live=await collectClosure();
+ const mode=process.argv.includes('--release')?'release':'historical';
+ const live=await collectClosure({mode});
  if(process.argv.includes('--inventory'))console.log(JSON.stringify(stable(live),null,2));
  else{
-  const result=validateFreeze(JSON.parse(readFileSync(manifestPath)),JSON.parse(readFileSync(evidencePath)),live);
+  const result=(mode==='release'?validateReleaseClosure:validateFreeze)(JSON.parse(readFileSync(manifestPath)),JSON.parse(readFileSync(evidencePath)),live);
   console.log(JSON.stringify({...result,revision,sourceFiles:live.sections.dependencyGraph.files,occurrences:live.sections.dependencyGraph.occurrences,combinedSccs:live.sections.dependencyGraph.combinedSccs,runtimeSccs:live.sections.dependencyGraph.runtimeSccs,milliseconds:live.observations.milliseconds},null,2));
   if(result.status!=='PASS')process.exitCode=1;
  }

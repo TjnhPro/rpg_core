@@ -1,8 +1,10 @@
 # Working in RPG Core
 
 The [v2 architecture closure](docs/v2/2.0.12-architecture-closure.md) records the
-current Kernel/gameplay owners. Its freeze manifest is PROPOSED, pending final
-Developer acceptance; agents cannot activate it. Compatible changes retain the
+accepted Kernel/gameplay owners. Developer explicitly activated Architecture
+Freeze v2.0 at `e99d36e4345e14486ec40448ad8df872d3a44a57`; PR #6 merged at
+`cc7affbcc01decd1fda9ec4b0d7f9f55ba3fda87`. Its manifest remains PROPOSED as
+an immutable historical review artifact. Agents cannot rewrite that artifact. Compatible changes retain the
 boundaries and relevant regression/compatibility checks. New capabilities require
 CORE_CAPABILITY_GAP, an API audit and an approved owner/contract plan. Breaking
 ownership, public contracts, entrypoints, forwarders, cycles or preservation
@@ -138,3 +140,28 @@ Report task completion using only these statuses:
 Report changed files and reasons, public API and compatibility impact, commands
 executed/results and remaining issues. Do not publish packages, create releases,
 or change licensing unless explicitly requested. Never automatically merge a PR.
+
+## Release verification and delivery
+
+Use the [approved release transition](docs/releases/v2.0.0-transition.json) and
+[release checklist](docs/releases/v2.0.0.md). Only package version, root lockfile
+version fields and VERSION may differ as metadata; exports, dependencies,
+compiler configuration, source, historical goldens and preservation stay fixed.
+
+- Historical mode: `node scripts/review-release-transition.mjs --historical`
+  builds and audits the exact accepted Git revision in an isolated checkout.
+- Candidate mode: build, run `npm run test:consumer` with a fresh captured log,
+  then `node scripts/review-release-transition.mjs --release --installed-log <log>`.
+  This inspects and executes the actual 2.0.0 candidate, not historical log replay.
+- Gate B review precedes final full verify, commit and push. After approval, run
+  `npm run verify`, both modes and `git diff --check`; create the release PR and
+  verify exact-head Node 22.13.0/24 CI. Separate final Developer approval precedes
+  release merge, annotated tag and GitHub Release. Preserve commit mapping.
+- Keep `private: true`. Do not publish npm, change licensing or regenerate accepted
+  snapshots/history. A failed boundary check requires reproduction and an approved
+  minimal delta, never a broader allowlist or self-rebaseline.
+
+New numerical capabilities require CORE_CAPABILITY_GAP review after auditing
+existing public APIs. New gameplay systems keep gameplay ownership. Breaking
+boundaries/contracts require ARCHITECTURE_CHANGE_REQUEST with alternatives,
+consumer impact, migration, verification and rollback before implementation.
