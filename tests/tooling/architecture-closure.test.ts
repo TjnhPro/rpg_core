@@ -1,7 +1,7 @@
 import {beforeAll,expect,it} from 'vitest';
 import {readFileSync,readdirSync} from 'node:fs';
 // @ts-expect-error Private read-only JS tooling has no public declarations.
-import {collectClosure,validateFreeze,sha,digest,revision,evidencePath,manifestPath,stronglyConnected} from '../../scripts/audit-architecture-closure.mjs';
+import {collectClosure,validateReleaseClosure,sha,digest,revision,evidencePath,manifestPath,stronglyConnected} from '../../scripts/audit-architecture-closure.mjs';
 // @ts-expect-error Private reviewer, not a shipped API.
 import {validateInstalled} from '../../scripts/review-architecture-closure.mjs';
 // @ts-expect-error Existing private adversarial fixture definitions.
@@ -10,9 +10,9 @@ import {cases as gameplayCases} from '../fixtures/gameplay-boundary-audit.mjs';
 type Data = Record<string,any>; // heterogeneous JSON evidence, not production contracts
 let live:Data,evidence:Data,manifest:Data;
 beforeAll(async()=>{
- live=await collectClosure();evidence=JSON.parse(readFileSync(evidencePath,'utf8'));manifest=JSON.parse(readFileSync(manifestPath,'utf8'));
+ live=await collectClosure({mode:'release'});evidence=JSON.parse(readFileSync(evidencePath,'utf8'));manifest=JSON.parse(readFileSync(manifestPath,'utf8'));
 },60000);
-const check=(m=manifest,e=evidence,l=live)=>validateFreeze(m,e,l);
+const check=(m=manifest,e=evidence,l=live)=>validateReleaseClosure(m,e,l);
 it('validates the live source/emitted candidate without local installed logs',()=>{
  expect(check()).toEqual({status:'PASS',diagnostics:[]});
  expect(live.sections.dependencyGraph.files).toBe(89);expect(live.sections.dependencyGraph.occurrences).toBe(285);
@@ -71,7 +71,7 @@ it('classifies type SCCs separately and recognises runtime cycles including self
 function installedControl():Data[]{
  const files=(dir:string):string[]=>readdirSync(dir,{withFileTypes:true}).flatMap(e=>e.isDirectory()?files(dir+'/'+e.name):[dir+'/'+e.name]);
  const contentSha256=Object.fromEntries([...files('dist'),'README.md','VERSION','EXPORT-MANIFEST.json'].map(file=>[file,sha(readFileSync(file))]));
- const packageIdentity={name:'@rpg/core',version:'1.0.0',archiveSha256:'1'.repeat(64),integrity:'sha512-'+Buffer.alloc(64).toString('base64'),integrityVerified:true,installedIntegrityVerified:true,oneArtifact:true};
+ const packageIdentity={name:'@rpg/core',version:'2.0.0',archiveSha256:'1'.repeat(64),integrity:'sha512-'+Buffer.alloc(64).toString('base64'),integrityVerified:true,installedIntegrityVerified:true,oneArtifact:true};
  const closure={exports:63,files:live.sections.publicBoundary.closure.emitted.files};
  const installerSha256=sha(readFileSync('scripts/consumer-smoke.mjs'));
  const names=['text-rpg','vo-lam-25d','arpg'];const fixtureSha256:Data={},oracleSha256:Data={};
@@ -108,7 +108,16 @@ const installedMutations:[string,(rows:Data[])=>void][]=[
  ['missing installed gameplay pair',r=>r[4]!.cases.pop()],
 ];
 for(const [name,change] of installedMutations)it(name+': synthetic valid control and installed-evidence rejection',()=>{
- const control=installedControl();expect(validateInstalled(control,live).status).toBe('PASS');
+ const control=installedControl();expect(validateInstalled(control,live,{mode:'release'}).status).toBe('PASS');
  const invalid=structuredClone(control);change(invalid);
- const rejected=validateInstalled(invalid,live);expect(rejected.status).toBe('FAIL');expect(rejected.diagnostics[0].code).toBe('INSTALLED_ARTIFACT');
+ const rejected=validateInstalled(invalid,live,{mode:'release'});expect(rejected.status).toBe('FAIL');expect(rejected.diagnostics[0].code).toBe('INSTALLED_ARTIFACT');
 },30000);
+
+for(const [name,change,reason] of [
+ ['installed release version mismatch',(rows:Data[])=>{rows[0]!.package.version='1.0.0';},'Installed package version mismatch'],
+ ['installed artifact integrity mismatch',(rows:Data[])=>{rows[0]!.package={...rows[0]!.package,integrity:'sha512-'+Buffer.alloc(64,1).toString('base64')};},'Mixed installed artifacts'],
+ ['installed integrity not verified',(rows:Data[])=>{rows[0]!.package.integrityVerified=false;},'integrityVerified'],
+] as [string,(rows:Data[])=>void,string][])it(name+': exact intended rejection',()=>{
+ const rows=installedControl();expect(validateInstalled(rows,live,{mode:'release'}).status).toBe('PASS');change(rows);
+ const result=validateInstalled(rows,live,{mode:'release'});expect(result.status).toBe('FAIL');expect(result.diagnostics[0].detail).toContain(reason);
+});

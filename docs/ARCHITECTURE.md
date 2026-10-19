@@ -2,8 +2,11 @@
 
 Current v2 boundary: [v2.0.12 closure](v2/2.0.12-architecture-closure.md),
 [verified inventories](v2/2.0.12-architecture-closure-evidence.json) and
-[proposed freeze](v2/2.0.12-architecture-freeze.json). Gates A and B are approved;
-Gate C delivery and final architecture acceptance remain pending. Kernel owns canonical
+[immutable review freeze](v2/2.0.12-architecture-freeze.json). Developer accepted
+and activated Architecture Freeze v2.0 at
+`e99d36e4345e14486ec40448ad8df872d3a44a57`; PR #6 merged at
+`cc7affbcc01decd1fda9ec4b0d7f9f55ba3fda87`. The manifest retains PROPOSED
+as historical review status; the explicit acceptance record activates the baseline. Kernel owns canonical
 Stats, Modifiers, Damage B0/B1, Hit/Critical/Mitigation, Resources and numerical
 snapshot capture. Legacy owns validation, gameplay eligibility, Skills/Mechanics/
 Effects/Trigger authority and HP/MP/event commitments; applications own content,
@@ -15,7 +18,7 @@ and Skills type relationships; ten DFS cycle paths are not ten independent SCCs.
 Exact edges and members are in the closure evidence. Existing checker policy
 remains authoritative; the eight non-Contracts Legacy domains may import Kernel.
 
-After final Developer acceptance, compatible implementation/test/docs extensions
+Following final Developer acceptance, compatible implementation/test/docs extensions
 retain these boundaries and relevant compatibility checks. New capabilities
 require CORE_CAPABILITY_GAP, API audit, one owner/contract and Developer approval.
 Breaking changes require ARCHITECTURE_CHANGE_REQUEST with motivation, current/
@@ -408,3 +411,19 @@ validation covers percent-HP-only Child bundles without a new identity store.
 Existing ordered effects, lifecycle boundaries, budgets and resource caps remain.
 The approved public amount union widening requires numeric-read narrowing;
 see [contract and preservation amendment](RPG_CORE_V1.2.4_PERCENT_RECOVERY.md).
+
+## Release metadata transition
+
+The [2.0.0 transition record](releases/v2.0.0-transition.json) is separate from
+accepted architecture/preservation. Historical mode audits accepted Git blobs
+unchanged. Release mode inspects live source, emitted declarations, runtime
+namespaces and installed candidate bytes, validates exact version-only metadata,
+then compares all remaining architecture sections to the accepted evidence.
+It never rewrites the eight section hashes or changes historical validator meaning.
+
+Canonical numerical ownership, 24 delegation sites and gameplay runtime authorities
+remain fixed. No release changes to source, public contracts, 11 exports,
+dependency graph, 99 Legacy declarations, 27 forwarders/preservation records or
+accepted oracles are permitted. See [release checklist](releases/v2.0.0.md) and
+[Gate B evidence](releases/v2.0.0-transition-review.md). Any extra delta requires
+Developer review. A transition record cannot grant itself additional permissions.

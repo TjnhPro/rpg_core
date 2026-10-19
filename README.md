@@ -1,13 +1,33 @@
 # RPG Core
 
-The [v2.0.12 architecture closure](docs/v2/2.0.12-architecture-closure.md) records
-the Universal Calculation Kernel and preserved Legacy Gameplay Runtime: Kernel
-owns numerical calculations; Legacy owns gameplay policy, state and events;
-applications own content and orchestration. The architecture freeze is
-**PROPOSED**, awaiting final Developer acceptance. Public entrypoints and historical
-namespace compatibility remain unchanged. Historical milestone reports below
-retain their original review status; the closure report gives current status.
+Architecture Freeze v2.0 is **ACCEPTED** by Developer decision at
+`e99d36e4345e14486ec40448ad8df872d3a44a57`, merged to main by PR #6 at
+`cc7affbcc01decd1fda9ec4b0d7f9f55ba3fda87`. The immutable
+[freeze manifest](docs/v2/2.0.12-architecture-freeze.json) remains `PROPOSED` as
+its original review artifact; explicit Developer acceptance activated the boundary.
 
+The **Universal Calculation Kernel** owns canonical numerical calculations and
+contracts. The **Legacy Gameplay Runtime** owns validation, eligibility, Skills,
+Combat, Mechanics, Effects, Triggers and state/event authority. Applications own
+content, policies, configuration, clocks/RNG, assets and orchestration.
+
+Package **2.0.0 is a release candidate**, pending release review and delivery.
+See [release notes](docs/releases/v2.0.0.md), [changelog](CHANGELOG.md),
+[release transition](docs/releases/v2.0.0-transition.json) and
+[verification / review evidence](docs/releases/v2.0.0-transition-review.md).
+Kernel has 63 public symbols / 17 runtime APIs; Legacy root retains 243 symbols /
+122 runtime values across the same eleven package entrypoints. There are no
+production calculation or gameplay behavior changes in release finalization.
+
+Independent public Kernel consumers cover Text RPG (9 scenarios), Võ Lâm-style
+2.5D (10) and ARPG-inspired policies (13). These are verified numerical consumer
+subsets, not complete game engines or reproductions of commercial game formulas.
+See the [consumer evidence](docs/v2/2.0.11-multi-rpg-consumer-verification.md).
+
+## Historical milestone timeline
+
+The milestone descriptions below retain their phase-specific scope and review
+language. The accepted architecture and current release status above take precedence.
 
 The v2.0.9 [gameplay boundary review](docs/v2/2.0.9-gameplay-contract-decoupling.md)
 adds contract isolation evidence without production API changes. Numerical
@@ -56,10 +76,10 @@ Start with [AGENTS.md](AGENTS.md) and the current
 [test coverage matrix](docs/test-coverage.md) locates contract evidence; the
 [Phase 2 cleanup audit](docs/cleanup-audit.md) records retention/removal decisions.
 
-Package name: `@rpg/core`. Package version: `1.0.0`, retained from the initial
-snapshot; it does **not** declare a stable or officially released package.
-`private: true` prevents accidental registry publication. No npm publication or
-license decision is part of this refactor.
+Package name: `@rpg/core`. Package version: `2.0.0`; `VERSION` is `v2.0.0`.
+`private: true` remains enabled. Install a locally packed archive; npm registry
+publication requires separate approval. This candidate has not yet been tagged or
+published as a GitHub Release. No license decision is part of release finalization.
 
 ## Requirements and verification
 
@@ -96,7 +116,7 @@ into `dist/`; the example compiles separately into `.example-dist/`.
 # In this repository; prepack builds the archive.
 npm pack
 # In the application repository, use the resulting archive's actual path.
-npm install /path/to/rpg-core-1.0.0.tgz
+npm install /path/to/rpg-core-2.0.0.tgz
 ```
 
 ```ts
@@ -118,6 +138,20 @@ const result = calculateDamage({
   roll: 1,
 });
 console.log(result.finalDamage); // 20
+```
+
+Numerical consumers can import Kernel alone, with caller-owned resource state:
+
+```ts
+import {calculateResourceTransition} from '@rpg/core/kernel';
+
+const result = calculateResourceTransition({
+  resource: 'hp', current: 80, maximum: 100, amount: 15,
+  operation: 'decrease',
+  rule: {minimum: 0, currentAboveMaximum: 'allow', allowIncreaseFromMinimum: false},
+});
+console.log(result.after, result.applied); // 65, 15
+// The application decides when to commit result.after to its own state.
 ```
 
 See [examples/headless.ts](examples/headless.ts) for a complete typed integration:
@@ -142,7 +176,7 @@ allow only these imports; application code does not need internal source paths.
 | `@rpg/core/effects` | Definitions, lifecycle, stack/refresh/expire and DoT |
 | `@rpg/core/mechanics` | Melee/projectile/AoE geometry and configuration |
 | `@rpg/core/spatial` | Coordinate/grid contracts, range and wall traversal |
-| `@rpg/core/kernel` | Universal numerical contracts and canonical stat/modifier/B0/B1 calculations |
+| `@rpg/core/kernel` | Universal stats, modifiers, B0/B1, hit/critical/mitigation, resources and snapshots |
 
 v2.0.1 establishes an independently importable Kernel and enforces
 `Legacy / Gameplay → Kernel` dependencies. Kernel imports only Kernel files;
@@ -285,11 +319,12 @@ Build also generates re-export-only forwarders for the original documented
 imports. The supported package API is `@rpg/core` and its listed entrypoints;
 no legacy deep package path is exported.
 
-`VERSION` (`v1.0-snapshot-20261013-b`) and `EXPORT-MANIFEST.json` are retained
-unchanged as **historical snapshot provenance**. The manifest's original paths,
-hashes and `CANDIDATE_PENDING_INDEPENDENT_VALIDATION` status describe that snapshot,
-not the refactored tree, package version or an official release. The preservation
-baseline pins reviewed commit `c5878d92e198acd19289f568a2ddeda5096d83e7` separately.
+`VERSION` now identifies the release candidate (`v2.0.0`). Its original
+`v1.0-snapshot-20261013-b` value is preserved in Git and in the release-transition
+record. `EXPORT-MANIFEST.json` remains unchanged historical snapshot provenance:
+its paths, hashes and `CANDIDATE_PENDING_INDEPENDENT_VALIDATION` status describe
+that original snapshot, not the current release. The preservation baseline and
+all approved history remain unchanged.
 
 There is no source LICENSE in this repository. This refactor adds no license or
 commercial redistribution grant and makes no ownership determination. No source
